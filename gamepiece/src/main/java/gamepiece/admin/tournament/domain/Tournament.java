@@ -16,4 +16,6 @@ public class Tournament {
 	private String tournamentName;
 	private Date tournamentStartDate;
 	private Date tournamentEndDate;
+	private String tournamentAddr;
+	private String adminId;
 }

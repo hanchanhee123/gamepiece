@@ -51,6 +51,8 @@ public class TournamentServiceImpl implements TournamentService {
 
 	@Override
 	public void addTournament(Tournament tournamentInfo) {
+		tournamentInfo.setTournamentAddr("전주");
+		tournamentInfo.setAdminId("id01");
 		tournamentMapper.addTournament(tournamentInfo);
 	}
 	
