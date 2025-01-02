@@ -19,7 +19,7 @@
 		<result column="reg_ymd" 	property="regYmd" />
 	</resultMap>
 	
-	<select id="getItemInfoByName" parameterType="string" resultMap=""></select>
+	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
 	
 	<select id="findAll" resultMap="pointshopResultMap">
 		/* 포인트샵 아이템 목록 조회 */
@@ -28,7 +28,7 @@
 			ps_cate_cd, 
 			ps_nm, 
 			img_url,
-			ps_price, 
+			ps_pric,
 			admin_id,
 			reg_ymd
 		FROM 
