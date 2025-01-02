@@ -25,4 +25,11 @@ public class EventServiceImpl implements EventService {
 	public List<Event> getEventDetail(String evCd){
 		return eventMapper.getEventDetail(evCd);
 	}
+
+	@Override
+	public void addEvent(Event event) {
+		event.setAdminId("id01");
+		eventMapper.addEvent(event);
+		
+	}
 }
