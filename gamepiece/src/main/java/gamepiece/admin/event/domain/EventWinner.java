@@ -9,11 +9,11 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class EventWinning {
+public class EventWinner {
 
-	private String ew_no;
-	private String evp_no;
+	private String ewNo;
+	private String evpNo;
 	private String id;
-	private int winning_price_point;
-	private Date winning_ymd;
+	private int winningPricePoint;
+	private Date winningYmd;
 }
