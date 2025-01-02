@@ -21,10 +21,8 @@
 		                        <div class="col-lg-5 col-6 me-auto">
 		                            <input type="text" placeholder="Search..." class="form-control" />
 		                        </div>
-		                      
 		                    </div>
 		                </header>
-		                <!-- card-header end// -->
 		                <div class="table-responsive">
 		                    <table class="table table-hover">
 		                        <thead>
@@ -41,32 +39,24 @@
 		                            </tr>
 		                        </thead>
 		                        <tbody>
-		                            <tr>
-		                                <td><b>id01</b></td>
-		                                <td>hong01@naver.com</td>
-		                                <td>pw01</td>
-		                                <td>여</td>
-		                                <td>2000-07-28</td>
-		                                <td>관리자</td>
-		                                <td>한찬희</td>
-		                                <td>010-1111-2222</td>
-		                                <td>2024-05-22 11:20:30</td>
+		                            <tr th:if="${removeUserInfo != null}" th:each="removeUserInfo : ${removeUserInfo}">
+	                                      <td th:text="*{removeUserInfo.id}"><b></b></td>
+	                                      <td th:text="*{removeUserInfo.userPswd}"></td>
+	                                      <td th:text="*{removeUserInfo.userNm}"></td>
+	                                      <td th:text="*{removeUserInfo.userGender}"></td>
+	                                      <td th:text="*{removeUserInfo.userEmlAddr}"></td>
+	                                      <td th:text="*{removeUserInfo.userBrdt}"></td>
+	                                      <td th:text="*{removeUserInfo.userTelno}"></td>
+	                                      <td th:text="*{removeUserInfo.userNn}"></td>
+	                                      <td th:text="*{removeUserInfo.joinYmd}"></td>
 		                            </tr>
-		                            
 		                        </tbody>
 		                    </table>
 		                </div>
-		                <!-- table-responsive.// -->
 		            </div>
-		            <!-- col end// -->
-		            
-		            <!-- col end// -->
 		        </div>
-		        <!-- row end// -->
 		    </div>
-		    <!-- card-body // -->
 		</div>
-		<!-- card end// -->
 		<div class="pagination-area mt-30 mb-50">
 		    <nav aria-label="Page navigation example">
 		        <ul class="pagination justify-content-start">

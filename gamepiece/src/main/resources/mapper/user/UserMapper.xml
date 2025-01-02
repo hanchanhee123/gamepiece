@@ -1,23 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="gamepiece.admin.user.mapper.UserMapper">
 
-<select id="getAllUserInfo" parameterType="string" resultType="gamepiece.admin.user.domain.User">
-	SELECT
-		*
-	FROM
-		user;
-</select>
+	<resultMap type="User" id="userResultMap">
+		<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="authrt_nm" property="authrtNm"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+		<result column="login_no" property="loginNo"/>
+		<result column="lgn_dt" property="lgnDt"/>
+		<result column="inactive_days" property="inactiveDays"/>
+	</resultMap>
 
-<select id="getUserInfo" parameterType="string" resultType="gamepiece.admin.user.domain.User">
-	SELECT
-		*
-	FROM
-		user u INNER JOIN authrt ar
-		ON u.authrt_cd = ar.authrt_cd
-	WHERE
-		id = #{id};
-</select>
+	<select id="getAllUserInfo" parameterType="string" resultMap="userResultMap">
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			whdwl_ymd IS NULL;
+	</select>
+	
+	<select id="getUserInfo" parameterType="string" resultMap="userResultMap">
+		SELECT
+			*
+		FROM
+			user u INNER JOIN authrt ar
+			ON u.authrt_cd = ar.authrt_cd
+		WHERE
+			id = #{id};
+	</select>
+	
+	<select id="getRemoveUserInfo" parameterType="string" resultMap="userResultMap">
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			whdwl_ymd IS NOT NULL;
+	</select>
+	
+	<select id="getUserLoginLog" parameterType="string" resultMap="userResultMap">
+		SELECT
+			ull.login_no,
+			u.id,
+			ar.authrt_nm,
+			ull.lgn_dt
+		FROM
+			user u INNER JOIN user_login_log ull
+			ON u.id = ull.id
+			INNER JOIN authrt ar
+			ON u.authrt_cd = ar.authrt_cd;
+	</select>
+	
+	<select id="getDormancyUserInfo" parameterType="string" resultMap="userResultMap">
+		SELECT
+		    u.*,
+		    DATEDIFF(NOW(), MAX(ull.lgn_dt)) AS inactive_days
+		FROM
+		    user u
+		INNER JOIN user_login_log ull
+		ON u.id = ull.id
+		WHERE
+		    u.whdwl_ymd IS NULL
+		GROUP BY
+		    u.id
+		HAVING
+		    inactive_days > 365;
+	</select>
 
 </mapper>

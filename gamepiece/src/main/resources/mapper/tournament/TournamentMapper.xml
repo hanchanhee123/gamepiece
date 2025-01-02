@@ -5,7 +5,7 @@
 
 <!-- SQL Mapping -->
 <mapper namespace="gamepiece.admin.tournament.mapper.TournamentMapper">
-	<resultMap type="gamepiece.admin.tournament.domain.Tournament" id="tournamentResultList">
+	<resultMap type="Tournament" id="tournamentResultList">
 		<result column="tnm_cd"		property="tournamentCode"/>
 		<result column="gm_cd"		property="gameCode"/>
 		<result column="gm_nm"		property="gameName"/>
@@ -37,4 +37,27 @@
 		WHERE
 			gm_cd IN ("gm_01","gm_04","gm_05");
 	</select>
+	
+	<insert id="addTournament" parameterType="Tournament">
+		INSERT INTO tournament
+		(
+			tnm_cd, 
+			gm_cd, 
+			tnm_nm, 
+			tnm_start_ymd, 
+			tnm_end_ymd, 
+			tnm_addr, 
+			admin_id, 
+			reg_ymd
+		) VALUES (
+			(SELECT CONCAT('tnm_',LPAD(MAX(SUBSTRING(t.tnm_cd,5)+1),2,'0')) FROM tournament t), 
+			#{gameCode}, 
+			#{tournamentName}, 
+			#{tournamentStartDate}, 
+			#{tournamentEndDate}, 
+			'123', 
+			'id01', 
+			CURDATE()
+		);
+	</insert>
 </mapper>

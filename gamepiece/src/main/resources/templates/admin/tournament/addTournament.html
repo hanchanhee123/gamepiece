@@ -7,67 +7,87 @@
           <h2 class="content-title" th:text="${title}"></h2>
           <div>
               <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">임시 저장</button>
-              <button class="btn btn-md rounded font-sm hover-up">일정 추가</button>
+              <button id="add-tournament" class="btn btn-md rounded font-sm hover-up">대회 추가</button>
           </div>
       </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
-	    <div class="row">
-	        <div class="col-lg-6">
-	            <div class="card mb-4">
-	                <div class="card-body">
-	                    <div class="row">
-	                        <div class="col-md-3">
-	                            <h6>1. 일반 정보</h6>
-	                        </div>
-	                        <div class="col-md-9">
-	                            <div class="mb-4">
-	                                <label class="form-label">대회명</label>
-	                                <input type="text" placeholder="Type here" class="form-control">
-	                            </div>
-	                            <div class="mb-4">
-	                                <label class="form-label">대회 시작 날짜</label>
-	                                <input type="date" placeholder="Type here" class="form-control">
-	                            </div>
-	                        </div> <!-- col.// -->
-	                    </div> <!-- row.// -->
-	                    <hr class="mb-4 mt-0">
-	                    <div class="row">
-	                        <div class="col-md-3">
-	                            <h6>2. 카테고리</h6>
-	                        </div>
-	                        <div class="col-md-9">
-	                            <div class="mb-4">
-	                                <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="game:${gameList}">
-	                                    <input class="form-check-input" name="mycategory" type="radio" th:value="${game.gameName}">
-	                                    <span class="form-check-label" th:text="${game.gameName}"> LoL</span>
-	                                </label>
-	                            </div>
-	                        </div> <!-- col.// -->
-	                    </div> <!-- row.// -->
-	                    <hr class="mb-4 mt-0">
-	                    <div class="row">
-	                        <div class="col-md-3">
-	                            <h6>3. 첨부파일</h6>
-	                        </div>
-	                        <div class="col-md-9">
-	                            <div class="mb-4">
-	                                <label class="form-label">이미지</label>
-	                                <input class="form-control" type="file">
-	                            </div>
-	                        </div> <!-- col.// -->
-	                    </div> <!-- .row end// -->
-	                </div>
-	            </div>
-	        </div>
-	    </div>
+   		<form id="tournament-form" class="form" th:action="@{/admin/tournament/addTournament}" method="post">
+		    <div class="row">
+		        <div class="col-lg-6">
+		            <div class="card mb-4">
+		                <div class="card-body">
+		                    <div class="row">
+		                        <div class="col-md-3">
+		                            <h6>1. 일반 정보</h6>
+		                        </div>
+		                        <div class="col-md-9">
+		                            <div class="mb-4">
+		                                <label class="form-label">대회명</label>
+		                                <input type="text" placeholder="Type here" class="form-control" name="tournamentName">
+		                            </div>
+		                            <div class="mb-4">
+		                                <label class="form-label">대회 시작 날짜</label>
+		                                <input type="date" placeholder="Type here" class="form-control" name="tournamentStartDateStr">
+		                            </div>
+		                            <div class="mb-4">
+		                                <label class="form-label">대회 종료 날짜</label>
+		                                <input type="date" placeholder="Type here" class="form-control" name="tournamentEndDateStr">
+		                            </div>
+		                        </div> <!-- col.// -->
+		                    </div> <!-- row.// -->
+		                    <hr class="mb-4 mt-0">
+		                    <div class="row">
+		                        <div class="col-md-3">
+		                            <h6>2. 카테고리</h6>
+		                        </div>
+		                        <div class="col-md-9">
+		                            <div class="mb-4">
+		                            	<input type="hidden" name="gameName" id="game-name">
+		                                <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="game:${gameList}">
+		                                    <input class="form-check-input" name="gameCode" type="radio" th:value="${game.gameCode}">
+		                                    <span class="form-check-label" th:text="${game.gameName}"> LoL</span>
+		                                </label>
+		                            </div>
+		                        </div> <!-- col.// -->
+		                    </div> <!-- row.// -->
+		                    <hr class="mb-4 mt-0">
+		                    <div class="row">
+		                        <div class="col-md-3">
+		                            <h6>3. 첨부파일</h6>
+		                        </div>
+		                        <div class="col-md-9">
+		                            <div class="mb-4">
+		                                <label class="form-label">이미지</label>
+		                                <input class="form-control" type="file">
+		                            </div>
+		                        </div> <!-- col.// -->
+		                    </div> <!-- .row end// -->
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+	    </form>
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	<script>
+    		$addTournament = document.querySelector('#add-tournament');
+    		$formCheckInput = document.querySelectorAll('.form-check-input');
     		
+    		$addTournament.addEventListener('click', function(){
+    			$tournamentForm = document.querySelector('#tournament-form');
+    			$tournamentForm.submit();
+    		});
+    		
+    		$formCheckInput.forEach(element => {
+    			element.addEventListener('click', function(){
+    				$gameName = document.querySelector('#game-name');
+    				$gameName.value = this.nextElementSibling.textContent;
+    			});
+    		});
     	</script>
     </th:block>
 </html>

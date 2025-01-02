@@ -1,5 +1,8 @@
 package gamepiece.admin.tournament.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,6 +29,29 @@ public class TournamentServiceImpl implements TournamentService {
 	public List<Tournament> getGameList() {
 		// TODO Auto-generated method stub
 		return tournamentMapper.getGameList();
+	}
+
+	@Override
+	public Tournament getTournamentInfo(Tournament tournamentInfo, String tournamentStartDateStr,
+			String tournamentEndDateStr) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		
+		try {
+			Date startDate = format.parse(tournamentStartDateStr);
+			Date endDate = format.parse(tournamentEndDateStr);
+			
+			tournamentInfo.setTournamentStartDate(startDate);
+			tournamentInfo.setTournamentEndDate(endDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return tournamentInfo;
+	}
+
+	@Override
+	public void addTournament(Tournament tournamentInfo) {
+		tournamentMapper.addTournament(tournamentInfo);
 	}
 	
 }
