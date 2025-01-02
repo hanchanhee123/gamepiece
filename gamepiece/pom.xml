@@ -8,7 +8,7 @@
 		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>kr.or.ksmart</groupId>
+	<groupId>gamepiece</groupId>
 	<artifactId>gamepiece</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gamepiece</name>
