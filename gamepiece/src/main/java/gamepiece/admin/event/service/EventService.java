@@ -13,5 +13,7 @@ public interface EventService {
 	List<Event> getEventParticipant(String evCd);
 
 	List<Event> getEventDetail(String evCd);
+
+	void addEvent(Event event);
 	
 }
