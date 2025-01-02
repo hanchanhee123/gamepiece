@@ -10,7 +10,7 @@
                   <h2 class="content-title card-title">포인트샵 목록</h2>
               </div>
               <div>
-                  <a th:href="@{/admin/point/Add}" class="btn btn-primary btn-sm rounded">아이템 추가</a>
+                  <a th:href="@{/admin/point/add}" class="btn btn-primary btn-sm rounded">아이템 추가</a>
               </div>
           </div>
    	</th:block>
@@ -49,7 +49,7 @@
                                         <a href="#" class="title text-truncate" th:text="${l.itemName}">Haagen-Dazs Caramel Cone Ice</a>
                                         <div class="price mb-2" th:text="${l.itemPrice}"></div>
                                         <!-- price.// -->
-                                        <a th:href="@{/Detail(itemName=${l.itemName})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a>
+                                        <a th:href="@{/admin/point/detail(itemName=${l.itemName})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a>
                                         <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> 삭제 </a>
                                     </div>
                                 </div>

@@ -33,9 +33,13 @@ public class PointController {
 	public String pointDetail(@RequestParam(value = "itemName") String itemName,
 							  Model model) {
 		
+		var itemInfo = pointService.getItemInfoByName(itemName);
+		
 		model.addAttribute("title", "상세보기");
 		model.addAttribute("pointList", pointService.findAll());
 		model.addAttribute("cateList", pointService.findCate());
+		model.addAttribute("itemInfo", itemInfo);
+		
 		
 		return "admin/points/pointshopdetail";
 	}

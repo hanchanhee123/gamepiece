@@ -28,7 +28,7 @@
 			ps_cate_cd, 
 			ps_nm, 
 			img_url,
-			ps_pric,
+			ps_price,
 			admin_id,
 			reg_ymd
 		FROM 
@@ -44,6 +44,15 @@
 			pointshop_categories
 		ORDER BY
 			cate_nm DESC;
+	</select>
+	
+	<select id="getItemInfoByName" resultMap="pointshopResultMap" >
+		SELECT
+			*
+		FROM
+			point_shop ps
+		WHERE
+			ps.ps_nm = #{itemName};
 	</select>
 	
 	<!-- <insert id="addPointShop" parameterType="gamepiece.admin.point.domain.Point">

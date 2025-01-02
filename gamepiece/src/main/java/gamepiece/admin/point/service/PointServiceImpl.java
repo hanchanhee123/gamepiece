@@ -19,7 +19,7 @@ public class PointServiceImpl implements PointService {
 	
 	@Override
 	public Point getItemInfoByName(String itemName) {
-		// TODO Auto-generated method stub
+		
 		return pointshopMapper.getItemInfoByName(itemName);
 	}
 	
