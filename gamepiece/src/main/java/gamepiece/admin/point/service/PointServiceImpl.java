@@ -18,6 +18,11 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
+	public void modifyItem(String itemName) {
+		pointshopMapper.modifyItem(itemName);
+	}
+	
+	@Override
 	public Point getItemInfoByName(String itemName) {
 		
 		return pointshopMapper.getItemInfoByName(itemName);
@@ -32,7 +37,9 @@ public class PointServiceImpl implements PointService {
 		return pointshopMapper.findCate();
 	}
 	
-	public List<Point> addPointShop() {
-		return pointshopMapper.addPointShop();
+	@Override
+	public void addPointShop(Point point) {
+		
+		pointshopMapper.addPointShop(point);
 	}
 }

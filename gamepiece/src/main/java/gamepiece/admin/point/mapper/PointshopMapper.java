@@ -15,5 +15,7 @@ public interface PointshopMapper {
 	
 	List<PointCategories> findCate();
 	
-	List<Point> addPointShop();
+	void addPointShop(Point point);
+	
+	void modifyItem(String itemName);
 }
