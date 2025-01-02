@@ -46,9 +46,9 @@ WHERE
 
 <insert id="addEvent" parameterType="Event">
 
-INSERT INTO events
+<![CDATA[INSERT INTO events
 	(ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
-	VALUES ((SELECT CONCAT('ev_',LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd,4)+1),0),2,'0')) FROM events e), #{evNm}, #{evContents}, #{evStartYmd}, #{evEndYmd}, #{evWinnersNum}, #{adminId}, CURDATE(), #{evImg});
+	VALUES ((SELECT CONCAT('ev_',LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd,4)+1),0),IF(LENGTH(MAX(SUBSTRING(e.ev_cd_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(e.ev_cd,4)+1))),'0')) FROM events e), #{evNm}, #{evContents}, #{evStartYmd}, #{evEndYmd}, #{evWinnersNum}, #{adminId}, CURDATE(), #{evImg});]]>
 </insert>
 
 
