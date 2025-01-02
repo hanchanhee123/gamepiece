@@ -31,7 +31,7 @@
 			gd.detail_id,
 			gd.img_id,
 			gd.video_id,
-			gd.`description`,
+			gd.description,
 			gd.price,
 			gd.genre,
 			gd.review_count,
@@ -44,5 +44,34 @@
 			ON g.gm_cd = gd.gm_cd
 			INNER JOIN platform p
 			ON g.p_cd = p.p_cd;
+	</select>
+	<select id="getGameInfoByCode" parameterType="String" resultMap="gameList">
+		SELECT
+			g.gm_cd,
+			g.gm_nm,
+			g.p_cd,
+			p.p_nm,
+			g.developer,
+			g.gm_enrollment_ymd,
+			gd.detail_id,
+			gd.img_id,
+			gd.video_id,
+			gd.`description`,
+			gd.price,
+			gd.genre,
+			gd.review_count,
+			gd.review_avg,
+			gd.summation,
+			gd.admin_id,
+			gd.reg_ymd
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+			INNER JOIN platform p
+			ON g.p_cd = p.p_cd
+		WHERE
+			g.gm_cd = #{gameCode};
+	
+	
 	</select>
 </mapper>

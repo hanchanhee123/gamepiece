@@ -117,6 +117,13 @@ public class Game {
 	public void setRegYmd(String regYmd) {
 		this.regYmd = regYmd;
 	}
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	
 	
 	@Override
 	public String toString() {
