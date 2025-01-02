@@ -43,14 +43,14 @@
 	                              <tbody>
 	                                  <tr th:if="${allUserInfo != null}" th:each="allUserInfo : ${allUserInfo}">
 	                                      <td th:text="${allUserInfo.id}"><b></b></td>
-	                                      <td th:text="${allUserInfo.user_pw}"></td>
-	                                      <td th:text="${allUserInfo.user_nm}"></td>
-	                                      <td th:text="${allUserInfo.user_gender}"></td>
-	                                      <td th:text="${allUserInfo.user_eml_addr}"></td>
-	                                      <td th:text="${allUserInfo.user_brdt}"></td>
-	                                      <td th:text="${allUserInfo.user_telno}"></td>
-	                                      <td th:text="${allUserInfo.user_nn}"></td>
-	                                      <td th:text="${allUserInfo.join_ymd}"></td>
+	                                      <td th:text="${allUserInfo.userPswd}"></td>
+	                                      <td th:text="${allUserInfo.userNm}"></td>
+	                                      <td th:text="${allUserInfo.userGender}"></td>
+	                                      <td th:text="${allUserInfo.userEmlAddr}"></td>
+	                                      <td th:text="${allUserInfo.userBrdt}"></td>
+	                                      <td th:text="${allUserInfo.userTelno}"></td>
+	                                      <td th:text="${allUserInfo.userNn}"></td>
+	                                      <td th:text="${allUserInfo.joinYmd}"></td>
 	                                      <td>
 	                                          <a th:href="@{/admin/user/UserInfo(id=${allUserInfo.id})}" class="btn btn-sm btn-light font-sm rounded">수정</a>
 	                                      </td>

@@ -36,27 +36,20 @@
 		                           </tr>
 		                       </thead>
 		                       <tbody>
-		                           <tr>
-		                               <td><b>login_01</b></td>
-		                               <td>id01</td>
-		                               <td>관리자</td>
-		                               <td>2024-12-14 18:00:00</td>
+		                           <tr th:if="${userLoginlog != null}" th:each="userLoginlog : ${userLoginlog}">
+		                               <td th:text="${userLoginlog.loginNo}"></td>
+		                               <td th:text="${userLoginlog.id}"></td>
+		                               <td th:text="${userLoginlog.authrtNm}"></td>
+		                               <td th:text="${#temporals.format(userLoginlog.lgnDt, 'yyyy-MM-dd HH:mm:ss')}"></td>
 		                           </tr>
 		                           
 		                       </tbody>
 		                   </table>
 		               </div>
-		               <!-- table-responsive.// -->
 		           </div>
-		           <!-- col end// -->
-		           
-		           <!-- col end// -->
 		       </div>
-		       <!-- row end// -->
 		   </div>
-		   <!-- card-body // -->
 		</div>
-		<!-- card end// -->
 		<div class="pagination-area mt-30 mb-50">
 		    <nav aria-label="Page navigation example">
 		        <ul class="pagination justify-content-start">

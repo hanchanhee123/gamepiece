@@ -32,91 +32,101 @@
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="authrt_nm">권한명</label>
+								                <label class="info" for="authrtCd">권한명</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{authrt_nm}" id="authrt_nm" placeholder="Type here" class="form-control">
+							                <input type="text" th:value="*{authrtCd}" id="authrtCd" placeholder="Type here" class="form-control"/>
+							                <!-- <select name="authrtNm" id="authrtNm">
+							                	<option value="authrtNm">권한을 선택해주세요</option>
+							                	<th:block th:if="${authrt}"
+			                                              th:each="authrt : ${authrt}">
+			                                        <option th:value="${authrt.count}" th:text="${authrt.authrtNm}" th:selected="${authrt.count} == ${authrt.authrtNm}"></option>
+			                                    </th:block>
+							                </select> -->
+								        </td>
+								        <!-- <td>
+								        	<input type="text" th:value="*{authrt.authrtNm}" id="authrtNm" placeholder="Type here" class="form-control">
+								        </td> -->
+								    </tr>
+								    <tr>
+								        <td>
+								            <div class="itemside">
+								                <label class="info" for="userPswd">비밀번호</label>
+								            </div>
+								        </td>
+								        <td>
+								        	<input type="text" th:value="*{userPswd}" id="userPswd" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_pw">비밀번호</label>
+								                <label class="info" for="userNm">이름</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_pw}" id="user_pw" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userNm}" id="userNm" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_nm">이름</label>
+								                <label class="info" for="userGender">성별</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_nm}" id="user_nm" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userGender == 'M' ? '남성' : '여성'}" id="userGender" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_gender">성별</label>
+								                <label class="info" for="userEmlAddr">이메일주소</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_gender == 'M' ? '남성' : '여성'}" id="user_gender" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userEmlAddr}" id="userEmlAddr" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_eml_addr">이메일주소</label>
+								                <label class="info" for="userBrdt">생년월일</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_eml_addr}" id="user_eml_addr" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userBrdt}" id="userBrdt" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_brdt">생년월일</label>
+								                <label class="info" for="userTelno">전화번호</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_brdt}" id="user_brdt" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userTelno}" id="userTelno" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_telno">전화번호</label>
+								                <label class="info" for="userNn">닉네임</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_telno}" id="user_telno" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userNn}" id="userNn" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_nn">닉네임</label>
+								                <label class="info" for="joinYmd">가입일자</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_nn}" id="user_nn" placeholder="Type here" class="form-control">
-								        </td>
-								    </tr>
-								    <tr>
-								        <td>
-								            <div class="itemside">
-								                <label class="info" for="join_ymd">가입일자</label>
-								            </div>
-								        </td>
-								        <td>
-								        	<input type="text" th:value="*{join_ymd}" id="join_ymd" placeholder="Type here" class="form-control" disabled>
+								        	<input type="text" th:value="*{joinYmd}" id="joinYmd" placeholder="Type here" class="form-control" disabled>
 								        </td>
 								    </tr>
 								</tbody>
@@ -132,7 +142,7 @@
 									</div>
 								</td>
 								<td>
-									<!-- <img th:src="*{img_url}" id="avatar"> -->
+									<!-- <img th:src="*{imgUrl}" id="avatar"> -->
 									<span class="icon icon-lg bg-primary-light">
 									    <i class="text-primary material-icons md-person"></i>
 									</span>
