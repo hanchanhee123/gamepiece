@@ -45,6 +45,10 @@ public class UserController {
 	
 	@GetMapping("/removeUserInfo")
 	public String getRemoveUserInfo(Model model) {
+		List<User> removeUserInfo = userService.getRemoveUserInfo();
+		
+		model.addAttribute("removeUserInfo", removeUserInfo);
+		System.out.println("탈퇴 회원정보 조회 : " + removeUserInfo);
 		
 		return "admin/user/removeUserInfo";
 	}
@@ -52,11 +56,21 @@ public class UserController {
 	@GetMapping("/dormancyUserInfo")
 	public String getDormancyUserInfo(Model model) {
 		
+		List<User> dormancyUserInfo = userService.getDormancyUserInfo();
+		
+		model.addAttribute("dormancyUserInfo", dormancyUserInfo);
+		System.out.println("휴면 회원정보 조회 : " + dormancyUserInfo);
+		
 		return "admin/user/dormancyUserInfo";
 	}
 	
 	@GetMapping("/userLoginlog")
 	public String getUserLoginLog(Model model) {
+		
+		List<User> userLoginlog = userService.getUserLoginLog();
+		
+		model.addAttribute("userLoginlog", userLoginlog);
+		System.out.println("회원 로그인내역 조회 : " + userLoginlog);
 		
 		return "admin/user/userLoginlog";
 	}

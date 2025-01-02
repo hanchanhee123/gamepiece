@@ -1,27 +1,27 @@
 package gamepiece.admin.user.domain;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
 public class User {
 
 	private String id;
-	private String authrt_cd;
-	private String authrt_nm;
-	private String user_pw;
-	private String user_nm;
-	private String user_gender;
-	private String user_eml_addr;
-	private Date user_brdt;
-	private String user_telno;
-	private String user_nn;
-	private Date join_ymd;
-	private Date whdwl_ymd;
+	private String authrtCd;
+	private String authrtNm;
+	private String userPswd;
+	private String userNm;
+	private String userGender;
+	private String userEmlAddr;
+	private LocalDate userBrdt;
+	private String userTelno;
+	private String userNn;
+	private LocalDate joinYmd;
+	private LocalDate whdwlYmd;
+	private String loginNo;
+	private LocalDateTime lgnDt;
+	private int inactiveDays;
 	
 }

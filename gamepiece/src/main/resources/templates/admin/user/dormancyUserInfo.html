@@ -30,31 +30,30 @@
                               <thead>
                                   <tr>
                                       <th>회원ID</th>
-                                      <th>회원이메일</th>
                                       <th>회원비밀번호</th>
-                                      <th>성별</th>
-                                      <th>생년월일</th>
-                                      <th>회원권환</th>
                                       <th>회원이름</th>
+                                      <th>성별</th>
+                                      <th>회원이메일</th>
+                                      <th>생년월일</th>
                                       <th>회원연락처</th>
+                                      <th>회원닉네임</th>
                                       <th>가입일자</th>
                                       <th>미접일수</th>
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr>
-                                      <td><b>id01</b></td>
-                                      <td>hong01@naver.com</td>
-                                      <td>pw01</td>
-                                      <td>여</td>
-                                      <td>2000-07-28</td>
-                                      <td>관리자</td>
-                                      <td>한찬희</td>
-                                      <td>010-1111-2222</td>
-                                      <td>2024-05-22 11:20:30</td>
-                                      <td>250</td>
+                                  <tr th:if="${dormancyUserInfo != null}" th:each="dormancyUserInfo : ${dormancyUserInfo}">
+                                      <td th:text="${dormancyUserInfo.id}"></td>
+                                      <td th:text="${dormancyUserInfo.userPswd}"></td>
+                                      <td th:text="${dormancyUserInfo.userNm}"></td>
+                                      <td th:text="${dormancyUserInfo.userGender}"></td>
+                                      <td th:text="${dormancyUserInfo.userEmlAddr}"></td>
+                                      <td th:text="${dormancyUserInfo.userBrdt}"></td>
+                                      <td th:text="${dormancyUserInfo.userTelno}"></td>
+                                      <td th:text="${dormancyUserInfo.userNn}"></td>
+                                      <td th:text="${dormancyUserInfo.joinYmd}"></td>
+                                      <td th:text="${dormancyUserInfo.inactiveDays} + '일'"></td>
                                   </tr>
-                                  
                               </tbody>
                           </table>
                       </div>

@@ -10,5 +10,8 @@ import gamepiece.admin.event.domain.Event;
 public interface EventMapper {
 
 	List<Event> getEventList();
+	List<Event> getEventParticipant(String evCd);
+	List<Event> getEventDetail(String evCd);
+	int addEvent(Event event);
 	
 }

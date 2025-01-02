@@ -23,4 +23,19 @@ public class UserServiceImpl implements UserService {
 		return userMapper.getUserInfo(id);
 	}
 
+	public List<User> getRemoveUserInfo() {
+
+		return userMapper.getRemoveUserInfo();
+	}
+
+	public List<User> getUserLoginLog() {
+		
+		return userMapper.getUserLoginLog();
+	}
+
+	public List<User> getDormancyUserInfo() {
+		
+		return userMapper.getDormancyUserInfo();
+	}
+
 }
