@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.user.domain.User;
 import gamepiece.admin.user.service.UserService;
@@ -21,6 +22,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	// 전체 회원정보 조회
 	@GetMapping("/allUserInfo")
 	public String getAllUserInfo(Model model) {
 		
@@ -32,17 +34,33 @@ public class UserController {
 		return "admin/user/allUserInfo";
 	}
 	
-	@GetMapping("/UserInfo")
+	// 회원 상세정보 조회
+	@GetMapping("/userInfo")
 	public String getUserInfo(@RequestParam String id, Model model) {
 		
 		User userInfo = userService.getUserInfo(id);
+		var authrtInfo = userService.getAuthrtInfo();
 		
 		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("authrtInfo", authrtInfo);
 		System.out.println("회원 상세정보 조회 : " + userInfo);
+		System.out.println("회원 권한 : " + authrtInfo);
 		
 		return "admin/user/userInfo";
 	}
 	
+	// 회원 상세정보 수정
+	@GetMapping("/modifyUserInfo")
+	public String getModifyUserInfo(User user, RedirectAttributes reAttr) {
+		
+		userService.modifyUserInfo(user);
+		
+		reAttr.addAttribute("id", user.getId());
+		
+		return "redirect:/admin/user/allUserInfo";
+	}
+	
+	// 탈퇴 회원정보 조회
 	@GetMapping("/removeUserInfo")
 	public String getRemoveUserInfo(Model model) {
 		List<User> removeUserInfo = userService.getRemoveUserInfo();
@@ -53,6 +71,7 @@ public class UserController {
 		return "admin/user/removeUserInfo";
 	}
 	
+	// 휴면 회원정보 조회
 	@GetMapping("/dormancyUserInfo")
 	public String getDormancyUserInfo(Model model) {
 		
@@ -64,6 +83,7 @@ public class UserController {
 		return "admin/user/dormancyUserInfo";
 	}
 	
+	// 회원 로그인내역 조회
 	@GetMapping("/userLoginlog")
 	public String getUserLoginLog(Model model) {
 		

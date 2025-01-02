@@ -6,18 +6,19 @@
 	<th:block layout:fragment="contents-header">
 		<div class="content-header">
 			<div>
-				<h2 class="content-title">회원 상세정보 조회</h2>
+				<h2 class="content-title">회원 상세정보 수정</h2>
 			</div>
 		</div>
 	</th:block>
 	
 	<th:block layout:fragment="contents-body">
+	<form id="modifyUserForm" th:action="@{/admin/user/modifyUserInfo}" th:object="${userInfo}" method="get">
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 				    <div class="col-lg-5">
 				        <div class="table-responsive">
-				            <table class="table" th:object="${userInfo}">
+				            <table class="table">
 				                <tbody>
 									<tr>
 									    <td>
@@ -26,7 +27,7 @@
 									        </div>
 									    </td>
 									    <td>
-									    	<input type="text" th:value="*{id}" id="id" placeholder="Type here" class="form-control" disabled>
+									    	<input type="text" th:value="*{id}" id="id" name="id" placeholder="Type here" class="form-control" disabled>
 									    </td>
 									</tr>
 								    <tr>
@@ -36,18 +37,15 @@
 								            </div>
 								        </td>
 								        <td>
-							                <input type="text" th:value="*{authrtCd}" id="authrtCd" placeholder="Type here" class="form-control"/>
-							                <!-- <select name="authrtNm" id="authrtNm">
-							                	<option value="authrtNm">권한을 선택해주세요</option>
-							                	<th:block th:if="${authrt}"
-			                                              th:each="authrt : ${authrt}">
-			                                        <option th:value="${authrt.count}" th:text="${authrt.authrtNm}" th:selected="${authrt.count} == ${authrt.authrtNm}"></option>
+							                <!-- <input type="text" th:value="*{authrtCd}" id="authrtCd" placeholder="Type here" class="form-control"/> -->
+							                <select name="authrtCd" id="authrtCd" class="form-control">
+							                	<option value="">권한을 선택해주세요</option>
+							                	<th:block th:if="${authrtInfo}"
+			                                              th:each="authrtInfo : ${authrtInfo}">
+			                                        <option th:text="${authrtInfo.authrtNm}" th:value="${authrtInfo.authrtNm}" th:selected="${authrtInfo.authrtCd} == ${userInfo.authrtCd}"></option>
 			                                    </th:block>
-							                </select> -->
+							                </select>
 								        </td>
-								        <!-- <td>
-								        	<input type="text" th:value="*{authrt.authrtNm}" id="authrtNm" placeholder="Type here" class="form-control">
-								        </td> -->
 								    </tr>
 								    <tr>
 								        <td>
@@ -56,7 +54,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userPswd}" id="userPswd" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userPswd}" id="userPswd" name="userPswd" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -66,7 +64,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userNm}" id="userNm" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userNm}" id="userNm" name="userNm" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -76,7 +74,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userGender == 'M' ? '남성' : '여성'}" id="userGender" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userGender == 'M' ? '남성' : '여성'}" id="userGender" name="userGender" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -86,7 +84,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userEmlAddr}" id="userEmlAddr" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userEmlAddr}" id="userEmlAddr" name="userEmlAddr" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -96,7 +94,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userBrdt}" id="userBrdt" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userBrdt}" id="userBrdt" name="userBrdt" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -106,7 +104,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userTelno}" id="userTelno" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userTelno}" id="userTelno" name="userTelno" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -116,7 +114,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userNn}" id="userNn" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userNn}" id="userNn" name="userNn" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -126,7 +124,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{joinYmd}" id="joinYmd" placeholder="Type here" class="form-control" disabled>
+								        	<input type="text" th:value="*{joinYmd}" id="joinYmd" name="joinYmd" placeholder="Type here" class="form-control" disabled>
 								        </td>
 								    </tr>
 								</tbody>
@@ -149,11 +147,12 @@
 								</td>
 							</tr>
 						</table>
-						<a class="btn btn-primary" href="#">저장</a>
+						<button type="submit" class="btn btn-primary" id="modifyUserBtn" th:href="@{/admin/user/allUserInfo}">수정</button>
 					</div>
 				</div>
 			</div>
 		</div>
+	</form>
 	</th:block>
       
       <!--/* 사용자 추가 js file */-->
