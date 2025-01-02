@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+  
+  <th:block layout:fragment="contents-header">   
+  <div class="content-header">
+      <div>
+          <h2 class="content-title card-title" th:text="${title}"></h2>
+      </div>
+      <div> 
+          <a th:href="@{/admin/event/addEvent}" class="btn btn-primary btn-sm rounded">이벤트 추가</a>
+      </div>
+  </div>
+  </th:block>
+  
+  <th:block layout:fragment="contents-body">
+  <div class="card mb-4">
+      <header class="card-header">
+          <div class="row align-items-center">
+            
+              <div class="col-md-2 col-6">
+                  <input type="date" value="02.05.2021" class="form-control" />
+              </div>
+              <div class="col-md-2 col-6">
+                  <select class="form-select">
+                      <option selected>현황</option>
+                      <option>진행</option>
+                      <option>종료</option>
+                  </select>
+              </div>
+          </div>
+      </header>
+      
+    <div class="card-body">
+     <div class="table-responsive">
+      <table class="table table-hover">
+      	<thead>
+      		<tr>
+      			<th>이벤트코드</th>
+      			<th>이벤트명</th>
+      			<th>이벤트시작날짜</th>
+      			<th>이벤트종료날짜</th>
+      			<th>당첨인원</th>
+      			<th>등록자아이디</th>
+      			<th>등록일자</th>
+      			<th>수정</th>
+      			
+      		</tr>
+      	</thead>
+      	<tbody>
+      		<tr th:if="${eventList != null}"
+				th:each="eventList :${eventList}">
+      			<td th:text="${eventList.ev_cd}"></td>
+      			<td th:text="${eventList.ev_nm}"></td>
+      			<td th:text="${eventList.ev_start_ymd}"></td>
+      			<td th:text="${eventList.ev_end_ymd}"></td>
+      			<td th:text="${eventList.ev_winners_num}"></td>
+      			<td th:text="${eventList.admin_id}"></td>
+      			<td th:text="${eventList.reg_ymd}"></td>
+      			<td><a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      		</tr>
+      	</tbody>
+      </table>
+     </div>
+          <!-- itemlist  .// -->
+           </div>
+      </div>
+      <!-- card-body end// -->
+  <!-- card end// -->
+  <div class="pagination-area mt-30 mb-50">
+      <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-start">
+              <li class="page-item active"><a class="page-link" href="#">01</a></li>
+              <li class="page-item"><a class="page-link" href="#">02</a></li>
+              <li class="page-item"><a class="page-link" href="#">03</a></li>
+              <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+              <li class="page-item"><a class="page-link" href="#">16</a></li>
+              <li class="page-item">
+                  <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+              </li>
+          </ul>
+      </nav>
+  </div>
+   	</th:block>
+</html>

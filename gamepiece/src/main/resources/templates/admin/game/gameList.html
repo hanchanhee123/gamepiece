@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title" th:text="${title}"></h2>
+          </div>
+          <div>
+              
+              <a href="#" class="btn btn-primary btn-sm rounded">Create new</a>
+          </div>
+      </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   		<div class="row">
+   			<div class="col">
+   				<div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                            <div class="col-lg-4 col-md-6 me-auto">
+                                <input type="text" placeholder="Search..." class="form-control" />
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+                                    <option>장르선택</option>
+                                    <option>RPG</option>
+                                    <option>FPS</option>
+                                    <option>격투</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+                                    <option>플랫폼선택</option>
+                                    <option>Steam</option>
+                                    <option>Epic Games</option>
+                                    <option>Ubisoft Connect</option>
+                                    <option>Riot Games</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="card-body">
+                        <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+                            <div class="col" th:each="gameList : ${gameList}">
+                                <div class="card card-product-grid">
+                                    <a href="#" class="img-wrap"> <img src="/manage/assets/imgs/items/1.jpg" alt="Product" /> </a>
+                                    <div class="info-wrap">
+                                        <a href="#" class="title text-truncate" th:text="${gameList.gameName}">Haagen-Dazs Caramel Cone Ice</a>
+                                        <div class="price mb-2"th:text="₩ + ${gameList.gamePrice}">$179.00</div>
+                                        <!-- price.// -->
+                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
+                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
+                                    </div>
+                                </div>
+                                <!-- card-product  end// -->
+                            </div>
+                        </div>
+                    </div>  
+   				</div>
+   			</div>
+   			<div class="pagination-area mt-30 mb-50">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                            <li class="page-item"><a class="page-link" href="#">02</a></li>
+                            <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link" href="#">16</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+   		</div>
+   		
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    		
+    	</script>
+    </th:block>
+</html>

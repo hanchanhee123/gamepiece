@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+
+	<th:block layout:fragment="contents-header"> 	
+         <div class="content-header">
+              <div>
+                  <h2 class="content-title card-title">포인트샵 목록</h2>
+              </div>
+              <div>
+                  <a th:href="@{/admin/point/Add}" class="btn btn-primary btn-sm rounded">아이템 추가</a>
+              </div>
+          </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+	   	<div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                            <div class="col-lg-4 col-md-6 me-auto">
+                                <input type="text" placeholder="Search..." class="form-control" />
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+	                                    <option>전체 카테고리</option>
+	                                    <option th:text="${cateList.cateName}" th:each="cateList:${cateList}">이모티콘</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+                                    <option>전체</option>
+                                    <option>가장 최근에 추가된 항목</option>
+                                    <option>낮은 가격순</option>
+                                    <option>높은 가격순</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+                    <!-- card-header end// -->
+                    <div class="card-body">
+                        <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+                            <div class="col" th:each="l : ${pointList}">
+                                <div class="card card-product-grid">
+                                    <a href="#" class="img-wrap"> 
+                                    	<img src="assets/imgs/items/1.jpg" alt="Product" /> 
+                                    </a>
+                                    <div class="info-wrap">
+                                        <a href="#" class="title text-truncate" th:text="${l.itemName}">Haagen-Dazs Caramel Cone Ice</a>
+                                        <div class="price mb-2" th:text="${l.itemPrice}"></div>
+                                        <!-- price.// -->
+                                        <a th:href="@{/Detail(itemName=${l.itemName})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a>
+                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> 삭제 </a>
+                                    </div>
+                                </div>
+                                <!-- card-product  end// -->
+                            </div>
+                            <!-- col.// -->
+                        </div>
+                        <!-- row.// -->
+                    </div>
+                    <!-- card-body end// -->
+                </div>
+                <!-- card end// -->
+                <div class="pagination-area mt-30 mb-50">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                            <li class="page-item"><a class="page-link" href="#">02</a></li>
+                            <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link" href="#">16</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    		
+    	</script>
+    </th:block>
+</html>

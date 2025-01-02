@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.admin.game.mapper.GameListMapper">
+	<resultMap type="gamepiece.admin.game.domain.Game" id="gameList">
+		<result column="gm_nm" property="gameName"></result>
+		<result column="price" property="gamePrice"></result>
+		<result column="gerne" property="gameGerne"></result>
+		<result column="p_nm" property="gamePlatform"></result>
+	</resultMap>
+	<select id="getGameList" resultMap="gameList">
+		SELECT
+			g.gm_nm,
+			gd.price,
+			gd.img_id,
+			p.p_nm
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+			INNER JOIN platform p
+			ON g.p_cd = p.p_cd;
+	</select>
+</mapper>

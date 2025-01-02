@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+	  
+ <th:block layout:fragment="contents-header"> 	
+  <div class="row">
+      <div class="col-6">
+          <div class="content-header">
+              <h2 class="content-title" th:text="${title}"></h2>
+              <div>
+                  <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">임시 저장</button>
+                  <button class="btn btn-md rounded font-sm hover-up">생성</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  </th:block>
+  <th:block layout:fragment="contents-body">
+  <div class="row">
+      <div class="col-lg-6">
+          <div class="card mb-4">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <h6>1. 일반 정보</h6>
+                      </div>
+                      <div class="col-md-9">
+                          <div class="mb-4">
+                              <label class="form-label">이벤트명</label>
+                              <input type="text" placeholder="Type here" class="form-control">
+                          </div>
+                          <div class="mb-4">
+                              <label class="form-label">이벤트 설명</label>
+                              <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
+                              <div class="mb-4">
+                                  <label for="date">시작 날짜:</label>
+                                  <input type="date"
+                                          id="date"
+                                  >
+                              </div>
+                              <div class="mb-4">
+                                  <label for="date">종료 날짜:</label>
+                                  <input type="date"
+                                          id="date"
+                                         >
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <hr class="mb-4 mt-0">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <h6>2. 진행 상태</h6>
+                      </div>
+                      <div class="col-md-9">
+                          <div class="mb-4">
+                              <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                  <select class="form-select">
+                                      <option select value="none">선택</option>
+                                      <option>진행</option>
+                                      <option>종료</option>
+                                  </select>
+                          </div>
+                      </div>
+                  </div>
+                  <hr class="mb-4 mt-0">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <h6>3. 첨부파일</h6>
+                      </div>
+                      <div class="col-md-9">
+                          <div class="mb-4">
+                              <label class="form-label">이미지</label>
+                              <input class="form-control" type="file">
+                          </div>
+                  </div> <!-- .row end// -->
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+  </th:block>
+</html>

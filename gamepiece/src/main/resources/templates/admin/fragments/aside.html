@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<aside class="navbar-aside" id="offcanvas_aside" th:fragment="asideFragment">
+	<div class="aside-top">
+		<a href="index.html" class="brand-wrap"> 
+			<img th:src="@{/manager/assets/imgs/theme/GamePeace_logo.png}" class="logo" alt="Nest Dashboard" />
+		</a>
+		<div>
+			<button class="btn btn-icon btn-aside-minimize">
+				<i class="text-muted material-icons md-menu_open"></i>
+			</button>
+		</div>
+	</div>
+	<nav>
+		<ul class="menu-aside">
+			<li class="menu-item active">
+				<a class="menu-link" href="index.html"> 
+					<i class="icon material-icons md-home"></i> 
+					<span class="text">대시보드</span>
+				</a>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-person"></i> 
+					<span class="text">회원관리</span>
+				</a>
+				<div class="submenu">
+					<a th:href="@{/admin/user/allUserInfo}">회원목록</a> 
+					<a th:href="@{/admin/user/removeUserInfo}">탈퇴 회원목록</a>
+					<a th:href="@{/admin/user/dormancyUserInfo}">휴면 회원목록</a>
+					<a th:href="@{/admin/user/userLoginlog}">회원 로그인 기록 조회</a>
+				</div>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+						<i class="icon material-icons md-play_circle_outline"></i> 
+						<span class="text">게임 관리</span>
+				</a>
+				<div class="submenu">
+					<a th:href="@{/admin/game/gameList}">게임 목록</a> 
+					<a href="page-categories.html">카테고리</a>
+				</div>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-shopping_cart"></i> 
+					<span class="text">포인트샵 관리</span>
+				</a>
+				<div class="submenu">
+					<a th:href="@{/point/List}">포인트샵 목록</a>
+				</div>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-comment"></i> 
+					<span class="text">게시판 관리</span>
+				</a>
+				<div class="submenu">
+					<a href="page-allboards-list.html">게시판 목록</a> 
+					<a href="page-inquiryboards-list.html">문의게시글 목록</a> 
+					<a href="page-reportboards-list.html">신고게시글 목록</a>
+				</div>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-post_add"></i> 
+					<span class="text">이벤트관리</span>
+				</a>
+				<div class="submenu">
+					<a th:href="@{/admin/event/eventList}">이벤트 목록</a>
+					<a th:href="@{/admin/event/eventWinnerList}">이벤트 당첨자 목록</a>
+				</div>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-post_add"></i> 
+					<span class="text">대회일정 관리</span>
+				</a>
+				<div class="submenu">
+					<a href="page-tournament-list.html">대회일정 목록</a>
+				</div>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-monetization_on"></i> 
+					<span class="text">거래</span>
+				</a>
+				<div class="submenu">
+					<a href="page-transactions-1.html">거래 목록</a> 
+					<a href="page-transactions-2.html">거래 상세</a>
+				</div>
+			</li>
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-person"></i> 
+					<span class="text">계정</span>
+				</a>
+				<div class="submenu">
+					<a href="page-account-login.html">사용자 로그인</a> 
+					<a href="page-account-register.html">사용자 등록</a> 
+					<a href="page-error-404.html">Error 404</a>
+				</div>
+			</li>
+			<li class="menu-item">
+				<a class="menu-link" href="page-reviews.html"> 
+					<i class="icon material-icons md-comment"></i> 
+					<span class="text">리뷰</span>
+				</a>
+			</li>
+			<li class="menu-item">
+				<a class="menu-link" href="page-brands.html"> 
+					<i class="icon material-icons md-stars"></i>
+					<span class="text">Brands</span>
+				</a>
+			</li>
+			<li class="menu-item">
+				<a class="menu-link" disabled href="#">
+					<i class="icon material-icons md-pie_chart"></i> 
+					<span class="text">통계</span>
+				</a>
+			</li>
+		</ul>
+		<hr />
+		<ul class="menu-aside">
+			<li class="menu-item has-submenu">
+				<a class="menu-link" href="#">
+					<i class="icon material-icons md-settings"></i> 
+					<span class="text">설정</span>
+				</a>
+				<div class="submenu">
+					<a href="page-settings-1.html">설정 sample 1</a> 
+					<a href="page-settings-2.html">설정 sample 2</a>
+				</div>
+			</li>
+			<li class="menu-item">
+				<a class="menu-link" href="page-blank.html"> 
+					<i class="icon material-icons md-local_offer"></i> 
+					<span class="text">Starter page </span>
+				</a>
+			</li>
+		</ul>
+		<br /> <br />
+	</nav>
+</aside>
+</html>

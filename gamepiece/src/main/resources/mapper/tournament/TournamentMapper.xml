@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- mapper DTD 선언 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- SQL Mapping -->
+<mapper namespace="gamepiece.admin.tournament.mapper.TournamentMapper">
+	<resultMap type="gamepiece.admin.tournament.domain.Tournament" id="tournamentResultList">
+		<result column="tnm_cd"		property="tournamentCode"/>
+		<result column="gm_cd"		property="gameCode"/>
+		<result column="gm_nm"		property="gameName"/>
+		<result column="tnm_nm"		property="tournamentName"/>
+		<result column="tnm_start_ymd"		property="tournamentStartDate"/>
+		<result column="tnm_end_ymd"		property="tournamentEndDate"/>
+	</resultMap>
+
+	<select id="getTournamentList" resultMap="tournamentResultList">
+		SELECT
+			tn.tnm_cd,
+			g.gm_cd,
+			g.gm_nm,
+			tn.tnm_nm,
+			tn.tnm_start_ymd,
+			tn.tnm_end_ymd
+		FROM
+			tournament tn
+			LEFT JOIN games g
+			ON tn.gm_cd = g.gm_cd;
+	</select>
+	
+	<select id="getGameList" resultMap="tournamentResultList">
+		SELECT
+			gm_cd,
+			gm_nm
+		FROM
+			games
+		WHERE
+			gm_cd IN ("gm_01","gm_04","gm_05");
+	</select>
+</mapper>

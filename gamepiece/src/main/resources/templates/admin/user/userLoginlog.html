@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+		<div class="content-header">
+			<div>
+				<h2 class="content-title">회원 로그인 기록 조회</h2>
+			</div>
+		</div>
+	</th:block>
+	
+	<th:block layout:fragment="contents-body">
+		<div class="card">
+		    <div class="card-body">
+		        <div class="row">
+		            <div class="user-list">
+		                <header class="border-bottom mb-4 pb-4">
+		                    <div class="row">
+		                        <div class="col-lg-5 col-6 me-auto">
+		                            <input type="text" placeholder="Search..." class="form-control" />
+		                        </div>
+		                      
+		                    </div>
+		                </header>
+		                <!-- card-header end// -->
+		               <div class="table-responsive">
+		                   <table class="table table-hover">
+		                       <thead>
+		                           <tr>
+		                               <th>로그인 번호</th>
+		                               <th>아이디</th>
+		                               <th>권한</th>
+		                               <th>로그인 일시</th>
+		                           </tr>
+		                       </thead>
+		                       <tbody>
+		                           <tr>
+		                               <td><b>login_01</b></td>
+		                               <td>id01</td>
+		                               <td>관리자</td>
+		                               <td>2024-12-14 18:00:00</td>
+		                           </tr>
+		                           
+		                       </tbody>
+		                   </table>
+		               </div>
+		               <!-- table-responsive.// -->
+		           </div>
+		           <!-- col end// -->
+		           
+		           <!-- col end// -->
+		       </div>
+		       <!-- row end// -->
+		   </div>
+		   <!-- card-body // -->
+		</div>
+		<!-- card end// -->
+		<div class="pagination-area mt-30 mb-50">
+		    <nav aria-label="Page navigation example">
+		        <ul class="pagination justify-content-start">
+		            <li class="page-item active"><a class="page-link" href="#">01</a></li>
+		            <li class="page-item"><a class="page-link" href="#">02</a></li>
+		            <li class="page-item"><a class="page-link" href="#">03</a></li>
+		            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+		            <li class="page-item"><a class="page-link" href="#">16</a></li>
+		            <li class="page-item">
+		                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+		            </li>
+		        </ul>
+		    </nav>
+		</div>
+		</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    		
+    	</script>
+    </th:block>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title">대시보드</h2>
+              <p>귀하의 비즈니스에 대한 전체 데이터가 여기에 있습니다.</p>
+          </div>
+      </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   		<div class="row">
+   			<div class="col">
+   				<div class="h5">인덱스화면</div>
+   			</div>
+   		</div>
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    		
+    	</script>
+    </th:block>
+</html>
