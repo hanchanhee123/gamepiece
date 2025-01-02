@@ -23,6 +23,7 @@
 		<result column="inactive_days" property="inactiveDays"/>
 	</resultMap>
 
+	<!-- 전체 회원정보 조회 -->
 	<select id="getAllUserInfo" parameterType="string" resultMap="userResultMap">
 		SELECT
 			*
@@ -32,6 +33,7 @@
 			whdwl_ymd IS NULL;
 	</select>
 	
+	<!-- 회원 상세정보 조회 -->
 	<select id="getUserInfo" parameterType="string" resultMap="userResultMap">
 		SELECT
 			*
@@ -42,6 +44,42 @@
 			id = #{id};
 	</select>
 	
+	<!-- 회원 상세정보 수정 -->
+	<update id="modifyUserInfo" parameterType="User">
+		UPDATE user
+		<set>
+		<!-- <trim prefix="SET" suffixOverrides=","> -->
+			<if test="authrtCd != null and authrtCd != ''">
+				authrt_cd = #{authrtCd},
+			</if>
+			<if test="userPswd != null and userPswd != ''">
+				user_pw = #{userPswd},
+			</if>
+			<if test="userNm != null and userNm != ''">
+				user_nm = #{userNm},
+			</if>
+			<if test="userGender != null and userGender != ''">
+				user_gender = #{userGender},
+			</if>
+			<if test="userEmlAddr != null and userEmlAddr != ''">
+				user_eml_addr = #{userEmlAddr},
+			</if>
+			<if test="userBrdt != null and userBrdt > 0">
+				user_brdt = #{userBrdt},
+			</if>
+			<if test="userTelno != null and userTelno != ''">
+				user_telno = #{userTelno},
+			</if>
+			<if test="userNn != null and userNn != ''">
+				user_nn = #{userNn}
+			</if>
+		<!-- </trim> -->
+		</set>
+		WHERE
+			id = #{id};
+	</update>
+	
+	<!-- 탈퇴 회원정보 조회 -->
 	<select id="getRemoveUserInfo" parameterType="string" resultMap="userResultMap">
 		SELECT
 			*
@@ -51,19 +89,7 @@
 			whdwl_ymd IS NOT NULL;
 	</select>
 	
-	<select id="getUserLoginLog" parameterType="string" resultMap="userResultMap">
-		SELECT
-			ull.login_no,
-			u.id,
-			ar.authrt_nm,
-			ull.lgn_dt
-		FROM
-			user u INNER JOIN user_login_log ull
-			ON u.id = ull.id
-			INNER JOIN authrt ar
-			ON u.authrt_cd = ar.authrt_cd;
-	</select>
-	
+	<!-- 휴면 회원정보 조회 -->
 	<select id="getDormancyUserInfo" parameterType="string" resultMap="userResultMap">
 		SELECT
 		    u.*,
@@ -80,4 +106,26 @@
 		    inactive_days > 365;
 	</select>
 
+	<!-- 회원 로그인내역 조회 -->
+	<select id="getUserLoginLog" parameterType="string" resultMap="userResultMap">
+		SELECT
+			ull.login_no,
+			u.id,
+			ar.authrt_nm,
+			ull.lgn_dt
+		FROM
+			user u INNER JOIN user_login_log ull
+			ON u.id = ull.id
+			INNER JOIN authrt ar
+			ON u.authrt_cd = ar.authrt_cd;
+	</select>
+	
+	<!-- 회원 권한정보 조회 -->
+	<select id="getAuthrtInfo" parameterType="string" resultMap="userResultMap">
+		SELECT
+			authrt_cd,
+			authrt_nm
+		FROM
+			authrt;
+	</select>
 </mapper>
