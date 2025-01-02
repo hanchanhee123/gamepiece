@@ -3,8 +3,10 @@ package gamepiece.admin.tournament.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import gamepiece.admin.tournament.domain.Tournament;
 import gamepiece.admin.tournament.service.TournamentService;
 
 @Controller
@@ -32,5 +34,12 @@ public class TournamentController {
 		model.addAttribute("gameList", tournamentService.getGameList());
 		
 		return "admin/tournament/addTournament";
+	}
+	
+	@PostMapping("/addTournament")
+	public String tournamentAdd(Tournament tournamentInfo, String tournamentStartDateStr, String tournamentEndDateStr) {
+		tournamentInfo = tournamentService.getTournamentInfo(tournamentInfo, tournamentStartDateStr, tournamentEndDateStr);
+		tournamentService.addTournament(tournamentInfo);
+		return "redirect:/admin/tournament/tournamentList";
 	}
 }

@@ -2,21 +2,76 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gamepiece.admin.game.mapper.GameListMapper">
 	<resultMap type="gamepiece.admin.game.domain.Game" id="gameList">
+		<id 	column="gm_cd" property="gameCode"></id>
 		<result column="gm_nm" property="gameName"></result>
-		<result column="price" property="gamePrice"></result>
-		<result column="gerne" property="gameGerne"></result>
-		<result column="p_nm" property="gamePlatform"></result>
+		<result column="p_cd" property="platformCode"></result>
+		<result column="p_nm" property="platformName"></result>
+		<result column="developer" property="developer"></result>
+		<result column="gm_enrollment_ymd" property="gameEnrollmentYmd"></result>
+		<result column="detail_id" property="detailId"></result>
+		<result column="img_id" property="imgId"></result>
+		<result column="video_id" property="videoId"></result>
+		<result column="description" property="description"></result>
+		<result column="price" property="price"></result>
+		<result column="genre" property="genre"></result>
+		<result column="review_count" property="reviewCount"></result>
+		<result column="review_avg" property="reviewAvg"></result>
+		<result column="summation" property="summation"></result>
+		<result column="admin_id" property="adminId"></result>
+		<result column="reg_ymd" property="regYmd"></result>
 	</resultMap>
 	<select id="getGameList" resultMap="gameList">
 		SELECT
+			g.gm_cd,
 			g.gm_nm,
-			gd.price,
+			g.p_cd,
+			p.p_nm,
+			g.developer,
+			g.gm_enrollment_ymd,
+			gd.detail_id,
 			gd.img_id,
-			p.p_nm
+			gd.video_id,
+			gd.description,
+			gd.price,
+			gd.genre,
+			gd.review_count,
+			gd.review_avg,
+			gd.summation,
+			gd.admin_id,
+			gd.reg_ymd
 		FROM
 			games g INNER JOIN game_detail gd
 			ON g.gm_cd = gd.gm_cd
 			INNER JOIN platform p
 			ON g.p_cd = p.p_cd;
+	</select>
+	<select id="getGameInfoByCode" parameterType="String" resultMap="gameList">
+		SELECT
+			g.gm_cd,
+			g.gm_nm,
+			g.p_cd,
+			p.p_nm,
+			g.developer,
+			g.gm_enrollment_ymd,
+			gd.detail_id,
+			gd.img_id,
+			gd.video_id,
+			gd.`description`,
+			gd.price,
+			gd.genre,
+			gd.review_count,
+			gd.review_avg,
+			gd.summation,
+			gd.admin_id,
+			gd.reg_ymd
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+			INNER JOIN platform p
+			ON g.p_cd = p.p_cd
+		WHERE
+			g.gm_cd = #{gameCode};
+	
+	
 	</select>
 </mapper>

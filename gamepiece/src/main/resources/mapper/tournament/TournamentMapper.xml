@@ -3,15 +3,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <!-- SQL Mapping -->
 <mapper namespace="gamepiece.admin.tournament.mapper.TournamentMapper">
-	<resultMap type="gamepiece.admin.tournament.domain.Tournament" id="tournamentResultList">
-		<result column="tnm_cd"		property="tournamentCode"/>
+	<resultMap type="Tournament" id="tournamentResultList">
+		<id column="tnm_cd"		property="tournamentCode"/>
 		<result column="gm_cd"		property="gameCode"/>
 		<result column="gm_nm"		property="gameName"/>
 		<result column="tnm_nm"		property="tournamentName"/>
 		<result column="tnm_start_ymd"		property="tournamentStartDate"/>
 		<result column="tnm_end_ymd"		property="tournamentEndDate"/>
+		<result column="tnm_addr"		property="tournamentAddr"/>
+		<result column="admin_id"		property="adminId"/>
 	</resultMap>
 
 	<select id="getTournamentList" resultMap="tournamentResultList">
@@ -37,4 +40,29 @@
 		WHERE
 			gm_cd IN ("gm_01","gm_04","gm_05");
 	</select>
+	
+	<insert id="addTournament" parameterType="Tournament">
+		<![CDATA[
+		INSERT INTO tournament
+		(
+			tnm_cd, 
+			gm_cd, 
+			tnm_nm, 
+			tnm_start_ymd, 
+			tnm_end_ymd, 
+			tnm_addr, 
+			admin_id, 
+			reg_ymd
+		) VALUES (
+			(SELECT CONCAT('tnm_',LPAD(IFNULL(MAX(SUBSTRING(t.tnm_cd,5)+1),0),IF(LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))),'0')) FROM tournament t), 
+			#{gameCode}, 
+			#{tournamentName}, 
+			#{tournamentStartDate}, 
+			#{tournamentEndDate}, 
+			#{tournamentAddr}, 
+			#{adminId}, 
+			CURDATE()
+		);
+		]]>
+	</insert>
 </mapper>
