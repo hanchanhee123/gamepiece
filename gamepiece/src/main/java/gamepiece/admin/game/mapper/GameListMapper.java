@@ -10,4 +10,6 @@ import gamepiece.admin.game.domain.Game;
 public interface GameListMapper{
 
 	List<Game> getGameList();
+	
+	Game getGameInfoByCode(String gameCode);
 }
