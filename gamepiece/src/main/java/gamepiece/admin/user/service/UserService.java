@@ -27,5 +27,8 @@ public interface UserService {
 
 	// 회원 권한정보 조회
 	List<Map<String, Object>> getAuthrtInfo();
+
+	// 회원 탈퇴
+	public void removeUser(String id);
 	
 }

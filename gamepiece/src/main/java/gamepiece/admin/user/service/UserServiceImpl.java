@@ -56,5 +56,11 @@ public class UserServiceImpl implements UserService {
 		
 		return userMapper.getAuthrtInfo();
 	}
+
+	@Override
+	public void removeUser(String id) {
+		
+		userMapper.removeUser(id);
+	}
 	
 }

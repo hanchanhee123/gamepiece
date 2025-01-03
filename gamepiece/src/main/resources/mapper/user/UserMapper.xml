@@ -127,4 +127,15 @@
 		FROM
 			authrt;
 	</select>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="removeUser" parameterType="User">
+		UPDATE
+			user
+		SET
+			whdwl_ymd = CURDATE(),
+			isDelete = 'delete'
+		WHERE
+			id = #{id};
+	</update>
 </mapper>
