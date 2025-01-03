@@ -1,6 +1,6 @@
 package gamepiece.admin.point.domain;
 
-import java.util.Date;
+
 
 import lombok.Data;
 
@@ -15,6 +15,6 @@ public class Point {
 	private String itemImgurl;
 	private int itemPrice;
 	private String adminId;
-	private Date regYmd;
+	private String regYmd;
 	
 }

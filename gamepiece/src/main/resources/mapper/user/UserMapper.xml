@@ -48,7 +48,6 @@
 	<update id="modifyUserInfo" parameterType="User">
 		UPDATE user
 		<set>
-		<!-- <trim prefix="SET" suffixOverrides=","> -->
 			<if test="authrtCd != null and authrtCd != ''">
 				authrt_cd = #{authrtCd},
 			</if>
@@ -64,7 +63,7 @@
 			<if test="userEmlAddr != null and userEmlAddr != ''">
 				user_eml_addr = #{userEmlAddr},
 			</if>
-			<if test="userBrdt != null and userBrdt > 0">
+			<if test="userBrdt != null and userBrdt != ''">
 				user_brdt = #{userBrdt},
 			</if>
 			<if test="userTelno != null and userTelno != ''">

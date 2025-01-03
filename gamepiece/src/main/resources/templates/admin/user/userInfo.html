@@ -27,18 +27,17 @@
 									        </div>
 									    </td>
 									    <td>
-									    	<input type="text" th:value="*{id}" id="id" name="id" placeholder="Type here" class="form-control" disabled>
+									    	<input type="text" th:value="*{id}" id="id" name="id" placeholder="Type here" class="form-control" readonly>
 									    </td>
 									</tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="authrtCd">권한명</label>
+								                <label class="info" for="authrtNm">권한명</label>
 								            </div>
 								        </td>
 								        <td>
-							                <!-- <input type="text" th:value="*{authrtCd}" id="authrtCd" placeholder="Type here" class="form-control"/> -->
-							                <select name="authrtCd" id="authrtCd" class="form-control">
+							                <select name="authrtNm" id="authrtNm" class="form-control">
 							                	<option value="">권한을 선택해주세요</option>
 							                	<th:block th:if="${authrtInfo}"
 			                                              th:each="authrtInfo : ${authrtInfo}">
@@ -74,7 +73,11 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userGender == 'M' ? '남성' : '여성'}" id="userGender" name="userGender" placeholder="Type here" class="form-control">
+								        	<select name="userGender" id="userGender" class="form-control">
+											   	<option value="">성별을 선택해주세요</option>
+											    <option value="M" th:selected="*{userGender == 'M'}">남성</option>
+											    <option value="F" th:selected="*{userGender == 'F'}">여성</option>
+											</select>
 								        </td>
 								    </tr>
 								    <tr>
@@ -94,7 +97,7 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{userBrdt}" id="userBrdt" name="userBrdt" placeholder="Type here" class="form-control">
+								        	<input type="date" th:value="*{userBrdt}" id="userBrdt" name="userBrdt" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
@@ -124,14 +127,14 @@
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{joinYmd}" id="joinYmd" name="joinYmd" placeholder="Type here" class="form-control" disabled>
+								        	<input type="text" th:value="*{joinYmd}" id="joinYmd" name="joinYmd" placeholder="Type here" class="form-control" readonly>
 								        </td>
 								    </tr>
 								</tbody>
 					        </table>
 					    </div>
 					</div>
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<table class="table" th:object="${userAvatar}">
 							<tr>
 								<td>
@@ -140,14 +143,16 @@
 									</div>
 								</td>
 								<td>
-									<!-- <img th:src="*{imgUrl}" id="avatar"> -->
+									<img th:src="*{imgUrl}" id="avatar">
 									<span class="icon icon-lg bg-primary-light">
 									    <i class="text-primary material-icons md-person"></i>
 									</span>
 								</td>
 							</tr>
 						</table>
-						<button type="submit" class="btn btn-primary" id="modifyUserBtn" th:href="@{/admin/user/allUserInfo}">수정</button>
+					</div> -->
+					<div class="col-md-4">
+						<button type="submit" class="btn btn-primary" id="modifyUserBtn">수정</button>
 					</div>
 				</div>
 			</div>

@@ -7,13 +7,11 @@
 	<th:block layout:fragment="contents-header"> 	
          <div class="content-header">
               <h2 class="content-title">아이템 추가</h2>
-                 <div>
-                     <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">임시 저장</button>
-                     <button class="btn btn-md rounded font-sm hover-up" type="button">아이템 배포</button>
-                 </div>
+                 
           </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
+   	<form id="addItemForm" th:action="@{/admin/point/write}" method="post">
 	   	<div class="row">
                 <div class="col-lg-6">
                     <div class="card mb-4">
@@ -25,7 +23,8 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">아이템명</label>
-                                        <input type="text" placeholder="Type here" class="form-control">
+                                        <input type="text" placeholder="아이템명을 입력해 주세요" 
+                                        	   class="form-control" id="itemName" name="itemName">
                                     </div>
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
@@ -37,7 +36,8 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">제품 가격</label>
-                                        <input type="text" placeholder="$00.0" class="form-control">
+                                        <input type="text" placeholder="Point" 
+                                        	   id="itemPrice" name="itemPrice" class="form-control">
                                     </div>
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
@@ -49,8 +49,8 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="cateList : ${cateList}">
-                                            <input class="form-check-input" checked="" name="mycategory" type="radio">
                                             <span class="form-check-label" th:text="${cateList.cateName}"></span>
+                                            <input class="form-check-input" checked="" id="itemCate" name="itemCate" type="radio">
                                         </label>
                                     </div>
                                 </div> <!-- col.// -->
@@ -63,21 +63,40 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">이미지</label>
-                                        <input class="form-control" type="file">
+                                        <input class="form-control" type="file"
+                                        	   id="itemImgurl" name="itemImgurl">
                                     </div>
                                 </div> <!-- col.// -->
+                                <div>
+			                     <button type="button" id="addItemBtn" class="btn btn-light rounded font-sm mr-5 text-body hover-up">아이템 배포</button>
+			                 </div>
                             </div> <!-- .row end// -->
                         </div>
                     </div>
                 </div>
             </div>
+        </form>
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	<script>
-    		
+    	$('#addItemBtn').click(function(){
+			let isSubmit = true;
+			const $formControl = $('#addItemForm').find('input');
+			$formControl.each((idx, elem)=>{
+				const value = $(elem).val();
+				if(!value){
+					isSubmit = false;
+					alert('필수 입력 항목입니다.');
+					$(elem).focus();
+					return false;
+				}
+			});
+			
+			if(isSubmit) $('#addItemForm').submit();
+		})
     	</script>
     </th:block>
 </html>
