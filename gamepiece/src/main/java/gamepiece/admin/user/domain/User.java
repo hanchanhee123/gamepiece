@@ -1,6 +1,5 @@
 package gamepiece.admin.user.domain;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Data;
@@ -18,8 +17,8 @@ public class User {
 	private String userBrdt;
 	private String userTelno;
 	private String userNn;
-	private LocalDate joinYmd;
-	private LocalDate whdwlYmd;
+	private String joinYmd;
+	private String whdwlYmd;
 	private String loginNo;
 	private LocalDateTime lgnDt;
 	private int inactiveDays;	// 미접일수

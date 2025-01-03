@@ -27,5 +27,5 @@ public interface UserService {
 
 	// 회원 권한정보 조회
 	List<Map<String, Object>> getAuthrtInfo();
-
+	
 }

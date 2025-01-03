@@ -36,7 +36,7 @@ public class UserController {
 	
 	// 회원 상세정보 조회
 	@GetMapping("/userInfo")
-	public String getUserInfo(@RequestParam String id, Model model) {
+	public String getUserInfo(@RequestParam(name="id") String id, Model model) {
 		
 		User userInfo = userService.getUserInfo(id);
 		var authrtInfo = userService.getAuthrtInfo();
