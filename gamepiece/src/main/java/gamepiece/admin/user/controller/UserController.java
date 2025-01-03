@@ -44,7 +44,6 @@ public class UserController {
 		model.addAttribute("userInfo", userInfo);
 		model.addAttribute("authrtInfo", authrtInfo);
 		System.out.println("회원 상세정보 조회 : " + userInfo);
-		System.out.println("회원 권한 : " + authrtInfo);
 		
 		return "admin/user/userInfo";
 	}
@@ -93,5 +92,13 @@ public class UserController {
 		System.out.println("회원 로그인내역 조회 : " + userLoginlog);
 		
 		return "admin/user/userLoginlog";
+	}
+	
+	@GetMapping("/removeUser")
+	public String removeUser(String id, Model model) {
+		
+		userService.removeUser(id);
+		
+		return "redirect:/admin/user/allUserInfo";
 	}
 }
