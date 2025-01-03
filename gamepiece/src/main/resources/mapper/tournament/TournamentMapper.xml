@@ -31,6 +31,22 @@
 			ON tn.gm_cd = g.gm_cd;
 	</select>
 	
+	<select id="getTournament" resultMap="tournamentResultList">
+		SELECT
+			tn.tnm_cd,
+			g.gm_cd,
+			g.gm_nm,
+			tn.tnm_nm,
+			tn.tnm_start_ymd,
+			tn.tnm_end_ymd
+		FROM
+			tournament tn
+			LEFT JOIN games g
+			ON tn.gm_cd = g.gm_cd
+		WHERE
+			tn.tnm_cd = #{tournamentCode};
+	</select>
+	
 	<select id="getGameList" resultMap="tournamentResultList">
 		SELECT
 			gm_cd,
@@ -42,7 +58,7 @@
 	</select>
 	
 	<insert id="addTournament" parameterType="Tournament">
-		<![CDATA[
+		
 		INSERT INTO tournament
 		(
 			tnm_cd, 
@@ -54,7 +70,9 @@
 			admin_id, 
 			reg_ymd
 		) VALUES (
-			(SELECT CONCAT('tnm_',LPAD(IFNULL(MAX(SUBSTRING(t.tnm_cd,5)+1),0),IF(LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))),'0')) FROM tournament t), 
+			(SELECT CONCAT('tnm_',LPAD(IFNULL(MAX(SUBSTRING(t.tnm_cd,5)+1),0),
+				<![CDATA[IF(LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))),'0'))]]> 
+			FROM tournament t), 
 			#{gameCode}, 
 			#{tournamentName}, 
 			#{tournamentStartDate}, 
@@ -63,6 +81,27 @@
 			#{adminId}, 
 			CURDATE()
 		);
-		]]>
 	</insert>
+	
+	<update id="modifyTournament" parameterType="Tournament">
+	UPDATE
+		tournament
+	<set>
+		gm_cd=#{gameCode},
+		<if test="tournamentName != null and tournamentName != ''">tnm_nm=#{tournamentName},</if>
+		<if test="tournamentStartDate != null and tournamentStartDate != ''">tnm_start_ymd=#{tournamentStartDate},</if>
+		<if test="tournamentEndDate != null and tournamentEndDate != ''">tnm_end_ymd=#{tournamentEndDate},</if>
+		<if test="tournamentAddr != null and tournamentAddr != ''">tnm_addr=#{tournamentAddr},</if>
+		<if test="adminId != null and adminId != ''">admin_id=#{adminId}</if>
+	</set>
+	WHERE tnm_cd = #{tournamentCode};
+	</update>
+	
+	<delete id="removeTournament" parameterType="Tournament">
+		DELETE
+		FROM
+			tournament
+		WHERE
+			tnm_cd = #{tournamentCode};
+	</delete>
 </mapper>
