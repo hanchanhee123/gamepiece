@@ -12,5 +12,11 @@ public interface TournamentMapper {
 
 	public List<Tournament> getGameList(); 
 	
+	public Tournament getTournament(String tournamentCode);
+	
 	public void addTournament(Tournament tournamentInfo);
+	
+	public void modifyTournament(Tournament tournament);
+	
+	public void removeTournament(Tournament tournament);
 }

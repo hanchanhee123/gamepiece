@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import gamepiece.admin.tournament.domain.Tournament;
 import gamepiece.admin.tournament.service.TournamentService;
@@ -37,9 +38,25 @@ public class TournamentController {
 	}
 	
 	@PostMapping("/addTournament")
-	public String tournamentAdd(Tournament tournamentInfo, String tournamentStartDateStr, String tournamentEndDateStr) {
-		tournamentInfo = tournamentService.getTournamentInfo(tournamentInfo, tournamentStartDateStr, tournamentEndDateStr);
+	public String tournamentAdd(Tournament tournamentInfo) {
 		tournamentService.addTournament(tournamentInfo);
 		return "redirect:/admin/tournament/tournamentList";
+	}
+	
+	@GetMapping("/modifyTournament")
+	public String modifyTournament(@RequestParam(name="tournament") String tournamentCode,
+									Model model) {
+		model.addAttribute("title", "대회수정");
+		model.addAttribute("gameList", tournamentService.getGameList());
+		model.addAttribute("tournamentInfo", tournamentService.getTournament(tournamentCode));
+		
+		return "admin/tournament/modifyTournament";
+	}
+	
+	@PostMapping("/modifyTournament")
+	public String tournamentModify(Tournament tournament) {
+		System.out.println(tournament);
+		tournamentService.modifyTournament(tournament);
+		return"redirect:/admin/tournament/tournamentList";
 	}
 }

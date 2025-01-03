@@ -32,28 +32,20 @@ public class TournamentServiceImpl implements TournamentService {
 	}
 
 	@Override
-	public Tournament getTournamentInfo(Tournament tournamentInfo, String tournamentStartDateStr,
-			String tournamentEndDateStr) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		
-		try {
-			Date startDate = format.parse(tournamentStartDateStr);
-			Date endDate = format.parse(tournamentEndDateStr);
-			
-			tournamentInfo.setTournamentStartDate(startDate);
-			tournamentInfo.setTournamentEndDate(endDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		return tournamentInfo;
-	}
-
-	@Override
 	public void addTournament(Tournament tournamentInfo) {
 		tournamentInfo.setTournamentAddr("전주");
 		tournamentInfo.setAdminId("id01");
 		tournamentMapper.addTournament(tournamentInfo);
+	}
+
+	@Override
+	public Tournament getTournament(String tournamentCode) {
+		return tournamentMapper.getTournament(tournamentCode);
+	}
+
+	@Override
+	public void modifyTournament(Tournament tournament) {
+		tournamentMapper.modifyTournament(tournament);
 	}
 	
 }
