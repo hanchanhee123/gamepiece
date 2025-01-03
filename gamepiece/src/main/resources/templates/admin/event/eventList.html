@@ -47,7 +47,7 @@
       			<td th:text="${eventList.evStartYmd}"></td>
       			<td th:text="${eventList.evEndYmd}"></td>      			
       			<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 상세 </a></td> 			
-      			<td><a href="#" class="btn btn-sm font-sm btn-light rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-light rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
       		</tr>
       	</tbody>
       </table>

@@ -16,8 +16,8 @@ public class Event {
 	private String evCd;
 	private String evNm;
 	private String evContents;
-	private LocalDate evStartYmd;
-	private LocalDate evEndYmd;
+	private String evStartYmd;
+	private String evEndYmd;
 	private int evWinnersNum;
 	private String adminId;
 	private LocalDateTime regYmd;
