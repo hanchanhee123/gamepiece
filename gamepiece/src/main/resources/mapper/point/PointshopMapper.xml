@@ -91,9 +91,9 @@
 			admin_id,
 			reg_ymd
 		) VALUES (
-			(SELECT 
+			<![CDATA[(SELECT 
 				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,5)+1),0),
-				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,5)+1))),'0')) 
+				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,5)+1))),'0')) ]]>
 			FROM 
 				point_shop ps)
 			#{itemCate}, 

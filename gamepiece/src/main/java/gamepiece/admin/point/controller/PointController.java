@@ -90,5 +90,4 @@ public class PointController {
 		
 		return "admin/points/pointshopadd";
 	}
-
 }	
