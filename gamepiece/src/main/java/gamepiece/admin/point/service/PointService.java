@@ -15,7 +15,8 @@ public interface PointService {
 	// 아이템 카테고리 조회
 	List<PointCategories> findCate();
 	
-	void addPointShop(Point point);
+	void addItem(Point point);
 	
-	void modifyItem(String itemName);
+	void modifyItem(Point point);
+	
 }

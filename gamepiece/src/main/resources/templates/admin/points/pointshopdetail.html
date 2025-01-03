@@ -7,13 +7,11 @@
 	<th:block layout:fragment="contents-header"> 	
          <div class="content-header">
               <h2 class="content-title">아이템 상세</h2>
-                  <div>
-                      <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">임시 저장</button>
-                      <button class="btn btn-md rounded font-sm hover-up">수정</button>
-                  </div>
+                  
           </div>
    	</th:block>
-   	<th:block layout:fragment="contents-body">
+   	<th:block layout:fragment="contents-body" th:object="${itemInfo}">
+   		<form id="modifyPointForm" th:action="@{/admin/point/modify}" method="get">
 	   	<div class="row">
                 <div class="col-lg-6">
                     <div class="card mb-4">
@@ -25,13 +23,8 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">아이템명</label>
-                                        <input type="text" th:value="${itemInfo.itemName}" class="form-control">
+                                        <input type="text" name="itemName" th:value="${itemInfo.itemName}" class="form-control">
                                     </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">아이템 설명</label>
-                                        <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
-                                    </div>
-                                 
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
                             <hr class="mb-4 mt-0">
@@ -42,7 +35,7 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">아이템 가격</label>
-                                        <input type="text" th:value="${itemInfo.itemPrice}" class="form-control">
+                                        <input type="text" name="itemPrice" th:value="${itemInfo.itemPrice}" class="form-control">
                                     </div>
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
@@ -54,8 +47,8 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="l : ${cateList}">
-                                            <input class="form-check-input" th:checked="${l.cateCode} == ${itemInfo.itemCate}" name="mycategory" type="radio" th:value="${itemInfo.itemCate}">
-                                            <span class="form-check-label" th:text="${l.cateName}">이모티콘</span>
+                                            <input class="form-check-input" name="cateCode" type="radio" th:value="${l.cateCode}">
+                                            <span class="form-check-label" name="cateName" th:text="${l.cateName}">이모티콘</span>
                                         </label>
                                     </div>
                                 </div> <!-- col.// -->
@@ -71,11 +64,15 @@
                                         <input class="form-control" type="file">
                                     </div>
                                 </div> <!-- col.// -->
+                                <div>
+			                      <button type="submit" id="modifyMemberBtn" class="btn btn-md rounded font-sm hover-up">수정</button>
+			                  </div>
                             </div> <!-- .row end// -->
                         </div>
                     </div>
                 </div>
             </div>
+         </form>
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>

@@ -61,27 +61,27 @@
 			<if test="itemCate != null and itemCate != ''">
 				ps_cate_cd =#{itemCate},
 			</if>
-			<if test="ps_nm != null and ps_nm != ''">
+			<if test="itemName != null and itemName != ''">
 				ps_nm=#{itemName},
 			</if>
 			<if test="itemImgurl != null and itemImgurl != ''">
 				img_url=#{itemImgurl},
 			</if>
-			<if test="itemPrice != null and itemPrice != ''">
+			<if test="itemPrice != null and itemPrice > 0">
 				ps_price=#{itemPrice},
 			</if>
 			<if test="adminId != null and adminId != ''">
 				admin_id=#{adminId},
 			</if>
-			<if test="regYmd != null and regYmd > 0">
+			<if test="regYmd != null and regYmd > ''">
 				reg_ymd=#{regYmd},
 			</if>
 		</trim>
 		WHERE 
-			ps_nm=#{itemName};
+			ps_nm = #{itemName};
 	</update>
 	
-	<!-- <insert id="addPointShop" parameterType="gamepiece.admin.point.domain.Point">
+	<insert id="addItem" parameterType="Point">
         INSERT INTO point_shop (
         	ps_cd, 
 			ps_cate_cd, 
@@ -103,8 +103,6 @@
 			#{admin_id},
 			CURDATE()
 		)
-    </insert> -->
-    
-	
+    </insert>
 
 </mapper>

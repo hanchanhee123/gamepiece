@@ -18,8 +18,8 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
-	public void modifyItem(String itemName) {
-		pointshopMapper.modifyItem(itemName);
+	public void modifyItem(Point point) {
+		pointshopMapper.modifyItem(point);
 	}
 	
 	@Override
@@ -38,8 +38,8 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
-	public void addPointShop(Point point) {
+	public void addItem(Point point) {
 		
-		pointshopMapper.addPointShop(point);
+		pointshopMapper.addItem(point);
 	}
 }

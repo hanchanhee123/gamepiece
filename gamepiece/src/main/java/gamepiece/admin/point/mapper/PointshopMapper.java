@@ -17,5 +17,7 @@ public interface PointshopMapper {
 	
 	void addPointShop(Point point);
 	
-	void modifyItem(String itemName);
+	int modifyItem(Point point);
+	
+	int addItem(Point point);
 }
