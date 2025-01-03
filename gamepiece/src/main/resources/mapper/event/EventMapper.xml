@@ -14,7 +14,8 @@
 		<result column="evp_no" 				property="evpNo" />
 		<result column="id" 					property="id" />
 		<result column="ev_participate_ymd" 	property="evParticipateYmd" />
-		<result column="ev_agreement" 			property="evAgreement" />
+		<result column="ev_winner_yn" 			property="evWinnerYn" />
+		<result column="ev_status" 				property="evStatus" />
 	</resultMap>
 
 
@@ -97,5 +98,26 @@
 		ev_cd=#{evCd};
 </select>
 
+<select  id="getEventListWithStatus" resultType="string">
+	SELECT 
+    CASE
+        <![CDATA[WHEN CURRENT_DATE < ev_start_ymd THEN '대기중']]>
+        WHEN CURRENT_DATE BETWEEN ev_start_ymd AND ev_end_ymd THEN '진행중'
+        ELSE '종료'
+       END AS ev_status
+    FROM events
+    WHERE
+    	ev_cd=#{evCd};
+</select>
 
+<select id="getEventWinner" parameterType="string" resultMap="eventResultMap">
+	SELECT
+		*
+	FROM
+		event_participations
+	WHERE
+		ev_cd=#{evCd}
+		AND
+		ev_winner_yn='Y';	
+</select>
 </mapper>

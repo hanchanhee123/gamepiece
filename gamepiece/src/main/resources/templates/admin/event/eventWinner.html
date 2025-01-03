@@ -26,11 +26,6 @@
                               <label class="form-label">이벤트명</label>
                               <div class="form-control" th:text="${eventDetail.evNm}">
                           </div>
-                          <div class="mb-4">
-                              <label class="form-label">이벤트 내용</label>
-                              <div class="form-control" th:text="${eventDetail.evContents}">
-                              </div>
-                          </div>
                       </div>
                   </div>
                   <hr class="mb-4 mt-0">
@@ -41,25 +36,12 @@
                       <div class="col-md-9" >
                           <div class="mb-4">
                               <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                                 <span th:each="eventParticipant :${eventParticipant}">
-                                	 <span style="padding:3px;" th:text="${eventParticipant.id}"> </span>
+                                 <span th:each="getEventWinner :${getEventWinner}">
+                                	 <span style="padding:3px;" th:text="${getEventWinner.id}"> </span>
                                 </span>
                           </div>
                       </div>
                   </div>
-                  
-                  <hr class="mb-4 mt-0">
-                  <div class="row">
-                      <div class="col-md-3">
-                          <h6>3. 첨부파일</h6>
-                      </div>
-                      <div class="col-md-9">
-                          <div class="mb-4" th:each="eventDetail :${eventDetail}">
-                              <label class="form-label">이미지</label>
-                              <div class="form-control" th:text="${eventDetail.evImg}"></div>
-                          </div>
-                  </div> <!-- .row end// -->
-              </div>
           </div>
       </div>
   </div>

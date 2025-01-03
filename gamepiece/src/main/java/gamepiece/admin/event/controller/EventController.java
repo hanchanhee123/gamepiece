@@ -28,8 +28,13 @@ public class EventController {
 			
 		List<Event> eventList = eventService.getEventList();
 		
+		eventList.forEach(list -> {
+			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
+		});
+		
 		model.addAttribute("title", "이벤트목록");
 		model.addAttribute("eventList", eventList);
+	
 		return "admin/event/eventList";
 	}
 	
@@ -39,14 +44,6 @@ public class EventController {
 		model.addAttribute("title", "이벤트목록 추가");
 		
 		return "admin/event/addEvent";
-	}
-	
-	@GetMapping("/removeEvent")
-	public String RemoveEvent(Model model) {
-		
-		model.addAttribute("title", "이벤트목록 삭제");
-		
-		return "admin/event/removeEvent";
 	}
 	
 	@GetMapping("/eventDetail")
@@ -61,39 +58,17 @@ public class EventController {
 		return "admin/event/eventDetail";
 	}
 	
-	@GetMapping("/eventWinnerList")
-	public String getWinnerList(Model model) {
+	@GetMapping("/eventWinner")
+	public String EventWinner(@RequestParam String evCd, Model model) {
 		
-		List<Event> eventList = eventService.getEventList();
+		List<Event> eventDetail = eventService.getEventDetail(evCd);
+		List<Event> getEventWinner = eventService.getEventWinner(evCd);
 		
-		model.addAttribute("title", "이벤트당첨자 목록");
-		model.addAttribute("eventList", eventList);
 		
-		return "admin/event/eventWinnerList";
-	}
-	
-	@GetMapping("/addEventWinner")
-	public String addWinner(Model model) {
-		
-		model.addAttribute("title", "이벤트당첨자 추가");
-		
-		return "admin/event/addEventWinner";
-	}
-
-	@GetMapping("/modifyEventWinner")
-	public String modifyWinner(Model model) {
-		
-		model.addAttribute("title", "이벤트당첨자 수정");
-		
-		return "admin/event/modifyEventWinner";
-	}
-
-	@GetMapping("/removeEventWinner")
-	public String removeWinner(Model model) {
-		
-		model.addAttribute("title", "이벤트당첨자 삭제");
-		
-		return "admin/event/removeEventWinner";
+		model.addAttribute("title", "이벤트 당첨자");
+		model.addAttribute("eventDetail", eventDetail);
+		model.addAttribute("getEventWinner", getEventWinner);
+		return "admin/event/eventWinner";
 	}
 	
 	@PostMapping("/write")
