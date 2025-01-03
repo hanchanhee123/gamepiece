@@ -74,18 +74,13 @@
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	<script>
-    		$addTournament = document.querySelector('#add-tournament');
-    		$formCheckInput = document.querySelectorAll('.form-check-input');
-    		
-    		$addTournament.addEventListener('click', function(){
-    			$tournamentForm = document.querySelector('#tournament-form');
-    			$tournamentForm.submit();
+    		$('#add-tournament').click(function(){
+    			$('#tournament-form').submit();
     		});
     		
-    		$formCheckInput.forEach(element => {
-    			element.addEventListener('click', function(){
-    				$gameName = document.querySelector('#game-name');
-    				$gameName.value = this.nextElementSibling.textContent;
+    		$('.form-check-input').each((idx, element) => {
+    			$(element).click(function(){
+    				$('#game-name').val($(this).next().text());
     			});
     		});
     	</script>

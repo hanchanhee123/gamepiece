@@ -15,13 +15,13 @@ public class User {
 	private String userNm;
 	private String userGender;
 	private String userEmlAddr;
-	private LocalDate userBrdt;
+	private String userBrdt;
 	private String userTelno;
 	private String userNn;
 	private LocalDate joinYmd;
 	private LocalDate whdwlYmd;
 	private String loginNo;
 	private LocalDateTime lgnDt;
-	private int inactiveDays;
+	private int inactiveDays;	// 미접일수
 	
 }

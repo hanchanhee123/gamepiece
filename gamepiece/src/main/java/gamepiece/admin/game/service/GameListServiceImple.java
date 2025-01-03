@@ -21,5 +21,10 @@ public class GameListServiceImple implements GameListService{
 		return gameListMapper.getGameList();
 	}
 	
+	@Override
+	public Game getGameInfoByGameCode(String gameCode) {
+		
+		return gameListMapper.getGameInfoByCode(gameCode);
+	}
 	
 }
