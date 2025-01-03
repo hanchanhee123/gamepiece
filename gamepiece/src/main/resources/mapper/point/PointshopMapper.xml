@@ -32,7 +32,9 @@
 			admin_id,
 			reg_ymd
 		FROM 
-			point_shop;
+			point_shop
+		WHERE
+			isDelete='active';
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">
@@ -46,7 +48,9 @@
 			cate_nm DESC;
 	</select>
 	
+	
 	<select id="getItemInfoByName" resultMap="pointshopResultMap" >
+		/* 특정 아이템 조회*/
 		SELECT
 			*
 		FROM
@@ -92,17 +96,25 @@
 			reg_ymd
 		) VALUES (
 			<![CDATA[(SELECT 
-				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,5)+1),0),
-				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,5)+1))),'0')) ]]>
+				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,4)+1),0),
+				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))),'0')) ]]>
 			FROM 
-				point_shop ps)
-			#{itemCate}, 
+				point_shop ps),
+			#{itemCate},
 			#{itemName},
 			#{itemImgurl},
 			#{itemPrice},
-			#{admin_id},
+			#{adminId},
 			CURDATE()
-		)
+		);
     </insert>
+    
+    <update id="removeItem" parameterType="Point">
+    	UPDATE point_shop
+		SET
+			isDelete='delete'
+		WHERE
+			ps_cd=#{ps_cd};
+    </update>
 
 </mapper>

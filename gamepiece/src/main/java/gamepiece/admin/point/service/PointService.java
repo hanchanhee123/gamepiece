@@ -19,4 +19,5 @@ public interface PointService {
 	
 	void modifyItem(Point point);
 	
+	void removeItem(String ps_cd);
 }

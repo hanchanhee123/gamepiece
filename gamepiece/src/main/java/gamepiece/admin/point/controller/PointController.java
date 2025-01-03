@@ -5,6 +5,7 @@ package gamepiece.admin.point.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +32,23 @@ public class PointController {
 		this.pointService = pointService;
 	}
 	
+	@GetMapping("/removeItem")
+	public String removeItem(String ps_cd, Model model) {
+		pointService.removeItem(ps_cd);
+		
+		model.addAttribute("pointList", pointService.findAll());
+		model.addAttribute("cateList", pointService.findCate());
+		
+		return "redirect:/admin/point/list";
+	}
 	
 	@GetMapping("/list")
-	public String pointListView(Model model) {
+	public String pointListView(String ps_cd,Model model) {
 		
 		model.addAttribute("title", "포인트샵 목록");
 		model.addAttribute("pointList", pointService.findAll());
 		model.addAttribute("cateList", pointService.findCate());
+		
 		
 		return "admin/points/pointshopList";
 	}
@@ -45,7 +56,7 @@ public class PointController {
 	@GetMapping("/modify")
 	public String modifyMember(Point point,
 							   RedirectAttributes reAttr) {
-		
+		System.out.println(point);
 		pointService.modifyItem(point);
 		
 		log.info("Point : {}", point);
@@ -77,7 +88,7 @@ public class PointController {
 		
 		pointService.addItem(point);
 		
-		return "redircet:/admin/point/list";
+		return "redirect:/admin/point/list";
 	}
 	
 	
