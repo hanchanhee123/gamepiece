@@ -1,8 +1,7 @@
 package gamepiece.admin.event.domain;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,16 +15,17 @@ public class Event {
 	private String evCd;
 	private String evNm;
 	private String evContents;
-	private LocalDate evStartYmd;
-	private LocalDate evEndYmd;
+	private String evStartYmd;
+	private String evEndYmd;
 	private int evWinnersNum;
 	private String adminId;
 	private LocalDateTime regYmd;
 	private String evImg;
 	private String evpNo;
 	private String id;
-	private LocalDateTime evParticipateYmd;
-	private String evAgreement;
+	private String evParticipateYmd;
+	private String evWinnerYn;
+	private String evStatus;
 
 }
 

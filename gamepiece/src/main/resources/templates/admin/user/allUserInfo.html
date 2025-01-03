@@ -38,6 +38,7 @@
 	                                      <th>회원닉네임</th>
 	                                      <th>가입일자</th>
 	                                      <th>수정</th>
+	                                      <th>탈퇴</th>
 	                                  </tr>
 	                              </thead>
 	                              <tbody>
@@ -52,10 +53,14 @@
 	                                      <td th:text="${allUserInfo.userNn}"></td>
 	                                      <td th:text="${allUserInfo.joinYmd}"></td>
 	                                      <td>
-	                                          <a th:href="@{/admin/user/UserInfo(id=${allUserInfo.id})}" class="btn btn-sm btn-light font-sm rounded">수정</a>
+	                                          <a th:href="@{/admin/user/userInfo(id=${allUserInfo.id})}" class="btn btn-sm btn-light font-sm rounded">수정</a>
+	                                      </td>
+	                                      <td>
+	                                          <a id="removeBtn" th:href="@{/admin/user/removeUser(id=${allUserInfo.id})}"
+	                                          onclick="return confirm('정말 삭제하시겠습니까?');"
+	                                          class="btn btn-sm btn-outline-danger font-sm rounded">탈퇴</a>
 	                                      </td>
 	                                  </tr>
-	                                  
 	                              </tbody>
 	                          </table>
 	                      </div>

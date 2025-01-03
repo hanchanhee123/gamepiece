@@ -33,7 +33,9 @@
       			<th>이벤트코드</th>
       			<th width="40%">이벤트명</th>
       			<th>이벤트시작날짜</th>
-      			<th>이벤트종료날짜</th>
+      			<th>이벤트종료날짜</th>      			
+      			<th>상태</th>      			
+      			<th>당첨자</th>
       			<th>상세</th>
       			<th>수정</th>      			
       			
@@ -45,9 +47,11 @@
       			<td th:text="${eventList.evCd}"></td>
       			<td th:text="${eventList.evNm}"></td>
       			<td th:text="${eventList.evStartYmd}"></td>
-      			<td th:text="${eventList.evEndYmd}"></td>      			
+      			<td th:text="${eventList.evEndYmd}"></td>		
+      			<td th:text="${eventList.evStatus}"></td>           			
+      			<td><a th:if="${eventList.evStatus == '종료'}" th:href="@{/admin/event/eventWinner(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 당첨자 </a></td> 			
       			<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 상세 </a></td> 			
-      			<td><a href="#" class="btn btn-sm font-sm btn-light rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-light rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
       		</tr>
       	</tbody>
       </table>
@@ -73,4 +77,11 @@
       </nav>
   </div>
    	</th:block>
+ <!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    
+    </th:block>   	
+   	
 </html>

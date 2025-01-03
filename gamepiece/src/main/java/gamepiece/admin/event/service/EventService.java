@@ -15,5 +15,14 @@ public interface EventService {
 	List<Event> getEventDetail(String evCd);
 
 	void addEvent(Event event);
+
+	// 특정
+	Event getEventInfoById(String evCd);
+
+	//특정 회원 수정
+	void modifyEvent(Event event);
 	
+	String getEventsWithStatus(String evCd);
+
+	List<Event> getEventWinner(String evCd);
 }
