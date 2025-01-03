@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.service.EventService;
@@ -38,14 +39,6 @@ public class EventController {
 		model.addAttribute("title", "이벤트목록 추가");
 		
 		return "admin/event/addEvent";
-	}
-	
-	@GetMapping("/modifyEvent")
-	public String ModifyEvent(Model model) {
-		
-		model.addAttribute("title", "이벤트목록 수정");
-		
-		return "admin/event/modifyEvent";
 	}
 	
 	@GetMapping("/removeEvent")
@@ -110,6 +103,30 @@ public class EventController {
 		
 		return "redirect:/admin/event/eventList";
 		
+	}
+	
+	@PostMapping("/modify")
+	public String modifyMember(Event event,
+							   RedirectAttributes reAttr) {
+		
+		eventService.modifyEvent(event);
+		
+		reAttr.addAttribute("evCd", event.getEvCd());
+		
+		return "redirect:/admin/event/eventList";
+	}
+	
+	@GetMapping("/modify")
+	public String modifyMemberView(@RequestParam(name="evCd") String evCd, Model model) {
+		
+		var eventList = eventService.getEventList();
+		Event eventInfo = eventService.getEventInfoById(evCd);
+		
+		model.addAttribute("title", "회원수정");
+		model.addAttribute("eventList", eventList);
+		model.addAttribute("eventInfo", eventInfo);
+		
+		return "admin/event/modifyEvent";
 	}
 }
 
