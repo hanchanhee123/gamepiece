@@ -28,11 +28,13 @@
 			ps_cate_cd, 
 			ps_nm, 
 			img_url,
-			ps_pric,
+			ps_price,
 			admin_id,
 			reg_ymd
 		FROM 
-			point_shop;
+			point_shop
+		WHERE
+			isDelete='active';
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">
@@ -46,7 +48,44 @@
 			cate_nm DESC;
 	</select>
 	
-	<!-- <insert id="addPointShop" parameterType="gamepiece.admin.point.domain.Point">
+	
+	<select id="getItemInfoByName" resultMap="pointshopResultMap" >
+		/* 특정 아이템 조회*/
+		SELECT
+			*
+		FROM
+			point_shop ps
+		WHERE
+			ps.ps_nm = #{itemName};
+	</select>
+	
+	<update id="modifyItem" parameterType="point">
+		UPDATE point_shop
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="itemCate != null and itemCate != ''">
+				ps_cate_cd =#{itemCate},
+			</if>
+			<if test="itemName != null and itemName != ''">
+				ps_nm=#{itemName},
+			</if>
+			<if test="itemImgurl != null and itemImgurl != ''">
+				img_url=#{itemImgurl},
+			</if>
+			<if test="itemPrice != null and itemPrice > 0">
+				ps_price=#{itemPrice},
+			</if>
+			<if test="adminId != null and adminId != ''">
+				admin_id=#{adminId},
+			</if>
+			<if test="regYmd != null and regYmd > ''">
+				reg_ymd=#{regYmd},
+			</if>
+		</trim>
+		WHERE 
+			ps_nm = #{itemName};
+	</update>
+	
+	<insert id="addItem" parameterType="Point">
         INSERT INTO point_shop (
         	ps_cd, 
 			ps_cate_cd, 
@@ -56,16 +95,26 @@
 			admin_id,
 			reg_ymd
 		) VALUES (
-			#{itemCd},
-			#{itemCate}, 
+			<![CDATA[(SELECT 
+				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,4)+1),0),
+				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))),'0')) ]]>
+			FROM 
+				point_shop ps),
+			#{itemCate},
 			#{itemName},
 			#{itemImgurl},
 			#{itemPrice},
-			#{admin_id},
-			now()
-		)
-    </insert> -->
+			#{adminId},
+			CURDATE()
+		);
+    </insert>
     
-	
+    <update id="removeItem" parameterType="Point">
+    	UPDATE point_shop
+		SET
+			isDelete='delete'
+		WHERE
+			ps_cd=#{ps_cd};
+    </update>
 
 </mapper>

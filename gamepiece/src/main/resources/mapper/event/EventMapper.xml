@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gamepiece.admin.event.mapper.EventMapper">
 	<resultMap type="Event" id="eventResultMap">
 		<id 	column="ev_cd" 					property="evCd"/>
@@ -15,7 +14,8 @@
 		<result column="evp_no" 				property="evpNo" />
 		<result column="id" 					property="id" />
 		<result column="ev_participate_ymd" 	property="evParticipateYmd" />
-		<result column="ev_agreement" 			property="evAgreement" />
+		<result column="ev_winner_yn" 			property="evWinnerYn" />
+		<result column="ev_status" 				property="evStatus" />
 	</resultMap>
 
 
@@ -45,11 +45,22 @@
 </select>
 
 <insert id="addEvent" parameterType="Event">
-
-<![CDATA[INSERT INTO events
-	(ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
-	VALUES ((SELECT CONCAT('ev_',LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd,4)+1),0),IF(LENGTH(MAX(SUBSTRING(e.ev_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(e.ev_cd,4)+1))),'0')) FROM events e), 
-	#{evNm}, #{evContents}, #{evStartYmd}, #{evEndYmd}, #{evWinnersNum}, #{adminId}, CURDATE(), #{evImg});]]>
+	INSERT INTO events
+	  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
+	VALUES 
+	  (
+	    <![CDATA[(SELECT CONCAT('ev_', LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd, 4) + 1), 0), 
+	                          IF(LENGTH(MAX(SUBSTRING(e.ev_cd, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(e.ev_cd, 4) + 1))), '0')) ]]>
+	     FROM events e),
+	    #{evNm}, 
+	    #{evContents}, 
+	    #{evStartYmd}, 
+	    #{evEndYmd}, 
+	    #{evWinnersNum}, 
+	    #{adminId}, 
+	    CURDATE(), 
+	    #{evImg}
+	  );
 </insert>
 
 <update id="modifyEvent" parameterType="Event">
@@ -85,8 +96,28 @@
 		events
 	WHERE
 		ev_cd=#{evCd};
-
 </select>
 
+<select  id="getEventListWithStatus" resultType="string">
+	SELECT 
+    CASE
+        <![CDATA[WHEN CURRENT_DATE < ev_start_ymd THEN '대기중']]>
+        WHEN CURRENT_DATE BETWEEN ev_start_ymd AND ev_end_ymd THEN '진행중'
+        ELSE '종료'
+       END AS ev_status
+    FROM events
+    WHERE
+    	ev_cd=#{evCd};
+</select>
 
+<select id="getEventWinner" parameterType="string" resultMap="eventResultMap">
+	SELECT
+		*
+	FROM
+		event_participations
+	WHERE
+		ev_cd=#{evCd}
+		AND
+		ev_winner_yn='Y';	
+</select>
 </mapper>

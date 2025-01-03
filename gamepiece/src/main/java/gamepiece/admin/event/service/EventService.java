@@ -22,4 +22,7 @@ public interface EventService {
 	//특정 회원 수정
 	void modifyEvent(Event event);
 	
+	String getEventsWithStatus(String evCd);
+
+	List<Event> getEventWinner(String evCd);
 }
