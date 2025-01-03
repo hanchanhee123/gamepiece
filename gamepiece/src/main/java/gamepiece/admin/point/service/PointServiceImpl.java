@@ -23,6 +23,12 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
+	public void removeItem(String ps_cd) {
+		
+		pointshopMapper.removeItem(ps_cd);
+	}
+	
+	@Override
 	public Point getItemInfoByName(String itemName) {
 		
 		return pointshopMapper.getItemInfoByName(itemName);
@@ -40,6 +46,8 @@ public class PointServiceImpl implements PointService {
 	@Override
 	public void addItem(Point point) {
 		
+		point.setAdminId("id01");
 		pointshopMapper.addItem(point);
+		
 	}
 }

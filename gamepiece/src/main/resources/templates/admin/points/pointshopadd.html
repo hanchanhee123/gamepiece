@@ -11,7 +11,7 @@
           </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
-   	<form id="addItemForm" th:action="@{/admin/point/write}" method="post">
+   	<form id="addItemForm" th:action="@{/admin/point/add}" method="post">
 	   	<div class="row">
                 <div class="col-lg-6">
                     <div class="card mb-4">
@@ -50,7 +50,7 @@
                                     <div class="mb-4">
                                         <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="cateList : ${cateList}">
                                             <span class="form-check-label" th:text="${cateList.cateName}"></span>
-                                            <input class="form-check-input" checked="" id="itemCate" name="itemCate" type="radio">
+                                            <input class="form-check-input" checked="" id="itemCate" name="itemCate" type="radio" th:value="${cateList.cateCode}">
                                         </label>
                                     </div>
                                 </div> <!-- col.// -->

@@ -16,5 +16,6 @@ public class Point {
 	private int itemPrice;
 	private String adminId;
 	private String regYmd;
+	private String isDelete;
 	
 }

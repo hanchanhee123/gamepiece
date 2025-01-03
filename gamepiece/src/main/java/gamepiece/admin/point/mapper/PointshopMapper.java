@@ -18,4 +18,6 @@ public interface PointshopMapper {
 	int modifyItem(Point point);
 	
 	int addItem(Point point);
+	
+	int removeItem(String ps_cd);
 }
