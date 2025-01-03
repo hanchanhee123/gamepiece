@@ -1,7 +1,5 @@
 package gamepiece.admin.event.domain;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,11 +7,11 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class EventWinner {
+public class EventParticipation {
 
-	private String ewNo;
 	private String evpNo;
+	private String evCd;
 	private String id;
-	private int winningPricePoint;
-	private Date winningYmd;
+	private String evParticipateYmd;
+	private String evWinnerYn;
 }

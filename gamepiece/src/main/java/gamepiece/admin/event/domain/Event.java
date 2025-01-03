@@ -24,8 +24,8 @@ public class Event {
 	private String evImg;
 	private String evpNo;
 	private String id;
-	private LocalDateTime evParticipateYmd;
-	private String evAgreement;
+	private String evParticipateYmd;
+	private String evWinnerYn;
 
 }
 

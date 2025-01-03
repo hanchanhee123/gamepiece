@@ -16,85 +16,40 @@
 </th:block>
 <th:block layout:fragment="contents-body">
   <div class="card mb-4">
+   <div class="row">
       <header class="card-header">
-          <div class="row align-items-center">
-              <div class="col col-check flex-grow-0">
-                  <div class="form-check ms-2">
-                      <input class="form-check-input" type="checkbox" value="" />
-                  </div>
-              </div>
-              <div class="col-md-2 col-6">
-                  <input type="date" value="02.05.2021" class="form-control" />
+          <div class="row">
+              <div class="col-lg-5 col-6 me-auto">
+                  <input type="text" placeholder="Search..." class="form-control" />
               </div>
           </div>
       </header>
       <!-- card-header end// -->
       <div class="card-body">
-          <article class="itemlist">
-              <div class="row align-items-center">
-                  <div class="col col-check flex-grow-0">
-                      <div class="form-check">
-                          <input class="form-check-input" type="checkbox" />
-                      </div>
-                  </div>
-                  <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-                      <a class="itemside" href="#">
-                          <div class="left">
-                              <img src="assets/imgs/items/1.jpg" class="img-sm img-thumbnail" alt="Item" />
-                          </div>
-                          <div class="info">
-                              <h6 class="mb-0">당첨자 발표</h6>
-                          </div>
-                      </a>
-                  </div>
-                  <!-- <div class="col-lg-2 col-sm-2 col-4 col-status">
-                      <span class="badge rounded-pill alert-success">진행</span>
-                  </div> -->
-                  <div class="col-lg-1 col-sm-2 col-4 col-date">
-                      <span>2024.12.20</span>
-                  </div>
-                  <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                      <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a>
-                     <!--  <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> 삭제 </a> -->
-                  </div>
-              </div>
-              <!-- row .// -->
-          </article>
-          <!-- itemlist  .// -->
-          <article class="itemlist">
-              <div class="row align-items-center">
-                  <div class="col col-check flex-grow-0">
-                      <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="" />
-                      </div>
-                  </div>
-                  <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
-                      <a class="itemside" href="#">
-                          <div class="left">
-                              <img src="assets/imgs/items/2.jpg" class="img-sm img-thumbnail" alt="Item" />
-                          </div>
-                          <div class="info">
-                              <h6 class="mb-0">당첨자 발표</h6>
-                          </div>
-                      </a>
-                  </div>
-                  <!-- <div class="col-lg-2 col-sm-2 col-4 col-status">
-                      <span class="badge rounded-pill alert-success">진행</span>
-                  </div> -->
-                  <div class="col-lg-1 col-sm-2 col-4 col-date">
-                      <span>2024.12.20</span>
-                  </div>
-                  <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
-                      <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a>
-                    <!--   <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> 삭제 </a> -->
-                  </div>
-              </div>
-              <!-- row .// -->
-          </article>
-         
-          <!-- itemlist  .// -->
+      	<div class="table-responsive">
+      		<table class="table table-hover">
+		      <!-- 	<thead>
+		      		<tr>
+		      			<th width="10%">번호</th>
+		      			<th width="75%">이벤트명</th>
+		      			<th>상세</th>
+		      			<th>수정</th>      			
+		      		</tr>
+		      	</thead> -->
+		      	<tbody>
+		      		<tr th:if="${eventList != null}"
+						th:each="eventList :${eventList}">
+		      			<!-- <td width="10%" th:text="${eventList.evCd}"></td> -->
+		      			<td width="80%" th:text="${eventList.evNm}"></td>     			
+		      			<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 상세 </a></td> 			
+		      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-light rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+		      		</tr>
+		      	</tbody>
+      		</table>
+    	 </div>     
       </div>
       <!-- card-body end// -->
+  </div>
   </div>
   <!-- card end// -->
   <div class="pagination-area mt-30 mb-50">

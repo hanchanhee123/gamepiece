@@ -106,7 +106,7 @@ public class EventController {
 	}
 	
 	@PostMapping("/modify")
-	public String modifyMember(Event event,
+	public String modifyEvent(Event event,
 							   RedirectAttributes reAttr) {
 		
 		eventService.modifyEvent(event);
@@ -117,7 +117,7 @@ public class EventController {
 	}
 	
 	@GetMapping("/modify")
-	public String modifyMemberView(@RequestParam(name="evCd") String evCd, Model model) {
+	public String modifyEventView(@RequestParam(name="evCd") String evCd, Model model) {
 		
 		var eventList = eventService.getEventList();
 		Event eventInfo = eventService.getEventInfoById(evCd);

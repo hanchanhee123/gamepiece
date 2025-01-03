@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+<th:block layout:fragment="contents-header"> 	
+  <div class="row">
+      <div class="col-6">
+          <div class="content-header">
+              <h2 class="content-title" th:text="${title}"></h2>
+          </div>
+      </div>
+  </div>
+  </th:block>
+  <th:block layout:fragment="contents-body">
+  <div class="row">
+      <div class="col-lg-6">
+          <div class="card mb-4">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <h6>1. 일반 정보</h6>
+                      </div>
+                      <div class="col-md-9" th:each="eventDetail :${eventDetail}">
+                          <div class="mb-4">
+                              <label class="form-label">이벤트명</label>
+                              <div class="form-control" th:text="${eventDetail.evNm}">
+                          </div>
+                          <div class="mb-4">
+                              <label class="form-label">이벤트 내용</label>
+                              <div class="form-control" th:text="${eventDetail.evContents}">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <hr class="mb-4 mt-0">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <h6>2. 당첨자</h6>
+                      </div>
+                      <div class="col-md-9" >
+                          <div class="mb-4">
+                              <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                                 <span th:each="eventParticipant :${eventParticipant}">
+                                	 <span style="padding:3px;" th:text="${eventParticipant.id}"> </span>
+                                </span>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  <hr class="mb-4 mt-0">
+                  <div class="row">
+                      <div class="col-md-3">
+                          <h6>3. 첨부파일</h6>
+                      </div>
+                      <div class="col-md-9">
+                          <div class="mb-4" th:each="eventDetail :${eventDetail}">
+                              <label class="form-label">이미지</label>
+                              <div class="form-control" th:text="${eventDetail.evImg}"></div>
+                          </div>
+                  </div> <!-- .row end// -->
+              </div>
+          </div>
+      </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </th:block>
+</html>
