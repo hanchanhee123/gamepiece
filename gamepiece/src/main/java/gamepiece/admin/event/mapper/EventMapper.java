@@ -15,4 +15,6 @@ public interface EventMapper {
 	int addEvent(Event event);
 	int modifyEvent(Event event);
 	Event getEventInfoById(String evCd);
+	String getEventListWithStatus(String evCd);
+	List<Event> getEventWinner(String evCd);
 }
