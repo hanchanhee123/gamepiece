@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header">
+	<div class="col-lg-6"> 	
+      <div class="content-header">
+          <h2 class="content-title" th:text="${title}">Add New Product</h2>
+          <div>
+              <button class="btn btn-md rounded font-sm hover-up">수정</button>
+          </div>
+      </div>
+    </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   		<div class="row">
+   			<div class="col-lg-6">
+   				<div class="card mb-4">
+                    <div class="card-body" th:object="${gameInfo}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>1. 게임기본정보</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">게임이름</label>
+                                        <input type="text" class="form-control" id="gameName" name="gameName" th:value="*{gameName}">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">설명</label>
+                                        <textarea class="form-control" rows="4" id="description" name="description" th:value="*{description}"></textarea>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">플랫폼</label>
+                                        <select class="form-select">
+                                            <option th:value="*{platformName}" th:text="*{platformName}"> 선택 </option>
+                                        </select>
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>2. 가격</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Cost in KRW</label>
+                                        <input type="text" class="form-control" id="price" name="price" th:value="|₩*{price}|">
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>3. 장르</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="l :${gameList}">
+                                            <input class="form-check-input" checked="" name="mycategory" type="radio">
+                                            <span class="form-check-label" th:text="${l.genre}"> Clothes </span>
+                                        </label>
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>4. 미디어</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Images</label>
+                                        <input class="form-control" type="file">
+                                    </div>
+                                </div> <!-- col.// -->
+                            </div> <!-- .row end// -->
+                        </div>  
+   				</div>
+   			</div>
+   			<div class="pagination-area mt-30 mb-50">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                            <li class="page-item"><a class="page-link" href="#">02</a></li>
+                            <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link" href="#">16</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+   		</div>
+   		
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    		
+    	</script>
+    </th:block>
+</html>

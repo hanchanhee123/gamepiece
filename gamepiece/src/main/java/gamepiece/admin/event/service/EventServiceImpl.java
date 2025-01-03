@@ -32,4 +32,16 @@ public class EventServiceImpl implements EventService {
 		eventMapper.addEvent(event);
 		
 	}
+
+	@Override
+	public Event getEventInfoById(String evCd) {
+
+		return eventMapper.getEventInfoById(evCd);
+	}
+
+	@Override
+	public void modifyEvent(Event event) {
+	
+		eventMapper.modifyEvent(event);	
+	}
 }

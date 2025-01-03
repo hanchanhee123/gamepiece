@@ -20,38 +20,73 @@
 
 
 <select id="getEventList" parameterType="string" resultMap="eventResultMap">
-SELECT
-	*
-FROM
-	events;
+	SELECT
+		*
+	FROM
+		events;
 </select>
 
 <select id="getEventParticipant" parameterType="string" resultMap="eventResultMap">
-SELECT
-	id
-FROM
-	event_participations
-WHERE
-	ev_cd = #{evCd};
+	SELECT
+		id
+	FROM
+		event_participations
+	WHERE
+		ev_cd = #{evCd};
 </select>
 
 <select id="getEventDetail" parameterType="string" resultMap="eventResultMap">
-SELECT
-	*
-FROM
-	events
-WHERE
-	ev_cd=#{evCd};
+	SELECT
+		*
+	FROM
+		events
+	WHERE
+		ev_cd=#{evCd};
 </select>
 
 <insert id="addEvent" parameterType="Event">
 
-INSERT INTO events
+<![CDATA[INSERT INTO events
 	(ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
-	VALUES ((SELECT CONCAT('ev_',LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd,4)+1),0),2,'0')) FROM events e), #{evNm}, #{evContents}, #{evStartYmd}, #{evEndYmd}, #{evWinnersNum}, #{adminId}, CURDATE(), #{evImg});
+	VALUES ((SELECT CONCAT('ev_',LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd,4)+1),0),IF(LENGTH(MAX(SUBSTRING(e.ev_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(e.ev_cd,4)+1))),'0')) FROM events e), 
+	#{evNm}, #{evContents}, #{evStartYmd}, #{evEndYmd}, #{evWinnersNum}, #{adminId}, CURDATE(), #{evImg});]]>
 </insert>
 
+<update id="modifyEvent" parameterType="Event">
+	UPDATE events
+	<trim prefix="SET" suffixOverrides=",">
+		<if test="evNm != null and evNm != ''">
+			ev_nm=#{evNm},
+		</if>
+		<if test="evContents != null and evContents != ''">
+			ev_contents=#{evContents},
+		</if>		
+		<if test="evStartYmd != null and evStartYmd != ''">			
+			ev_start_ymd=#{evStartYmd},
+		</if>		
+		<if test="evEndYmd != null and evEndYmd != ''">		
+			ev_end_ymd=#{evEndYmd},
+		</if>		
+		<if test="evWinnersNum != null and evWinnersNum != ''">
+			ev_winners_num=#{evWinnersNum},
+		</if>		
+		<if test="evImg != null and evImg !=''">
+			ev_img=#{evImg},
+		</if>			
+	</trim>
+	WHERE 
+		ev_cd=#{evCd};
+</update>
 
+<select id="getEventInfoById" parameterType="String" resultMap="eventResultMap">
+	SELECT
+		*
+	FROM
+		events
+	WHERE
+		ev_cd=#{evCd};
+
+</select>
 
 
 </mapper>

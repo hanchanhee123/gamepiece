@@ -39,7 +39,6 @@ public class TournamentController {
 	@PostMapping("/addTournament")
 	public String tournamentAdd(Tournament tournamentInfo, String tournamentStartDateStr, String tournamentEndDateStr) {
 		tournamentInfo = tournamentService.getTournamentInfo(tournamentInfo, tournamentStartDateStr, tournamentEndDateStr);
-		System.out.println(tournamentInfo.toString());
 		tournamentService.addTournament(tournamentInfo);
 		return "redirect:/admin/tournament/tournamentList";
 	}
