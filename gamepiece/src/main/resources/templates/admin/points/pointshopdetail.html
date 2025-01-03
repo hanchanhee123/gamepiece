@@ -17,6 +17,7 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="row">
+                            <input type="hidden" th:value="*{itemCd}">
                                 <div class="col-md-3">
                                     <h6>1. 일반 정보</h6>
                                 </div>
@@ -46,9 +47,9 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="mb-4">
-                                        <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="l : ${cateList}">
-                                            <input class="form-check-input" name="cateCode" type="radio" th:value="${l.cateCode}">
-                                            <span class="form-check-label" name="cateName" th:text="${l.cateName}">이모티콘</span>
+                                         <label class="mb-2 form-check form-check-inline" style="width: 45%;" th:each="cateList : ${cateList}">
+                                            <span class="form-check-label" th:text="${cateList.cateName}"></span>
+                                            <input class="form-check-input" checked="" id="itemCate" name="itemCate" type="radio" th:value="${cateList.cateCode}">
                                         </label>
                                     </div>
                                 </div> <!-- col.// -->
