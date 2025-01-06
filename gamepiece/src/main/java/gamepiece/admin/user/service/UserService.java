@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import gamepiece.admin.user.domain.User;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 public interface UserService {
 	
 	// 전체 회원정보 조회
-	public List<User> getAllUserInfo();
+	public PageInfo<User> getAllUserInfo(Pageable pageable);
 	
 	// 회원 상세정보 조회
 	public User getUserInfo(String id);
@@ -17,13 +19,13 @@ public interface UserService {
 	public void modifyUserInfo(User user);
 
 	// 탈퇴 회원정보 조회
-	public List<User> getRemoveUserInfo();
+	public PageInfo<User> getRemoveUserInfo(Pageable pageable);
 	
 	// 휴면 회원정보 조회
-	public List<User> getDormancyUserInfo();
+	public PageInfo<User> getDormancyUserInfo(Pageable pageable);
 	
 	// 회원 로그인내역 조회
-	public List<User> getUserLoginLog();
+	public PageInfo<User> getUserLoginLog(Pageable pageable);
 
 	// 회원 권한정보 조회
 	List<Map<String, Object>> getAuthrtInfo();
