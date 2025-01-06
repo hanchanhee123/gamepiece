@@ -24,13 +24,22 @@
 	</resultMap>
 
 	<!-- 전체 회원정보 조회 -->
-	<select id="getAllUserInfo" parameterType="string" resultMap="userResultMap">
+	<select id="getAllUserInfo" parameterType="Pageable" resultMap="userResultMap">
 		SELECT
 			*
 		FROM
 			user
 		WHERE
-			whdwl_ymd IS NULL;
+			whdwl_ymd IS NULL
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<!-- 전체 회원정보 총 갯수 -->
+	<select id="getCntAllUserInfo" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			user;
 	</select>
 	
 	<!-- 회원 상세정보 조회 -->
@@ -79,9 +88,20 @@
 	</update>
 	
 	<!-- 탈퇴 회원정보 조회 -->
-	<select id="getRemoveUserInfo" parameterType="string" resultMap="userResultMap">
+	<select id="getRemoveUserInfo" parameterType="Pageable" resultMap="userResultMap">
 		SELECT
 			*
+		FROM
+			user
+		WHERE
+			whdwl_ymd IS NOT NULL
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<!-- 탈퇴 회원정보 총 갯수 -->
+	<select id="getCntRemoveUserInfo" resultType="int">
+		SELECT
+			COUNT(*)
 		FROM
 			user
 		WHERE
@@ -89,14 +109,13 @@
 	</select>
 	
 	<!-- 휴면 회원정보 조회 -->
-	<select id="getDormancyUserInfo" parameterType="string" resultMap="userResultMap">
+	<select id="getDormancyUserInfo" parameterType="Pageable" resultMap="userResultMap">
 		SELECT
 		    u.*,
 		    DATEDIFF(NOW(), MAX(ull.lgn_dt)) AS inactive_days
 		FROM
-		    user u
-		INNER JOIN user_login_log ull
-		ON u.id = ull.id
+		    user u INNER JOIN user_login_log ull
+			ON u.id = ull.id
 		WHERE
 		    u.whdwl_ymd IS NULL
 		GROUP BY
@@ -104,9 +123,28 @@
 		HAVING
 		    inactive_days > 365;
 	</select>
+	
+	<!-- 휴면 회원정보 총 갯수 -->
+	<select id="getCntDormancyUserInfo" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM(
+			SELECT
+				COUNT(*),
+				DATEDIFF(NOW(), MAX(ull.lgn_dt)) AS inactive_days
+			FROM
+			    user u INNER JOIN user_login_log ull
+				ON u.id = ull.id
+			WHERE
+			    u.whdwl_ymd IS NULL
+			GROUP BY
+			    u.id
+			HAVING
+			    inactive_days > 365) dormancy_user;
+	</select>
 
 	<!-- 회원 로그인내역 조회 -->
-	<select id="getUserLoginLog" parameterType="string" resultMap="userResultMap">
+	<select id="getUserLoginLog" parameterType="Pageable" resultMap="userResultMap">
 		SELECT
 			ull.login_no,
 			u.id,
@@ -116,7 +154,21 @@
 			user u INNER JOIN user_login_log ull
 			ON u.id = ull.id
 			INNER JOIN authrt ar
-			ON u.authrt_cd = ar.authrt_cd;
+			ON u.authrt_cd = ar.authrt_cd
+		ORDER BY lgn_dt DESC
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<!-- 회원 로그인내역 총 갯수 -->
+	<select id="getCntUserLoginLog" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			user u INNER JOIN user_login_log ull
+			ON u.id = ull.id
+			INNER JOIN authrt ar
+			ON u.authrt_cd = ar.authrt_cd
+		ORDER BY lgn_dt DESC;
 	</select>
 	
 	<!-- 회원 권한정보 조회 -->

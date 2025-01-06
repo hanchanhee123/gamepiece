@@ -42,18 +42,25 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr th:if="${dormancyUserInfo != null}" th:each="dormancyUserInfo : ${dormancyUserInfo}">
-                                      <td th:text="${dormancyUserInfo.id}"></td>
-                                      <td th:text="${dormancyUserInfo.userPswd}"></td>
-                                      <td th:text="${dormancyUserInfo.userNm}"></td>
-                                      <td th:text="${dormancyUserInfo.userGender}"></td>
-                                      <td th:text="${dormancyUserInfo.userEmlAddr}"></td>
-                                      <td th:text="${dormancyUserInfo.userBrdt}"></td>
-                                      <td th:text="${dormancyUserInfo.userTelno}"></td>
-                                      <td th:text="${dormancyUserInfo.userNn}"></td>
-                                      <td th:text="${dormancyUserInfo.joinYmd}"></td>
-                                      <td th:text="${dormancyUserInfo.inactiveDays} + '일'"></td>
-                                  </tr>
+                              	  <th:block th:if="${dormancyUserInfo != null}" th:each="dormancyUserInfo : ${dormancyUserInfo}">
+	                                  <tr class="text-center">
+	                                      <td th:text="${dormancyUserInfo.id}"></td>
+	                                      <td th:text="${dormancyUserInfo.userPswd}"></td>
+	                                      <td th:text="${dormancyUserInfo.userNm}"></td>
+	                                      <td th:text="${dormancyUserInfo.userGender}"></td>
+	                                      <td th:text="${dormancyUserInfo.userEmlAddr}"></td>
+	                                      <td th:text="${dormancyUserInfo.userBrdt}"></td>
+	                                      <td th:text="${dormancyUserInfo.userTelno}"></td>
+	                                      <td th:text="${dormancyUserInfo.userNn}"></td>
+	                                      <td th:text="${dormancyUserInfo.joinYmd}"></td>
+	                                      <td th:text="${dormancyUserInfo.inactiveDays} + '일'"></td>
+	                                  </tr>
+                                  </th:block>
+                                  <th:block th:unless="${not #lists.isEmpty(dormancyUserInfo)}">
+                                  	  <tr>
+										  <td colspan="10">휴면 회원 정보가 없습니다.</td>
+									  </tr>
+                                  </th:block>
                               </tbody>
                           </table>
                       </div>
@@ -68,20 +75,37 @@
           <!-- card-body // -->
       </div>
       <!-- card end// -->
-      <div class="pagination-area mt-30 mb-50">
-          <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-start">
-                  <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                  <li class="page-item"><a class="page-link" href="#">02</a></li>
-                  <li class="page-item"><a class="page-link" href="#">03</a></li>
-                  <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                  <li class="page-item"><a class="page-link" href="#">16</a></li>
-                  <li class="page-item">
-                      <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-                  </li>
-              </ul>
-          </nav>
-      </div>
+      <div class="pagination-area mt-30 mb-50" th:if="${not #lists.isEmpty(dormancyUserInfo)}">
+	        <nav>
+	            <ul class="pagination justify-content-center">
+	            	<li class="page-item">
+	                    <a class="page-link" th:href="@{/admin/user/dormancyUserInfo}">
+	                    	<i class="material-icons md-first_page"></i>
+                    	</a>
+	                </li>
+	            	<li class="page-item" th:classappend="${currentPage < 2} ? disabled">
+	                    <a class="page-link" th:href="@{/admin/user/dormancyUserInfo(currentPage=${currentPage - 1})}">
+	                    	<i class="material-icons md-chevron_left"></i>
+                    	</a>
+	                </li>
+	                <th:block th:each="num : ${#numbers.sequence(startPageNum,endPageNum)}">
+		                <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+		                	<a class="page-link" th:href="@{/admin/user/dormancyUserInfo(currentPage=${num})}" th:text="${num}"></a>
+		                </li>
+	                </th:block>
+	                <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
+	                    <a class="page-link" th:href="@{/admin/user/dormancyUserInfo(currentPage=${currentPage + 1})}">
+	                    	<i class="material-icons md-chevron_right"></i>
+	                    </a>
+	                </li>
+	                <li class="page-item">
+	                    <a class="page-link" th:href="@{/admin/user/dormancyUserInfo(currentPage=${lastPage})}">
+	                    	<i class="material-icons md-last_page"></i>
+	                    </a>
+	                </li>
+	            </ul>
+	        </nav>
+	    </div>
       </th:block>
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>

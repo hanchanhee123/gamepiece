@@ -28,28 +28,35 @@
 		                        <thead>
 		                            <tr>
 		                                <th>회원ID</th>
-		                                <th>회원이메일</th>
 		                                <th>회원비밀번호</th>
-		                                <th>성별</th>
-		                                <th>생년월일</th>
-		                                <th>회원권환</th>
 		                                <th>회원이름</th>
+		                                <th>성별</th>
+		                                <th>회원이메일</th>
+		                                <th>생년월일</th>
 		                                <th>회원연락처</th>
+		                                <th>회원닉네임</th>
 		                                <th>탈퇴일자</th>  
 		                            </tr>
 		                        </thead>
 		                        <tbody>
-		                            <tr th:if="${removeUserInfo != null}" th:each="removeUserInfo : ${removeUserInfo}">
-	                                      <td th:text="*{removeUserInfo.id}"><b></b></td>
-	                                      <td th:text="*{removeUserInfo.userPswd}"></td>
-	                                      <td th:text="*{removeUserInfo.userNm}"></td>
-	                                      <td th:text="*{removeUserInfo.userGender}"></td>
-	                                      <td th:text="*{removeUserInfo.userEmlAddr}"></td>
-	                                      <td th:text="*{removeUserInfo.userBrdt}"></td>
-	                                      <td th:text="*{removeUserInfo.userTelno}"></td>
-	                                      <td th:text="*{removeUserInfo.userNn}"></td>
-	                                      <td th:text="*{removeUserInfo.joinYmd}"></td>
-		                            </tr>
+		                        	<th:block  th:if="${removeUserInfo != null}" th:each="removeUserInfo : ${removeUserInfo}">
+			                            <tr class="text-center">
+		                                    <td th:text="*{removeUserInfo.id}"><b></b></td>
+		                                    <td th:text="*{removeUserInfo.userPswd}"></td>
+		                                    <td th:text="*{removeUserInfo.userNm}"></td>
+		                                    <td th:text="*{removeUserInfo.userGender}"></td>
+		                                    <td th:text="*{removeUserInfo.userEmlAddr}"></td>
+		                                    <td th:text="*{removeUserInfo.userBrdt}"></td>
+		                                    <td th:text="*{removeUserInfo.userTelno}"></td>
+		                                    <td th:text="*{removeUserInfo.userNn}"></td>
+		                                    <td th:text="*{removeUserInfo.whdwlYmd}"></td>
+			                            </tr>
+		                            </th:block>
+		                            <th:block th:unless="${not #lists.isEmpty(removeUserInfo)}">
+	                                  	  <tr>
+											  <td colspan="9">탈퇴 회원 정보가 없습니다.</td>
+										  </tr>
+	                                  </th:block>
 		                        </tbody>
 		                    </table>
 		                </div>
@@ -57,20 +64,37 @@
 		        </div>
 		    </div>
 		</div>
-		<div class="pagination-area mt-30 mb-50">
-		    <nav aria-label="Page navigation example">
-		        <ul class="pagination justify-content-start">
-		            <li class="page-item active"><a class="page-link" href="#">01</a></li>
-		            <li class="page-item"><a class="page-link" href="#">02</a></li>
-		            <li class="page-item"><a class="page-link" href="#">03</a></li>
-		            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-		            <li class="page-item"><a class="page-link" href="#">16</a></li>
-		            <li class="page-item">
-		                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-		            </li>
-		        </ul>
-		    </nav>
-		</div>
+		<div class="pagination-area mt-30 mb-50" th:if="${not #lists.isEmpty(removeUserInfo)}">
+	        <nav>
+	            <ul class="pagination justify-content-center">
+	            	<li class="page-item">
+	                    <a class="page-link" th:href="@{/admin/user/removeUserInfo}">
+	                    	<i class="material-icons md-first_page"></i>
+                    	</a>
+	                </li>
+	            	<li class="page-item" th:classappend="${currentPage < 2} ? disabled">
+	                    <a class="page-link" th:href="@{/admin/user/removeUserInfo(currentPage=${currentPage - 1})}">
+	                    	<i class="material-icons md-chevron_left"></i>
+                    	</a>
+	                </li>
+	                <th:block th:each="num : ${#numbers.sequence(startPageNum,endPageNum)}">
+		                <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+		                	<a class="page-link" th:href="@{/admin/user/removeUserInfo(currentPage=${num})}" th:text="${num}"></a>
+		                </li>
+	                </th:block>
+	                <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
+	                    <a class="page-link" th:href="@{/admin/user/removeUserInfo(currentPage=${currentPage + 1})}">
+	                    	<i class="material-icons md-chevron_right"></i>
+	                    </a>
+	                </li>
+	                <li class="page-item">
+	                    <a class="page-link" th:href="@{/admin/user/removeUserInfo(currentPage=${lastPage})}">
+	                    	<i class="material-icons md-last_page"></i>
+	                    </a>
+	                </li>
+	            </ul>
+	        </nav>
+	    </div>
 		</th:block>
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>

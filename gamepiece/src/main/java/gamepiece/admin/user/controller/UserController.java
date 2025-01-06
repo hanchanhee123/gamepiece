@@ -11,8 +11,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.user.domain.User;
 import gamepiece.admin.user.service.UserService;
+import gamepiece.util.Pageable;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 @RequestMapping("/admin/user")
 public class UserController {
 	
@@ -24,12 +27,22 @@ public class UserController {
 
 	// 전체 회원정보 조회
 	@GetMapping("/allUserInfo")
-	public String getAllUserInfo(Model model) {
+	public String getAllUserInfo(Pageable pageable, Model model) {
 		
-		List<User> allUserInfo = userService.getAllUserInfo();
+		var pageInfo = userService.getAllUserInfo(pageable);
+		
+		List<User> allUserInfo = pageInfo.getContents();
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		log.info("allUserInfo : {}", allUserInfo);
 		
 		model.addAttribute("allUserInfo", allUserInfo);
-		System.out.println("전체 회원정보 조회 : " + allUserInfo);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
 		
 		return "admin/user/allUserInfo";
 	}
@@ -61,35 +74,71 @@ public class UserController {
 	
 	// 탈퇴 회원정보 조회
 	@GetMapping("/removeUserInfo")
-	public String getRemoveUserInfo(Model model) {
-		List<User> removeUserInfo = userService.getRemoveUserInfo();
+	public String getRemoveUserInfo(Pageable pageable, Model model) {
+		
+		var pageInfo = userService.getRemoveUserInfo(pageable);
+		
+		List<User> removeUserInfo = pageInfo.getContents();
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		log.info("removeUserInfo : {}", removeUserInfo);
 		
 		model.addAttribute("removeUserInfo", removeUserInfo);
-		System.out.println("탈퇴 회원정보 조회 : " + removeUserInfo);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+
+		var authrtInfo = userService.getAuthrtInfo();
+		model.addAttribute("authrtInfo", authrtInfo);
 		
 		return "admin/user/removeUserInfo";
 	}
 	
 	// 휴면 회원정보 조회
 	@GetMapping("/dormancyUserInfo")
-	public String getDormancyUserInfo(Model model) {
+	public String getDormancyUserInfo(Pageable pageable, Model model) {
 		
-		List<User> dormancyUserInfo = userService.getDormancyUserInfo();
+		var pageInfo = userService.getDormancyUserInfo(pageable);
+		
+		List<User> dormancyUserInfo = pageInfo.getContents();
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		log.info("dormancyUserInfo : {}", dormancyUserInfo);
 		
 		model.addAttribute("dormancyUserInfo", dormancyUserInfo);
-		System.out.println("휴면 회원정보 조회 : " + dormancyUserInfo);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
 		
 		return "admin/user/dormancyUserInfo";
 	}
 	
 	// 회원 로그인내역 조회
 	@GetMapping("/userLoginlog")
-	public String getUserLoginLog(Model model) {
+	public String getUserLoginLog(Pageable pageable, Model model) {
 		
-		List<User> userLoginlog = userService.getUserLoginLog();
+		var pageInfo = userService.getUserLoginLog(pageable);
+		
+		List<User> userLoginlog = pageInfo.getContents();
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		log.info("userLoginlog : {}", userLoginlog);
 		
 		model.addAttribute("userLoginlog", userLoginlog);
-		System.out.println("회원 로그인내역 조회 : " + userLoginlog);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		
+		log.info("pageInfo : {}", pageInfo);
 		
 		return "admin/user/userLoginlog";
 	}
