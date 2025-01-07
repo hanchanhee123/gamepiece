@@ -20,6 +20,7 @@ public class Game {
 	private String summation;
 	private String adminId;
 	private String regYmd;
+	private String isDelete;
 	
 	public String getGameCode() {
 		return gameCode;
@@ -123,7 +124,12 @@ public class Game {
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
-	
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
 	
 	@Override
 	public String toString() {
