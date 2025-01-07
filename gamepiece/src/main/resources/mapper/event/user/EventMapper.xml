@@ -1,1 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.user.event.mapper.EventMapper">
+	<resultMap type="Event" id="eventResultMap">
+		<id 	column="ev_cd" 					property="evCd"/>
+		<result column="ev_nm" 					property="evNm" />
+		<result column="ev_contents" 			property="evContents" />
+		<result column="ev_start_ymd" 			property="evStartYmd" />
+		<result column="ev_end_ymd"				property="evEndYmd" />
+		<result column="ev_winners_num" 		property="evWinnersNum" />
+		<result column="admin_id"	 			property="adminId" />
+		<result column="reg-ymd" 				property="regYmd" />
+		<result column="ev_img" 				property="evImg" />
+		<result column="evp_no" 				property="evpNo" />
+		<result column="id" 					property="id" />
+		<result column="ev_participate_ymd" 	property="evParticipateYmd" />
+		<result column="ev_winner_yn" 			property="evWinnerYn" />
+		<result column="ev_status" 				property="evStatus" />
+	</resultMap>
+
+<!-- 이벤트 삭제 -->
+<update id="removeEvent" parameterType="Event">
+	UPDATE
+		events
+	SET
+		is_delete = 'delete'
+	WHERE
+		ev_cd = #{evCd};
+</update>
+
+<select id="getCntEventList" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		events;
+</select>
+
+<select id="getEventList" parameterType="pageable" resultMap="eventResultMap">
+	SELECT
+		*
+	FROM
+		events
+	WHERE
+		is_delete='active'
+	LiMIT #{rowPerPage} OFFSET #{offset};
+</select>
+
+<select id="getEventParticipant" parameterType="string" resultMap="eventResultMap">
+	SELECT
+		id
+	FROM
+		event_participations
+	WHERE
+		ev_cd = #{evCd};
+</select>
+
+<select id="getEventDetail" parameterType="string" resultMap="eventResultMap">
+	SELECT
+		*
+	FROM
+		events
+	WHERE
+		ev_cd=#{evCd};
+</select>
+
+<insert id="addEvent" parameterType="Event">
+	INSERT INTO events
+	  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
+	VALUES 
+	  (
+	    <![CDATA[(SELECT CONCAT('ev_', LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd, 4) + 1), 0), 
+	                          IF(LENGTH(MAX(SUBSTRING(e.ev_cd, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(e.ev_cd, 4) + 1))), '0')) ]]>
+	     FROM events e),
+	    #{evNm}, 
+	    #{evContents}, 
+	    #{evStartYmd}, 
+	    #{evEndYmd}, 
+	    #{evWinnersNum}, 
+	    #{adminId}, 
+	    CURDATE(), 
+	    #{evImg}
+	  );
+</insert>
+
+<update id="modifyEvent" parameterType="Event">
+	UPDATE events
+	<trim prefix="SET" suffixOverrides=",">
+		<if test="evNm != null and evNm != ''">
+			ev_nm=#{evNm},
+		</if>
+		<if test="evContents != null and evContents != ''">
+			ev_contents=#{evContents},
+		</if>		
+		<if test="evStartYmd != null and evStartYmd != ''">			
+			ev_start_ymd=#{evStartYmd},
+		</if>		
+		<if test="evEndYmd != null and evEndYmd != ''">		
+			ev_end_ymd=#{evEndYmd},
+		</if>		
+		<if test="evWinnersNum != null and evWinnersNum != ''">
+			ev_winners_num=#{evWinnersNum},
+		</if>		
+		<if test="evImg != null and evImg !=''">
+			ev_img=#{evImg},
+		</if>			
+	</trim>
+	WHERE 
+		ev_cd=#{evCd};
+</update>
+
+<select id="getEventInfoById" parameterType="String" resultMap="eventResultMap">
+	SELECT
+		*
+	FROM
+		events
+	WHERE
+		ev_cd=#{evCd};
+</select>
+
+<select  id="getEventListWithStatus" resultType="string">
+	SELECT 
+    CASE
+        <![CDATA[WHEN CURRENT_DATE < ev_start_ymd THEN '대기중']]>
+        WHEN CURRENT_DATE BETWEEN ev_start_ymd AND ev_end_ymd THEN '진행중'
+        ELSE '종료'
+       END AS ev_status
+    FROM events
+    WHERE
+    	ev_cd=#{evCd};
+</select>
+
+<select id="getEventWinner" parameterType="string" resultMap="eventResultMap">
+	SELECT
+		*
+	FROM
+		event_participations
+	WHERE
+		ev_cd=#{evCd}
+		AND
+		ev_winner_yn='Y';	
+</select>
+</mapper>
