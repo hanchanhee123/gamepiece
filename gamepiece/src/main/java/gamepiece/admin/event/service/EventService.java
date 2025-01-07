@@ -27,5 +27,7 @@ public interface EventService {
 	String getEventsWithStatus(String evCd);
 
 	List<Event> getEventWinner(String evCd);
+
+	void removeEvent(String evCd);
 	
 }

@@ -65,4 +65,11 @@ public class EventServiceImpl implements EventService {
 		
 		return eventMapper.getEventWinner(evCd);
 	}
+
+	@Override
+	public void removeEvent(String evCd) {
+		
+		eventMapper.removeEvent(evCd);
+		
+	}
 }

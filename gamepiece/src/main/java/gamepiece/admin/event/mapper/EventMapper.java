@@ -19,4 +19,5 @@ public interface EventMapper {
 	String getEventListWithStatus(String evCd);
 	List<Event> getEventWinner(String evCd);
 	int getCntEventList();
+	void removeEvent(String evCd);
 }
