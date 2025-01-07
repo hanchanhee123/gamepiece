@@ -144,7 +144,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/removeUser")
-	public String removeUser(String id, Model model) {
+	public String removeUser(String id) {
 		
 		userService.removeUser(id);
 		
