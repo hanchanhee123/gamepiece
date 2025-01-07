@@ -2,19 +2,29 @@ package gamepiece.admin.event.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.mapper.EventMapper;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
+import lombok.RequiredArgsConstructor;
 
+@Transactional
+@RequiredArgsConstructor
 @Service("eventService")
 public class EventServiceImpl implements EventService {
 
-	@Autowired
-	private EventMapper eventMapper;
-	public List<Event> getEventList(){
-	return eventMapper.getEventList();
+	
+	private final EventMapper eventMapper;
+	
+	@Override
+	public PageInfo<Event> getEventList(Pageable pageable){
+	
+		int rowCnt = eventMapper.getCntEventList();
+		List<Event> eventList = eventMapper.getEventList(pageable); 
+		return new PageInfo<>(eventList, pageable, rowCnt);
 	
 	}
 	

@@ -3,12 +3,14 @@ package gamepiece.admin.event.service;
 import java.util.List;
 
 import gamepiece.admin.event.domain.Event;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 public interface EventService {
 
 
 	// 이벤트목록
-	List<Event> getEventList();
+	PageInfo<Event> getEventList(Pageable pageable);
 	
 	List<Event> getEventParticipant(String evCd);
 
@@ -25,4 +27,5 @@ public interface EventService {
 	String getEventsWithStatus(String evCd);
 
 	List<Event> getEventWinner(String evCd);
+	
 }
