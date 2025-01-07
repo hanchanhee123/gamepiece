@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <meta charset="utf-8" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" th:href="@{/manage/assets/imgs/theme/favicon.svg}" />
+        <!-- Template CSS -->
+        <link th:href="@{/manage/assets/css/point.css}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>    
+        <main class="main-wrap">
+            <!-- header start -->
+           	<header th:replace="~{user/fragments/header :: headerFragment}"></header>
+            <!-- header end -->
+            <section class="content-main">
+            	<!--/* content-header */--> 
+            	<th:block layout:fragment="contents-header"></th:block>
+            	<!--/* content-body */--> 
+            	<th:block layout:fragment="contents-body"></th:block>
+            </section>
+            <!-- content-main end// -->
+            <!-- footer start -->
+            <!-- footer end -->
+        </main>
+        <script th:src="@{/manage/assets/js/vendors/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/manage/assets/js/vendors/bootstrap.bundle.min.js}"></script>
+        <script th:src="@{/manage/assets/js/vendors/select2.min.js}"></script>
+        <script th:src="@{/manage/assets/js/vendors/perfect-scrollbar.js}"></script>
+        <script th:src="@{/manage/assets/js/vendors/jquery.fullscreen.min.js}"></script>
+        <!-- Main Script -->
+        <!--/* 사용자 추가 js file */-->
+        <th:block layout:fragment="customJsResource"></th:block>
+        <!--/* 사용자 추가 js script */-->
+        <th:block layout:fragment="customJs"></th:block>
+    </body>
 </html>
