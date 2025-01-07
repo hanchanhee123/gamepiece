@@ -1,0 +1,339 @@
+@charset "UTF-8";
+
+/* 헤더 */
+header {
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0px;
+    margin: 0px;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 106px;
+    z-index: 5;
+}
+
+.header-div{
+    width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-img {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+}
+
+.header-icon {
+    margin: 18px 0px;
+}
+
+.bi-cart4 {
+    margin: 15px;
+    font-size: 32px;
+    cursor: pointer;
+    position: relative;
+}
+
+.bi-person {
+    margin: 15px;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.header-cate ul {
+    display: flex;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.header-cate li {
+    margin: 0px 40px;
+}
+
+/* 바디 */
+body {
+    background-color: #051E38;
+    padding-top: 106px;
+    overflow-y: scroll;
+    background-image: url();
+    background-size: cover;
+}
+
+main {
+    height: 100%;
+}
+
+.main-div {
+    width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    background-color: rgba(0,0,0,0.4);
+}
+
+/* 메인 카테고리 */
+.mypage-category {
+    width: 17%;
+    height: 500px;
+    margin: 30px 0px;
+    margin-left: 2%;
+    background-color: white;
+    border-radius: 10px;
+    position: sticky;
+    top: 136px;
+}
+
+.mypage-category-text {
+    border-bottom: 1px solid lightgray;
+    margin: 20px 10px;
+    padding-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.mypage-cate-text {
+    text-decoration: none;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.mypage-cate {
+    margin: 10px 0px;
+}
+
+.mypage-cate-game {
+    color: #007bff;
+}
+
+.mypage-cate ul {
+    padding-left: 25px;
+}
+
+.mypage-cate li{
+    list-style: "- ";
+    margin: 5px;
+    font-size: 15px;
+}
+
+/* 메인 컨텐츠 */
+/* 회원정보 */
+.mypage-contents {
+    width: 80%;
+    margin: 30px 30px 0px 30px;
+}
+
+.mypage-user {
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.mypage-user-modify {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    margin: 10px 0px;
+    background-color: white;
+    /* gap: 300px; */
+}
+
+.mypage-user-img img {
+    width: 150px;
+    height: 150px;
+    margin: 20px;
+}
+
+.mypage-user-name {
+    align-content: center;
+    font-size: 23px;
+    font-weight: bold;
+    margin-right: 200px;
+}
+
+.mypage-point-coupon {
+    width: 230px;
+    margin: 25px 0px;
+    padding-bottom: 5px;
+    display: grid;
+    gap: 15px;
+}
+
+.mypage-point {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.mypoint {
+    width: 100px;
+    color: #007bff;
+}
+
+.mypage-coupon {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.mycoupon {
+    color: #007bff;
+}
+
+/* 위시리스트 */
+.mypage-wishlist {
+    margin: 30px 10px;
+}
+
+.mypage-wishlist > span {
+    color: white;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+.common-card-section {
+    margin: 15px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28.3px;
+    justify-content: flex-start;
+}
+.card-section {
+    background-color: white;
+    border: 1px solid #007AFF;
+    border-radius: 10px;
+    width : 200px;
+    height : 250px;
+    color : black;
+    display: grid;
+    justify-content: center;
+    padding: 10px;
+    margin: 0px 10px 20px 10px;
+}
+
+.card-section p {
+    margin: 0;
+    width: 180px;
+}
+
+.card-section img {
+    width : 180px;
+    height : 150px;
+}
+
+.game-price {
+    text-align: right;
+    font-weight: bold;
+}
+
+.game-platform {
+    color: #6c757d;
+}
+
+.more-btn-area {
+    display: flex;
+    justify-content: center;
+}
+
+.common-btn-md {
+    width: 250px;
+    padding: 10px;
+    margin: 18px 0px;
+    border-radius: 10px;
+}
+
+.more-btn-area img {
+    width: 18px;
+    height: 18px;
+    border-radius: 10px;
+}
+
+.more-btn-area > span {
+    color: white;
+}
+
+/* 내 리뷰 */
+.mypage-review{
+    margin: 30px 10px;
+}
+
+.mypage-review > span {
+    color: white;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+.mypage-review-grade { 
+    font-size: 18px;
+}
+
+.mypage-review-emp {
+    margin: 30px 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.mypage-review-emp img {
+    width: 20px;
+    height: 20px;
+}
+
+/* 게임 결제/환불 내역 조회 */
+.mypage-refund-payment{
+    margin: 30px 10px;
+}
+
+.mypage-refund-payment > span {
+    color: white;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+/* 포인트 적립/사용 내역, 보유 쿠폰 */
+.mypage-point-coupon-table {
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 0px 20px;
+    background-color: white;
+}
+
+.mypage-point-coupon-table .table {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+.mypage-point-coupon-table .table > thead {
+    border-bottom: 1px solid #007bff;
+}
+
+.mypage-point-coupon-table table tr:last-child td,
+.mypage-point-coupon-table table tr:last-child th {
+    border-bottom: none;
+}
+
+/* 모달 */
+body.modal-open {
+    overflow-y: scroll !important;
+    padding-right: 0 !important;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-dialog {
+    margin: auto;
+    margin-top: 15vh;
+}
