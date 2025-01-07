@@ -1,6 +1,7 @@
 package gamepiece.admin.game.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +37,8 @@ public class GameListController {
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
 		
+		List<Map<String, Object>> platformList = gameListService.getPlatform();
+		
 		
 		
 		model.addAttribute("title", "게임목록");
@@ -44,6 +47,8 @@ public class GameListController {
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
+		
+		model.addAttribute("platformList", platformList);
 		
 		
 		
