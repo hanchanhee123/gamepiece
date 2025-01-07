@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.service.EventService;
+import gamepiece.util.Pageable;
 
 @Controller
 @RequestMapping("/admin/event")
@@ -24,16 +25,27 @@ public class EventController {
 	}
 	
 	@GetMapping("/eventList")
-	public String getEventsList(Model model) {
+	public String getEventsList(Pageable pageable, Model model) {
 			
-		List<Event> eventList = eventService.getEventList();
+		var pageInfo = eventService.getEventList(pageable);
+		
+		List<Event> eventList = pageInfo.getContents();
 		
 		eventList.forEach(list -> {
 			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
 		});
 		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
 		model.addAttribute("title", "이벤트목록");
 		model.addAttribute("eventList", eventList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
 	
 		return "admin/event/eventList";
 	}
@@ -94,11 +106,11 @@ public class EventController {
 	@GetMapping("/modify")
 	public String modifyEventView(@RequestParam(name="evCd") String evCd, Model model) {
 		
-		var eventList = eventService.getEventList();
+		/* var eventList = eventService.getEventList(); */
 		Event eventInfo = eventService.getEventInfoById(evCd);
 		
 		model.addAttribute("title", "회원수정");
-		model.addAttribute("eventList", eventList);
+		/* model.addAttribute("eventList", eventList); */
 		model.addAttribute("eventInfo", eventInfo);
 		
 		return "admin/event/modifyEvent";

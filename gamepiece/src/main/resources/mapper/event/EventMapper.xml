@@ -18,12 +18,19 @@
 		<result column="ev_status" 				property="evStatus" />
 	</resultMap>
 
+<select id="getCntEventList" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		events;
+</select>
 
-<select id="getEventList" parameterType="string" resultMap="eventResultMap">
+<select id="getEventList" parameterType="pageable" resultMap="eventResultMap">
 	SELECT
 		*
 	FROM
-		events;
+		events
+	LiMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
 <select id="getEventParticipant" parameterType="string" resultMap="eventResultMap">
