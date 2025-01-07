@@ -38,6 +38,7 @@
       			<th>당첨자</th>
       			<th>상세</th>
       			<th>수정</th>      			
+      			<th>삭제</th>      			
       			
       		</tr>
       	</thead>
@@ -50,8 +51,9 @@
       			<td th:text="${eventList.evEndYmd}"></td>		
       			<td th:text="${eventList.evStatus}"></td>           			
       			<td><a th:if="${eventList.evStatus == '종료'}" th:href="@{/admin/event/eventWinner(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 당첨자 </a></td> 			
-      			<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 상세 </a></td> 			
-      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-light rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
+      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td><a th:href="@{/admin/event/remove(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td> 			
       		</tr>
       	</tbody>
       </table>

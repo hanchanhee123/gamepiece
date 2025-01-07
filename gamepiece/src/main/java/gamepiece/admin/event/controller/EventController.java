@@ -115,6 +115,14 @@ public class EventController {
 		
 		return "admin/event/modifyEvent";
 	}
+	
+	@GetMapping("/remove")
+	public String removeEvent(String evCd) {
+		
+		eventService.removeEvent(evCd);
+		
+		return "redirect:/admin/event/eventList";
+	}
 }
 
 
