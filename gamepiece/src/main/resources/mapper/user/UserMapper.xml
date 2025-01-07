@@ -186,7 +186,7 @@
 			user
 		SET
 			whdwl_ymd = CURDATE(),
-			isDelete = 'delete'
+			is_delete = 'delete'
 		WHERE
 			id = #{id};
 	</update>

@@ -19,7 +19,7 @@ public class User {
 	private String userNn;
 	private String joinYmd;
 	private String whdwlYmd;
-	private String isDelete;
+//	private String isDelete;
 	private String loginNo;
 	private LocalDateTime lgnDt;
 	private int inactiveDays;	// 미접일수
