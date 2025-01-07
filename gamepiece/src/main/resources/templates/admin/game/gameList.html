@@ -33,11 +33,10 @@
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
                                 <select class="form-select">
-                                    <option>플랫폼선택</option>
-                                    <option>Steam</option>
-                                    <option>Epic Games</option>
-                                    <option>Ubisoft Connect</option>
-                                    <option>Riot Games</option>
+                                	<option>플랫폼선택</option>
+	                                <th:block th:each="l : ${platformList}">
+	                                    <option th:value=${l.platformCode} th:text="${l.platformName}"></option>
+	                                </th:block>
                                 </select>
                             </div>
                         </div>
