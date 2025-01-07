@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import gamepiece.admin.game.domain.Game;
 import gamepiece.admin.game.mapper.GameListMapper;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 @Service
 public class GameListServiceImple implements GameListService{
@@ -18,9 +20,12 @@ public class GameListServiceImple implements GameListService{
 	}
 	
 	@Override
-	public List<Game> getGameList() {
-		// TODO Auto-generated method stub
-		return gameListMapper.getGameList();
+	public PageInfo<Game> getGameList(Pageable pageable) {
+		
+		int rowCnt = gameListMapper.getCntGameList();
+		List<Game> gameList = gameListMapper.getGameList(pageable);
+		
+		return new PageInfo<>(gameList, pageable, rowCnt);
 	}
 	
 	@Override
