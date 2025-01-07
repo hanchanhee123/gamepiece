@@ -5,15 +5,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller("userTournamentController")
+@Controller
 @RequestMapping("/tournament")
-public class TournamentController {
-
+public class UserTournamentController {
+	
 	@GetMapping("/list")
-	public String getTournamentList(Model model) {
+	public String getUserTournamentList(Model model) {
+		
 		model.addAttribute("title", "대회리스트");
 		
 		return "user/tournament/tournamentList";
 	}
-	
 }
