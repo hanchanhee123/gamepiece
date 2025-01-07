@@ -1,0 +1,155 @@
+header {
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0px;
+    margin: 0px;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 106px;
+}
+
+.header-div{
+    width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-img {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+}
+
+#profile-img {
+    width: 45px;
+    height: 45px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+.header-cate ul {
+    display: flex;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.header-cate li {
+    margin: 0px 40px;
+}
+
+.header-cate li:hover {
+    cursor: pointer;
+}
+
+body {
+    background-color: #051e38;
+    padding-top: 106px;
+    overflow-y: scroll;
+}
+
+main{
+    height: 100%;
+}
+
+.main-div{
+    width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+}
+
+.detail-cate {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
+
+.detail-cate a {
+    margin-bottom: 10px;
+    margin-top : 30px;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+}
+
+.list-event{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.list-event ul{
+    padding: 0;
+    width: 100%;
+}
+
+.list-event li{
+    width: 49.2%;
+    float: left;
+    display: grid;
+    justify-items: start;
+    margin-bottom: 20px;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+.list-event li:nth-child(2n) {
+    float: right;
+}
+
+.list-subject {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.list-term {
+    margin-top: 3px;
+}
+
+.list-thumb {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.list-thumb img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.list-contents {
+    display: flex;
+    width: 100%;
+    color: white;
+    align-items: baseline;
+    padding: 16px 23px;
+    justify-content: space-between;
+}
+
+.list-status-ongoing {
+    color: #8045dd;
+    font-size: 18px;
+    font-weight: 700;
+    display:flex;
+}
+
+.item-active {
+    color: white;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+/* 활성화 상태 */
+.item-active.active {
+    color: #0077FF; /* 클릭 시 글자 색 */
+    font-weight: bold; /* 선택 상태를 더 분명히 하기 위한 추가 스타일 */
+}
