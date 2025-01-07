@@ -17,7 +17,7 @@
 		<result column="admin_id"		property="adminId"/>
 	</resultMap>
 
-	<select id="getTournamentList" resultMap="tournamentResultList">
+	<select id="getTournamentList" resultMap="tournamentResultList" parameterType="Pageable">
 		SELECT
 			tn.tnm_cd,
 			g.gm_cd,
@@ -28,7 +28,8 @@
 		FROM
 			tournament tn
 			LEFT JOIN games g
-			ON tn.gm_cd = g.gm_cd;
+			ON tn.gm_cd = g.gm_cd
+		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
 	<select id="getTournament" resultMap="tournamentResultList">
@@ -104,4 +105,11 @@
 		WHERE
 			tnm_cd = #{tournamentCode};
 	</delete>
+	
+	<select id="getCntTournament" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			tournament;
+	</select>
 </mapper>
