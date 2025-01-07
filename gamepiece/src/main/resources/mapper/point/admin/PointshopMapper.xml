@@ -1,0 +1,132 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.admin.point.mapper.PointshopMapper">
+	<resultMap type="gamepiece.admin.point.domain.Point" id="pointshopResultMap">
+			<id column="ps_cd" 			property="itemCd"/>
+			<result column="ps_cate_cd" property="itemCate" />
+			<result column="ps_nm" 	property="itemName" />
+			<result column="img_url" 	property="itemImgurl" />
+			<result column="ps_price" 		property="itemPrice" />
+			<result column="admin_id" 	property="adminId" />
+			<result column="reg_ymd" 	property="regYmd" />
+			<result column="is_delete"  property="isDelete" />
+	</resultMap>
+	
+	<resultMap type="gamepiece.admin.point.domain.PointCategories" id="pointshopCateResult">
+		<id column="cate_cd" property="cateCode" />
+		<result column="cate_nm" 	property="cateName" />
+		<result column="admin_id" 	property="adminId" />
+		<result column="reg_ymd" 	property="regYmd" />
+	</resultMap>
+	
+	
+	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
+	
+	<select id="findAll" resultMap="pointshopResultMap" parameterType="Pageable">
+		/* 포인트샵 아이템 목록 조회 */
+		SELECT 
+			ps_cd, 
+			ps_cate_cd, 
+			ps_nm, 
+			img_url,
+			ps_price,
+			admin_id,
+			reg_ymd
+		FROM 
+			point_shop
+		WHERE
+			is_delete = 'active'
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<select id="getItemCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop;
+	</select>
+	
+	<select id="findCate" resultMap="pointshopCateResult">
+		/* 포인트샵 카테고리 조회 */
+		SELECT 
+			cate_cd,
+			cate_nm
+		FROM 
+			pointshop_categories
+		ORDER BY
+			cate_nm DESC;
+	</select>
+	
+	
+	<select id="getItemInfoByItemName" resultMap="pointshopResultMap" >
+		/* 특정 아이템 조회*/
+		SELECT
+			*
+		FROM
+			point_shop ps
+		WHERE
+			ps.ps_cd = #{itemCd};
+	</select>
+	
+	<update id="modifyItem" parameterType="point">
+		UPDATE point_shop
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="itemCate != null and itemCate != ''">
+				ps_cate_cd =#{itemCate},
+			</if>
+			<if test="itemName != null and itemName != ''">
+				ps_nm=#{itemName},
+			</if>
+			<if test="itemImgurl != null and itemImgurl != ''">
+				img_url=#{itemImgurl},
+			</if>
+			<if test="itemPrice != null and itemPrice > 0">
+				ps_price=#{itemPrice},
+			</if>
+			<if test="adminId != null and adminId != ''">
+				admin_id=#{adminId},
+			</if>
+			<if test="regYmd != null and regYmd > ''">
+				reg_ymd=#{regYmd},
+			</if>
+		</trim>
+		WHERE 
+			ps_cd = #{itemCd};
+	</update>
+	
+	<insert id="addItem" parameterType="Point">
+        INSERT INTO point_shop (
+        	ps_cd, 
+			ps_cate_cd, 
+			ps_nm, 
+			img_url,
+			ps_price, 
+			admin_id,
+			reg_ymd
+		) VALUES (
+			<![CDATA[(SELECT 
+				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,4)+1),0),
+				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))),'0')) ]]>
+			FROM 
+				point_shop ps),
+			#{itemCate},
+			#{itemName},
+			#{itemImgurl},
+			#{itemPrice},
+			#{adminId},
+			CURDATE()
+		);
+    </insert>
+    
+    <update id="removeItem" parameterType="Point">
+    	UPDATE point_shop
+		SET
+			is_delete='delete'
+		WHERE
+			ps_cd=#{ps_cd};
+    </update>
+    
+
+</mapper>

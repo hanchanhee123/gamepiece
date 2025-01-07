@@ -1,8 +1,8 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="gamepiece.admin.point.mapper.PointshopMapper">
-	<resultMap type="gamepiece.admin.point.domain.Point" id="pointshopResultMap">
+<mapper namespace="gamepiece.user.point.mapper.PointshopMapper">
+	<resultMap type="gamepiece.user.pointShop.domain.Point" id="pointshopResultMap">
 			<id column="ps_cd" 			property="itemCd"/>
 			<result column="ps_cate_cd" property="itemCate" />
 			<result column="ps_nm" 	property="itemName" />
@@ -13,21 +13,21 @@
 			<result column="is_delete"  property="isDelete" />
 	</resultMap>
 	
-	<resultMap type="gamepiece.admin.point.domain.PointCategories" id="pointshopCateResult">
+	<resultMap type="gamepiece.user.pointShop.domain.PointCategories" id="pointshopCateResult">
 		<id column="cate_cd" property="cateCode" />
 		<result column="cate_nm" 	property="cateName" />
 		<result column="admin_id" 	property="adminId" />
 		<result column="reg_ymd" 	property="regYmd" />
 	</resultMap>
 	
-	<!-- <resultMap type="gamepiece.user.pointShop.domain.PointLog" id="pointLog">
+	<resultMap type="gamepiece.user.pointShop.domain.PointLog" id="pointLog">
 		<id column="point_no" property="pointNo" />
 		<result column="id" property="id"/>
 		<result column="point_receive_ymd" property="pry"/>
 		<result column="point_receive_content" property="prc"/>
 		<result column="point_receive" property="pointReceive"/>
 		<result column="point_division" property="pointDivision"/>
-	</resultMap> -->
+	</resultMap>
 	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
 	
@@ -78,7 +78,7 @@
 			ps.ps_cd = #{itemCd};
 	</select>
 	
-	<update id="modifyItem" parameterType="point">
+	<update id="modifyItem" parameterType="gamepiece.user.pointShop.domain.Point">
 		UPDATE point_shop
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="itemCate != null and itemCate != ''">
@@ -104,7 +104,7 @@
 			ps_cd = #{itemCd};
 	</update>
 	
-	<insert id="addItem" parameterType="Point">
+	<insert id="addItem" parameterType="gamepiece.user.pointShop.domain.Point">
         INSERT INTO point_shop (
         	ps_cd, 
 			ps_cate_cd, 
@@ -128,15 +128,15 @@
 		);
     </insert>
     
-    <update id="removeItem" parameterType="Point">
+    <update id="removeItem" parameterType="gamepiece.user.pointShop.domain.Point">
     	UPDATE point_shop
 		SET
-			isDelete='delete'
+			is_delete='delete'
 		WHERE
 			ps_cd=#{ps_cd};
     </update>
     
-    <!-- <select id="getPointsHeld" resultMap="pointLog">
+    <select id="getPointsHeld" resultMap="pointLog">
     	SELECT 
 		    pl.id,
 		    SUM(pl.point_receive)-(
@@ -155,6 +155,6 @@
 		    pl.point_division = '적립'
 		GROUP BY
 		    pl.id;
-    </select> -->
+    </select>
 
 </mapper>

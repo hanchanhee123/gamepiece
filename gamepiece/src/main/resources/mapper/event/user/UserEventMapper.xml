@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="gamepiece.user.event.mapper.EventMapper">
+<mapper namespace="gamepiece.user.event.mapper.UserEventMapper">
 	<resultMap type="gamepiece.user.event.domain.Event" id="eventResultMap">
 		<id 	column="ev_cd" 					property="evCd"/>
 		<result column="ev_nm" 					property="evNm" />
