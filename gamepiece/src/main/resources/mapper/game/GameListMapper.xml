@@ -19,8 +19,9 @@
 		<result column="summation" property="summation"></result>
 		<result column="admin_id" property="adminId"></result>
 		<result column="reg_ymd" property="regYmd"></result>
+		<result column="isDelete" property="isDelete"></result> 
 	</resultMap>
-	<select id="getGameList" resultMap="gameList">
+	<select id="getGameList" parameterType="Pageable" resultMap="gameList">
 		/* 게임 목록 조회 */
 		SELECT
 			g.gm_cd,
@@ -39,7 +40,9 @@
 			gd.review_avg,
 			gd.summation,
 			gd.admin_id,
-			gd.reg_ymd
+			gd.reg_ymd,
+			g.isDelete,
+			gd.isDelete
 		FROM
 			games g INNER JOIN game_detail gd
 			ON g.gm_cd = gd.gm_cd
@@ -47,7 +50,7 @@
 			ON g.p_cd = p.p_cd;
 	</select>
 	
-	<select id="getGameInfoByCode" parameterType="String" resultMap="gameList">
+	<select id="getGameInfoByCode" parameterType="Pageable" resultMap="gameList">
 		/* 특정 게임 정보 조회 */
 		SELECT
 			g.gm_cd,
@@ -96,5 +99,28 @@
 		WHERE 
 			gd.gm_cd = #{gameCode};
 	</update>
+	
+	<update id="removeGame" parameterType="Game">
+	/* 게임삭제(soft delete) */
+	UPDATE
+		games g INNER JOIN game_detail gd
+		ON g.gm_cd = gd.gm_cd
+	SET
+		g.isDelete = 'delete';
+		gd.isDelete = 'delete';
+	where
+		g.gm_cd = #{gameCode};
+	</update>
+	
+	<select id="getCntGameList" resultType="int">
+		/* 게임 목록 행의 갯수 */
+		SELECT
+			COUNT(*)
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+			INNER JOIN platform p
+			ON g.p_cd = p.p_cd;
+	</select>
 	
 </mapper>

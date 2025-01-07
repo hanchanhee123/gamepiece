@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import gamepiece.admin.game.domain.Game;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 
 public interface GameListService {
 	
 	// 게임 목록 조회
-	List<Game> getGameList();
+	PageInfo<Game> getGameList(Pageable pageable);
 	
 	// 특정 게임 정보 조회
 	Game getGameInfoByGameCode(String gameCode);
