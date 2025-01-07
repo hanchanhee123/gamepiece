@@ -2,7 +2,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gamepiece.user.point.mapper.PointshopMapper">
-	<resultMap type="gamepiece.user.point.domain.Point" id="pointshopResultMap">
+	<resultMap type="gamepiece.user.pointShop.domain.Point" id="pointshopResultMap">
 			<id column="ps_cd" 			property="itemCd"/>
 			<result column="ps_cate_cd" property="itemCate" />
 			<result column="ps_nm" 	property="itemName" />
@@ -13,7 +13,7 @@
 			<result column="is_delete"  property="isDelete" />
 	</resultMap>
 	
-	<resultMap type="gamepiece.user.point.domain.PointCategories" id="pointshopCateResult">
+	<resultMap type="gamepiece.user.pointShop.domain.PointCategories" id="pointshopCateResult">
 		<id column="cate_cd" property="cateCode" />
 		<result column="cate_nm" 	property="cateName" />
 		<result column="admin_id" 	property="adminId" />
@@ -78,7 +78,7 @@
 			ps.ps_cd = #{itemCd};
 	</select>
 	
-	<update id="modifyItem" parameterType="point">
+	<update id="modifyItem" parameterType="gamepiece.user.pointShop.domain.Point">
 		UPDATE point_shop
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="itemCate != null and itemCate != ''">
@@ -104,7 +104,7 @@
 			ps_cd = #{itemCd};
 	</update>
 	
-	<insert id="addItem" parameterType="Point">
+	<insert id="addItem" parameterType="gamepiece.user.pointShop.domain.Point">
         INSERT INTO point_shop (
         	ps_cd, 
 			ps_cate_cd, 
@@ -128,7 +128,7 @@
 		);
     </insert>
     
-    <update id="removeItem" parameterType="Point">
+    <update id="removeItem" parameterType="gamepiece.user.pointShop.domain.Point">
     	UPDATE point_shop
 		SET
 			is_delete='delete'
