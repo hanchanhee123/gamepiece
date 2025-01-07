@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel='stylesheet' type='text/css' media='screen' th:href='@{assets/css/tournament.css}'>
+    <div class="main-div">
+	 	<th:block layout:fragment="contents-header">
+	       <div class = "tournament-menu">
+	           <ul>
+	               <li><a href="tournament.html" class="button-list active">LoL</a></li>
+	               <li><a href="tournament_val.html" class="button-list">Valorant</a></li>
+	               <li><a href="tournament_pubg.html" class="button-list">PUBG</a></li>
+	               <li><a href="tournament_bet.html" class="button-list">승부예측</a></li>
+	           </ul>
+	       </div>
+	      </th:block>
+	      <th:block layout:fragment="contents-body">
+	       <div class="tournament-div">
+	           <div class="tournament-list">
+	               <div class="tournament-icon">
+	                   <div class="icon-img-active">
+	                       <img src="./leage/worlds.svg" />
+	                   </div>
+	                   <p>월드챔피언쉽</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/asci.svg" />
+	                   </div>
+	                   <p>ASCI</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/lck.svg" />
+	                   </div>
+	                   <p>LCK</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/lckCl.svg" />
+	                   </div>
+	                   <p>LCK CL</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/msi.svg" />
+	                   </div>
+	                   <p>MSI</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/season.svg" />
+	                   </div>
+	                   <p>시즌오프닝</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/lpl.svg" />
+	                   </div>
+	                   <p>LPL</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/lcs.svg" />
+	                   </div>
+	                   <p>LCS</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/lec.svg" />
+	                   </div>
+	                   <p>LEC</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/msc.svg" />
+	                   </div>
+	                   <p>MSC</p>
+	               </div>
+	               <div class="tournament-icon">
+	                   <div class="icon-img">
+	                       <img src="./leage/KeSPA.svg" />
+	                   </div>
+	                   <p>케스파컵</p>
+	               </div>
+	           </div>
+	           <div class="match-info">
+	               <select class="select-year" name="year">
+	                   <option value="2024" selected>2024년</option>
+	                   <option value="2025">2025년</option>
+	               </select>
+	               <select class="select-month" name="month">
+	                   <option value="1">1월</option>
+	                   <option value="2">2월</option>
+	                   <option value="3">3월</option>
+	                   <option value="4">4월</option>
+	                   <option value="5">5월</option>
+	                   <option value="6">6월</option>
+	                   <option value="7">7월</option>
+	                   <option value="8">8월</option>
+	                   <option value="9">9월</option>
+	                   <option value="10" selected>10월</option>
+	                   <option value="11">11월</option>
+	                   <option value="12">12월</option>
+	               </select>
+	           </div>
+	           <div class="match-date">
+	               <p>24. 10. 03 목</p>
+	           </div>
+	           <div class="match-time">
+	               <div>
+	                   <div class="time-day">
+	                       <p>21:00</p>
+	                   </div>
+	                   <div class="is-state-end">
+	                       <p>경기 종료</p>
+	                   </div>
+	                   <div class="score-div">
+	                       <div class="team1">
+	                           <p>team1</p>
+	                           <i class="bi bi-image"></i>
+	                           <div class="team-win">
+	                               <p>1</p>
+	                           </div>
+	                       </div>
+	                       <div class="team2">
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                           <i class="bi bi-image"></i>
+	                           <p>team2</p>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           <div class="match-time">
+	               <div>
+	                   <div class="time-day">
+	                       <p>22:00</p>
+	                   </div>
+	                   <div class="is-state-end">
+	                       <p>경기 종료</p>
+	                   </div>
+	                   <div class="score-div">
+	                       <div class="team1">
+	                           <p>team1</p>
+	                           <i class="bi bi-image"></i>
+	                           <div class="team-win">
+	                               <p>1</p>
+	                           </div>
+	                       </div>
+	                       <div class="team2">
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                           <i class="bi bi-image"></i>
+	                           <p>team2</p>
+	                       </div>
+	                   </div>
+	                   
+	               </div>
+	           </div>
+	           <div class="match-time">
+	               <div>
+	                   <div class="time-day">
+	                       <p>23:00</p>
+	                   </div>
+	                   <div class="is-state-end">
+	                       <p>경기 종료</p>
+	                   </div>
+	                   <div class="score-div">
+	                       <div class="team1">
+	                           <p>team1</p>
+	                           <i class="bi bi-image"></i>
+	                           <div class="team-win">
+	                               <p>1</p>
+	                           </div>
+	                       </div>
+	                       <div class="team2">
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                           <i class="bi bi-image"></i>
+	                           <p>team2</p>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           <div class="match-date">
+	               <p>24. 10. 04 금</p>
+	           </div>
+	           <div class="match-time">
+	               <div>
+	                   <div class="time-day">
+	                       <p>00:25</p>
+	                   </div>
+	                   <div class="is-state-ing">
+	                       <p>진행중</p>
+	                   </div>
+	                   <div class="score-div">
+	                       <div class="team1">
+	                           <p>team1</p>
+	                           <i class="bi bi-image"></i>
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                       </div>
+	                       <div class="team2">
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                           <i class="bi bi-image"></i>
+	                           <p>team2</p>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           <div class="match-time">
+	               <div>
+	                   <div class="time-day">
+	                       <p>01:25</p>
+	                   </div>
+	                   <div class="is-state-end">
+	                       <p>예정</p>
+	                   </div>
+	                   <div class="score-div">
+	                       <div class="team1">
+	                           <p>team1</p>
+	                           <i class="bi bi-image"></i>
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                       </div>
+	                       <div class="team2">
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                           <i class="bi bi-image"></i>
+	                           <p>team2</p>
+	                       </div>
+	                   </div>
+	               </div>
+	           </div>
+	           <div class="match-time">
+	               <div>
+	                   <div class="time-day">
+	                       <p>02:25</p>
+	                   </div>
+	                   <div class="is-state-end">
+	                       <p>예정</p>
+	                   </div>
+	                   <div class="score-div">
+	                       <div class="team1">
+	                           <p>team1</p>
+	                           <i class="bi bi-image"></i>
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                       </div>
+	                       <div class="team2">
+	                           <div class="team-lose">
+	                               <p>0</p>
+	                           </div>
+	                           <i class="bi bi-image"></i>
+	                           <p>team2</p>
+	                       </div>
+	                   </div>
+	                   
+	               </div>
+	           </div>
+	       </div>
+	</th:block>
+    </div>
+    <!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource">
+    	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    	<script src="tournament.js"></script>
+    </th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+
+    </th:block>
+</html>
