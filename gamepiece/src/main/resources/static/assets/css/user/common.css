@@ -1,0 +1,193 @@
+@charset "UTF-8";
+
+/* 헤더 */
+header {
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0px;
+    margin: 0px;
+    background-color: white;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 106px;
+    z-index: 5;
+}
+
+.header-div{
+	height: 100%;
+    width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-img {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+}
+
+.header-icon {
+    margin: 18px 0px;
+}
+
+.bi-cart4 {
+    margin: 15px;
+    font-size: 32px;
+    cursor: pointer;
+    position: relative;
+}
+
+.bi-person {
+    margin: 15px;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.header-cate ul {
+    display: flex;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.header-cate li {
+    margin: 0px 40px;
+}
+
+.header-cate li a {
+	text-decoration: none;
+	color: black;
+}
+
+/* 바디 */
+body {
+    background-color: #051E38;
+    padding-top: 106px;
+    overflow-y: scroll;
+    background-image: url();
+    background-size: cover;
+}
+
+main {
+    height: 100%;
+}
+
+.main-div {
+    width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    background-color: rgba(0,0,0,0.4);
+}
+
+/* 마이페이지 aside */
+.navbar-aside {
+	margin-left: 2%;
+}
+
+.mypage-category {
+	width: 209.33px;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    position: sticky;
+    top: 136px;
+}
+
+.mypage-category-text {
+    border-bottom: 1px solid lightgray;
+    margin: 20px 10px;
+    padding: 20px 0px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.mypage-cate-text {
+    text-decoration: none;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.mypage-cate {
+    margin: 10px 0px;
+}
+
+.mypage-cate-game {
+    color: #007bff;
+}
+
+.mypage-cate ul {
+    padding-left: 25px;
+}
+
+.mypage-cate li{
+    list-style: "- ";
+    margin: 5px;
+    font-size: 15px;
+}
+
+/* 회원정보 */
+.mypage-contents {
+    margin: 30px 30px 0px 30px;
+}
+
+.mypage-user {
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.mypage-user-modify {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    margin: 10px 0px;
+    background-color: white;
+}
+
+.mypage-user-img img {
+    width: 150px;
+    height: 150px;
+    margin: 20px;
+}
+
+.mypage-user-name {
+    align-content: center;
+    font-size: 23px;
+    font-weight: bold;
+    margin-right: 200px;
+}
+
+.mypage-point-coupon {
+    width: 230px;
+    margin: 25px 0px;
+    padding-bottom: 5px;
+    display: grid;
+    gap: 15px;
+}
+
+.mypage-point {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypoint {
+    width: 100px;
+    color: #007bff;
+}
+
+.mypage-coupon {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mycoupon {
+    color: #007bff;
+}
