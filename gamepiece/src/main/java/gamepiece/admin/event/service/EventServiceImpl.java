@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 @Transactional
 @RequiredArgsConstructor
-@Service("eventService")
+@Service
 public class EventServiceImpl implements EventService {
 
 	
