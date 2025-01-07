@@ -3,9 +3,8 @@ package gamepiece.admin.point.controller;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
 import gamepiece.admin.point.service.PointService;
+import gamepiece.util.Pageable;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -33,21 +33,37 @@ public class PointController {
 	}
 	
 	@GetMapping("/removeItem")
-	public String removeItem(String ps_cd, Model model) {
+	public String removeItem(Pageable pageable, String ps_cd, Model model) {
 		pointService.removeItem(ps_cd);
 		
-		model.addAttribute("pointList", pointService.findAll());
+		var pageInfo = pointService.findAll(pageable);
+		
+		model.addAttribute("pointList", pageInfo);
 		model.addAttribute("cateList", pointService.findCate());
 		
 		return "redirect:/admin/point/list";
 	}
 	
 	@GetMapping("/list")
-	public String pointListView(String ps_cd,Model model) {
+	public String pointListView(Pageable pageable, Model model) {
+		
+		var pageInfo = pointService.findAll(pageable);
+		
+		List<Point> ItemList = pageInfo.getContents();
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
 		
 		model.addAttribute("title", "포인트샵 목록");
-		model.addAttribute("pointList", pointService.findAll());
+		model.addAttribute("pointList", pointService.findAll(pageable));
 		model.addAttribute("cateList", pointService.findCate());
+		model.addAttribute("ItemList", ItemList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
 		
 		
 		return "admin/points/pointshopList";
@@ -68,18 +84,25 @@ public class PointController {
 	
 	
 	@GetMapping("/detail")
-	public String pointDetail(@RequestParam(value = "itemName") String itemName,
+	public String pointDetail(@RequestParam(value = "itemCode") String itemCode,
+							  Pageable pageable,
 							  Model model) {
 		
-		var itemInfo = pointService.getItemInfoByName(itemName);
+		var pageInfo = pointService.findAll(pageable);
+		
+		List<Point> ItemInfo = pageInfo.getContents();
+		
+		Optional<Point> pointInfo = ItemInfo.stream()
+											.filter(point -> point.getItemCd().equals(itemCode))
+											.findFirst();
 		
 		List<PointCategories> test = new ArrayList<>();
 		test = pointService.findCate();
 		System.out.println(test);
 		model.addAttribute("title", "상세보기");
-		model.addAttribute("pointList", pointService.findAll());
+		model.addAttribute("pointList", pointService.findAll(pageable));
 		model.addAttribute("cateList", pointService.findCate());
-		model.addAttribute("itemInfo", itemInfo);
+		if(pointInfo.isPresent()) model.addAttribute("ItemInfo", pointInfo.get());
 		
 		return "admin/points/pointshopdetail";
 	}
@@ -93,11 +116,11 @@ public class PointController {
 	
 	
 	@GetMapping("/add")
-	public String pointAdd(Model model) {
+	public String pointAdd(Model model, Pageable pageable) {
 		
 		model.addAttribute("title", "아이템 추가");
 		model.addAttribute("cateList", pointService.findCate());
-		model.addAttribute("pointList", pointService.findAll());
+		model.addAttribute("pointList", pointService.findAll(pageable));
 		
 		return "admin/points/pointshopadd";
 	}
