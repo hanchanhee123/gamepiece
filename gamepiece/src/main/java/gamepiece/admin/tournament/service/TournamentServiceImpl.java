@@ -1,14 +1,13 @@
 package gamepiece.admin.tournament.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import gamepiece.admin.tournament.domain.Tournament;
 import gamepiece.admin.tournament.mapper.TournamentMapper;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 @Service
 public class TournamentServiceImpl implements TournamentService {
@@ -20,9 +19,10 @@ public class TournamentServiceImpl implements TournamentService {
 	}
 
 	@Override
-	public List<Tournament> getTournamentList() {
-		// TODO Auto-generated method stub
-		return tournamentMapper.getTournamentList();
+	public PageInfo<Tournament> getTournamentList(Pageable pageable) {
+		int rowCnt = tournamentMapper.getCntTournament();
+		List<Tournament> tournamentList = tournamentMapper.getTournamentList(pageable);
+		return new PageInfo<>(tournamentList, pageable, rowCnt);
 	}
 
 	@Override
