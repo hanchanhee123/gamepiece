@@ -18,6 +18,16 @@
 		<result column="ev_status" 				property="evStatus" />
 	</resultMap>
 
+<!-- 이벤트 삭제 -->
+<update id="removeEvent" parameterType="Event">
+	UPDATE
+		events
+	SET
+		is_delete = 'delete'
+	WHERE
+		ev_cd = #{evCd};
+</update>
+
 <select id="getCntEventList" resultType="int">
 	SELECT
 		COUNT(*)
@@ -30,6 +40,8 @@
 		*
 	FROM
 		events
+	WHERE
+		is_delete='active'
 	LiMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
