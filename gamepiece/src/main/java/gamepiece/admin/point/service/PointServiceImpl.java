@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
 import gamepiece.admin.point.mapper.PointshopMapper;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 @Service
 public class PointServiceImpl implements PointService {
@@ -16,6 +18,7 @@ public class PointServiceImpl implements PointService {
 	public PointServiceImpl(PointshopMapper pointshopMapper) {
 		this.pointshopMapper = pointshopMapper;
 	}
+	
 	
 	@Override
 	public void modifyItem(Point point) {
@@ -29,13 +32,15 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
-	public Point getItemInfoByName(String itemName) {
+	public Point getItemInfoByItemName(String itemName) {
 		
-		return pointshopMapper.getItemInfoByName(itemName);
+		return pointshopMapper.getItemInfoByItemName(itemName);
 	}
-	
-	public List<Point> findAll() {
-		return pointshopMapper.findAll();
+	@Override
+	public PageInfo<Point> findAll(Pageable pageable) {
+		int rowCnt = pointshopMapper.getItemCount();
+		List<Point> loginList = pointshopMapper.findAll(pageable);
+		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
 
 	@Override

@@ -3,13 +3,14 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="gamepiece.admin.point.mapper.PointshopMapper">
 	<resultMap type="gamepiece.admin.point.domain.Point" id="pointshopResultMap">
-		<id column="ps_cd" 			property="itemCd"/>
-		<result column="ps_cate_cd" property="itemCate" />
-		<result column="ps_nm" 	property="itemName" />
-		<result column="img_url" 	property="itemImgurl" />
-		<result column="ps_price" 		property="itemPrice" />
-		<result column="admin_id" 	property="adminId" />
-		<result column="reg_ymd" 	property="regYmd" />
+			<id column="ps_cd" 			property="itemCd"/>
+			<result column="ps_cate_cd" property="itemCate" />
+			<result column="ps_nm" 	property="itemName" />
+			<result column="img_url" 	property="itemImgurl" />
+			<result column="ps_price" 		property="itemPrice" />
+			<result column="admin_id" 	property="adminId" />
+			<result column="reg_ymd" 	property="regYmd" />
+			<result column="is_delete"  property="isDelete" />
 	</resultMap>
 	
 	<resultMap type="gamepiece.admin.point.domain.PointCategories" id="pointshopCateResult">
@@ -19,9 +20,18 @@
 		<result column="reg_ymd" 	property="regYmd" />
 	</resultMap>
 	
+	<!-- <resultMap type="gamepiece.user.pointShop.domain.PointLog" id="pointLog">
+		<id column="point_no" property="pointNo" />
+		<result column="id" property="id"/>
+		<result column="point_receive_ymd" property="pry"/>
+		<result column="point_receive_content" property="prc"/>
+		<result column="point_receive" property="pointReceive"/>
+		<result column="point_division" property="pointDivision"/>
+	</resultMap> -->
+	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
 	
-	<select id="findAll" resultMap="pointshopResultMap">
+	<select id="findAll" resultMap="pointshopResultMap" parameterType="Pageable">
 		/* 포인트샵 아이템 목록 조회 */
 		SELECT 
 			ps_cd, 
@@ -34,7 +44,16 @@
 		FROM 
 			point_shop
 		WHERE
-			isDelete='active';
+			is_delete = 'active'
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<select id="getItemCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop;
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">
@@ -49,14 +68,14 @@
 	</select>
 	
 	
-	<select id="getItemInfoByName" resultMap="pointshopResultMap" >
+	<select id="getItemInfoByItemName" resultMap="pointshopResultMap" >
 		/* 특정 아이템 조회*/
 		SELECT
 			*
 		FROM
 			point_shop ps
 		WHERE
-			ps.ps_nm = #{itemName};
+			ps.ps_cd = #{itemCd};
 	</select>
 	
 	<update id="modifyItem" parameterType="point">
@@ -82,7 +101,7 @@
 			</if>
 		</trim>
 		WHERE 
-			ps_nm = #{itemName};
+			ps_cd = #{itemCd};
 	</update>
 	
 	<insert id="addItem" parameterType="Point">
@@ -116,5 +135,26 @@
 		WHERE
 			ps_cd=#{ps_cd};
     </update>
+    
+    <!-- <select id="getPointsHeld" resultMap="pointLog">
+    	SELECT 
+		    pl.id,
+		    SUM(pl.point_receive)-(
+		                                    SELECT 
+		                                        SUM(point_receive) 
+		                                    FROM 
+		                                        point_log pl_sub 
+		                                    WHERE 
+		                                        pl.id = pl_sub.id 
+		                                    AND 
+		                                        pl_sub.point_division = '사용'
+		                                 ) AS remaining_point
+		FROM
+		    point_log pl
+		WHERE
+		    pl.point_division = '적립'
+		GROUP BY
+		    pl.id;
+    </select> -->
 
 </mapper>
