@@ -8,27 +8,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UserController {
 
-	@GetMapping("/myPageUser")
-	public String myPageUser() {
+	@GetMapping("/login")
+	public String login() {
 		
-		return "/user/user/myPageUser";
+		return "/user/user/login";
 	}
 	
-	@GetMapping("/myPageGame")
-	public String myPageGame() {
+	@GetMapping("/addUser")
+	public String addUser() {
 		
-		return "/user/user/myPageGame";
+		return "/user/user/addUser";
 	}
 	
-	@GetMapping("/myPageCommunity")
-	public String myPageCommunity() {
+	@GetMapping("/findUserId")
+	public String findUserId() {
 		
-		return "/user/user/myPageCommunity";
+		return "/user/user/findUserId";
 	}
 	
-	@GetMapping("/myPageEvent")
-	public String myPageEvent() {
+	@GetMapping("/findUserPw")
+	public String findUserPw() {
 		
-		return "/user/user/myPageEvent";
+		return "/user/user/findUserPw";
 	}
 }

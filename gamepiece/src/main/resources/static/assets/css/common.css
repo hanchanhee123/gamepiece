@@ -36,10 +36,6 @@ header {
     cursor: pointer;
 }
 
-.header-icon {
-    margin: 18px 0px;
-}
-
 .header-cate ul {
     display: flex;
     list-style: none;
