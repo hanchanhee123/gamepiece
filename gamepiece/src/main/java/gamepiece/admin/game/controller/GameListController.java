@@ -14,9 +14,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gamepiece.admin.game.domain.Game;
 import gamepiece.admin.game.service.GameListService;
 import gamepiece.util.Pageable;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/admin/game")
+@Slf4j
 public class GameListController {
 
 	private final GameListService gameListService;
@@ -78,4 +80,14 @@ public class GameListController {
 	}
 	
 	
+	// 게임 검색
+	@PostMapping("/searchList")
+	public String searchListView(@RequestParam(value="searchValue") String searchValue, Model model) {
+		
+		List<Game> gameList = gameListService.searchList(searchValue);
+		
+		model.addAttribute("gameList", gameList);
+		model.addAttribute("searchValue", searchValue);
+		return "admin/game/gameList";
+	}
 }
