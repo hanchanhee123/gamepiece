@@ -135,6 +135,12 @@
 		WHERE
 			g.gm_nm LIKE CONCAT('%', #{searchValue}, '%');
 	</select>
-	
+	<select id="getGenreList" parameterType="Game">
+		/* 장르 목록 조회 */
+		SELECT 
+			genre
+		FROM 
+			game_detail;
+	</select>
 	
 </mapper>
