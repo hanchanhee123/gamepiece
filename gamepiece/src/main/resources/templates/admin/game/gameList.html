@@ -22,8 +22,9 @@
                         <div class="row gx-3">
                             <div class="col-lg-4 col-md-6 me-auto">
                             	<div class="input-group">
-	                                <input type="text" placeholder="Search..." class="form-control" />
-	                                <button type="submit" class="btn btn-light bg" id="searchBtn">
+	                                <input type="text" placeholder="Search" class="form-control"
+	                                	   id="searchValue" name="searchValue th:value=${searchValue}" />
+	                                <button type="button" class="btn btn-light bg" id="searchBtn">
 										<i class="material-icons md-search"></i>
 									</button>
 								</div>
@@ -48,19 +49,25 @@
                     </header>
                     <div class="card-body">
                         <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
-                            <div class="col" th:each="l : ${gameList}">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="/manage/assets/imgs/items/1.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate" th:text="${l.gameName}">Haagen-Dazs Caramel Cone Ice</a>
-                                        <div class="price mb-2"th:text="₩ + ${l.price}">$179.00</div>
-                                        <!-- price.// -->
-                                        <a th:href="@{/admin/game/modify(gameCode=${l.gameCode})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
-                                </div>
-                                <!-- card-product  end// -->
-                            </div>
+                        	<th:block  th:each="l : ${gameList}"
+                        			   th:if="${gameList != null}">
+                        		<div class="col">
+	                            	<div class="card card-product-grid">
+	                                    <a href="#" class="img-wrap"> <img src="/manage/assets/imgs/items/1.jpg" alt="Product" /> </a>
+	                                    <div class="info-wrap">
+	                                        <a href="#" class="title text-truncate" th:text="${l.gameName}">Haagen-Dazs Caramel Cone Ice</a>
+	                                        <div class="price mb-2"th:text="₩ + ${l.price}">$179.00</div>
+	                                        <!-- price.// -->
+	                                        <a th:href="@{/admin/game/modify(gameCode=${l.gameCode})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
+	                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
+	                                    </div>
+	                                </div>
+	                                <!-- card-product  end// -->
+                            	</div>
+                        	</th:block>
+                        	<th:block th:unless="${gameList != null}">
+                        		<span>등록된 회원의 정보가 없습니다.</span>
+                        	</th:block>
                         </div>
                     </div>  
    				</div>
@@ -106,8 +113,15 @@
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-    	<script>
-    		
+    	<script th:inline="javascript">
+    		$('#searchBtn').click(function() {
+    			const searchValue = $('#searchValue').val();
+    			const $form = $('<form />', {'action' : '/admin/game/searchList', 'method' : 'post'});
+    			const $searchValue = $('<input />', {'type' : 'hidden', 'name' : 'searchValue'}).val(searchValue);
+    			$form.append($searchValue);
+    			$('body').append($form);
+    			$form.submit();
+    		})
     	</script>
     </th:block>
 </html>
