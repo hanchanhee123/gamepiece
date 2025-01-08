@@ -61,4 +61,7 @@ public class GameListServiceImple implements GameListService{
 		
 		return gameListMapper.getGenreList();
 	}
+	
+	
+	
 }

@@ -31,6 +31,8 @@ public interface GameListMapper{
 	
 	// 장르 목록 조회(임시)
 	List<Game> getGenreList();
+	
+
 }
 
 

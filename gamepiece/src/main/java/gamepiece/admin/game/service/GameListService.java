@@ -27,4 +27,5 @@ public interface GameListService {
 	
 	// 장르 검색(임시)
 	List<Game> getGenreList();
+	
 }
