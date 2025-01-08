@@ -1,11 +1,17 @@
 @charset "UTF-8";
 
-/* 위시리스트 */
-.mypage-wishlist {
+.main-div {
+    height: 100%;
+    display: flex;
+    background-color: rgba(0,0,0,0.4);
+}
+
+/* 보유 이모티콘 */
+.mypage-emoticon {
     margin: 30px 10px;
 }
 
-.mypage-wishlist > span {
+.mypage-emoticon > span {
     color: white;
     margin: 0px 10px;
     font-size: 18px;
@@ -18,6 +24,7 @@
     gap: 28.3px;
     justify-content: flex-start;
 }
+
 .card-section {
     background-color: white;
     border: 1px solid #007AFF;
@@ -39,15 +46,6 @@
 .card-section img {
     width : 180px;
     height : 150px;
-}
-
-.game-price {
-    text-align: right;
-    font-weight: bold;
-}
-
-.game-platform {
-    color: #6c757d;
 }
 
 .more-btn-area {
@@ -72,42 +70,49 @@
     color: white;
 }
 
-/* 내 리뷰 */
-.mypage-review{
+/* 내 게시글 */
+.mypage-board{
     margin: 30px 10px;
 }
 
-.mypage-review > span {
+.mypage-board > span {
     color: white;
     margin: 0px 10px;
     font-size: 18px;
 }
 
-.mypage-review-grade { 
-    font-size: 18px;
-}
-
-.mypage-review-emp {
+.mypage-board-emp {
     margin: 30px 0px;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
 }
 
-.mypage-review-emp img {
+.mypage-board-emp img {
     width: 20px;
     height: 20px;
 }
 
-/* 게임 결제/환불 내역 조회 */
-.mypage-refund-payment{
+/* 내 문의글 */
+.mypage-inquiry{
     margin: 30px 10px;
 }
 
-.mypage-refund-payment > span {
+.mypage-inquiry > span {
     color: white;
     margin: 0px 10px;
     font-size: 18px;
+}
+
+.mypage-inquiry-response {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.mypage-inquiry-response img {
+    width: 25px;
+    height: 25px;
 }
 
 /* 포인트 적립/사용 내역, 보유 쿠폰 */

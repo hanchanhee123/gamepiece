@@ -36,10 +36,6 @@ header {
     cursor: pointer;
 }
 
-.header-icon {
-    margin: 18px 0px;
-}
-
 .header-cate ul {
     display: flex;
     list-style: none;
@@ -71,8 +67,8 @@ main {
 
 .main-div {
     width: 1280px;
-    height: 100%;
     margin: 0 auto;
+    height: 100%;
     display: flex;
     background-color: rgba(0,0,0,0.4);
 }

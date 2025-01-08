@@ -9,7 +9,7 @@ import gamepiece.admin.user.domain.User;
 import gamepiece.util.Pageable;
 
 @Mapper
-public interface UserMapper {
+public interface AdminUserMapper {
 	
 	// 전체 회원정보 조회
 	public List<User> getAllUserInfo(Pageable pageable);
