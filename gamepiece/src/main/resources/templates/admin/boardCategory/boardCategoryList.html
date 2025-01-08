@@ -119,8 +119,28 @@
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-    	<script>
-    		
+    	 <script th:inline="javascript">
+  
+    	$('.removeBtn').click(function(e){
+    		   e.preventDefault();
+    		   
+    		   if(confirm('삭제하시겠습니까?')) {
+    		       const categoryCode = $(this).attr('href').split('=')[1];
+    		       
+    		       const form = document.createElement('form');
+    		       form.method = 'POST';
+    		       form.action = '/admin/boardCategory/remove';
+    		       
+    		       const input = document.createElement('input');
+    		       input.type = 'hidden';
+    		       input.name = 'categoryCode';
+    		       input.value = categoryCode;
+    		       
+    		       form.appendChild(input);
+    		       document.body.appendChild(form);
+    		       form.submit();
+    		   }
+    		});
     	</script>
     </th:block>
 </html>

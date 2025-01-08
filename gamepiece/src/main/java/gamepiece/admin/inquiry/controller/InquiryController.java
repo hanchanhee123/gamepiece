@@ -31,11 +31,9 @@ public class InquiryController {
 	public String removeInquiry(@RequestParam("inquiryNum") String inquiryNum, RedirectAttributes rttr) {
 	    int result = inquiryService.removeInquiry(inquiryNum);
 
-	    if(result > 0) {
+	 
 	        rttr.addFlashAttribute("message", "문의글 삭제되었습니다.");
-	    } else {
-	        rttr.addFlashAttribute("error", "문의글 삭제에 실패했습니다.");
-	    }
+	  
 	    return "redirect:/admin/inquiry/list";
 	}
 	

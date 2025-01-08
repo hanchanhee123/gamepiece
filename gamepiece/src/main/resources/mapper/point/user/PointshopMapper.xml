@@ -5,6 +5,7 @@
 	<resultMap type="gamepiece.user.pointShop.domain.Point" id="pointshopResultMap">
 			<id column="ps_cd" 			property="itemCd"/>
 			<result column="ps_cate_cd" property="itemCate" />
+			<result column="cate_nm" 	property="cateName" />
 			<result column="ps_nm" 	property="itemName" />
 			<result column="img_url" 	property="itemImgurl" />
 			<result column="ps_price" 		property="itemPrice" />
@@ -31,20 +32,89 @@
 	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
 	
-	<select id="findAll" resultMap="pointshopResultMap" parameterType="Pageable">
-		/* 포인트샵 아이템 목록 조회 */
-		SELECT 
-			ps_cd, 
-			ps_cate_cd, 
-			ps_nm, 
-			img_url,
-			ps_price,
-			admin_id,
-			reg_ymd
-		FROM 
-			point_shop
+	<select id="findimoticon" resultMap="pointshopResultMap" parameterType="Pageable">
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			ps.img_url,
+			pc.cate_nm
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
 		WHERE
-			is_delete = 'active'
+			pc.cate_nm='이모티콘'
+			AND
+			ps.is_delete='active'
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	<select id="findavatar" resultMap="pointshopResultMap" parameterType="Pageable">
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			ps.img_url,
+			pc.cate_nm
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='프로필이미지'
+			AND
+			ps.is_delete='active'
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	<select id="findavatarframe" resultMap="pointshopResultMap" parameterType="Pageable">
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			ps.img_url,
+			pc.cate_nm
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='아바타 액자'
+			AND
+			ps.is_delete='active'
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	<select id="findetc" resultMap="pointshopResultMap" parameterType="Pageable">
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			ps.img_url,
+			pc.cate_nm
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='기타'
+			AND
+			ps.is_delete='active'
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	<select id="findbackground" resultMap="pointshopResultMap" parameterType="Pageable">
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			ps.img_url,
+			pc.cate_nm
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='배경프로필'
+			AND
+			ps.is_delete='active'
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	

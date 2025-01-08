@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.admin.boardComment.mapper.BoardCommentMapper">
+
+
+
+
+	<resultMap type="gamepiece.admin.boardComment.domain.BoardComment" id="BoardCommentResultMap">
+	  <id column="bc_no"  property="commentNum" />
+    <result column="bc_cn" property="commentDetail" />
+    <result column="bc_like" property="commnetLikeCnt" />
+    <result column="bc_dislike" property="commentDisLikeCnt" />
+    <result column="bc_ymd" property="commentYmd" />
+    
+
+	<association property="boardInfo" javaType="gamepiece.admin.board.domain.Board">
+    <id column="bbs_no"  property="boardNum" />
+    <result column="bbs_cate_cd" property="boardCategory" />
+    <result column="bbs_title" property="boardTitle" />
+    <result column="bbs_cn" property="boardContent" />
+    <result column="id" property="boardUserid" />
+    <result column="bbs_like" property="boardLikeCnt" />
+    <result column="bbs_dislike" property="boardDisLikeCnt" />
+    <result column="bbs_view" property="boardViewCnt" />
+    <result column="bbs_ymd" property="boardYmd" />
+    </association>
+
+
+    <association property="userInfo" javaType="gamepiece.admin.user.domain.User">
+ 			<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="authrt_nm" property="authrtNm"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+		<result column="login_no" property="loginNo"/>
+		<result column="lgn_dt" property="lgnDt"/>
+		<result column="inactive_days" property="inactiveDays"/>
+    </association>
+    
+
+	</resultMap>
+
+
+
+<select id="getCommentList" parameterType="gamepiece.util.Pageable" resultMap="BoardCommentResultMap">
+	SELECT
+		bco.bc_no,
+		u.user_nn,
+		b.bbs_title,
+		bco.bc_cn,
+		bco.bc_like,
+		bco.bc_dislike,
+		bco.bc_ymd
+	FROM
+		board_comments bco INNER JOIN boards b
+		USING (bbs_no)
+		INNER JOIN user u
+		ON bco.bc_id = u.id
+	 WHERE
+        bco.isdelete = 'active'
+	  ORDER BY
+        CAST(SUBSTRING_INDEX(bc_no,'bc_',-1) AS UNSIGNED)
+	    LIMIT #{rowPerPage} OFFSET #{offset};
+
+</select>
+
+<select id="getCntComment" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			board_comments 
+	WHERE
+        isdelete = 'active'
+	
+
+</select>
+
+<insert id="addComment" parameterType="BoardComment">
+	INSERT INTO board_comments(
+	bc_no, 
+	bbs_no, 
+	bc_id, 
+	bc_cn, 
+	bc_like, 
+	bc_dislike, 
+	bc_ymd)
+	VALUES
+	(CONCAT('bc_', LPAD((
+            SELECT next_num FROM (
+                SELECT MAX(CAST(SUBSTRING_INDEX(bc_no,'bc_',-1) AS UNSIGNED)) + 1 AS next_num 
+                FROM board_comments
+            ) AS temp
+        ), 2, '0')),
+	CONCAT('bbs_', LPAD((
+            SELECT next_num FROM (
+                SELECT MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)) + 1 AS next_num 
+                FROM board_comments
+            ) AS temp
+        ), 2, '0')), 
+		CONCAT('id', LPAD((
+	SELECT next_num FROM (
+	SELECT MAX(CAST(SUBSTRING_INDEX(bc_id, 'id', -1) AS UNSIGNED)) + 1 AS next_num
+	FROM board_comments
+	) AS temp
+	), 2, '0')),
+	#{commentDetail}, 
+	0, 
+	0, 
+	CURDATE()
+	)
+</insert>
+
+
+<select id="getCommentInfo" parameterType="string" resultMap="BoardCommentResultMap">
+	SELECT
+		bco.bc_no,
+		b.bbs_title,
+		bco.bc_cn,
+		bco.bc_like,
+		bco.bc_dislike,
+		u.user_nn,
+		bco.bc_ymd
+	FROM
+		board_comments bco INNER JOIN boards b
+		USING (bbs_no)
+		INNER JOIN user u
+		ON bco.bc_id = u.id
+WHERE
+   bc_no = #{commentNum}
+
+
+</select>
+
+<update id="modifyComment" parameterType="BoardComment">
+
+	UPDATE board_comments
+	SET
+		bc_cn=#{commentDetail}
+	WHERE 
+	bc_no = #{commentNum}
+
+</update>
+
+<update id="removeComment" parameterType="BoardComment">
+		UPDATE 
+			board_comments
+		SET
+			isdelete = 'delete'
+		WHERE 
+			bc_no = #{commentNum}
+
+
+
+</update>
+
+
+</mapper>

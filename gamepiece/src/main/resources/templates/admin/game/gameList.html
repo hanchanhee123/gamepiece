@@ -30,11 +30,11 @@
 								</div>
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
+                                <select class="form-select" name="searchGenre" id="searchGenre">
                                     <option>장르선택</option>
-                                    <option>RPG</option>
-                                    <option>FPS</option>
-                                    <option>격투</option>
+                                    <th:block th:each="l : ${genreList}">
+                                    	<option th:value="${l.genre}" th:text="${l.genre}"></option>
+                                    </th:block>
                                 </select>
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
@@ -122,6 +122,18 @@
     			$('body').append($form);
     			$form.submit();
     		})
+    		
+    		$('#searchGenre').change(function() {
+    			const searchGenre = $(this).val();
+    			const $form = $('<form />', {'action' : '/admin/game/searchGenre', 'method' : 'post'});
+    			const $searchGenre = $('<input />', {'type' : 'hidden', 'name' : 'searchGenre'}).val(searchGenre);
+    			$form.append($searchGenre);
+    			$('body').appen($form);
+    			$form.submit();
+    		})
+    		
+    		
+    		
     	</script>
     </th:block>
 </html>

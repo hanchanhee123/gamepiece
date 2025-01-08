@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+	<div class="col-6">
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title" th:text="${title}"></h2>
+          </div>
+          <div>
+                    <a th:href="@{/admin/boardComment/list}" id="cancelBtn" class="btn btn-light rounded font-sm mr-5 text-body hover-up">취소</a>
+                     <button type="submit" id="submitBtn" class="btn btn-md rounded font-sm hover-up">등록</button>
+             </div>
+      </div>
+     </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   	<form id="addCommentForm" th:action="@{/admin/boardComment/write}" method="post">
+   		    <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                       
+                   
+                       
+              				
+							
+						
+                       
+                            <div class="mb-4">
+                                <label for="commentDetail" class="form-label">덧글</label>
+                                <input type="text" class="form-control" 
+                                    id="commentDetail" name="commentDetail" placeholder="덧글을 입력하세요">
+                            </div>
+                          
+                         
+                         
+                           <!-- .row end// -->
+                            	<div class="row mt-4">					
+							
+						</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+		// 게시글 등록
+		$('#submitBtn').click(function(){
+			let isSubmit = true;
+			const $formControl = $('#addCommentForm').find('#commentDetail');
+			$formControl.each((idx, elem) => {
+				const value = $(elem).val();
+				if(!value){
+					isSubmit = false;
+					alert('필수 입력 항목입니다.');
+					$(elem).focus();
+					return false;
+				}
+			});
+			
+			if(isSubmit) $('#addCommentForm').submit();
+		})
+		
+	    		
+    	</script>
+    </th:block>
+</html>

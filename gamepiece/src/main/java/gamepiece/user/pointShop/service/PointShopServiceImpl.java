@@ -20,11 +20,37 @@ public class PointShopServiceImpl implements PointShopService{
 	}
 	
 	@Override
-	public PageInfo<Point> findAll(Pageable pageable) {
+	public PageInfo<Point> findimoticon(Pageable pageable) {
 		int rowCnt = userpointshopMapper.getItemCount();
-		List<Point> loginList = userpointshopMapper.findAll(pageable);
+		List<Point> loginList = userpointshopMapper.findimoticon(pageable);
 		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
+	@Override
+	public PageInfo<Point> findavatar(Pageable pageable) {
+		int rowCnt = userpointshopMapper.getItemCount();
+		List<Point> loginList = userpointshopMapper.findavatar(pageable);
+		return new PageInfo<>(loginList, pageable, rowCnt);
+	}
+	@Override
+	public PageInfo<Point> findavatarframe(Pageable pageable) {
+		int rowCnt = userpointshopMapper.getItemCount();
+		List<Point> loginList = userpointshopMapper.findavatarframe(pageable);
+		return new PageInfo<>(loginList, pageable, rowCnt);
+	}
+	@Override
+	public PageInfo<Point> findetc(Pageable pageable) {
+		int rowCnt = userpointshopMapper.getItemCount();
+		List<Point> loginList = userpointshopMapper.findetc(pageable);
+		return new PageInfo<>(loginList, pageable, rowCnt);
+	}
+	@Override
+	public PageInfo<Point> findbackground(Pageable pageable) {
+		int rowCnt = userpointshopMapper.getItemCount();
+		List<Point> loginList = userpointshopMapper.findbackground(pageable);
+		return new PageInfo<>(loginList, pageable, rowCnt);
+	}
+	
+	
 	
 	@Override
 	public List<PointCategories> findCate() {

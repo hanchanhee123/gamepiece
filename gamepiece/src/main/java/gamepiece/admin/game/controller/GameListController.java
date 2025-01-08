@@ -34,14 +34,17 @@ public class GameListController {
 		var pageInfo = gameListService.getGameList(pageable);
 		List<Game> gameList = pageInfo.getContents();
 		
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
 		
+	
+		
 		List<Map<String, Object>> platformList = gameListService.getPlatform();
 		
-		
+		List<Game> genreList = gameListService.getGenreList();
 		
 		model.addAttribute("title", "게임목록");
 		model.addAttribute("gameList", gameList);
@@ -51,7 +54,7 @@ public class GameListController {
 		model.addAttribute("endPageNum", endPageNum);
 		
 		model.addAttribute("platformList", platformList);
-		
+		model.addAttribute("genreList", genreList);
 		
 		
 		
@@ -86,7 +89,6 @@ public class GameListController {
 		
 		List<Game> gameList = gameListService.searchList(searchValue);
 		var pageInfo = gameListService.getGameList(pageable);
-		log.info("gameList : {}", gameList);
 		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
@@ -102,4 +104,10 @@ public class GameListController {
 		model.addAttribute("endPageNum", endPageNum);
 		return "admin/game/gameList";
 	}
+	
+	
+	
+	
+	
+	
 }
