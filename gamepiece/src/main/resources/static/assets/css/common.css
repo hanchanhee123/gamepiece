@@ -29,21 +29,15 @@ header {
     cursor: pointer;
 }
 
+#profile-img {
+    width: 45px;
+    height: 45px;
+    margin: 20px;
+    cursor: pointer;
+}
+
 .header-icon {
     margin: 18px 0px;
-}
-
-.bi-cart4 {
-    margin: 15px;
-    font-size: 32px;
-    cursor: pointer;
-    position: relative;
-}
-
-.bi-person {
-    margin: 15px;
-    font-size: 32px;
-    cursor: pointer;
 }
 
 .header-cate ul {

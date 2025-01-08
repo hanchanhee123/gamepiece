@@ -12,7 +12,7 @@ import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Service("adminUserService")
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
