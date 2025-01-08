@@ -71,10 +71,7 @@ main {
 
 .main-div {
     width: 1280px;
-    height: 100%;
     margin: 0 auto;
-    display: flex;
-    background-color: rgba(0,0,0,0.4);
 }
 
 /* 마이페이지 aside */
@@ -108,10 +105,6 @@ main {
 
 .mypage-cate {
     margin: 10px 0px;
-}
-
-.mypage-cate-game {
-    color: #007bff;
 }
 
 .mypage-cate ul {
