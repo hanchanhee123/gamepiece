@@ -82,12 +82,24 @@ public class GameListController {
 	
 	// 게임 검색
 	@PostMapping("/searchList")
-	public String searchListView(@RequestParam(value="searchValue") String searchValue, Model model) {
+	public String searchListView(@RequestParam(value="searchValue") String searchValue, Model model, Pageable pageable) {
 		
 		List<Game> gameList = gameListService.searchList(searchValue);
+		var pageInfo = gameListService.getGameList(pageable);
+		log.info("gameList : {}", gameList);
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int lastPage = pageInfo.getLastPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
 		
 		model.addAttribute("gameList", gameList);
 		model.addAttribute("searchValue", searchValue);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
 		return "admin/game/gameList";
 	}
 }

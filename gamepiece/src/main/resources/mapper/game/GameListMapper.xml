@@ -126,6 +126,7 @@
 	<select id="getSearchList" parameterType="map" resultMap="gameList">
 		/* 게임 검색 */
 		SELECT
+			g.gm_cd,
 			g.gm_nm,
 			gd.price
 		FROM
