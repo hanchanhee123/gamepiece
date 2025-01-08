@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default-user}">
+	  
+	<head>
+		<link th:href="@{/assets/css/user/user.css}" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<th:block layout:fragment="contents-body">
+		<header>
+			<div class="header-div">
+	            <div class="header-img" th:onclick="|location.href='@{/}'|">
+	                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}"/>
+	            </div>
+	        </div>
+		</header>
+		
+		<div class="join-info-form">
+            <div class="user-form-text">
+                <h3>회원가입</h3>
+            </div>
+            <div class="user-form-group">
+                <input type="text" id="id" class="user-insert-form" placeholder="아이디를 입력해주세요">
+            </div>
+            <div>
+                <input type="hidden" id="authrt-cd" name="authrt-cd" value="회원">
+            </div>
+            <div class="user-form-group">
+                <input type="password" id="user-pswd" class="user-insert-form" placeholder="비밀번호를 입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="password" class="user-insert-form" placeholder="비밀번호를 재입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="text" id="user-nm" class="user-insert-form" placeholder="이름을 입력해주세요">
+            </div>
+            <div class="user-form-group-gender">
+                <input type="radio" class="btn-check" id="male" name="gender" value="M" autocomplete="off">
+                <label class="btn btn-primary btn-lg" for="male">남성</label>
+
+                <input type="radio" class="btn-check" id="female" name="gender" value="F" autocomplete="off">
+                <label class="btn btn-primary btn-lg" for="female">여성</label>
+            </div>
+            
+            <div class="user-form-group">
+                <input type="email" id="user-eml-addr" class="user-insert-form" placeholder="이메일을 입력해주세요">
+            </div>
+            <div class="user-form-group-brdt">
+                <input type="text" id="user-brdt" class="user-insert-form" placeholder="생년월일을 입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="tel" id="user-telno" class="user-insert-form" placeholder="전화번호를 입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="text" id="user-nn" class="user-insert-form" placeholder="닉네임을 입력해주세요">
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary common-btn-lg">회원가입</button>
+            </div>
+        </div>
+		
+	</th:block>
+
+	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    		
+    	</script>
+    </th:block>
+            
+</html>
