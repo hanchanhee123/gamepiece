@@ -33,7 +33,7 @@
                                 <select class="form-select" name="searchGenre" id="searchGenre">
                                     <option>장르선택</option>
                                     <th:block th:each="l : ${genreList}">
-                                    	<option th:value="${l.genre}" th:selected="${'genre' eq searchGenre}" th:text="${l.genre}"></option>
+                                    	<option th:value="${l.genre}" th:text="${l.genre}"></option>
                                     </th:block>
                                 </select>
                             </div>
@@ -122,6 +122,16 @@
     			$('body').append($form);
     			$form.submit();
     		})
+    		
+    		$('#searchGenre').change(function() {
+    			const searchGenre = $(this).val();
+    			const $form = $('<form />', {'action' : '/admin/game/searchGenre', 'method' : 'post'});
+    			const $searchGenre = $('<input />', {'type' : 'hidden', 'name' : 'searchGenre'}).val(searchGenre);
+    			$form.append($searchGenre);
+    			$('body').appen($form);
+    			$form.submit();
+    		})
+    		
     		
     		
     	</script>

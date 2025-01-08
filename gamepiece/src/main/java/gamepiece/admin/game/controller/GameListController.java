@@ -34,7 +34,6 @@ public class GameListController {
 		var pageInfo = gameListService.getGameList(pageable);
 		List<Game> gameList = pageInfo.getContents();
 		
-		log.info("gameList : {}", gameList);
 		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
@@ -90,7 +89,6 @@ public class GameListController {
 		
 		List<Game> gameList = gameListService.searchList(searchValue);
 		var pageInfo = gameListService.getGameList(pageable);
-		log.info("gameList : {}", gameList);
 		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
@@ -106,6 +104,10 @@ public class GameListController {
 		model.addAttribute("endPageNum", endPageNum);
 		return "admin/game/gameList";
 	}
+	
+	
+	
+	
 	
 	
 }
