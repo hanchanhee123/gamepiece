@@ -14,7 +14,7 @@ import gamepiece.admin.user.service.UserService;
 import gamepiece.util.Pageable;
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
+@Controller("adminUserController")
 @Slf4j
 @RequestMapping("/admin/user")
 public class UserController {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="gamepiece.user.event.mapper.EventMapper">
-	<resultMap type="Event" id="eventResultMap">
+<mapper namespace="gamepiece.user.event.mapper.UserEventMapper">
+	<resultMap type="gamepiece.user.event.domain.Event" id="eventResultMap">
 		<id 	column="ev_cd" 					property="evCd"/>
 		<result column="ev_nm" 					property="evNm" />
 		<result column="ev_contents" 			property="evContents" />
@@ -19,7 +19,7 @@
 	</resultMap>
 
 <!-- 이벤트 삭제 -->
-<update id="removeEvent" parameterType="Event">
+<update id="removeEvent" parameterType="gamepiece.user.event.domain.Event">
 	UPDATE
 		events
 	SET
@@ -63,7 +63,7 @@
 		ev_cd=#{evCd};
 </select>
 
-<insert id="addEvent" parameterType="Event">
+<insert id="addEvent" parameterType="gamepiece.user.event.domain.Event">
 	INSERT INTO events
 	  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
 	VALUES 
@@ -82,7 +82,7 @@
 	  );
 </insert>
 
-<update id="modifyEvent" parameterType="Event">
+<update id="modifyEvent" parameterType="gamepiece.user.event.domain.Event">
 	UPDATE events
 	<trim prefix="SET" suffixOverrides=",">
 		<if test="evNm != null and evNm != ''">
