@@ -9,12 +9,12 @@
          <div class="">
               <div class="main-div">
             <ul>
-                <li class="pointshop-cate"><a href="item-imoticon.html">이모티콘</a></li>
-                <li class="pointshop-cate"><a href="item-avatar.html">아바타</a></li>
-                <li class="pointshop-cate"><a href="item-background.html">배경프로필</a></li>
-                <li class="pointshop-cate"><a href="item-avatarframe.html">아바타액자</a></li>
-                <li class="pointshop-cate"><a href="item-etc.html">기타</a></li>
-                <li class="pointshop-cate"><a href="pointshop_log.html">구매내역</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">이모티콘</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/avatar}">아바타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/background}">배경프로필</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/frame}">아바타액자</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/etc}">기타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">구매내역</a></li>
             </ul>
         <div class="pointshop-Hd">
             <div class="pointshop-top">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${ItemList}">
+                        <div class="box-list" th:each="l : ${imoticonList}">
                             <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${ItemList}">
+                        <div class="box-list" th:each="l : ${avatarList}">
                             <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${ItemList}">
+                        <div class="box-list" th:each="l : ${backList}">
                             <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
@@ -108,7 +108,7 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${ItemList}">
+                        <div class="box-list" th:each="l : ${frameList}">
                             <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
@@ -130,7 +130,7 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${ItemList}">
+                        <div class="box-list" th:each="l : ${etcList}">
                             <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
