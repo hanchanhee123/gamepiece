@@ -28,11 +28,9 @@ public class NoticeController {
 	public String removeInquiry(@RequestParam(name="noticeNum") int noticeNum, RedirectAttributes rttr) {
 	    int result = noticeService.removeNotice(noticeNum);
 
-	    if(result > 0) {
+	
 	        rttr.addFlashAttribute("message", "문의글 삭제되었습니다.");
-	    } else {
-	        rttr.addFlashAttribute("error", "문의글 삭제에 실패했습니다.");
-	    }
+	   
 	    return "redirect:/admin/notice/list";
 	}
 	

@@ -22,6 +22,12 @@ public class BoardCategoryServiceImpl implements BoardCategoryService  {
 	private final BoardCategoryMapper boardCategoryMapper;
 
 	@Override
+	public List<BoardCategory> getBoardCategoryList() {
+		// TODO Auto-generated method stub
+		return boardCategoryMapper.BoardCategoryList();
+	}
+	
+	@Override
 	public PageInfo<BoardCategory> getBoardCategoryList(Pageable pageable) {
 	
 		int rowCnt = boardCategoryMapper.getCntBoardCategory();
@@ -51,6 +57,12 @@ public class BoardCategoryServiceImpl implements BoardCategoryService  {
 	public int modifyCategory(BoardCategory boardCategory) {
 		// TODO Auto-generated method stub
 		return boardCategoryMapper.modifyCategory(boardCategory);
+	}
+
+	@Override
+	public int removeCategory(String categoryCode) {
+		
+		return boardCategoryMapper.removeCategory(categoryCode);
 	}
 
 

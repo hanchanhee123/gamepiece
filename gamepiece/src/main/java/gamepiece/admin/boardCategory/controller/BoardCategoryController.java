@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.boardCategory.domain.BoardCategory;
 import gamepiece.admin.boardCategory.service.BoardCategoryService;
@@ -25,7 +26,32 @@ public class BoardCategoryController {
 	private final BoardCategoryService boardCategoryService;
 	
 	
+	@PostMapping("/remove")
+	public String removeBoard(@RequestParam(name="categoryCode") String categoryCode, RedirectAttributes rttr) {
+	    int result = boardCategoryService.removeCategory(categoryCode);
 
+	    
+	        rttr.addFlashAttribute("message", "게시글이 삭제되었습니다.");
+	   
+	    return "redirect:/admin/boardCategory/list";
+	}
+	
+
+	@PostMapping("/modify")
+	public String modifyCategory(BoardCategory boardCategory, RedirectAttributes rttr) {
+				int result = boardCategoryService.modifyCategory(boardCategory);
+	    
+	    if(result > 0) {
+	        rttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
+	      
+	    } 
+	    return "redirect:/admin/boardCategory/list";
+	}
+		
+		
+		
+	
+	
 	
 
 	@GetMapping("/modify")
