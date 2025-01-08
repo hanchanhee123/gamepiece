@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import gamepiece.user.pointShop.domain.Point;
-import gamepiece.user.pointShop.mapper.PointShopMapper;
+import gamepiece.user.pointShop.mapper.UserPointShopMapper;
 
 
 @Service
 public class PointShopServiceImpl implements PointShopService{
-	private final PointShopMapper pointshopMapper;
+	private final UserPointShopMapper pointshopMapper;
 	
-	public PointShopServiceImpl(PointShopMapper pointshopMapper) {
+	public PointShopServiceImpl(UserPointShopMapper pointshopMapper) {
 		this.pointshopMapper = pointshopMapper;
 	}
 	

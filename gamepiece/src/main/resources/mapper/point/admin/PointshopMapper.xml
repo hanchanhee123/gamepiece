@@ -70,7 +70,7 @@
 			ps.ps_cd = #{itemCd};
 	</select>
 	
-	<update id="modifyItem" parameterType="point">
+	<update id="modifyItem" parameterType="gamepiece.admin.point.domain.Point">
 		UPDATE point_shop
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="itemCate != null and itemCate != ''">
@@ -96,7 +96,7 @@
 			ps_cd = #{itemCd};
 	</update>
 	
-	<insert id="addItem" parameterType="Point">
+	<insert id="addItem" parameterType="gamepiece.admin.point.domain.Point">
         INSERT INTO point_shop (
         	ps_cd, 
 			ps_cate_cd, 
@@ -120,7 +120,7 @@
 		);
     </insert>
     
-    <update id="removeItem" parameterType="Point">
+    <update id="removeItem" parameterType="gamepiece.admin.point.domain.Point">
     	UPDATE point_shop
 		SET
 			is_delete='delete'
