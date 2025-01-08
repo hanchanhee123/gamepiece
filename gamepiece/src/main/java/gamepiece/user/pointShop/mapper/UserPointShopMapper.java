@@ -9,6 +9,6 @@ import gamepiece.user.pointShop.domain.Point;
 
 
 @Mapper
-public interface PointShopMapper {
+public interface UserPointShopMapper {
 	List<Point> findAll();
 }
