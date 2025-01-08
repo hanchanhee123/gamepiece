@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/default}">
+
+  <th:block layout:fragment="contents-header">
+    <div class="col-6">
+      <div class="content-header">
+        <div>
+          <h2 class="content-title card-title" th:text="${title}">문의글 수정</h2>
+        </div>
+        <div>
+          <a th:href="@{/admin/inquiry/list}" id="cancelBtn" class="btn btn-light rounded font-sm mr-5 text-body hover-up">취소</a>
+          <button type="submit" id="modifyBtn" class="btn btn-md rounded font-sm hover-up">수정</button>
+        </div>
+      </div>
+    </div>
+  </th:block>
+
+  <th:block layout:fragment="contents-body">
+    <form id="modifyinquiryForm" th:action="@{/admin/inquiry/modify}" method="post" th:object="${inquiryInfo}">
+      <input type="hidden" name="inquiryNum" th:value="*{inquiryNum}">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card mb-4">
+            <div class="card-body">
+
+              <div class="mb-4">
+                <label for="inquiryTitle" class="form-label">제목</label>
+                <input type="text" class="form-control" id="inquiryTitle"
+                 name="inquiryTitle" th:value="*{inquiryTitle}">
+              </div>
+
+              <div class="mb-4">
+                <label for="inquiryContent" class="form-label">게시내용</label>
+                <textarea placeholder="내용을 입력하세요" class="form-control" rows="7" style="height: 300px; 
+                resize: none;" id="inquiryContent" 
+                name="inquiryContent" th:text="*{inquiryContent}"></textarea>
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <h6>첨부파일</h6>
+                </div>
+                <div class="col-md-9">
+                  <div class="mb-4">
+                    <label class="form-label">이미지</label>
+                    <input class="form-control" type="file">
+                  </div>
+                </div> </div> <div class="row mt-4">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </th:block>
+
+  <th:block layout:fragment="customJsResource"></th:block>
+  <th:block layout:fragment="customJs">
+    <script>
+  
+      $('#modifyBtn').click(function (event) {
+        event.preventDefault(); // 기본 submit 이벤트 방지
+
+        let isSubmit = true;
+        const $formControl = $('#modifyinquiryForm').find('#inquiryTitle, textarea');
+        $formControl.each((idx, elem) => {
+          const value = $(elem).val();
+          if (!value) {
+            isSubmit = false;
+            alert('필수 입력 항목입니다.');
+            $(elem).focus();
+            return false;
+          }
+        });
+
+        if (isSubmit) {
+          $('#modifyinquiryForm').submit();
+        }
+      });
+    </script>
+  </th:block>
+</html>
