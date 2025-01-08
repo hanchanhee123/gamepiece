@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default-user}">
+	  
+	<head>
+		<link th:href="@{/assets/css/user/user.css}" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<th:block layout:fragment="contents-body">
+		<header>
+			<div class="header-div">
+	            <div class="header-img" th:onclick="|location.href='@{/}'|">
+	                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}"/>
+	            </div>
+	        </div>
+		</header>
+		
+		<div class="user-info-form">
+            <div class="user-form-text">
+                <h3>비밀번호 찾기</h3>
+            </div>
+            <div class="user-form-group">
+                <input type="text" id="id" class="user-insert-form" placeholder="아이디를 입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="text" id="user-nm" class="user-insert-form" placeholder="이름을 입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="email" id="user-eml-addr" class="user-insert-form" placeholder="이메일주소를 입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="tel" id="user-telno" class="user-insert-form" placeholder="전화번호를 입력해주세요">
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary common-btn-lg">비밀번호 찾기</button>
+            </div>
+            <div class="user-form-span">
+                <span class="find-id" onclick="location.href='/findUserId'">아이디 찾기</span>
+                <span class="add-user" onclick="location.href='/addUser'">회원가입</span>
+                <span class="login" onclick="location.href='/login'">로그인</span>
+            </div>
+        </div>
+	
+	</th:block>
+
+	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    		
+    	</script>
+    </th:block>
+            
+</html>

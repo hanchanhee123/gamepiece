@@ -1,0 +1,178 @@
+@charset "UTF-8";
+
+.main-div {
+    height: 100%;
+    display: flex;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.mypage-user {
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.mypage-user-modify {
+    display: flex;
+    justify-content: space-around;
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    margin: 10px 0px;
+    background-color: white;
+    /* gap: 300px; */
+}
+
+.mypage-user-img img {
+    width: 150px;
+    height: 150px;
+    margin: 20px;
+}
+
+.mypage-user-name {
+    align-content: center;
+    font-size: 23px;
+    font-weight: bold;
+    margin-right: 200px;
+}
+
+.mypage-point-coupon {
+    width: 230px;
+    margin: 25px 0px;
+    padding-bottom: 5px;
+    display: grid;
+    gap: 15px;
+}
+
+.mypage-point {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mypoint {
+    width: 100px;
+    color: #007bff;
+}
+
+.mypage-coupon {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mycoupon {
+    color: #007bff;
+}
+
+/* 이벤트 */
+.mypage-event {
+    margin: 30px 10px;
+}
+
+.mypage-event > span {
+    color: white;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+.common-card-section {
+    margin: 15px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28.3px;
+    justify-content: flex-start;
+}
+
+.card-section-md {
+    background-color: white;
+    border: 1px solid #007AFF;
+    border-radius: 10px;
+    width : 282px;
+    height : 370px;
+    color : black;
+    display: grid;
+    justify-content: center;
+    padding: 10px;
+    margin: 0px 10px 20px 10px;
+}
+
+.card-section-md p {
+    margin: 0;
+    width: 180px;
+}
+
+.card-section-md img {
+    width : 255px;
+    height : 280px;
+}
+
+.mypage-event-name {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.mypage-event-period {
+    color: grey;
+    font-size: 15px;
+}
+
+.more-btn-area {
+    display: flex;
+    justify-content: center;
+}
+
+.common-btn-md {
+    width: 250px;
+    padding: 10px;
+    margin: 18px 0px;
+    border-radius: 10px;
+}
+
+.more-btn-area img {
+    width: 18px;
+    height: 18px;
+    border-radius: 10px;
+}
+
+.more-btn-area > span {
+    color: white;
+}
+
+/* 포인트 적립/사용 내역, 보유 쿠폰 */
+.mypage-point-coupon-table {
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 0px 20px;
+    background-color: white;
+}
+
+.mypage-point-coupon-table .table {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+.mypage-point-coupon-table .table > thead {
+    border-bottom: 1px solid #007bff;
+}
+
+.mypage-point-coupon-table table tr:last-child td,
+.mypage-point-coupon-table table tr:last-child th {
+    border-bottom: none;
+}
+
+/* 모달 */
+body.modal-open {
+    overflow-y: scroll !important;
+    padding-right: 0 !important;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-dialog {
+    margin: auto;
+    margin-top: 15vh;
+}

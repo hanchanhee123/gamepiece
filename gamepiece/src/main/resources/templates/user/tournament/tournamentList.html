@@ -2,16 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{user/layout/default}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<head>
+	<link rel="stylesheet" th:href="@{/assets/css/tournament/tournament.css}" />
+</head>
 	 	<th:block layout:fragment="contents-header">
 		<div class="main-div">
 		   <div class = "tournament-menu">
 		       <ul>
-		           <li><a href="tournament.html" class="button-list active">LoL</a></li>
-		           <li><a href="tournament_val.html" class="button-list">Valorant</a></li>
-		           <li><a href="tournament_pubg.html" class="button-list">PUBG</a></li>
-		           <li><a href="tournament_bet.html" class="button-list">승부예측</a></li>
+		           <li><a th:href="@{/tournament/list}" class="button-list active">LoL</a></li>
+		           <li><a href="#" class="button-list">Valorant</a></li>
+		           <li><a href="#" class="button-list">PUBG</a></li>
+		           <li><a href="#" class="button-list">승부예측</a></li>
 		       </ul>
 			</div>
 		</th:block>
@@ -19,68 +20,74 @@
 			<div class="tournament-div">
 			    <div class="tournament-list">
 			        <div class="tournament-icon">
-			            <div class="icon-img-active">
-			                <img src="./leage/worlds.svg" />
+			            <div class="icon-img-active d-flex align-items-center justify-content-center">
+			                <i class="bi bi-trophy-fill h2 text-light mt-1"></i>
+			            </div>
+			            <p>전체</p>
+			        </div>
+			        <div class="tournament-icon">
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-suit-diamond-fill h2 mt-1"></i>
 			            </div>
 			            <p>월드챔피언쉽</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/asci.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-suit-heart-fill h2 mt-1"></i>
 			            </div>
 			            <p>ASCI</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/lck.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-pentagon-fill h2 mt-1"></i>
 			            </div>
 			            <p>LCK</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/lckCl.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-question-octagon-fill h2 mt-1"></i>
 			            </div>
 			            <p>LCK CL</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/msi.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-rocket-fill h2 mt-1"></i>
 			            </div>
 			            <p>MSI</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/season.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-snapchat h2 mt-1"></i>
 			            </div>
 			            <p>시즌오프닝</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/lpl.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-snow2 h2 mt-1"></i>
 			            </div>
 			            <p>LPL</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/lcs.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-stars h2 mt-1"></i>
 			            </div>
 			            <p>LCS</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/lec.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-strava h2 mt-1"></i>
 			            </div>
 			            <p>LEC</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/msc.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-suit-club-fill h2 mt-1"></i>
 			            </div>
 			            <p>MSC</p>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img">
-			                <img src="./leage/KeSPA.svg" />
+			            <div class="icon-img d-flex align-items-center justify-content-center">
+			                <i class="bi bi-suit-spade-fill h2 mt-1"></i>
 			            </div>
 			            <p>케스파컵</p>
 			        </div>
@@ -275,7 +282,7 @@
     <!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource">
     	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    	<script src="tournament.js"></script>
+    	<script th:src="@{/assets/js/tournament/tournament.js}"></script>
     </th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">

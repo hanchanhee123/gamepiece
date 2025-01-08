@@ -11,6 +11,9 @@ import gamepiece.util.Pageable;
 @Mapper
 public interface BoardCategoryMapper {
 	
+	//카테고리삭제
+	int removeCategory(String categoryCode);
+	
 	//카테고리 수정
 	int modifyCategory(BoardCategory boardCategory);
 	
@@ -24,6 +27,10 @@ public interface BoardCategoryMapper {
 	 int getCntBoardCategory();
 	
 	//카테고리목록
-		List<BoardCategory> getBoardCategoryList(Pageable pageable);
+	List<BoardCategory> getBoardCategoryList(Pageable pageable);
+	
+	//카테고리리스트
+	List<BoardCategory> BoardCategoryList();
+
 
 }
