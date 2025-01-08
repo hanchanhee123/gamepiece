@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.admin.inquiry.mapper.InquiryMapper">
+
+
+	<resultMap type="gamepiece.admin.inquiry.domain.Inquiry" id="InquiryResultMap">
+		<id column="inquiry_id" property="inquiryNum" />
+		<result column="id" property="inquiryUserId" />
+		<result column="inquiry_title" property="inquiryTitle" />
+		<result column="inquiry_content" property="inquiryContent" />
+		<result column="inquiry_ymd" property="inquiryYmd" />
+
+	<association property="userInfo" javaType="gamepiece.admin.user.domain.User">
+		<id column="id" property="id" />
+		<result column="authrt_cd" property="authrt_cd" />
+		<result column="user_pw" property="user_pw" />
+		<result column="user_nm" property="user_nm" />
+		<result column="user_gender" property="user_gender" />
+		<result column="user_eml_addr" property="user_eml_addr" />
+		<result column="user_brdt" property="user_brdt" />
+		<result column="user_telno" property="user_telno" />
+		<result column="user_nn" property="user_nn" />
+		<result column="join_ymd" property="join_ymd" />
+		<result column="whdwl_ymd" property="whdwl_ymd" />
+		</association>
+
+	</resultMap>
+
+<update id="removeInquiry" parameterType="string">
+
+	UPDATE
+		inquiry
+	SET
+		isdelete = 'delete'
+	WHERE
+		inquiry_id =#{inquiryNum};
+
+	</update>
+
+
+
+<select id="getCntInquiry" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		inquiry
+	WHERE
+		isdelete = 'active'
+	</select>
+
+
+<select id="getInquiryList" parameterType="gamepiece.util.Pageable" resultMap="InquiryResultMap">
+
+	SELECT
+		i.inquiry_id,
+		i.inquiry_title,
+		i.inquiry_content,
+		u.user_nn,
+		i.inquiry_ymd
+	FROM
+		inquiry i INNER JOIN user u
+		ON i.id = u.id
+	WHERE
+		i.isdelete = 'active'
+	ORDER BY
+		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED);
+
+	</select>
+
+
+	<insert id="addInquiry" parameterType="Inquiry">
+
+		INSERT INTO inquiry(
+			inquiry_id,
+			id,
+			inquiry_title,
+			inquiry_content,
+			inquiry_ymd
+			)VALUES(
+			CONCAT('inq_', LPAD(COALESCE((
+			SELECT next_num FROM (
+			SELECT MAX(CAST(SUBSTRING_INDEX(inquiry_id, 'inq_', -1) AS UNSIGNED)) + 1 AS
+			next_num
+		FROM 
+			inquiry
+			) AS temp
+			), 1), 2, '0')),
+			CONCAT('id', LPAD(#{idN}+1,2,'0')),
+			#{inquiryTitle},
+			#{inquiryContent},
+			CURDATE()
+			);
+
+	</insert>
+
+	<select id="getInquiryInfo" parameterType="string" resultMap="InquiryResultMap">
+	SELECT
+		i.inquiry_id,
+		i.inquiry_title,
+		i.inquiry_content
+	FROM
+		inquiry i
+	WHERE
+		inquiry_id =#{inquiryNum};
+
+	</select>
+
+	<update id="modifyInquiry" parameterType="Inquiry">
+		UPDATE
+			 inquiry
+		<set>
+			<if test="inquiryTitle != null and inquiryTitle != ''">
+				inquiry_title = #{inquiryTitle},
+			</if>
+			<if test="inquiryContent != null and inquiryContent != ''">
+				inquiry_content = #{inquiryContent}
+			</if>
+		</set>
+	WHERE
+		inquiry_id=#{inquiryNum}
+	</update>
+
+</mapper>
