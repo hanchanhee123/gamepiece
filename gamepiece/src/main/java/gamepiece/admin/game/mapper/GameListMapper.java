@@ -28,6 +28,9 @@ public interface GameListMapper{
 	
 	// 게임 검색
 	List<Game> getSearchList(Map<String, Object> searchMap);
+	
+	// 장르 목록 조회(임시)
+	List<Game> getGenreList();
 }
 
 

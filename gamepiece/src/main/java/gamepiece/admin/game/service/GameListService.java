@@ -25,4 +25,6 @@ public interface GameListService {
 	// 게임 검색
 	List<Game> searchList(String searchValue);
 	
+	// 장르 검색(임시)
+	List<Game> getGenreList();
 }
