@@ -12,7 +12,11 @@ import gamepiece.util.Pageable;
 
 @Mapper
 public interface UserPointShopMapper {
-	List<Point> findAll(Pageable pageable);
+	List<Point> findimoticon(Pageable pageable);
+	List<Point> findavatar(Pageable pageable);
+	List<Point> findavatarframe(Pageable pageable);
+	List<Point> findetc(Pageable pageable);
+	List<Point> findbackground(Pageable pageable);
 	
 	int getItemCount();
 	
