@@ -19,6 +19,10 @@ public interface GameListService {
 	// 특정 게임 정보 수정
 	void modifyGame(Game game);
 	
+	// 플랫폼 조회
 	List<Map<String, Object>> getPlatform();
+	
+	// 게임 검색
+	List<Game> searchList(String searchValue);
 	
 }

@@ -123,4 +123,18 @@
 			ON g.p_cd = p.p_cd;
 	</select>
 	
+	<select id="getSearchList" parameterType="map" resultMap="gameList">
+		/* 게임 검색 */
+		SELECT
+			g.gm_cd,
+			g.gm_nm,
+			gd.price
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+		WHERE
+			g.gm_nm LIKE CONCAT('%', #{searchValue}, '%');
+	</select>
+	
+	
 </mapper>

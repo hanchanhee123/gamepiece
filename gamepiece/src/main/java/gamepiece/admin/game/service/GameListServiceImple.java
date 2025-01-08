@@ -1,5 +1,6 @@
 package gamepiece.admin.game.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,5 +46,14 @@ public class GameListServiceImple implements GameListService{
 		return gameListMapper.getPlatform();
 	}
 	
+	@Override
+	public List<Game> searchList(String searchValue) {
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchValue", searchValue);
+		
+		List<Game> gameList = gameListMapper.getSearchList(searchMap);
+		return gameList;
+	}
 	
 }
