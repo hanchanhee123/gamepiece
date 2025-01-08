@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{/user/layout/default}">
+<head>
+	<link rel="stylesheet" th:href="@{/assets/css/home/GamePiece.css}" />
+</head>
+<th:block layout:fragment="contents-body">
+	<main>
+        <div class="main">
+            <div class="main-contents">
+                <div class="GamePeace_logo">
+                    <img th:src="@{assets/imgs/logo/GamePeace.svg}"/>
+                </div>
+                <div class="slide-div">
+                    <div id="main-list" class="main-slider carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="main-games carousel-item active">
+                                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/466560/3f653067940e08ffa04b6867fd5d7787cf2e49ae/capsule_616x353.jpg?t=1732274847"/>
+                            </div>
+                            <div class="main-games carousel-item">
+                                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1943950/capsule_616x353.jpg?t=1721158394"/>
+                            </div>
+                            <div class="main-games carousel-item">
+                                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1623730/c961ac047294838bfe382bf193ade5c64b19e573/capsule_616x353.jpg?t=1728458632"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-div">
+                    <div class="left-arrow carousel-control-prev" data-bs-target="#sub-game-list" data-bs-slide="prev">
+                        <i class="bi bi-chevron-left"></i>
+                    </div>
+                    <div id="sub-game-list" class="slider carousel slide">
+                        <div class="carousel-inner">
+                            <div class="sub-games carousel-item active">
+                                <div class="sub-game">
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/433340/capsule_616x353.jpg?t=1732647440"/>
+                                    </div>
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/391720/capsule_616x353.jpg?t=1732796809"/>
+                                    </div>
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1172380/capsule_616x353.jpg?t=1725901454"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sub-games carousel-item">
+                                <div class="sub-game">
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1086940/hero_capsule.jpg?t=1725654125"/>
+                                    </div>
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2679460/hero_capsule.jpg?t=1732700322"/>
+                                    </div>
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/990080/hero_capsule.jpg?t=1717689083"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sub-games carousel-item">
+                                <div class="sub-game">
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2513280/hero_capsule_koreana.jpg?t=1732875699"/>
+                                    </div>
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/bundles/5699/qipqf90z2z7h4x3i/hero_capsule.jpg?t=1678931390"/>
+                                    </div>
+                                    <div>
+                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1601580/27c9ed15b2bafd62a8037e229fb2e44a17441737/hero_capsule.jpg?t=1732797543"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-arrow carousel-control-next" data-bs-target="#sub-game-list" data-bs-slide="next">
+                        <i class="bi bi-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="event-contents">
+                    <div class="event-content">
+                        <img calss="event1" src="https://cdn.discordapp.com/attachments/1304236608651923468/1312968092393144380/image.png?ex=674e6c52&is=674d1ad2&hm=d396c30fb84105e93f53943a335fa97f8a7a8e392555a8689493f428178741b1&" />
+                        <img calss="event2" src="https://cdn.discordapp.com/attachments/1304236608651923468/1312968207979643043/image.png?ex=674e6c6e&is=674d1aee&hm=be326fc3e1d047fe4fcd89c68c76791624cb8971af2a0bfc75be07c3221aaa77&" />
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+<!--/* 사용자 추가 js file */-->
+<th:block layout:fragment="customJsResource">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+</th:block>
+<!--/* 사용자 추가 js script */-->
+<th:block layout:fragment="customJs">
+</th:block>
+</html>

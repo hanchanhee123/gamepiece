@@ -156,6 +156,8 @@ public class Game {
 		builder.append(description);
 		builder.append(", price=");
 		builder.append(price);
+		builder.append(", genre=");
+		builder.append(genre);
 		builder.append(", reviewCount=");
 		builder.append(reviewCount);
 		builder.append(", reviewAvg=");
@@ -166,9 +168,13 @@ public class Game {
 		builder.append(adminId);
 		builder.append(", regYmd=");
 		builder.append(regYmd);
+		builder.append(", isDelete=");
+		builder.append(isDelete);
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 	
 	
 	

@@ -14,9 +14,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gamepiece.admin.game.domain.Game;
 import gamepiece.admin.game.service.GameListService;
 import gamepiece.util.Pageable;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/admin/game")
+@Slf4j
 public class GameListController {
 
 	private final GameListService gameListService;
@@ -32,14 +34,18 @@ public class GameListController {
 		var pageInfo = gameListService.getGameList(pageable);
 		List<Game> gameList = pageInfo.getContents();
 		
+		log.info("gameList : {}", gameList);
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
 		
+	
+		
 		List<Map<String, Object>> platformList = gameListService.getPlatform();
 		
-		
+		List<Game> genreList = gameListService.getGenreList();
 		
 		model.addAttribute("title", "게임목록");
 		model.addAttribute("gameList", gameList);
@@ -49,7 +55,7 @@ public class GameListController {
 		model.addAttribute("endPageNum", endPageNum);
 		
 		model.addAttribute("platformList", platformList);
-		
+		model.addAttribute("genreList", genreList);
 		
 		
 		
@@ -75,6 +81,30 @@ public class GameListController {
 		gameListService.modifyGame(game);
 		reAttr.addAttribute("gameCode", game.getGameCode());
 		return "redirect:/admin/game/gameList";
+	}
+	
+	
+	// 게임 검색
+	@PostMapping("/searchList")
+	public String searchListView(@RequestParam(value="searchValue") String searchValue, Model model, Pageable pageable) {
+		
+		List<Game> gameList = gameListService.searchList(searchValue);
+		var pageInfo = gameListService.getGameList(pageable);
+		log.info("gameList : {}", gameList);
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int lastPage = pageInfo.getLastPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		
+		model.addAttribute("gameList", gameList);
+		model.addAttribute("searchValue", searchValue);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		return "admin/game/gameList";
 	}
 	
 	
