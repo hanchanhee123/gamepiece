@@ -9,7 +9,7 @@
 		<id column="id" property="id" />
 		<result column="authrt_cd" property="authrtCd"/>
 		<result column="authrt_nm" property="authrtNm"/>
-		<result column="user_pw" property="userPswd"/>
+		<result column="user_pswd" property="userPswd"/>
 		<result column="user_nm" property="userNm"/>
 		<result column="user_gender" property="userGender"/>
 		<result column="user_eml_addr" property="userEmlAddr"/>
@@ -61,7 +61,7 @@
 				authrt_cd = #{authrtCd},
 			</if>
 			<if test="userPswd != null and userPswd != ''">
-				user_pw = #{userPswd},
+				user_pswd = #{userPswd},
 			</if>
 			<if test="userNm != null and userNm != ''">
 				user_nm = #{userNm},

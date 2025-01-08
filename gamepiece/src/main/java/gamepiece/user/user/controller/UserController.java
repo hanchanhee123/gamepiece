@@ -1,34 +1,84 @@
 package gamepiece.user.user.controller;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import gamepiece.user.user.domain.User;
+import gamepiece.user.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/user")
+@RequiredArgsConstructor
+@Slf4j
 public class UserController {
+	
+	private final UserService userService;
 
 	@GetMapping("/login")
-	public String login() {
+	public String login(@RequestParam(value="msg", required = false) String msg, Model model) {
 		
-		return "/user/user/login";
+		if(msg != null) model.addAttribute("msg", msg);
+		
+		return "user/user/login";
+	}
+	
+	@PostMapping("/loginPro")
+	public String loginPro(@RequestParam(value = "id") String id,
+						   @RequestParam(value = "userPswd") String userPswd,
+						   RedirectAttributes reAttr, HttpSession session) {
+		String viewName ="redirect:/login";
+		
+		Map<String, Object> resultMap = userService.checkUser(id, userPswd);
+		boolean isMatched = (boolean) resultMap.get("isMatched");
+		if(isMatched) {
+			User userInfo = (User) resultMap.get("userInfo");
+			
+			System.out.println(userInfo.getUserNm());
+			
+			String userName = userInfo.getUserNm();
+			
+			session.setAttribute("SID", id);
+			session.setAttribute("SNAME", userName);
+			
+			viewName = "redirect:/";
+		}else {
+			reAttr.addAttribute("msg", "사용자의 정보가 일치하지 않습니다.");
+		}
+		
+		return viewName;
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		
+		session.invalidate();
+		
+		return "redirect:/user";
 	}
 	
 	@GetMapping("/addUser")
 	public String addUser() {
 		
-		return "/user/user/addUser";
+		return "user/user/addUser";
 	}
 	
 	@GetMapping("/findUserId")
 	public String findUserId() {
 		
-		return "/user/user/findUserId";
+		return "user/user/findUserId";
 	}
 	
-	@GetMapping("/findUserPw")
-	public String findUserPw() {
+	@GetMapping("/findUserPswd")
+	public String findUserPswd() {
 		
-		return "/user/user/findUserPw";
+		return "user/user/findUserPswd";
 	}
 }
