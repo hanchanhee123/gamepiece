@@ -10,7 +10,7 @@
          
           </div>
            <div> 
-          <a th:href="@{/admin/inquiry/write}" class="btn btn-primary btn-sm rounded">문의글작성</a>
+          <a th:href="@{/admin/boardComment/write}" class="btn btn-primary btn-sm rounded">덧글작성</a>
       </div>
       </div>
    	</th:block>
@@ -19,7 +19,7 @@
         <span th:text="${message}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+     <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
     <span th:text="${error}"></span>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
@@ -28,7 +28,7 @@
    				      <div class="card mb-4">
                     <header class="card-header">
                         <div class="row gx-3">
-                            
+                           
                               <div class="col-lg-4 col-md-6 me-auto">
                                 <input type="text" placeholder="Search..." class="form-control" />
                             </div>
@@ -51,39 +51,46 @@
                             <table class="table table-hover">
                                 <thead style="text-align: center;">
                                     <tr>
-                                        <th>문의번호</th>
-                                        <th>문의제목</th>
-                                        <th>유저</th>
-                                        <th>작성일자</th>
+                                        <th>덧글번호</th>
+                                         <th>덧글작성자</th>
+                                        <th>덧글작성게시물</th>
+                                        <th>덧글내용</th>
+                                        <th>덧글좋아요</th>
+                                        <th>덧글싫어요</th>
+                                        <th>덧글작성일</th>
                                         <th>비고</th>
                                      
                                     </tr>
                                 </thead>
                                 <tbody style="text-align: center;">
-                                <th:block th:if="${inquiryList}">
-                               <tr th:each="l : ${inquiryList}">
-                                       <td th:text="${l.inquiryNum}"></td>
-                                     <td th:text="${l.inquiryTitle}"></td>
-                                       <td th:text="${l.userInfo.userNn}"></td>
-                                       <td th:text="${l.inquiryYmd}"></td>                                   
+                                <th:block th:if="${commentList}">
+                               <tr th:each="l : ${commentList}">
+                                        
+                                       <td th:text="${l.commentNum}"></td>
+                                        <td th:text="${l.userInfo.userNn}"></td>
+                                     <td th:text="${l.boardInfo.boardTitle}"></td>
+                                       <td th:text="${l.commentDetail}"></td>                                      
+                                       <td th:text="${l.commnetLikeCnt}"></td>
+                                       <td th:text="${l.commentDisLikeCnt}"></td>
+                                       <td th:text="${l.commentYmd}"></td>                                   
                                       
-                                    <td>
+                                        <td>
                                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end" style="display: contents;">
-                                                <a th:href="@{/admin/inquiry/modify(inquiryNum=${l.inquiryNum})}" 
+                                                <a th:href="@{/admin/boardComment/modify(commentNum=${l.commentNum})}" 
                                                 class="btn btn-sm font-sm rounded btn-brand" style="margin-right: 10px;"> <i class="material-icons md-edit"></i> 수정 </a>
                                                 
-                                              <a th:href="@{/admin/inquiry/remove(inquiryNum=${l.inquiryNum})}"
+                                           <a th:href="@{/admin/boardComment/remove(commentNum=${l.commentNum})}"
 								  class="btn btn-sm font-sm btn-light rounded removeBtn" style="margin-right: 10px;">
 								  <i class="material-icons md-delete_forever"></i>삭제
 															</a>
                                             </div>
-                                     <!--        dropdown //end -->
-                                        </td> 
+                                            <!-- dropdown //end -->
+                                        </td>
                                     </tr>
                                     </th:block>
-                                    <th:block th:unless="${inquiryList}">
+                                    <th:block th:unless="${commentList}">
 								<tr>
-									<td colspan="5">등록된 게시물이 없습니다.</td>
+									<td colspan="7">등록된 게시물이 없습니다.</td>
 								</tr>
 							</th:block>
                                  
@@ -98,7 +105,7 @@
                     <nav>
                         <ul class="pagination justify-content-center">
                         		<li class="page-item">
-                        			<a class="page-link" th:href="@{/admin/board/list}">         			
+                        			<a class="page-link" th:href="@{/admin/boardComment/list}">         			
                						<i class="material-icons md-first_page"></i>
                         			</a>
                         
@@ -106,23 +113,23 @@
                         
                             <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
                             		<a class="page-link"
-                            			th:href="@{/admin/inquiry/list(currentPage=${currentPage -1})}">
+                            			th:href="@{/admin/boardComment/list(currentPage=${currentPage -1})}">
                             		<i class="material-icons md-chevron_left"></i>
                             		</a>
                             </li>
                             <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">		
                        				<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-                       				<a class="page-link" th:href="@{/admin/board/list(currentPage=${num})}" th:text="${num}"></a>
+                       				<a class="page-link" th:href="@{/admin/boardComment/list(currentPage=${num})}" th:text="${num}"></a>
                        		</th:block>
                             <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
                                 <a class="page-link" 
-                                th:href="@{/admin/inquiry/list(currentPage=${currentPage+1})}">
+                                th:href="@{/admin/boardComment/list(currentPage=${currentPage+1})}">
                                 <i class="material-icons md-chevron_right"></i>
                                 </a>
                             </li>
                             <li class="page-item">
 							    <a class="page-link" 
-							       th:href="@{/admin/inquiry/list(currentPage=${lastPage})}">
+							       th:href="@{/admin/boardComment/list(currentPage=${lastPage})}">
 							        <i class="material-icons md-last_page"></i>
 							    </a>
 							</li>    
@@ -132,30 +139,26 @@
    			</div>
    		</div>
    	</th:block>
-   	
-   	
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	 <script th:inline="javascript">
-    	const startPageNum = [[${startPageNum}]];
-    	const endPageNum = [[${endPageNum}]];
-    	
+  
     	$('.removeBtn').click(function(e){
     		   e.preventDefault();
     		   
     		   if(confirm('삭제하시겠습니까?')) {
-    		       const inquiryNum = $(this).attr('href').split('=')[1];
+    		       const commentNum = $(this).attr('href').split('=')[1];
     		       
     		       const form = document.createElement('form');
     		       form.method = 'POST';
-    		       form.action = '/admin/inquiry/remove';
+    		       form.action = '/admin/boardComment/remove';
     		       
     		       const input = document.createElement('input');
     		       input.type = 'hidden';
-    		       input.name = 'inquiryNum';
-    		       input.value = inquiryNum;
+    		       input.name = 'commentNum';
+    		       input.value = commentNum;
     		       
     		       form.appendChild(input);
     		       document.body.appendChild(form);
