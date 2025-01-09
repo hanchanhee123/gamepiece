@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+.main-div {
+    height: 100%;
+    display: flex;
+    background-color: rgba(0,0,0,0.4);
+}
+
 .content-main {
 	width: 100%;
 }
