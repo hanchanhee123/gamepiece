@@ -28,4 +28,13 @@ public interface GameListService {
 	// 장르 검색(임시)
 	List<Game> getGenreList();
 	
+	// 장르를 통한 게임 목록 조회
+	List<Game> searchGameWithGenre(String searchGenre);
+	
+	// 플랫폼을 통한 게임 목록 조회
+	List<Game> searchGameWithPlatform(String searchPlatform);
+	
+	
+	
+	
 }

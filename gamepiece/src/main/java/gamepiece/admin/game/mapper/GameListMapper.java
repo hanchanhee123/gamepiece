@@ -32,6 +32,11 @@ public interface GameListMapper{
 	// 장르 목록 조회(임시)
 	List<Game> getGenreList();
 	
+	// 장르를 통한 게임 목록 검색
+	List<Game> getGameWithGenre(Map<String, Object> searchMap);
+	
+	// 플랫폼을 통한 게임 목록 검색
+	List<Game> getGameWithPlatform(Map<String, Object> searchMap);
 
 }
 
