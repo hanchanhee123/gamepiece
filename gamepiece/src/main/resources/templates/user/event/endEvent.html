@@ -9,8 +9,8 @@
 <th:block layout:fragment="contents-header">  
 	<div class="main-div">
 	    <div class="detail-cate">
-	        <a th:href="@{/event/progressEvent}" class="item-active active">진행중 이벤트</a>
-            <a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
+	        <a th:href="@{/event/progressEvent}" class="item-active">진행중 이벤트</a>
+            <a th:href="@{/event/endEvent}" class="item-active active">종료된 이벤트</a>
             <a th:href="@{/event/winnerList}" class="item-active">당첨자 발표</a>
     	</div>
     </div>
@@ -19,29 +19,23 @@
     <div class="main-div"> 
     <div class="list-event">
         <ul>
-            <li class="event" onclick="location.href='https://lostark.game.onstove.com/Event/Collaboration/240925'">
+            <li class="event" onclick="location.href=''">
                 <div class="list-thumb">
-                    <img src="/assets/imgs/event/73cbabf0177d4bb4b2a560a96c1d6e2e.jpg">
+                    <img src="../img/26e997a1ac53443b8f7fe01a0b45a041.jpg">
                 </div>
-                <div th:if="${eventList != null}" >
-                <th:block th:each="{eventList :${eventList}">
                 <div class="list-contents">
                     <div class="list-con">
                         <div class="list-subject" aria-label="제목">
-                            <span class="list-title" th:text="${eventList.evNm}"></span>
+                            <span class="list-title">이벤트 제목</span>
                         </div>
                         <div class="list-term">
                             <strong>이벤트 기간</strong>
-                            <span  th:text="${eventList.evStartYmd}"></span>
-                            <span>~</span>
-                            <span th:text="${eventList.evEndYmd}"></span>
+                            : 20xx.xx.xx - 20xx.xx.xx
                         </div>
                     </div>
                     <div class="list-status">
-                        <span class="list-status-ongoing"th:if="${eventList.evStatus == '종료'}"></span>
+                        <span class="list-status-ongoing">종료</span>
                     </div>
-                </div>
-                </th:block>
                 </div>
             </li>
         </ul>
