@@ -32,9 +32,9 @@
                 <button type="button" class="btn btn-primary common-btn-lg">아이디 찾기</button>
             </div>
             <div class="user-form-span">
-                <span class="find-pw" onclick="location.href='/findUserPw'">비밀번호 찾기</span>
-                <span class="add-user" onclick="location.href='/addUser'">회원가입</span>
-                <span class="login" onclick="location.href='/login'">로그인</span>
+                <span class="find-pw" th:onclick="|location.href='@{/findUserPswd}'|">비밀번호 찾기</span>
+                <span class="add-user" th:onclick="|location.href='@{/addUser}'|">회원가입</span>
+                <span class="login" th:onclick="|location.href='@{/login}'|">로그인</span>
             </div>
         </div>
 	

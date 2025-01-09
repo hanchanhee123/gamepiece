@@ -38,7 +38,7 @@
                                 </select>
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
+                                <select class="form-select" name="searchPlatform" id="searchPlatform">
                                 	<option>플랫폼선택</option>
 	                                <th:block th:each="l : ${platformList}">
 	                                    <option th:value=${l.platformCode} th:text="${l.platformName}"></option>
@@ -66,7 +66,7 @@
                             	</div>
                         	</th:block>
                         	<th:block th:unless="${gameList != null}">
-                        		<span>등록된 회원의 정보가 없습니다.</span>
+                        		<span>등록된 게임의 정보가 없습니다.</span>
                         	</th:block>
                         </div>
                     </div>  
@@ -128,9 +128,21 @@
     			const $form = $('<form />', {'action' : '/admin/game/searchGenre', 'method' : 'post'});
     			const $searchGenre = $('<input />', {'type' : 'hidden', 'name' : 'searchGenre'}).val(searchGenre);
     			$form.append($searchGenre);
-    			$('body').appen($form);
+    			$('body').append($form);
     			$form.submit();
     		})
+    		
+    		$('#searchPlatform').change(function() {
+    			const searchPlatform = $(this).val();
+    			console.log(searchPlatform);
+    			const $form = $('<form />', {'action' : '/admin/game/searchPlatform', 'method' : 'post'});
+    			const $searchPlatform = $('<input />', {'type' : 'hidden', 'name' : 'searchPlatform'}).val(searchPlatform);
+    			$form.append($searchPlatform);
+    			$('body').append($form);
+    			$form.submit();
+    		})
+    		
+    		
     		
     		
     		

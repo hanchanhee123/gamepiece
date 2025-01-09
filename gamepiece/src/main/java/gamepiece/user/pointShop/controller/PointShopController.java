@@ -13,7 +13,7 @@ import gamepiece.util.Pageable;
 
 
 @Controller
-@RequestMapping("/user/point")
+@RequestMapping("/point")
 public class PointShopController {
 	private final PointShopService pointshopService;
 	
