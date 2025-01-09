@@ -1,0 +1,187 @@
+/* 헤더 */
+header {
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0px;
+    margin: 0px;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 106px;
+    z-index: 2;
+}
+
+.header-div{
+    width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-img {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+}
+
+#profile-img {
+    width: 45px;
+    height: 45px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+.header-cate ul {
+    display: flex;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.header-cate li {
+    margin: 0px 40px;
+    cursor: pointer;
+}
+
+/* 바디 */
+body {
+    background-color: #051E38;
+    background-image: url(https://cdn.discordapp.com/attachments/1304236608651923468/1313016994035138670/image.png?ex=674e99de&is=674d485e&hm=11d74571b8c2e8f04271f82074ff24024befefe5ab03a2e088e851d30559885e&);
+    background-size: cover;
+    padding-top: 106px;
+}
+
+main {
+    height: 100%;
+}
+
+.main-div {
+    width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.main-contents {
+    width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+}
+
+.GamePeace_logo {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.GamePeace_logo img{
+    width: 500px;
+    height: auto;
+}
+
+.main-games {
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.main-games img{
+    border-radius: 10px;
+    width: 1000px;
+    height: auto;
+}
+
+.sub-games {
+    margin-top: 50px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+/* .sub-games div {
+    margin: 5px;
+} */
+
+.bi-chevron-left {
+    color: white;
+    font-size: 50px;
+    background-color: #0d6efd21;
+}
+
+.sub-game {
+    display: flex;
+    justify-content: space-between;
+    width: 1000px;
+}
+
+.sub-game img {
+    width: 300px;
+    height: 400px;
+    border-radius: 10px;
+}
+
+.bi-chevron-right {
+    color: white;
+    font-size: 50px;
+    background-color: #0d6efd21;
+}
+
+.event-contents {
+    margin-top: 50px;
+}
+
+.event-content {
+    display: flex;
+    justify-content: space-between;
+    width: 1000px;
+}
+
+.event-content img {
+    border-radius: 10px;
+    width: 470px;
+}
+
+/* slide css*/
+.slide-div{
+    display: flex;
+    align-items: center;
+}
+
+.slide-screen{
+    display: flex;
+    align-items: center;
+}
+
+.main-slider{
+    width: 1000px;
+}
+
+.carousel-indicators [data-bs-target]{
+    width: 16px;
+    height: 16px;
+    border-radius: 10px;
+    border: none;
+}
+
+.slider{
+    display: flex;
+    align-items: center;
+    width: 1120px;
+    overflow: hidden;
+}
+
+.left-arrow:hover{
+    cursor: pointer;
+}
+
+.right-arrow:hover{
+    cursor: pointer;
+}
+
+.carousel-control-next, .carousel-control-prev{
+    position: relative;
+    width: 10%;
+}

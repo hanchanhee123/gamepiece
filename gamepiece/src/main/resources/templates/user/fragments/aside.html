@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<aside class="navbar-aside" id="offcanvas_aside" th:fragment="asideFragment">
+
+	<div class="mypage-category">
+	    <div class="mypage-category-text">
+	        <span>마이페이지</span>
+	    </div>
+	    <div class="mypage-cate">
+	        <span class="mypage-cate-text mypage-cate-user"
+	        		th:onclick="|location.href='@{/user/myPageUser}'|">사용자 정보</span>
+	        <ul>
+	            <li th:onclick="|location.href='@{/user/myPageUser}'|">정보 수정</li>
+	        </ul>
+	    </div>
+	    <div class="mypage-cate">
+	        <span class="mypage-cate-text mypage-cate-game"
+	        		th:onclick="|location.href='@{/user/myPageGame}'|">게임</span>
+	        <ul>
+	            <li th:onclick="|location.href='@{/user/myPageWishlist}'|">위시리스트</li>
+	            <li th:onclick="|location.href='@{/user/myPageReview}'|">내 리뷰</li>
+	            <li th:onclick="|location.href='@{/user/myPageRefundPayment}'|">게임 결제/환불 내역 조회</li>
+	        </ul>
+	    </div>
+	    <div class="mypage-cate">
+	        <span class="mypage-cate-text mypage-cate-commu"
+	        		th:onclick="|location.href='@{/user/myPageCommunity}'|">커뮤니티</span>
+	        <ul>
+	            <li th:onclick="|location.href='@{/user/myPageEmoticon}'|">보유 이모티콘</li>
+	            <li th:onclick="|location.href='@{/user/myPageBoard}'|">내 게시글</li>
+	            <li th:onclick="|location.href='@{/user/myPageInquiry}'|">내 문의글</li>
+	        </ul>
+	    </div>
+	    <div class="mypage-cate">
+	        <span class="mypage-cate-text mypage-cate-event"
+	        		 th:onclick="|location.href='@{/user/myPageEvent}'|">이벤트</span>
+	        <ul>
+	            <li th:onclick="|location.href='@{/user/myPageEvent}'|">참여한 이벤트 보기</li>
+	        </ul>
+	    </div>
+	</div>
+
+</aside>
+</html>

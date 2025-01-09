@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.admin.user.mapper.AdminUserMapper">
+
+	<resultMap type="gamepiece.admin.user.domain.User" id="userResultMap">
+		<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="authrt_nm" property="authrtNm"/>
+		<result column="user_pswd" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+		<result column="login_no" property="loginNo"/>
+		<result column="lgn_dt" property="lgnDt"/>
+		<result column="inactive_days" property="inactiveDays"/>
+	</resultMap>
+
+	<!-- 전체 회원정보 조회 -->
+	<select id="getAllUserInfo" parameterType="Pageable" resultMap="userResultMap">
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			whdwl_ymd IS NULL
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<!-- 전체 회원정보 총 갯수 -->
+	<select id="getCntAllUserInfo" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			user;
+	</select>
+	
+	<!-- 회원 상세정보 조회 -->
+	<select id="getUserInfo" parameterType="string" resultMap="userResultMap">
+		SELECT
+			*
+		FROM
+			user u INNER JOIN authrt ar
+			ON u.authrt_cd = ar.authrt_cd
+		WHERE
+			id = #{id};
+	</select>
+	
+	<!-- 회원 상세정보 수정 -->
+	<update id="modifyUserInfo" parameterType="gamepiece.admin.user.domain.User">
+		UPDATE user
+		<set>
+			<if test="authrtCd != null and authrtCd != ''">
+				authrt_cd = #{authrtCd},
+			</if>
+			<if test="userPswd != null and userPswd != ''">
+				user_pswd = #{userPswd},
+			</if>
+			<if test="userNm != null and userNm != ''">
+				user_nm = #{userNm},
+			</if>
+			<if test="userGender != null and userGender != ''">
+				user_gender = #{userGender},
+			</if>
+			<if test="userEmlAddr != null and userEmlAddr != ''">
+				user_eml_addr = #{userEmlAddr},
+			</if>
+			<if test="userBrdt != null and userBrdt != ''">
+				user_brdt = #{userBrdt},
+			</if>
+			<if test="userTelno != null and userTelno != ''">
+				user_telno = #{userTelno},
+			</if>
+			<if test="userNn != null and userNn != ''">
+				user_nn = #{userNn}
+			</if>
+		<!-- </trim> -->
+		</set>
+		WHERE
+			id = #{id};
+	</update>
+	
+	<!-- 탈퇴 회원정보 조회 -->
+	<select id="getRemoveUserInfo" parameterType="Pageable" resultMap="userResultMap">
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			whdwl_ymd IS NOT NULL
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<!-- 탈퇴 회원정보 총 갯수 -->
+	<select id="getCntRemoveUserInfo" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			user
+		WHERE
+			whdwl_ymd IS NOT NULL;
+	</select>
+	
+	<!-- 휴면 회원정보 조회 -->
+	<select id="getDormancyUserInfo" parameterType="Pageable" resultMap="userResultMap">
+		SELECT
+		    u.*,
+		    DATEDIFF(NOW(), MAX(ull.lgn_dt)) AS inactive_days
+		FROM
+		    user u INNER JOIN user_login_log ull
+			ON u.id = ull.id
+		WHERE
+		    u.whdwl_ymd IS NULL
+		GROUP BY
+		    u.id
+		HAVING
+		    inactive_days > 365;
+	</select>
+	
+	<!-- 휴면 회원정보 총 갯수 -->
+	<select id="getCntDormancyUserInfo" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM(
+			SELECT
+				COUNT(*),
+				DATEDIFF(NOW(), MAX(ull.lgn_dt)) AS inactive_days
+			FROM
+			    user u INNER JOIN user_login_log ull
+				ON u.id = ull.id
+			WHERE
+			    u.whdwl_ymd IS NULL
+			GROUP BY
+			    u.id
+			HAVING
+			    inactive_days > 365) dormancy_user;
+	</select>
+
+	<!-- 회원 로그인내역 조회 -->
+	<select id="getUserLoginLog" parameterType="Pageable" resultMap="userResultMap">
+		SELECT
+			ull.login_no,
+			u.id,
+			ar.authrt_nm,
+			ull.lgn_dt
+		FROM
+			user u INNER JOIN user_login_log ull
+			ON u.id = ull.id
+			INNER JOIN authrt ar
+			ON u.authrt_cd = ar.authrt_cd
+		ORDER BY lgn_dt DESC
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<!-- 회원 로그인내역 총 갯수 -->
+	<select id="getCntUserLoginLog" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			user u INNER JOIN user_login_log ull
+			ON u.id = ull.id
+			INNER JOIN authrt ar
+			ON u.authrt_cd = ar.authrt_cd
+		ORDER BY lgn_dt DESC;
+	</select>
+	
+	<!-- 회원 권한정보 조회 -->
+	<select id="getAuthrtInfo" parameterType="string" resultMap="userResultMap">
+		SELECT
+			authrt_cd,
+			authrt_nm
+		FROM
+			authrt;
+	</select>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="removeUser" parameterType="gamepiece.admin.user.domain.User">
+		UPDATE
+			user
+		SET
+			whdwl_ymd = CURDATE(),
+			is_delete = 'delete'
+		WHERE
+			id = #{id};
+	</update>
+</mapper>

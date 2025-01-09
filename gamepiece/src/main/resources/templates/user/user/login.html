@@ -1,0 +1,67 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default-user}">
+	  
+	<head>
+		<link th:href="@{/assets/css/user/user.css}" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<th:block layout:fragment="contents-body">
+		<header>
+			<div class="header-div">
+	            <div class="header-img" th:onclick="|location.href='@{/}'|">
+	                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}"/>
+	            </div>
+	        </div>
+		</header>
+	
+		<form id="loginForm" class="user-info-form" th:action="@{/loginPro}" method="post">
+            <div class="user-form-text">
+                <h3>로그인</h3>
+            </div>
+            <div class="user-form-group">
+                <input type="text" class="user-insert-form" id="id" name="id" placeholder="아이디를 입력해주세요">
+            </div>
+            <div class="user-form-group">
+                <input type="password" class="user-insert-form" id="userPswd" name="userPswd" placeholder="비밀번호를 입력해주세요">
+            </div>
+            <div>
+                <button type="button" id="loginBtn" class="btn btn-primary common-btn-lg">로그인</button>
+            </div>
+            <div class="user-form-span">
+                <span class="find-id" th:onclick="|location.href='@{/findUserId}'|">아이디 찾기</span>
+                <span class="find-pw" th:onclick="|location.href='@{/findUserPswd}'|">비밀번호 찾기</span>
+                <span class="insertBtn" th:onclick="|location.href='@{/addUser}'|">회원가입</span>
+            </div>
+        </form>
+	</th:block>
+
+	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource">
+    	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script  th:inline="javascript">
+    	
+    	const msg = /*[[${msg}]]*/ "msg";
+		if(msg) alert(msg);
+    		
+    	$('#loginBtn').click(function() {
+			let isSubmit = true;
+			$('#loginForm input').each((idx, item) => {
+				const inputValue = $(item).val();
+				if(!inputValue) {
+					isSubmit = false;
+					$(item).focus();
+					return false;
+				}
+			});
+			
+			if(isSubmit) $('#loginForm').submit();
+		});
+    	
+    	</script>
+    </th:block>
+            
+</html>

@@ -6,14 +6,22 @@ import org.apache.ibatis.annotations.Mapper;
 
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
+import gamepiece.util.Pageable;
 
 @Mapper
 public interface PointshopMapper {
-	Point getItemInfoByName(String itemName);
+	Point getItemInfoByItemName(String itemName);
 	
-	List<Point> findAll();
+	List<Point> findAll(Pageable pageable);
+	
+	int getItemCount();
 	
 	List<PointCategories> findCate();
 	
-	List<Point> addPointShop();
+	int modifyItem(Point point);
+	
+	int addItem(Point point);
+	
+	int removeItem(String ps_cd);
+	
 }

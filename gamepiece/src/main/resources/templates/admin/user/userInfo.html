@@ -6,18 +6,19 @@
 	<th:block layout:fragment="contents-header">
 		<div class="content-header">
 			<div>
-				<h2 class="content-title">회원 상세정보 조회</h2>
+				<h2 class="content-title">회원 상세정보 수정</h2>
 			</div>
 		</div>
 	</th:block>
 	
 	<th:block layout:fragment="contents-body">
+	<form id="modifyUserForm" th:action="@{/admin/user/modifyUserInfo}" th:object="${userInfo}" method="get">
 		<div class="card">
 			<div class="card-body">
 				<div class="row">
 				    <div class="col-lg-5">
 				        <div class="table-responsive">
-				            <table class="table" th:object="${userInfo}">
+				            <table class="table">
 				                <tbody>
 									<tr>
 									    <td>
@@ -26,104 +27,114 @@
 									        </div>
 									    </td>
 									    <td>
-									    	<input type="text" th:value="*{id}" id="id" placeholder="Type here" class="form-control" disabled>
+									    	<input type="text" th:value="*{id}" id="id" name="id" placeholder="Type here" class="form-control" readonly>
 									    </td>
 									</tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="authrt_nm">권한명</label>
+								                <label class="info" for="authrtNm">권한명</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{authrt_nm}" id="authrt_nm" placeholder="Type here" class="form-control">
+							                <select name="authrtNm" id="authrtNm" class="form-control">
+							                	<option value="">권한을 선택해주세요</option>
+							                	<th:block th:if="${authrtInfo}"
+			                                              th:each="authrtInfo : ${authrtInfo}">
+			                                        <option th:text="${authrtInfo.authrtNm}" th:value="${authrtInfo.authrtNm}" th:selected="${authrtInfo.authrtCd} == ${userInfo.authrtCd}"></option>
+			                                    </th:block>
+							                </select>
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_pw">비밀번호</label>
+								                <label class="info" for="userPswd">비밀번호</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_pw}" id="user_pw" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userPswd}" id="userPswd" name="userPswd" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_nm">이름</label>
+								                <label class="info" for="userNm">이름</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_nm}" id="user_nm" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userNm}" id="userNm" name="userNm" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_gender">성별</label>
+								                <label class="info" for="userGender">성별</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_gender == 'M' ? '남성' : '여성'}" id="user_gender" placeholder="Type here" class="form-control">
+								        	<select name="userGender" id="userGender" class="form-control">
+											   	<option value="">성별을 선택해주세요</option>
+											    <option value="M" th:selected="*{userGender == 'M'}">남성</option>
+											    <option value="F" th:selected="*{userGender == 'F'}">여성</option>
+											</select>
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_eml_addr">이메일주소</label>
+								                <label class="info" for="userEmlAddr">이메일주소</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_eml_addr}" id="user_eml_addr" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userEmlAddr}" id="userEmlAddr" name="userEmlAddr" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_brdt">생년월일</label>
+								                <label class="info" for="userBrdt">생년월일</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_brdt}" id="user_brdt" placeholder="Type here" class="form-control">
+								        	<input type="date" th:value="*{userBrdt}" id="userBrdt" name="userBrdt" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_telno">전화번호</label>
+								                <label class="info" for="userTelno">전화번호</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_telno}" id="user_telno" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userTelno}" id="userTelno" name="userTelno" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="user_nn">닉네임</label>
+								                <label class="info" for="userNn">닉네임</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{user_nn}" id="user_nn" placeholder="Type here" class="form-control">
+								        	<input type="text" th:value="*{userNn}" id="userNn" name="userNn" placeholder="Type here" class="form-control">
 								        </td>
 								    </tr>
 								    <tr>
 								        <td>
 								            <div class="itemside">
-								                <label class="info" for="join_ymd">가입일자</label>
+								                <label class="info" for="joinYmd">가입일자</label>
 								            </div>
 								        </td>
 								        <td>
-								        	<input type="text" th:value="*{join_ymd}" id="join_ymd" placeholder="Type here" class="form-control" disabled>
+								        	<input type="text" th:value="*{joinYmd}" id="joinYmd" name="joinYmd" placeholder="Type here" class="form-control" readonly>
 								        </td>
 								    </tr>
 								</tbody>
 					        </table>
 					    </div>
 					</div>
-					<div class="col-md-4">
+					<!-- <div class="col-md-4">
 						<table class="table" th:object="${userAvatar}">
 							<tr>
 								<td>
@@ -132,18 +143,21 @@
 									</div>
 								</td>
 								<td>
-									<!-- <img th:src="*{img_url}" id="avatar"> -->
+									<img th:src="*{imgUrl}" id="avatar">
 									<span class="icon icon-lg bg-primary-light">
 									    <i class="text-primary material-icons md-person"></i>
 									</span>
 								</td>
 							</tr>
 						</table>
-						<a class="btn btn-primary" href="#">저장</a>
+					</div> -->
+					<div class="col-md-4">
+						<button type="submit" class="btn btn-primary" id="modifyUserBtn">수정</button>
 					</div>
 				</div>
 			</div>
 		</div>
+	</form>
 	</th:block>
       
       <!--/* 사용자 추가 js file */-->

@@ -3,18 +3,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <!-- SQL Mapping -->
 <mapper namespace="gamepiece.admin.tournament.mapper.TournamentMapper">
-	<resultMap type="gamepiece.admin.tournament.domain.Tournament" id="tournamentResultList">
-		<result column="tnm_cd"		property="tournamentCode"/>
+	<resultMap type="Tournament" id="tournamentResultList">
+		<id column="tnm_cd"		property="tournamentCode"/>
 		<result column="gm_cd"		property="gameCode"/>
 		<result column="gm_nm"		property="gameName"/>
 		<result column="tnm_nm"		property="tournamentName"/>
 		<result column="tnm_start_ymd"		property="tournamentStartDate"/>
 		<result column="tnm_end_ymd"		property="tournamentEndDate"/>
+		<result column="tnm_addr"		property="tournamentAddr"/>
+		<result column="admin_id"		property="adminId"/>
 	</resultMap>
 
-	<select id="getTournamentList" resultMap="tournamentResultList">
+	<select id="getTournamentList" resultMap="tournamentResultList" parameterType="Pageable">
 		SELECT
 			tn.tnm_cd,
 			g.gm_cd,
@@ -25,7 +28,24 @@
 		FROM
 			tournament tn
 			LEFT JOIN games g
-			ON tn.gm_cd = g.gm_cd;
+			ON tn.gm_cd = g.gm_cd
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<select id="getTournament" resultMap="tournamentResultList">
+		SELECT
+			tn.tnm_cd,
+			g.gm_cd,
+			g.gm_nm,
+			tn.tnm_nm,
+			tn.tnm_start_ymd,
+			tn.tnm_end_ymd
+		FROM
+			tournament tn
+			LEFT JOIN games g
+			ON tn.gm_cd = g.gm_cd
+		WHERE
+			tn.tnm_cd = #{tournamentCode};
 	</select>
 	
 	<select id="getGameList" resultMap="tournamentResultList">
@@ -36,5 +56,60 @@
 			games
 		WHERE
 			gm_cd IN ("gm_01","gm_04","gm_05");
+	</select>
+	
+	<insert id="addTournament" parameterType="Tournament">
+		
+		INSERT INTO tournament
+		(
+			tnm_cd, 
+			gm_cd, 
+			tnm_nm, 
+			tnm_start_ymd, 
+			tnm_end_ymd, 
+			tnm_addr, 
+			admin_id, 
+			reg_ymd
+		) VALUES (
+			(SELECT CONCAT('tnm_',LPAD(IFNULL(MAX(SUBSTRING(t.tnm_cd,5)+1),0),
+				<![CDATA[IF(LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))<=2,2,LENGTH(MAX(SUBSTRING(t.tnm_cd,5)+1))),'0'))]]> 
+			FROM tournament t), 
+			#{gameCode}, 
+			#{tournamentName}, 
+			#{tournamentStartDate}, 
+			#{tournamentEndDate}, 
+			#{tournamentAddr}, 
+			#{adminId}, 
+			CURDATE()
+		);
+	</insert>
+	
+	<update id="modifyTournament" parameterType="Tournament">
+	UPDATE
+		tournament
+	<set>
+		gm_cd=#{gameCode},
+		<if test="tournamentName != null and tournamentName != ''">tnm_nm=#{tournamentName},</if>
+		<if test="tournamentStartDate != null and tournamentStartDate != ''">tnm_start_ymd=#{tournamentStartDate},</if>
+		<if test="tournamentEndDate != null and tournamentEndDate != ''">tnm_end_ymd=#{tournamentEndDate},</if>
+		<if test="tournamentAddr != null and tournamentAddr != ''">tnm_addr=#{tournamentAddr},</if>
+		<if test="adminId != null and adminId != ''">admin_id=#{adminId}</if>
+	</set>
+	WHERE tnm_cd = #{tournamentCode};
+	</update>
+	
+	<delete id="removeTournament" parameterType="Tournament">
+		DELETE
+		FROM
+			tournament
+		WHERE
+			tnm_cd = #{tournamentCode};
+	</delete>
+	
+	<select id="getCntTournament" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			tournament;
 	</select>
 </mapper>

@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+.main-div {
+    height: 100%;
+    display: flex;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.content-main {
+	width: 100%;
+}
+
+/* 위시리스트 */
+.mypage-wishlist {
+    margin: 30px 10px;
+}
+
+.mypage-wishlist > span {
+    color: white;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+.common-card-section {
+    margin: 15px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28.3px;
+    justify-content: flex-start;
+}
+.card-section {
+    background-color: white;
+    border: 1px solid #007AFF;
+    border-radius: 10px;
+    width : 200px;
+    height : 250px;
+    color : black;
+    display: grid;
+    justify-content: center;
+    padding: 10px;
+    margin: 0px 10px 20px 10px;
+}
+
+.card-section p {
+    margin: 0;
+    width: 180px;
+}
+
+.card-section img {
+    width : 180px;
+    height : 150px;
+}
+
+.game-price {
+    text-align: right;
+    font-weight: bold;
+}
+
+.game-platform {
+    color: #6c757d;
+}
+
+.more-btn-area {
+    display: flex;
+    justify-content: center;
+}
+
+.common-btn-md {
+    width: 250px;
+    padding: 10px;
+    margin: 18px 0px;
+    border-radius: 10px;
+}
+
+.more-btn-area img {
+    width: 18px;
+    height: 18px;
+    border-radius: 10px;
+}
+
+.more-btn-area > span {
+    color: white;
+}
+
+/* 내 리뷰 */
+.mypage-review{
+    margin: 30px 10px;
+}
+
+.mypage-review > span {
+    color: white;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+.mypage-review-grade { 
+    font-size: 18px;
+}
+
+.mypage-review-emp {
+    margin: 30px 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+.mypage-review-emp img {
+    width: 20px;
+    height: 20px;
+}
+
+/* 게임 결제/환불 내역 조회 */
+.mypage-refund-payment{
+    margin: 30px 10px;
+}
+
+.mypage-refund-payment > span {
+    color: white;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+
+/* 포인트 적립/사용 내역, 보유 쿠폰 */
+.mypage-point-coupon-table {
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 0px 20px;
+    background-color: white;
+}
+
+.mypage-point-coupon-table .table {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0px;
+}
+
+.mypage-point-coupon-table .table > thead {
+    border-bottom: 1px solid #007bff;
+}
+
+.mypage-point-coupon-table table tr:last-child td,
+.mypage-point-coupon-table table tr:last-child th {
+    border-bottom: none;
+}
+
+/* 모달 */
+body.modal-open {
+    overflow-y: scroll !important;
+    padding-right: 0 !important;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
+.modal-dialog {
+    margin: auto;
+    margin-top: 15vh;
+}

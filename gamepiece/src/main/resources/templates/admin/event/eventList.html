@@ -16,18 +16,11 @@
   
   <th:block layout:fragment="contents-body">
   <div class="card mb-4">
+   <div class="row">
       <header class="card-header">
-          <div class="row align-items-center">
-            
-              <div class="col-md-2 col-6">
-                  <input type="date" value="02.05.2021" class="form-control" />
-              </div>
-              <div class="col-md-2 col-6">
-                  <select class="form-select">
-                      <option selected>현황</option>
-                      <option>진행</option>
-                      <option>종료</option>
-                  </select>
+          <div class="row">
+              <div class="col-lg-5 col-6 me-auto">
+                  <input type="text" placeholder="Search..." class="form-control" />
               </div>
           </div>
       </header>
@@ -38,27 +31,29 @@
       	<thead>
       		<tr>
       			<th>이벤트코드</th>
-      			<th>이벤트명</th>
+      			<th width="40%">이벤트명</th>
       			<th>이벤트시작날짜</th>
-      			<th>이벤트종료날짜</th>
-      			<th>당첨인원</th>
-      			<th>등록자아이디</th>
-      			<th>등록일자</th>
-      			<th>수정</th>
+      			<th>이벤트종료날짜</th>      			
+      			<th>상태</th>      			
+      			<th>당첨자</th>
+      			<th>상세</th>
+      			<th>수정</th>      			
+      			<th>삭제</th>      			
       			
       		</tr>
       	</thead>
       	<tbody>
       		<tr th:if="${eventList != null}"
 				th:each="eventList :${eventList}">
-      			<td th:text="${eventList.ev_cd}"></td>
-      			<td th:text="${eventList.ev_nm}"></td>
-      			<td th:text="${eventList.ev_start_ymd}"></td>
-      			<td th:text="${eventList.ev_end_ymd}"></td>
-      			<td th:text="${eventList.ev_winners_num}"></td>
-      			<td th:text="${eventList.admin_id}"></td>
-      			<td th:text="${eventList.reg_ymd}"></td>
-      			<td><a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td th:text="${eventList.evCd}"></td>
+      			<td th:text="${eventList.evNm}"></td>
+      			<td th:text="${eventList.evStartYmd}"></td>
+      			<td th:text="${eventList.evEndYmd}"></td>		
+      			<td th:text="${eventList.evStatus}"></td>           			
+      			<td><a th:if="${eventList.evStatus == '종료'}" th:href="@{/admin/event/eventWinner(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 당첨자 </a></td> 			
+      			<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
+      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td><a th:href="@{/admin/event/remove(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td> 			
       		</tr>
       	</tbody>
       </table>
@@ -66,21 +61,53 @@
           <!-- itemlist  .// -->
            </div>
       </div>
+      </div>
       <!-- card-body end// -->
-  <!-- card end// -->
-  <div class="pagination-area mt-30 mb-50">
-      <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-start">
-              <li class="page-item active"><a class="page-link" href="#">01</a></li>
-              <li class="page-item"><a class="page-link" href="#">02</a></li>
-              <li class="page-item"><a class="page-link" href="#">03</a></li>
-              <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-              <li class="page-item"><a class="page-link" href="#">16</a></li>
-              <li class="page-item">
-                  <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-              </li>
-          </ul>
-      </nav>
-  </div>
+  	 <!-- card end// -->
+ 	 <div class="pagination-area mt-30 mb-50">
+            <nav>
+                <ul class="pagination justify-content-center">
+                	<li class="page-item">
+                		<a class="page-link " 
+                			th:href="@{/admin/event/eventList}">
+                			<i class="material-icons md-first_page">
+                			</i>
+                		</a>
+                	</li>
+                	<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+                		<a class="page-link " 
+                			th:href="@{/admin/login/history(currentPage=${currentPage - 1})}">
+                			<i class="material-icons md-chevron_left">
+                			</i>
+                		</a>
+                	</li>
+                	<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+                    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+                    		<a class="page-link" th:href="@{/admin/event/eventList(currentPage=${num})}" th:text="${num}"></a>
+                    	</li>
+                    </th:block>
+                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+                        <a class="page-link" 
+                        	th:href="@{/admin/event/eventList(currentPage=${currentPage + 1})}">
+                        	<i class="material-icons md-chevron_right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                		<a class="page-link " 
+                			th:href="@{/admin/event/eventList(currentPage=${lastPage})}">
+                			<i class="material-icons md-last_page">
+                			</i>
+                		</a>
+                	</li>
+                </ul>
+           </nav>
+ 	 </div>
    	</th:block>
+ <!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    
+    </th:block>   	
+   	
 </html>

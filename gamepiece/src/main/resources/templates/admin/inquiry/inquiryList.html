@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title" th:text="${title}"></h2>
+         
+          </div>
+           <div> 
+          <a th:href="@{/admin/inquiry/write}" class="btn btn-primary btn-sm rounded">문의글작성</a>
+      </div>
+      </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   	<div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+   		<div class="row">
+   			<div class="col">
+   				      <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                            
+                              <div class="col-lg-4 col-md-6 me-auto">
+                                <input type="text" placeholder="Search..." class="form-control" />
+                            </div>
+                         
+                          
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+                                    <option>현황</option>
+                                    <option>Active</option>
+                                    <option>Disabled</option>
+                                    <option>Show all</option>
+                                </select>
+                            </div>
+                           
+                        </div>
+                    </header>
+                    <!-- card-header end// -->
+                    <div class="card-body" style="padding: 3;">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead style="text-align: center;">
+                                    <tr>
+                                        <th>문의번호</th>
+                                        <th>문의제목</th>
+                                        <th>유저</th>
+                                        <th>작성일자</th>
+                                        <th>비고</th>
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                <th:block th:if="${inquiryList}">
+                               <tr th:each="l : ${inquiryList}">
+                                       <td th:text="${l.inquiryNum}"></td>
+                                     <td th:text="${l.inquiryTitle}"></td>
+                                       <td th:text="${l.userInfo.userNn}"></td>
+                                       <td th:text="${l.inquiryYmd}"></td>                                   
+                                      
+                                    <td>
+                                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end" style="display: contents;">
+                                                <a th:href="@{/admin/inquiry/modify(inquiryNum=${l.inquiryNum})}" 
+                                                class="btn btn-sm font-sm rounded btn-brand" style="margin-right: 10px;"> <i class="material-icons md-edit"></i> 수정 </a>
+                                                
+                                              <a th:href="@{/admin/inquiry/remove(inquiryNum=${l.inquiryNum})}"
+								  class="btn btn-sm font-sm btn-light rounded removeBtn" style="margin-right: 10px;">
+								  <i class="material-icons md-delete_forever"></i>삭제
+															</a>
+                                            </div>
+                                     <!--        dropdown //end -->
+                                        </td> 
+                                    </tr>
+                                    </th:block>
+                                    <th:block th:unless="${inquiryList}">
+								<tr>
+									<td colspan="5">등록된 게시물이 없습니다.</td>
+								</tr>
+							</th:block>
+                                 
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- table-responsive //end -->
+                    </div>
+                    <!-- card-body end// -->
+                </div>
+            <div class="pagination-area mt-15 mb-50">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                        		<li class="page-item">
+                        			<a class="page-link" th:href="@{/admin/board/list}">         			
+               						<i class="material-icons md-first_page"></i>
+                        			</a>
+                        
+                        
+                        
+                            <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+                            		<a class="page-link"
+                            			th:href="@{/admin/inquiry/list(currentPage=${currentPage -1})}">
+                            		<i class="material-icons md-chevron_left"></i>
+                            		</a>
+                            </li>
+                            <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">		
+                       				<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+                       				<a class="page-link" th:href="@{/admin/board/list(currentPage=${num})}" th:text="${num}"></a>
+                       		</th:block>
+                            <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
+                                <a class="page-link" 
+                                th:href="@{/admin/inquiry/list(currentPage=${currentPage+1})}">
+                                <i class="material-icons md-chevron_right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+							    <a class="page-link" 
+							       th:href="@{/admin/inquiry/list(currentPage=${lastPage})}">
+							        <i class="material-icons md-last_page"></i>
+							    </a>
+							</li>    
+                        </ul>
+                    </nav>
+                </div>
+   			</div>
+   		</div>
+   	</th:block>
+   	
+   	
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	 <script th:inline="javascript">
+    	const startPageNum = [[${startPageNum}]];
+    	const endPageNum = [[${endPageNum}]];
+    	
+    	$('.removeBtn').click(function(e){
+    		   e.preventDefault();
+    		   
+    		   if(confirm('삭제하시겠습니까?')) {
+    		       const inquiryNum = $(this).attr('href').split('=')[1];
+    		       
+    		       const form = document.createElement('form');
+    		       form.method = 'POST';
+    		       form.action = '/admin/inquiry/remove';
+    		       
+    		       const input = document.createElement('input');
+    		       input.type = 'hidden';
+    		       input.name = 'inquiryNum';
+    		       input.value = inquiryNum;
+    		       
+    		       form.appendChild(input);
+    		       document.body.appendChild(form);
+    		       form.submit();
+    		   }
+    		});
+    	</script>
+    </th:block>
+</html>

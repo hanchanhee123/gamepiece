@@ -21,58 +21,89 @@
                     <header class="card-header">
                         <div class="row gx-3">
                             <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search..." class="form-control" />
+                            	<div class="input-group">
+	                                <input type="text" placeholder="Search" class="form-control"
+	                                	   id="searchValue" name="searchValue th:value=${searchValue}" />
+	                                <button type="button" class="btn btn-light bg" id="searchBtn">
+										<i class="material-icons md-search"></i>
+									</button>
+								</div>
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
+                                <select class="form-select" name="searchGenre" id="searchGenre">
                                     <option>장르선택</option>
-                                    <option>RPG</option>
-                                    <option>FPS</option>
-                                    <option>격투</option>
+                                    <th:block th:each="l : ${genreList}">
+                                    	<option th:value="${l.genre}" th:text="${l.genre}"></option>
+                                    </th:block>
                                 </select>
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
                                 <select class="form-select">
-                                    <option>플랫폼선택</option>
-                                    <option>Steam</option>
-                                    <option>Epic Games</option>
-                                    <option>Ubisoft Connect</option>
-                                    <option>Riot Games</option>
+                                	<option>플랫폼선택</option>
+	                                <th:block th:each="l : ${platformList}">
+	                                    <option th:value=${l.platformCode} th:text="${l.platformName}"></option>
+	                                </th:block>
                                 </select>
                             </div>
                         </div>
                     </header>
                     <div class="card-body">
                         <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
-                            <div class="col" th:each="gameList : ${gameList}">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="/manage/assets/imgs/items/1.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate" th:text="${gameList.gameName}">Haagen-Dazs Caramel Cone Ice</a>
-                                        <div class="price mb-2"th:text="₩ + ${gameList.gamePrice}">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
-                                </div>
-                                <!-- card-product  end// -->
-                            </div>
+                        	<th:block  th:each="l : ${gameList}"
+                        			   th:if="${gameList != null}">
+                        		<div class="col">
+	                            	<div class="card card-product-grid">
+	                                    <a href="#" class="img-wrap"> <img src="/manage/assets/imgs/items/1.jpg" alt="Product" /> </a>
+	                                    <div class="info-wrap">
+	                                        <a href="#" class="title text-truncate" th:text="${l.gameName}">Haagen-Dazs Caramel Cone Ice</a>
+	                                        <div class="price mb-2"th:text="₩ + ${l.price}">$179.00</div>
+	                                        <!-- price.// -->
+	                                        <a th:href="@{/admin/game/modify(gameCode=${l.gameCode})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
+	                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
+	                                    </div>
+	                                </div>
+	                                <!-- card-product  end// -->
+                            	</div>
+                        	</th:block>
+                        	<th:block th:unless="${gameList != null}">
+                        		<span>등록된 회원의 정보가 없습니다.</span>
+                        	</th:block>
                         </div>
                     </div>  
    				</div>
    			</div>
    			<div class="pagination-area mt-30 mb-50">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-start">
-                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                            <li class="page-item"><a class="page-link" href="#">02</a></li>
-                            <li class="page-item"><a class="page-link" href="#">03</a></li>
-                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">16</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-                            </li>
-                        </ul>
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                     	<li class="page-item">
+                             <a class="page-link"
+                             	th:href="@{/admin/game/gameList(currentPage=${startPageNum})}">
+                             	<i class="material-icons md-first_page"></i>
+                             </a>
+                         </li>
+                     	<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+                             <a class="page-link"
+                             	th:href="@{/admin/game/gameList(currentPage=${currentPage - 1})}">
+                             	<i class="material-icons md-chevron_left"></i>
+                             </a>
+                         </li>
+                         <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+	                         <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+	                         	<a class="page-link" th:href="@{/admin/game/gameList(currentPage=${num})}" th:text="${num}"></a>
+	                         </li>
+                         </th:block>
+                         <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+                             <a class="page-link" th:href="@{/admin/game/gameList(currentPage=${currentPage + 1})}">
+                             	<i class="material-icons md-chevron_right"></i>
+                             </a>
+                         </li>
+                         <li class="page-item">
+                             <a class="page-link"
+                             	th:href="@{/admin/game/gameList(currentPage=${lastPage})}">
+                             	<i class="material-icons md-last_page"></i>
+                             </a>
+                         </li>
+                     </ul>
                     </nav>
                 </div>
    		</div>
@@ -82,7 +113,26 @@
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-    	<script>
+    	<script th:inline="javascript">
+    		$('#searchBtn').click(function() {
+    			const searchValue = $('#searchValue').val();
+    			const $form = $('<form />', {'action' : '/admin/game/searchList', 'method' : 'post'});
+    			const $searchValue = $('<input />', {'type' : 'hidden', 'name' : 'searchValue'}).val(searchValue);
+    			$form.append($searchValue);
+    			$('body').append($form);
+    			$form.submit();
+    		})
+    		
+    		$('#searchGenre').change(function() {
+    			const searchGenre = $(this).val();
+    			const $form = $('<form />', {'action' : '/admin/game/searchGenre', 'method' : 'post'});
+    			const $searchGenre = $('<input />', {'type' : 'hidden', 'name' : 'searchGenre'}).val(searchGenre);
+    			$form.append($searchGenre);
+    			$('body').appen($form);
+    			$form.submit();
+    		})
+    		
+    		
     		
     	</script>
     </th:block>

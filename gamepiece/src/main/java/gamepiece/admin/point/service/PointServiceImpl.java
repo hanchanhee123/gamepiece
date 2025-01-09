@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
 import gamepiece.admin.point.mapper.PointshopMapper;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 @Service
 public class PointServiceImpl implements PointService {
@@ -17,14 +19,28 @@ public class PointServiceImpl implements PointService {
 		this.pointshopMapper = pointshopMapper;
 	}
 	
+	
 	@Override
-	public Point getItemInfoByName(String itemName) {
-		// TODO Auto-generated method stub
-		return pointshopMapper.getItemInfoByName(itemName);
+	public void modifyItem(Point point) {
+		pointshopMapper.modifyItem(point);
 	}
 	
-	public List<Point> findAll() {
-		return pointshopMapper.findAll();
+	@Override
+	public void removeItem(String ps_cd) {
+		
+		pointshopMapper.removeItem(ps_cd);
+	}
+	
+	@Override
+	public Point getItemInfoByItemName(String itemName) {
+		
+		return pointshopMapper.getItemInfoByItemName(itemName);
+	}
+	@Override
+	public PageInfo<Point> findAll(Pageable pageable) {
+		int rowCnt = pointshopMapper.getItemCount();
+		List<Point> loginList = pointshopMapper.findAll(pageable);
+		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
 
 	@Override
@@ -32,7 +48,11 @@ public class PointServiceImpl implements PointService {
 		return pointshopMapper.findCate();
 	}
 	
-	public List<Point> addPointShop() {
-		return pointshopMapper.addPointShop();
+	@Override
+	public void addItem(Point point) {
+		
+		point.setAdminId("id01");
+		pointshopMapper.addItem(point);
+		
 	}
 }

@@ -8,7 +8,7 @@
 		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>kr.or.ksmart</groupId>
+	<groupId>gamepiece</groupId>
 	<artifactId>gamepiece</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gamepiece</name>
@@ -80,6 +80,12 @@
 			<artifactId>mybatis-spring-boot-starter-test</artifactId>
 			<version>3.0.4</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->
+		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+		    <version>1.16</version>
 		</dependency>
 	</dependencies>
 

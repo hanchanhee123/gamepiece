@@ -47,18 +47,20 @@
 					<span class="text">포인트샵 관리</span>
 				</a>
 				<div class="submenu">
-					<a th:href="@{/point/List}">포인트샵 목록</a>
+					<a th:href="@{/admin/point/list}">포인트샵 목록</a>
 				</div>
 			</li>
-			<li class="menu-item has-submenu">
+				<li class="menu-item has-submenu">
 				<a class="menu-link" href="#">
 					<i class="icon material-icons md-comment"></i> 
 					<span class="text">게시판 관리</span>
 				</a>
 				<div class="submenu">
-					<a href="page-allboards-list.html">게시판 목록</a> 
-					<a href="page-inquiryboards-list.html">문의게시글 목록</a> 
-					<a href="page-reportboards-list.html">신고게시글 목록</a>
+					<a th:href="@{/admin/board/list}">게시판 목록</a> 
+					<a th:href="@{/admin/inquiry/list}">문의사항</a> 
+					<a th:href="@{/admin/notice/list}">공지사항</a>
+					<a th:href="@{/admin/boardCategory/list}">카테고리목록</a>
+					<a th:href="@{/admin/boardComment/list}">덧글목록</a>
 				</div>
 			</li>
 			<li class="menu-item has-submenu">
@@ -68,7 +70,6 @@
 				</a>
 				<div class="submenu">
 					<a th:href="@{/admin/event/eventList}">이벤트 목록</a>
-					<a th:href="@{/admin/event/eventWinnerList}">이벤트 당첨자 목록</a>
 				</div>
 			</li>
 			<li class="menu-item has-submenu">

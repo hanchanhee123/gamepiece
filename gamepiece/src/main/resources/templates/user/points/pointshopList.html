@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+	<head>
+		<link rel="stylesheet" th:href="@{/assets/css/point/point.css}" type="text/css"/>
+	</head>
+	<th:block layout:fragment="contents-header">
+         <div class="">
+              <div class="main-div">
+            <ul>
+                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">이모티콘</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/avatar}">아바타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/background}">배경프로필</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/frame}">아바타액자</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/etc}">기타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">구매내역</a></li>
+            </ul>
+        <div class="pointshop-Hd">
+            <div class="pointshop-top">
+                <div class="search">
+                    <input type="text" class="item-search"/>
+                    <i class="bi bi-search"></i>
+                </div>
+                <div class = "myPoint">보유 포인트<div><span class="point">1050</span> Point</div></div>
+            </div>
+        </div>
+          </div>
+         </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   	<div class="main_div">
+   		<!-- 이모티콘  -->
+	   	 <div class="pointshop-cate-name">이모티콘</div>
+        <div class="pointShopImg">
+            <div id="pointShopImg" class="slider carousel slide">
+                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="carousel-inner">
+                    <div class="sub-games carousel-item active">
+                        <div class="box-list" th:each="l : ${imoticonList}">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                <img th:src="${l.itemImgurl}">
+                                <div th:text="${l.itemName}"></div>
+                                <div th:text="${l.itemPrice}" class="itemName"></div>
+                            </div>    
+                        </div>
+                    </div>  
+                </div>
+                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+		<!-- 프로필이미지 -->
+        <div class="pointshop-cate-name">프로필이미지</div>
+       <div class="pointShopImg">
+            <div id="pointShopImg" class="slider carousel slide">
+                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="carousel-inner">
+                    <div class="sub-games carousel-item active">
+                        <div class="box-list" th:each="l : ${avatarList}">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                <img th:src="${l.itemImgurl}">
+                                <div th:text="${l.itemName}"></div>
+                                <div th:text="${l.itemPrice}" class="itemName"></div>
+                            </div>    
+                        </div>
+                    </div>  
+                </div>
+                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+       
+        <div class="pointshop-cate-name">배경프로필</div>
+        <div class="pointShopImg">
+            <div id="pointShopImg" class="slider carousel slide">
+                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="carousel-inner">
+                    <div class="sub-games carousel-item active">
+                        <div class="box-list" th:each="l : ${backList}">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                <img th:src="${l.itemImgurl}">
+                                <div th:text="${l.itemName}"></div>
+                                <div th:text="${l.itemPrice}" class="itemName"></div>
+                            </div>    
+                        </div>
+                    </div>  
+                </div>
+                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="pointshop-cate-name">아바타액자</div>
+        <div class="pointShopImg">
+            <div id="pointShopImg" class="slider carousel slide">
+                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="carousel-inner">
+                    <div class="sub-games carousel-item active">
+                        <div class="box-list" th:each="l : ${frameList}">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                <img th:src="${l.itemImgurl}">
+                                <div th:text="${l.itemName}"></div>
+                                <div th:text="${l.itemPrice}" class="itemName"></div>
+                            </div>    
+                        </div>
+                    </div>  
+                </div>
+                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+        <div class="pointshop-cate-name">기타</div>
+        <div class="pointShopImg">
+            <div id="pointShopImg" class="slider carousel slide">
+                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="carousel-inner">
+                    <div class="sub-games carousel-item active">
+                        <div class="box-list" th:each="l : ${etcList}">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                <img th:src="${l.itemImgurl}">
+                                <div th:text="${l.itemName}"></div>
+                                <div th:text="${l.itemPrice}" class="itemName"></div>
+                            </div>    
+                        </div>
+                    </div>  
+                </div>
+                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+         </div>
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+
+    	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    </th:block>
+</html>
