@@ -23,57 +23,25 @@
                 <div class="list-thumb">
                     <img src="/assets/imgs/event/73cbabf0177d4bb4b2a560a96c1d6e2e.jpg">
                 </div>
+                <div th:if="${eventList != null}" >
+                <th:block th:each="{eventList :${eventList}">
                 <div class="list-contents">
                     <div class="list-con">
                         <div class="list-subject" aria-label="제목">
-                            <span class="list-title">이벤트 제목</span>
+                            <span class="list-title" th:text="${eventList.evNm}"></span>
                         </div>
                         <div class="list-term">
                             <strong>이벤트 기간</strong>
-                            : 20xx.xx.xx - 20xx.xx.xx
+                            <span  th:text="${eventList.evStartYmd}"></span>
+                            <span>~</span>
+                            <span th:text="${eventList.evEndYmd}"></span>
                         </div>
                     </div>
                     <div class="list-status">
-                        <span class="list-status-ongoing">진행</span>
+                        <span class="list-status-ongoing"th:if="${eventList.evStatus == '종료'}"></span>
                     </div>
                 </div>
-            </li>
-            <li class="event">
-                <div class="list-thumb">
-                    <img src="/assets/imgs/event/3f48c61e02034d6cab70281c2bdc6cca.jpg">
-                </div>
-                <div class="list-contents">
-                    <div class="list-con">
-                        <div class="list-subject" aria-label="제목">
-                            <span class="list-title">이벤트 제목</span>
-                        </div>
-                        <div class="list-term">
-                            <strong>이벤트 기간</strong>
-                            : 20xx.xx.xx - 20xx.xx.xx
-                        </div>
-                    </div>
-                    <div class="list-status">
-                        <span class="list-status-ongoing">진행</span>
-                    </div>
-                </div>
-            </li>
-            <li class="event">
-                <div class="list-thumb">
-                    <img src="/assets/imgs/event/e7df7b358d304a188d818c55d777acfe.jpg">
-                </div>
-                <div class="list-contents">
-                    <div class="list-con">
-                        <div class="list-subject" aria-label="제목">
-                            <span class="list-title">이벤트 제목</span>
-                        </div>
-                        <div class="list-term">
-                            <strong>이벤트 기간</strong>
-                            : 20xx.xx.xx - 20xx.xx.xx
-                        </div>
-                    </div>
-                    <div class="list-status">
-                        <span class="list-status-ongoing">진행</span>
-                    </div>
+                </th:block>
                 </div>
             </li>
         </ul>
