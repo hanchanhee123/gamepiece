@@ -62,6 +62,25 @@ public class GameListServiceImple implements GameListService{
 		return gameListMapper.getGenreList();
 	}
 	
+	@Override
+	public List<Game> searchGameWithGenre(String searchGenre) {
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchGenre", searchGenre);
+		
+		List<Game> gameList = gameListMapper.getGameWithGenre(searchMap);
+		return gameList;
+	}
+	
+@Override
+	public List<Game> searchGameWithPlatform(String searchPlatform) {
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchPlatform", searchPlatform);
+		
+		List<Game> gameList = gameListMapper.getGameWithPlatform(searchMap);
+		return gameList;
+	}
+	
+	
 	
 	
 }

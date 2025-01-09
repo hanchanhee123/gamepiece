@@ -105,6 +105,62 @@ public class GameListController {
 		return "admin/game/gameList";
 	}
 	
+	@PostMapping("/searchGenre")
+	public String searchGameWithGenre(@RequestParam(value="searchGenre") String searchGenre, Model model, Pageable pageable) {
+		
+		List<Game> gameList = gameListService.searchGameWithGenre(searchGenre);
+		var pageInfo = gameListService.getGameList(pageable);
+		List<Game> genreList = gameListService.getGenreList();
+		log.info("genreList : {}", genreList);
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int lastPage = pageInfo.getLastPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		
+		model.addAttribute("gameList", gameList);
+		model.addAttribute("searchGenre", searchGenre);
+		model.addAttribute("genreList", genreList);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		
+		return "admin/game/gameList";
+	}
+	
+	@PostMapping("/searchPlatform")
+	public String searchGameWithPlatform(@RequestParam(value="searchPlatform") String searchPlatform, Model model, Pageable pageable) {
+		
+		
+		List<Game> gameList = gameListService.searchGameWithPlatform(searchPlatform);
+		var pageInfo = gameListService.getGameList(pageable);
+		List<Map<String, Object>> platformList = gameListService.getPlatform();
+		
+		log.info("gameList : {}", gameList);
+		
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int lastPage = pageInfo.getLastPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		
+		model.addAttribute("gameList", gameList);
+		model.addAttribute("searchPlatform", searchPlatform);
+		model.addAttribute("platformList", platformList);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		
+		return "admin/game/gameList";
+	}
+	
+	
+	
+	
 	
 	
 	
