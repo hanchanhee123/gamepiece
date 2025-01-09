@@ -16,7 +16,6 @@
 		<result column="user_telno" property="userTelno"/>
 		<result column="user_nn" property="userNn"/>
 		<result column="join_ymd" property="joinYmd"/>
-		<result column="whdwl_ymd" property="whdwlYmd"/>
 	</resultMap>
 
 	<!-- 전체 회원정보 조회 -->
@@ -28,5 +27,39 @@
 		WHERE
 			id = #{id};
 	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="addUser" parameterType="gamepiece.user.user.domain.User">
+		INSERT INTO user(
+			id,
+			user_pswd,
+			user_nm,
+			user_gender,
+			user_eml_addr,
+			user_brdt,
+			user_telno,
+			user_nn,
+			join_ymd
+		) VALUES (
+			#{id},
+			#{userPswd},
+			#{userNm},
+			#{userGender},
+			#{userEmlAddr},
+			#{userBrdt},
+			#{userTelno}, 
+			#{userNn},
+			CURDATE());
+	</insert>
+	
+	<!-- 중복 아이디 체크 -->
+	<select id="checkId" parameterType="string" resultType="boolean">
+		SELECT
+			COUNT(*)
+		FROM
+			user
+		WHERE
+			id = #{id};
+	</select>	
 	
 </mapper>
