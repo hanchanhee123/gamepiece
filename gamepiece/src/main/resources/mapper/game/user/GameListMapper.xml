@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.user.game.mapper.UserGameMapper">
+	<resultMap type="gamepiece.user.game.domain.UserGame" id="gameList">
+		<id 	column="gm_cd" property="gameCode"></id>
+		<result column="gm_nm" property="gameName"></result>
+		<result column="p_cd" property="platformCode"></result>
+		<result column="p_nm" property="platformName"></result>
+		<result column="developer" property="developer"></result>
+		<result column="gm_enrollment_ymd" property="gameEnrollmentYmd"></result>
+		<result column="detail_id" property="detailId"></result>
+		<result column="img_id" property="imgId"></result>
+		<result column="video_id" property="videoId"></result>
+		<result column="description" property="description"></result>
+		<result column="price" property="price"></result>
+		<result column="genre" property="genre"></result>
+		<result column="review_count" property="reviewCount"></result>
+		<result column="review_avg" property="reviewAvg"></result>
+		<result column="summation" property="summation"></result>
+		<result column="admin_id" property="adminId"></result>
+		<result column="reg_ymd" property="regYmd"></result>
+		<result column="isDelete" property="isDelete"></result> 
+	</resultMap>
+	<select id="getGameList" parameterType="Pageable" resultMap="gameList">
+		/* 사용자 게임 화면 조회 */
+		SELECT
+			g.gm_cd,
+			g.gm_nm,
+			g.p_cd,
+			p.p_nm,
+			g.developer,
+			g.gm_enrollment_ymd,
+			gd.detail_id,
+			gd.img_id,
+			gd.video_id,
+			gd.`description`,
+			gd.price,
+			gd.genre,
+			gd.review_count,
+			gd.review_avg,
+			gd.summation,
+			gd.admin_id,
+			gd.reg_ymd,
+			g.is_delete
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+			INNER JOIN platform p
+			ON g.p_cd = p.p_cd
+		WHERE
+			g.is_delete = 'delete';
+	</select>
+	
+</mapper>
