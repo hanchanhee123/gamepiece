@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import gamepiece.user.event.service.EventService;
-import lombok.RequiredArgsConstructor;
 
 @Controller("userEventController")
-@RequestMapping("/user/event")
+@RequestMapping("/event")
 public class EventController {
 
 	private final EventService eventService;
@@ -25,4 +24,17 @@ public class EventController {
 		
 		return "user/event/progressEvent";
 	}
+	
+	@GetMapping("/endEvent")
+	public String endEvent(Model model) {
+		
+		return "user/event/endEvent";
+	}
+	
+	@GetMapping("/winnerList")
+	public String winnerList(Model model) {
+		
+		return "user/event/winnerList";
+	}
+	
 }
