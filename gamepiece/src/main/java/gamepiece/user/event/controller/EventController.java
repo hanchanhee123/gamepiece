@@ -29,6 +29,7 @@ public class EventController {
 		var pageInfo = eventService.getProgressEvent(pageable);
 		
 		List<Event> eventList = pageInfo.getContents();
+		System.out.println(eventList);
 		
 		eventList.forEach(list -> {
 			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
