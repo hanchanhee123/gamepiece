@@ -25,6 +25,7 @@ public class UserController {
 	@GetMapping("/login")
 	public String login(@RequestParam(value="msg", required = false) String msg, Model model) {
 		
+		log.info(msg);
 		if(msg != null) model.addAttribute("msg", msg);
 		
 		return "user/user/login";
@@ -61,13 +62,31 @@ public class UserController {
 		
 		session.invalidate();
 		
-		return "redirect:/user";
+		return "redirect:/";
 	}
 	
 	@GetMapping("/addUser")
 	public String addUser() {
 		
 		return "user/user/addUser";
+	}
+	
+	@PostMapping("/addUserPro")
+	public String addUserPro(User user) {
+		
+		userService.addUser(user);
+		
+		return "user/user/login";
+	}
+	
+	@PostMapping("/checkId")
+	public boolean checkId(@RequestParam(name="id") String id) {
+		
+		boolean isDuplicate = false;
+		isDuplicate = userService.checkId(id);
+		System.out.println(isDuplicate);
+		
+		return isDuplicate;
 	}
 	
 	@GetMapping("/findUserId")

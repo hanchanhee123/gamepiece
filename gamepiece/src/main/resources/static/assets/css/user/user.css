@@ -100,10 +100,10 @@ main {
     border: 0;
 }
 
-input[type="radio"]:not(:checked):focus + label[for="male"],
-input[type="radio"]:not(:checked):focus + label[for="female"] {
-    outline: 2px solid black; /* 포커스 시 두 버튼에 테두리 */
+label.focus-gender {
+    border: 2px solid black;
 }
+
 
 label[for="male"] {
     border-radius: 10px 0px 0px 10px;
