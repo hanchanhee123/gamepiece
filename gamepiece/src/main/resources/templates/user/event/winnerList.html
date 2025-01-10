@@ -28,13 +28,15 @@
 	                </tr>
 	            </thead>
 	            <tbody>
-	      		<tr th:if="${eventList != null}"
-					th:each="event, iter :${eventList}">
-					<td th:text="${eventList.size() - iter.index}"></td>
-	      			<td th:text="${event.evNm}"></td>
-	      			<td th:text="${event.adminId}"></td> 			
-	      			<td th:text="${event.regYmd}"></td> 			
-	      		</tr>
+		      		<th:block th:if="${eventList != null}">
+			      		<tr th:if="${event.evStatus == '종료'}"
+							th:each="event, iter :${eventList}">
+						<td th:text="${eventList.size() - iter.index}"></td>
+		      			<td th:text="${event.evNm}"></td>
+		      			<td th:text="${event.adminId}"></td> 			
+		      			<td th:text="${event.regYmd}"></td>
+		      			</tr>
+		      		</th:block>
 	      		</tbody>	    
             </table>
         </div>

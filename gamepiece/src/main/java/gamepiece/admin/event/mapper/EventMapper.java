@@ -1,6 +1,7 @@
 package gamepiece.admin.event.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,6 @@ public interface EventMapper {
 	List<Event> getEventWinner(String evCd);
 	int getCntEventList();
 	void removeEvent(String evCd);
+	List<Event> getSearchList(Map<String, Object> searchMap);
+	int getSearchCntEventList(Map<String, Object> searchMap);
 }

@@ -18,6 +18,24 @@
 		<result column="ev_status" 				property="evStatus" />
 	</resultMap>
 
+	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
+		SELECT
+		    e.ev_cd,
+		    e.ev_nm,
+		    e.ev_start_ymd,
+		    e.ev_end_ymd
+		FROM
+		    events e
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+		ORDER BY ev_cd DESC
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	
 	<!-- 이벤트 삭제 -->
 	<update id="removeEvent" parameterType="gamepiece.admin.event.mapper.EventMapper">
 		UPDATE
@@ -33,6 +51,18 @@
 			COUNT(*)
 		FROM
 			events;
+	</select>
+	
+	<select id="getSearchCntEventList" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events e
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
 	</select>
 	
 	<select id="getEventList" parameterType="pageable" resultMap="eventResultMap">
