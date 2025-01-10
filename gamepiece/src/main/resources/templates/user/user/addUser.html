@@ -20,7 +20,7 @@
                 <h3>회원가입</h3>
             </div>
             <div class="user-form-group">
-                <input type="text" id="id" name="id" class="user-insert-form" placeholder="아이디를 입력해주세요">
+                <input type="text" id="id" name="id" class="user-insert-form" placeholder="아이디를 입력해주세요" required>
             </div>
             <!-- <div>
                 <input type="hidden" id="authrtNm" name="authrtNm" value="회원">
@@ -45,7 +45,7 @@
                 <input type="email" id="userEmlAddr" name="userEmlAddr" class="user-insert-form" placeholder="이메일을 입력해주세요" disabled="disabled">
             </div>
             <div class="user-form-group-brdt">
-                <input type="date" id="userBrdt" name="userBrdt" class="user-insert-form" placeholder="생년월일을 입력해주세요" disabled="disabled">
+                <input type="date" id="userBrdt" name="userBrdt" class="user-insert-form" placeholder="생년월일을 입력해주세요" max="9999-12-31" disabled="disabled">
             </div>
             <div class="user-form-group">
                 <input type="tel" id="userTelno" name="userTelno" class="user-insert-form" placeholder="전화번호를 입력해주세요" disabled="disabled">
@@ -77,17 +77,14 @@
 		    $formControl.each((idx, elem) => {
 		        const value = $(elem).val();
 		
-		        // Check if radio group for gender is checked
 		        if ($(elem).attr('name') === 'userGender') {
 		            if (!$('input[name="userGender"]:checked').length) {
 		                isSubmit = false;
 		
-		                // Add focus-gender class to both labels
-		                $('label[for="male"], label[for="female"]').addClass('focus-gender');
+		                $('label[for="male"], label[for="female"]').addClass('focus');
 		                return false;
 		            } else {
-		                // Remove focus-gender class if one is selected
-		                $('label[for="male"], label[for="female"]').removeClass('focus-gender');
+		                $('label[for="male"], label[for="female"]').removeClass('focus');
 		            }
 		        } else if (!value) {
 		            isSubmit = false;
@@ -102,9 +99,13 @@
 		// 중복 아이디 체크
 		$('#id').on({
 			'blur' : function() {
-				const checkId = $('#id').val();
+				const checkId = $('#id').val().trim();
 				
-				// ajax
+				if (!checkId) {
+		            alert('아이디를 입력해주세요.');
+		            return;
+		        }
+				
 				const request = $.ajax({
 					url : '/checkId',
 					method : 'POST',
@@ -114,7 +115,13 @@
 				request.done(function(data) {
 					const isDuplicate = data;
 					
-					$('#addUserForm').find('input, lebel')
+					if (isDuplicate) {
+		                alert('중복된 아이디입니다.');
+		            } else {
+		                alert('사용 가능한 아이디입니다.');
+		            }
+					
+					$('#addUserForm').find('input, label')
 					   .not('#id')
 					   .prop('disabled', isDuplicate);
 					
@@ -127,11 +134,21 @@
 		});
 		
 		$('#id').change(function() {
-			$('#addUserForm').find('input, lebel')
+			$('#addUserForm').find('input, label')
 							   .not('#id')
 							   .prop('disabled', true);
 		});
-
+		
+		// date 값 입력 시 color 변경
+		$(document).ready(function () {
+		    $('#userBrdt').on('input', function () {
+		        if ($(this).val()) {
+		            $(this).addClass('has-value');
+		        } else {
+		            $(this).removeClass('has-value');
+		        }
+		    });
+		});
     	
     	</script>
     </th:block>
