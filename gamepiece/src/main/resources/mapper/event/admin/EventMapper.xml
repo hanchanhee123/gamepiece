@@ -37,12 +37,13 @@
 	
 	<select id="getEventList" parameterType="pageable" resultMap="eventResultMap">
 		SELECT
-			*
+		*
 		FROM
 			events
 		WHERE
 			is_delete='active'
-		LiMIT #{rowPerPage} OFFSET #{offset};
+		ORDER BY ev_cd DESC
+		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
 	<select id="getEventParticipant" parameterType="string" resultMap="eventResultMap">

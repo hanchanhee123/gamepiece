@@ -42,6 +42,7 @@
 		events
 	WHERE
 		is_delete='active'
+	ORDER BY ev_cd DESC
 	LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
