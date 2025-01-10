@@ -53,7 +53,8 @@
 			ON g.p_cd = p.p_cd 
 			INNER JOIN game_genre gg
 			ON gd.genre = gg.genre_cd
-		ORDER BY CAST(SUBSTRING_INDEX(g.gm_cd,'gm_',-1) AS UNSIGNED);
+		ORDER BY CAST(SUBSTRING_INDEX(g.gm_cd,'gm_',-1) AS UNSIGNED)
+		LIMIT #{rowPerPage} OFFSET #{offset};
 
 
 	</select>
