@@ -33,7 +33,7 @@
                                 <select class="form-select" name="searchGenre" id="searchGenre">
                                     <option>장르선택</option>
                                     <th:block th:each="l : ${genreList}">
-                                    	<option th:value="${l.genre}" th:text="${l.genre}"></option>
+                                    	<option th:value="${l.genreCode}" th:text="${l.genreName}"></option>
                                     </th:block>
                                 </select>
                             </div>
@@ -59,15 +59,15 @@
 	                                        <div class="price mb-2"th:text="₩ + ${l.price}">$179.00</div>
 	                                        <!-- price.// -->
 	                                        <a th:href="@{/admin/game/modify(gameCode=${l.gameCode})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-	                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
 	                                    </div>
 	                                </div>
 	                                <!-- card-product  end// -->
                             	</div>
                         	</th:block>
-                        	<th:block th:unless="${gameList != null}">
-                        		<span>등록된 게임의 정보가 없습니다.</span>
+                        	<th:block th:unless="${not #lists.isEmpty(gameList)}">
+                        		<span>해당되는 게임이 존재하지 않습니다.</span>
                         	</th:block>
+                        	
                         </div>
                     </div>  
    				</div>
@@ -123,8 +123,11 @@
     			$form.submit();
     		})
     		
+    		
+    		
     		$('#searchGenre').change(function() {
     			const searchGenre = $(this).val();
+    			const genreList = localStorage.getItem("genreList");
     			const $form = $('<form />', {'action' : '/admin/game/searchGenre', 'method' : 'post'});
     			const $searchGenre = $('<input />', {'type' : 'hidden', 'name' : 'searchGenre'}).val(searchGenre);
     			$form.append($searchGenre);
