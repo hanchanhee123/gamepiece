@@ -18,4 +18,6 @@ public interface UserEventMapper {
 
 	List<Event> getEndEvent(Pageable pageable);
 
+	List<Event> getWinnerList(Pageable pageable);
+
 }

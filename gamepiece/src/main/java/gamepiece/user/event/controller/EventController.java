@@ -29,7 +29,7 @@ public class EventController {
 		var pageInfo = eventService.getProgressEvent(pageable);
 		
 		List<Event> eventList = pageInfo.getContents();
-		System.out.println(eventList);
+		System.out.println(pageable);
 		
 		eventList.forEach(list -> {
 			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
@@ -52,7 +52,7 @@ public class EventController {
 	@GetMapping("/endEvent")
 	public String getEndEvent(Pageable pageable, Model model) {
 		
-var pageInfo = eventService.getProgressEvent(pageable);
+		var pageInfo = eventService.getProgressEvent(pageable);
 		
 		List<Event> eventList = pageInfo.getContents();
 		System.out.println(eventList);
@@ -76,7 +76,27 @@ var pageInfo = eventService.getProgressEvent(pageable);
 	}
 	
 	@GetMapping("/winnerList")
-	public String getWinnerList(Model model) {
+	public String getWinnerList(Pageable pageable, Model model) {
+		
+var pageInfo = eventService.getProgressEvent(pageable);
+		
+		List<Event> eventList = pageInfo.getContents();
+		System.out.println(eventList);
+		
+		eventList.forEach(list -> {
+			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
+		});
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("eventList", eventList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
 		
 		return "user/event/winnerList";
 	}

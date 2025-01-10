@@ -40,4 +40,11 @@ public class EventServiceImpl implements EventService {
 		return new PageInfo<>(eventList, pageable, rowCnt);
 	}
 	
+	@Override
+	public PageInfo<Event> getWinnerList(Pageable pageable) {
+
+		int rowCnt = userEventMapper.getCntEventList();
+		List<Event> eventList = userEventMapper.getWinnerList(pageable); 
+		return new PageInfo<>(eventList, pageable, rowCnt);
+	}
 }
