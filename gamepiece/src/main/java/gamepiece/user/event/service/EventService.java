@@ -8,5 +8,7 @@ public interface EventService {
 	
 	PageInfo<Event> getProgressEvent(Pageable pageable);
 	
+	PageInfo<Event> getEndEvent(Pageable pageable);
+	
 	String getEventsWithStatus(String evCd);
 }
