@@ -13,6 +13,8 @@
 		<result column="video_id" property="videoId"></result>
 		<result column="description" property="description"></result>
 		<result column="price" property="price"></result>
+		<result column="genre_cd" property="genreCode"></result>
+		<result column="genre_name" property="genreName"></result>
 		<result column="genre" property="genre"></result>
 		<result column="review_count" property="reviewCount"></result>
 		<result column="review_avg" property="reviewAvg"></result>
@@ -36,6 +38,7 @@
 			gd.description,
 			gd.price,
 			gd.genre,
+			gg.genre_name,
 			gd.review_count,
 			gd.review_avg,
 			gd.summation,
@@ -47,7 +50,13 @@
 			games g INNER JOIN game_detail gd
 			ON g.gm_cd = gd.gm_cd
 			INNER JOIN platform p
-			ON g.p_cd = p.p_cd;
+			ON g.p_cd = p.p_cd 
+			INNER JOIN game_genre gg
+			ON gd.genre = gg.genre_cd
+		ORDER BY CAST(SUBSTRING_INDEX(g.gm_cd,'gm_',-1) AS UNSIGNED)
+		LIMIT #{rowPerPage} OFFSET #{offset};
+
+
 	</select>
 	
 	<select id="getGameInfoByCode" parameterType="Pageable" resultMap="gameList">
@@ -65,6 +74,7 @@
 			gd.`description`,
 			gd.price,
 			gd.genre,
+			gg.genre_name,
 			gd.review_count,
 			gd.review_avg,
 			gd.summation,
@@ -74,12 +84,15 @@
 			games g INNER JOIN game_detail gd
 			ON g.gm_cd = gd.gm_cd
 			INNER JOIN platform p
-			ON g.p_cd = p.p_cd
+			ON g.p_cd = p.p_cd 
+			INNER JOIN game_genre gg
+			ON gd.genre = gg.genre_cd
 		WHERE
 			g.gm_cd = #{gameCode};
 	</select>
 	
 	<select id="getPlatform" resultType="map">
+		/* 플랫폼 조회 */
 		SELECT
 			p_cd as platformCode,
 			p_nm as platformName
@@ -100,17 +113,7 @@
 			gd.gm_cd = #{gameCode};
 	</update>
 	
-	<update id="removeGame" parameterType="Game">
-	/* 게임삭제(soft delete) */
-	UPDATE
-		games g INNER JOIN game_detail gd
-		ON g.gm_cd = gd.gm_cd
-	SET
-		g.isDelete = 'delete';
-		gd.isDelete = 'delete';
-	where
-		g.gm_cd = #{gameCode};
-	</update>
+	
 	
 	<select id="getCntGameList" resultType="int">
 		/* 게임 목록 행의 갯수 */
@@ -133,14 +136,16 @@
 			games g INNER JOIN game_detail gd
 			ON g.gm_cd = gd.gm_cd
 		WHERE
-			g.gm_nm LIKE CONCAT('%', #{searchValue}, '%');
+			g.gm_nm LIKE CONCAT('%', #{searchValue}, '%')
+		ORDER BY CAST(SUBSTRING_INDEX(g.gm_cd,'gm_',-1) AS UNSIGNED);
 	</select>
-	<select id="getGenreList" parameterType="Game">
+	<select id="getGenreList" parameterType="Game" resultMap="gameList">
 		/* 장르 목록 조회 */
-		SELECT 
-			genre
-		FROM 
-			game_detail;
+		SELECT
+			genre_cd,
+			genre_name
+		FROM
+			game_genre;
 	</select>
 	
 	<select id="getGameWithGenre" parameterType="map" resultMap="gameList">
@@ -157,6 +162,7 @@
 			gd.video_id,
 			gd.`description`,
 			gd.price,
+			gg.genre_name,
 			gd.genre,
 			gd.review_count,
 			gd.review_avg,
@@ -170,8 +176,11 @@
 			ON g.gm_cd = gd.gm_cd
 			INNER JOIN platform p
 			ON g.p_cd = p.p_cd
+			INNER JOIN game_genre gg
+			ON gd.genre = gg.genre_cd
 		WHERE
-			gd.genre = #{searchGenre};
+			gd.genre = #{searchGenre}
+		ORDER BY CAST(SUBSTRING_INDEX(g.gm_cd,'gm_',-1) AS UNSIGNED);	
 	
 	</select>
 	<select id="getGameWithPlatform" parameterType="map" resultMap="gameList">
@@ -202,7 +211,8 @@
 			INNER JOIN platform p
 			ON g.p_cd = p.p_cd
 		WHERE
-			p.p_cd = #{searchPlatform};
+			p.p_cd = #{searchPlatform}
+		ORDER BY CAST(SUBSTRING_INDEX(g.gm_cd,'gm_',-1) AS UNSIGNED);
 	
 	</select>
 </mapper>

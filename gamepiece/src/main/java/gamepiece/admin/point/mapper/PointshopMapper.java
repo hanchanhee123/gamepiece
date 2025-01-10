@@ -1,6 +1,7 @@
 package gamepiece.admin.point.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,5 +24,7 @@ public interface PointshopMapper {
 	int addItem(Point point);
 	
 	int removeItem(String ps_cd);
+	
+	List<Point> getSearchList(Map<String, Object> searchMap);
 	
 }

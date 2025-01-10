@@ -8,10 +8,7 @@
           <div>
               <h2 class="content-title card-title" th:text="${title}"></h2>
           </div>
-          <div>
-              
-              <a href="#" class="btn btn-primary btn-sm rounded">Create new</a>
-          </div>
+          
       </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
@@ -33,7 +30,7 @@
                                 <select class="form-select" name="searchGenre" id="searchGenre">
                                     <option>장르선택</option>
                                     <th:block th:each="l : ${genreList}">
-                                    	<option th:value="${l.genre}" th:text="${l.genre}"></option>
+                                    	<option th:value="${l.genreCode}" th:text="${l.genreName}"></option>
                                     </th:block>
                                 </select>
                             </div>
@@ -41,7 +38,7 @@
                                 <select class="form-select" name="searchPlatform" id="searchPlatform">
                                 	<option>플랫폼선택</option>
 	                                <th:block th:each="l : ${platformList}">
-	                                    <option th:value=${l.platformCode} th:text="${l.platformName}"></option>
+	                                    <option th:value="${l.platformCode}" th:text="${l.platformName}"></option>
 	                                </th:block>
                                 </select>
                             </div>
@@ -59,15 +56,15 @@
 	                                        <div class="price mb-2"th:text="₩ + ${l.price}">$179.00</div>
 	                                        <!-- price.// -->
 	                                        <a th:href="@{/admin/game/modify(gameCode=${l.gameCode})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-	                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
 	                                    </div>
 	                                </div>
 	                                <!-- card-product  end// -->
                             	</div>
                         	</th:block>
-                        	<th:block th:unless="${gameList != null}">
-                        		<span>등록된 게임의 정보가 없습니다.</span>
+                        	<th:block th:unless="${not #lists.isEmpty(gameList)}">
+                        		<span>해당되는 게임이 존재하지 않습니다.</span>
                         	</th:block>
+                        	
                         </div>
                     </div>  
    				</div>
@@ -123,6 +120,8 @@
     			$form.submit();
     		})
     		
+    		
+    		
     		$('#searchGenre').change(function() {
     			const searchGenre = $(this).val();
     			const $form = $('<form />', {'action' : '/admin/game/searchGenre', 'method' : 'post'});
@@ -132,9 +131,9 @@
     			$form.submit();
     		})
     		
+    		
     		$('#searchPlatform').change(function() {
     			const searchPlatform = $(this).val();
-    			console.log(searchPlatform);
     			const $form = $('<form />', {'action' : '/admin/game/searchPlatform', 'method' : 'post'});
     			const $searchPlatform = $('<input />', {'type' : 'hidden', 'name' : 'searchPlatform'}).val(searchPlatform);
     			$form.append($searchPlatform);

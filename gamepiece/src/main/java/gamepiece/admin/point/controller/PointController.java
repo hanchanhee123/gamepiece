@@ -32,6 +32,27 @@ public class PointController {
 		this.pointService = pointService;
 	}
 	
+	@PostMapping("/searchList")
+	public String searchListView(@RequestParam(value="searchCate", required = false, defaultValue = "id") String searchCate,
+								 @RequestParam(value="searchValue") String searchValue,
+								 Model model) {
+		
+		log.info("searchCate: {}, searchValue: {} ", searchCate, searchValue);
+		
+		List<Point> ItemList = pointService.searchList(searchCate, searchValue, null);
+
+		
+		
+		log.info("{}",ItemList);
+		
+		model.addAttribute("title", "회원목록");
+		model.addAttribute("searchCate", searchCate);
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("ItemList", ItemList);
+		
+		return "admin/points/pointshopList";
+	}
+	
 	@GetMapping("/removeItem")
 	public String removeItem(Pageable pageable, String ps_cd, Model model) {
 		pointService.removeItem(ps_cd);

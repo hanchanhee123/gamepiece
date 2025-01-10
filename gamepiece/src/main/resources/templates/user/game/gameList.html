@@ -12,11 +12,14 @@
                 <div class="main_div">
 			        <div class="category-menu">
 			            <ul>
-			                <li class="gamelist-cate"><a href="#" style="color : #007AFF">Steam</a></li>
-			                <li class="gamelist-cate"><a href="#">Epic Games</a></li>
-			                <li class="gamelist-cate"><a href="#">Ubisoft Connect</a></li>
+			            	<th:block th:each="l : ${platformList}">
+			            		<li class="gamelist-cate" th:text="${l.platformName}"><a href="#" style="color : #007AFF">스팀</a></li>
+			            	</th:block>
+			                <!-- 
+			                <li class="gamelist-cate"><a href="#">에픽게임즈</a></li>
+			                <li class="gamelist-cate"><a href="#">닌</a></li>
 			                <li class="gamelist-cate"><a href="#">Riot Games</a></li>
-			                <li class="gamelist-cate"><a href="#">기타</a></li> 
+			                <li class="gamelist-cate"><a href="#">기타</a></li>  -->
 			            </ul>
 			        </div>
 			        <div class="search">
@@ -30,59 +33,55 @@
 			            </select>
 			            <input type="text" class="item-search">
 			            <button type="button" class="search-button"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
-			            
 			        </div>
-			        <div class="game-list-area">
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1812450/9edcb48a97b6073fc7e74dbec5d2fbb77ec6f566/capsule_616x353.jpg?t=1732789392">
-			                <p class="game-name">Bellwright</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1040200/capsule_616x353.jpg?t=1731870016">
-			                <p class="game-name">Crime scene cleaner</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/367520/capsule_616x353.jpg?t=1695270428">
-			                <p class="game-name">Hollow knight</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/367520/capsule_616x353.jpg?t=1695270428">
-			                <p class="game-name">Hollow knight</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
+			        <div class="card-body">
+			        	<div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+					        <th:block th:each="l : ${userGameList}">
+						        <div class="col">
+						        	<div class="game-info">
+						                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1812450/9edcb48a97b6073fc7e74dbec5d2fbb77ec6f566/capsule_616x353.jpg?t=1732789392">
+						                <p class="game-name" th:text="${l.gameName}">Bellwright</p>
+						                <p class="game-price" th:text="${l.price}">₩ 10,000</p>
+						                <p class="game-platform" th:text="${l.platformName}">Steam</p>
+						            </div>
+						        </div>
+					        </th:block>
+			        	</div>
 			        </div>
-			        <div class="game-list-area">
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1812450/9edcb48a97b6073fc7e74dbec5d2fbb77ec6f566/capsule_616x353.jpg?t=1732789392">
-			                <p class="game-name">Bellwright</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1040200/capsule_616x353.jpg?t=1731870016">
-			                <p class="game-name">Crime scene cleaner</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/367520/capsule_616x353.jpg?t=1695270428">
-			                <p class="game-name">Hollow knight</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
-			            <div class="game-info">
-			                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/367520/capsule_616x353.jpg?t=1695270428">
-			                <p class="game-name">Hollow knight</p>
-			                <p class="game-price">₩ 10,000</p>
-			                <p class="game-platform">Steam</p>
-			            </div>
+			        <div class="pagination-area mt-15 mb-50">
+			            <nav>
+			                <ul class="pagination justify-content-center">
+			                    <li class="page-item">
+			                        <a class="page-link" th:href="@{/admin/login/history}">
+			                        	<i class="material-icons md-first_page"></i>
+			                        </a>
+			                    </li>
+			                    <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/game/gameList(currentPage=${currentPage - 1})}">
+			                        	<i class="material-icons md-chevron_left"></i>
+			                        </a>
+			                    </li>
+			                    <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				                    <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				                    	<a class="page-link" th:href="@{/game/gameList(currentPage=${num})}" 
+				                    	   th:text="${num}">
+				                    	</a>
+				                    </li>
+			                    </th:block>
+			                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/game/gameList(currentPage=${currentPage + 1})}">
+			                        	<i class="material-icons md-chevron_right"></i>
+			                        </a>
+			                    </li>
+			                    <li class="page-item">
+			                        <a class="page-link" th:href="@{/game/gameList(currentPage=${lastPage})}">
+			                        	<i class="material-icons md-last_page"></i>
+			                        </a>
+			                    </li>
+			                </ul>
+			            </nav>
 			        </div>
 			    </div>
             </div>
