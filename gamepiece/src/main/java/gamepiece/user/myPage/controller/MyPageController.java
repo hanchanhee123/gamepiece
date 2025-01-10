@@ -1,13 +1,31 @@
 package gamepiece.user.myPage.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import gamepiece.user.myPage.domain.MyPage;
+import gamepiece.user.myPage.service.MyPageService;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class MyPageController {
+	
+	private final MyPageService myPageService;
 
 	@GetMapping("/myPageUser")
-	public String myPageUser() {
+	public String myPageUser(Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+		/* log.info(id); */
+		
+		MyPage myPageUser = myPageService.myPageUser(id);
+		/* log.info("myPageUser : {}", myPageUser); */
+		model.addAttribute("myPageUser", myPageUser);
 		
 		return "/user/myPage/myPageUser";
 	}
