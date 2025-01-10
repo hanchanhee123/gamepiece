@@ -5,6 +5,7 @@
 	<resultMap type="gamepiece.admin.point.domain.Point" id="pointshopResultMap">
 			<id column="ps_cd" 			property="itemCd"/>
 			<result column="ps_cate_cd" property="itemCate" />
+			<result column="cate_nm" property="cateName" />
 			<result column="ps_nm" 	property="itemName" />
 			<result column="img_url" 	property="itemImgurl" />
 			<result column="ps_price" 		property="itemPrice" />
@@ -21,7 +22,30 @@
 	</resultMap>
 	
 	
-	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
+	<select id="getSearchList" parameterType="map" resultMap="pointshopResultMap">
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			ps.img_url,
+			pc.cate_nm,
+			ps.is_delete
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		<where>
+			<if test="searchCate != null and searchCate != ''">
+				ps.ps_cate_cd=#{searchCate}
+			</if>
+			<if test="searchValue != null and searchValue != ''">
+				AND ps.ps_nm LIKE CONCAT('%', #{searchValue},'%')
+			</if>
+		</where>
+		ORDER BY CAST(SUBSTRING_INDEX(ps.ps_cd, 'ps_', -1) AS UNSIGNED);
+	</select>
+	
+	
 	
 	<select id="findAll" resultMap="pointshopResultMap" parameterType="Pageable">
 		/* 포인트샵 아이템 목록 조회 */

@@ -11,6 +11,7 @@ public class Point {
 
 	private String itemCd;
 	private String itemCate;
+	private String cateName;
 	private String itemName;
 	private String itemImgurl;
 	private int itemPrice;
