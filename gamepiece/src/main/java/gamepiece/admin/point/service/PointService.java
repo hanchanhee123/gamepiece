@@ -22,4 +22,6 @@ public interface PointService {
 	
 	void removeItem(String ps_cd);
 	
+	List<Point> searchList(String searchCate, String searchValue, Pageable pageable);
+	
 }
