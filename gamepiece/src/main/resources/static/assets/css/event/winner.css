@@ -21,6 +21,10 @@
     border-bottom: none;
 }
 
+.table td {
+	text-align:center;
+}
+
 .num {
     width: 50px;
 }

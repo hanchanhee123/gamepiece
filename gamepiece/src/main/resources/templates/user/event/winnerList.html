@@ -19,31 +19,63 @@
     <div class="main-div"> 
         <div class="detail-board">
             <table class="table">
-                <tr class="header">
-                    <th class="num">번호</th>
-                    <th class="title">제목</th>
-                    <th>조회수</th>
-                    <th>작성자</th>
-                    <th>작성날짜</th>
-                </tr>
-                <script>
-                    var i, day = 20;
-                    for (i = 10; i > 0; i--) {
-                        if (i == 1){
-                            document.write('<tr class="body" style="border-bottom: none">');
-                        }else{
-                            document.write("<tr class='body'>");
-                        }
-                        document.write("<td>" + i +"</td>");
-                        document.write("<td class='title'>제목입니다.</td>"); 
-                        document.write("<td>" + i +"</td>");
-                        document.write("<td>작성자</td>"); 
-                        document.write("<td>24-01-" + day-- + "</td>");
-                        document.write("</tr>");
-                    }
-                   </script>
+	            <thead>
+	                <tr class="header">
+	                    <th>번호</th>
+	                    <th width="80%">제목</th>
+	                    <th>작성자</th>
+	                    <th>작성날짜</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	      		<tr th:if="${eventList != null}"
+					th:each="event, iter :${eventList}">
+					<td th:text="${eventList.size() - iter.index}"></td>
+	      			<td th:text="${event.evNm}"></td>
+	      			<td th:text="${event.adminId}"></td> 			
+	      			<td th:text="${event.regYmd}"></td> 			
+	      		</tr>
+	      		</tbody>	    
             </table>
         </div>
     </div>
+    <div class="pagination-area mt-30 mb-50">
+            <nav>
+                <ul class="pagination justify-content-center">
+                	<li class="page-item">
+                		<a class="page-link " 
+                			th:href="@{/event/winnerList}">
+                			<i class="material-icons md-first_page">
+                			</i>
+                		</a>
+                	</li>
+                	<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+                		<a class="page-link " 
+                			th:href="@{/event/winnerList(currentPage=${currentPage - 1})}">
+                			<i class="material-icons md-chevron_left">
+                			</i>
+                		</a>
+                	</li>
+                	<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+                    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+                    		<a class="page-link" th:href="@{/event/winnerList(currentPage=${num})}" th:text="${num}"></a>
+                    	</li>
+                    </th:block>
+                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+                        <a class="page-link" 
+                        	th:href="@{/event/winnerList(currentPage=${currentPage + 1})}">
+                        	<i class="material-icons md-chevron_right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                		<a class="page-link " 
+                			th:href="@{/event/winnerList(currentPage=${lastPage})}">
+                			<i class="material-icons md-last_page">
+                			</i>
+                		</a>
+                	</li>
+                </ul>
+           </nav>
+ 	 </div>
 </th:block>
 </html>

@@ -15,4 +15,9 @@ public interface UserEventMapper {
 	List<Event> getProgressEvent(Pageable pageable);
 
 	String getEventListWithStatus(String evCd);
+
+	List<Event> getEndEvent(Pageable pageable);
+
+	List<Event> getWinnerList(Pageable pageable);
+
 }

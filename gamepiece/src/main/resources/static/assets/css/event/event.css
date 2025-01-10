@@ -12,6 +12,10 @@
     display: inline-block;
 }
 
+/* .main-height{
+	height:1260px;
+} */
+
 .list-event{
     margin-top: 20px;
     display: flex;
