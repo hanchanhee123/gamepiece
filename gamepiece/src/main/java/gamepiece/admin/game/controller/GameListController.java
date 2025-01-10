@@ -76,7 +76,6 @@ public class GameListController {
 	// 특정 게임 정보 수정
 	@PostMapping("/modify")
 	public String modifyGame(Game game, RedirectAttributes reAttr) {
-		System.out.println(game);
 		gameListService.modifyGame(game);
 		reAttr.addAttribute("gameCode", game.getGameCode());
 		return "redirect:/admin/game/gameList";
@@ -90,6 +89,9 @@ public class GameListController {
 		List<Game> gameList = gameListService.searchList(searchValue);
 		var pageInfo = gameListService.getGameList(pageable);
 		
+		List<Map<String, Object>> platformList = gameListService.getPlatform();
+		List<Game> genreList = gameListService.getGenreList();
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
 		int startPageNum = pageInfo.getStartPageNum();
@@ -97,6 +99,8 @@ public class GameListController {
 		
 		model.addAttribute("gameList", gameList);
 		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("platformList", platformList);
+		model.addAttribute("genreList", genreList);
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("lastPage", lastPage);
@@ -111,7 +115,8 @@ public class GameListController {
 		List<Game> gameList = gameListService.searchGameWithGenre(searchGenre);
 		var pageInfo = gameListService.getGameList(pageable);
 		List<Game> genreList = gameListService.getGenreList();
-		log.info("genreList : {}", genreList);
+		
+		List<Map<String, Object>> platformList = gameListService.getPlatform();
 		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
@@ -127,6 +132,8 @@ public class GameListController {
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		
+		model.addAttribute("platformList", platformList);
+		
 		return "admin/game/gameList";
 	}
 	
@@ -138,8 +145,7 @@ public class GameListController {
 		var pageInfo = gameListService.getGameList(pageable);
 		List<Map<String, Object>> platformList = gameListService.getPlatform();
 		
-		log.info("gameList : {}", gameList);
-		
+		List<Game> genreList = gameListService.getGenreList();
 		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
@@ -149,6 +155,7 @@ public class GameListController {
 		model.addAttribute("gameList", gameList);
 		model.addAttribute("searchPlatform", searchPlatform);
 		model.addAttribute("platformList", platformList);
+		model.addAttribute("genreList", genreList);
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("lastPage", lastPage);
