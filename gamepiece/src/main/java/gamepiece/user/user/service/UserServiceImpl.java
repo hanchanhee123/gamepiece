@@ -35,5 +35,17 @@ public class UserServiceImpl implements UserService {
 		
 		return resultMap;
 	}
+	
+	@Override
+	public void addUser(User user) {
+		
+		userMapper.addUser(user);
+	}
+	
+	@Override
+	public boolean checkId(String id) {
+		
+		return userMapper.checkId(id);
+	}
 
 }

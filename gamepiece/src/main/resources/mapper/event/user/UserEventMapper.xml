@@ -35,7 +35,7 @@
 		events;
 </select>
 
-<select id="getEventList" parameterType="pageable" resultMap="eventResultMap">
+<select id="getProgressEvent" parameterType="pageable" resultMap="eventResultMap">
 	SELECT
 		*
 	FROM

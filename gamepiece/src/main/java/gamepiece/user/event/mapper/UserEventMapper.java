@@ -5,9 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import gamepiece.user.event.domain.Event;
+import gamepiece.util.Pageable;
 
 @Mapper
 public interface UserEventMapper {
 
-	List<Event> progressEvent();
+	int getCntEventList();
+
+	List<Event> getProgressEvent(Pageable pageable);
+
+	String getEventListWithStatus(String evCd);
 }

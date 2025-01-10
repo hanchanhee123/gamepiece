@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link th:href="@{/assets/css/event/winner.css}" rel="stylesheet" type="text/css">
+</head>
+
+<th:block layout:fragment="contents-header">  
+	<div class="main-div">
+	    <div class="detail-cate">
+	        <a th:href="@{/event/progressEvent}" class="item-active">진행중 이벤트</a>
+            <a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
+            <a th:href="@{/event/winnerList}" class="item-active active">당첨자 발표</a>
+    	</div>
+    </div>
+    </th:block>
+    <th:block layout:fragment="contents-body"> 
+    <div class="main-div"> 
+        <div class="detail-board">
+            <table class="table">
+                <tr class="header">
+                    <th class="num">번호</th>
+                    <th class="title">제목</th>
+                    <th>조회수</th>
+                    <th>작성자</th>
+                    <th>작성날짜</th>
+                </tr>
+                <script>
+                    var i, day = 20;
+                    for (i = 10; i > 0; i--) {
+                        if (i == 1){
+                            document.write('<tr class="body" style="border-bottom: none">');
+                        }else{
+                            document.write("<tr class='body'>");
+                        }
+                        document.write("<td>" + i +"</td>");
+                        document.write("<td class='title'>제목입니다.</td>"); 
+                        document.write("<td>" + i +"</td>");
+                        document.write("<td>작성자</td>"); 
+                        document.write("<td>24-01-" + day-- + "</td>");
+                        document.write("</tr>");
+                    }
+                   </script>
+            </table>
+        </div>
+    </div>
+</th:block>
+</html>
