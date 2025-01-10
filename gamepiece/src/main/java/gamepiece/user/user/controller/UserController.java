@@ -43,12 +43,8 @@ public class UserController {
 		if(isMatched) {
 			User userInfo = (User) resultMap.get("userInfo");
 			
-			System.out.println(userInfo.getUserNm());
-			
-			String userName = userInfo.getUserNm();
-			
-			session.setAttribute("SID", id);
-			session.setAttribute("SNAME", userName);
+			session.setAttribute("SID", userInfo.getId());
+			session.setAttribute("SNAME", userInfo.getUserNm());
 			
 			viewName = "redirect:/";
 		}else {
