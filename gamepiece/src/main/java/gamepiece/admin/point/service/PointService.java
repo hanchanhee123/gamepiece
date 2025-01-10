@@ -22,6 +22,10 @@ public interface PointService {
 	
 	void removeItem(String ps_cd);
 	
+	void inactiveItem(String ps_cd);
+	
+	void logcount(String ps_cd);
+	
 	List<Point> searchList(String searchCate, String searchValue, Pageable pageable);
 	
 }
