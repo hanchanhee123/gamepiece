@@ -25,6 +25,10 @@ public interface PointshopMapper {
 	
 	int removeItem(String ps_cd);
 	
+	int inactiveItem(String ps_cd);
+	
+	int logCount(String ps_cd);
+	
 	List<Point> getSearchList(Map<String, Object> searchMap);
 	
 }

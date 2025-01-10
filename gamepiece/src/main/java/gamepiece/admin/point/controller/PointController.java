@@ -53,9 +53,18 @@ public class PointController {
 		return "admin/points/pointshopList";
 	}
 	
+	@GetMapping("/inactiveItem")
+	public String inactiveItem(String ps_cd, Model model) {
+		pointService.inactiveItem(ps_cd);
+		
+		
+		return "redirect:/admin/point/list";
+	}
+	
 	@GetMapping("/removeItem")
 	public String removeItem(Pageable pageable, String ps_cd, Model model) {
 		pointService.removeItem(ps_cd);
+		
 		
 		var pageInfo = pointService.findAll(pageable);
 		
@@ -106,24 +115,20 @@ public class PointController {
 	
 	@GetMapping("/detail")
 	public String pointDetail(@RequestParam(value = "itemCode") String itemCode,
-							  Pageable pageable,
+							  String ps_cd,
 							  Model model) {
 		
-		var pageInfo = pointService.findAll(pageable);
+		var ItemInfo = pointService.getItemInfoByItemName(itemCode);
+		pointService.inactiveItem(ps_cd);
 		
-		List<Point> ItemInfo = pageInfo.getContents();
-		
-		Optional<Point> pointInfo = ItemInfo.stream()
-											.filter(point -> point.getItemCd().equals(itemCode))
-											.findFirst();
+		System.out.println(itemCode);
 		
 		List<PointCategories> test = new ArrayList<>();
 		test = pointService.findCate();
-		System.out.println(test);
+		// System.out.println(pointInfo);
 		model.addAttribute("title", "상세보기");
-		model.addAttribute("pointList", pointService.findAll(pageable));
+		model.addAttribute("ItemInfo", ItemInfo);
 		model.addAttribute("cateList", pointService.findCate());
-		if(pointInfo.isPresent()) model.addAttribute("ItemInfo", pointInfo.get());
 		
 		return "admin/points/pointshopdetail";
 	}

@@ -55,9 +55,20 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
+	public void inactiveItem(String ps_cd) {
+		pointshopMapper.inactiveItem(ps_cd);
+		
+	}
+	
+	@Override
 	public void removeItem(String ps_cd) {
 		
 		pointshopMapper.removeItem(ps_cd);
+	}
+	
+	@Override
+	public void logcount(String ps_cd) {
+		pointshopMapper.logCount(ps_cd); 
 	}
 	
 	@Override
