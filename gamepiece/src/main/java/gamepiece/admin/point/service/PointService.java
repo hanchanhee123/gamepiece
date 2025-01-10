@@ -26,6 +26,6 @@ public interface PointService {
 	
 	void logcount(String ps_cd);
 	
-	List<Point> searchList(String searchCate, String searchValue, Pageable pageable);
+	PageInfo<Point> searchList(String searchCate, String searchValue, Pageable pageable);
 	
 }
