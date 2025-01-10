@@ -14,6 +14,8 @@ public class Game {
 	private String videoId;
 	private String description;
 	private int price;
+	private String genreCode;
+	private String genreName;
 	private String genre;
 	private int reviewCount;
 	private int reviewAvg;
@@ -118,11 +120,17 @@ public class Game {
 	public void setRegYmd(String regYmd) {
 		this.regYmd = regYmd;
 	}
-	public String getGenre() {
-		return genre;
+	public String getGenreCode() {
+		return genreCode;
 	}
-	public void setGenre(String genre) {
-		this.genre = genre;
+	public void setGenreCode(String genreCode) {
+		this.genreCode = genreCode;
+	}
+	public String getGenreName() {
+		return genreName;
+	}
+	public void setGenreName(String genreName) {
+		this.genreName = genreName;
 	}
 	public String getIsDelete() {
 		return isDelete;
@@ -131,6 +139,12 @@ public class Game {
 		this.isDelete = isDelete;
 	}
 	
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -156,6 +170,10 @@ public class Game {
 		builder.append(description);
 		builder.append(", price=");
 		builder.append(price);
+		builder.append(", genreCode=");
+		builder.append(genreCode);
+		builder.append(", genreName=");
+		builder.append(genreName);
 		builder.append(", genre=");
 		builder.append(genre);
 		builder.append(", reviewCount=");
@@ -173,6 +191,8 @@ public class Game {
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 	
 	
 	

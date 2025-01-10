@@ -1,11 +1,15 @@
 package gamepiece.user.game.service;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import gamepiece.user.game.domain.UserGame;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 
 public interface UserGameService {
 	
-	List<UserGame> getGameList();
+	PageInfo<UserGame> getGameList(Pageable pageable);
+	
+	ArrayList<String> getPlatformList();
 
 }

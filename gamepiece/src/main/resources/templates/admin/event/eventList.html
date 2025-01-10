@@ -18,11 +18,23 @@
   <div class="card mb-4">
    <div class="row">
       <header class="card-header">
-          <div class="row">
-              <div class="col-lg-5 col-6 me-auto">
-                  <input type="text" placeholder="Search..." class="form-control" />
-              </div>
-          </div>
+      <div class="col-lg-2 col-md-3 col-6">
+						<select class="form-select" name="searchCate" id="searchCate">
+							<option value="name" th:selected="${'name' eq searchCate}">이벤트명</option>  
+							<!-- <option value="name" th:selected="${'name' eq searchCate}">회원이름</option>
+							<option value="grade" th:selected="${'grade' eq searchCate}">회원등급</option>
+							<option value="email" th:selected="${'email' eq searchCate}">회원이메일</option> -->
+						</select>
+					</div>
+          <div class="col-lg-3 col-md-6 me-auto">
+						<div class="input-group">
+							<input type="text" class="form-control" id="searchValue" 
+								   name="searchValue" th:value="${searchValue}" placeholder="Search">
+							<button class="btn btn-light bg" id="searchBtn" type="button">
+								<i class="material-icons md-search"></i>
+							</button>
+						</div>					
+					</div>
       </header>
       
     <div class="card-body">
@@ -107,7 +119,18 @@
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-    
+    <script>
+		$('#searchBtn').click(function(){
+    			const searchCate = $('#searchCate').val();
+    			const searchValue = $('#searchValue').val();
+    			const $form = $('<form />', { 'action' : '/admin/event/searchList', 'method':'post'});
+    			const $searchCate = $('<input />', {'type':'hidden', 'name' :'searchCate'}).val(searchCate);
+    			const $searchValue = $('<input />', {'type':'hidden', 'name' :'searchValue'}).val(searchValue);
+    			$form.append($searchCate, $searchValue);
+    			$('body').append($form);
+    			$form.submit();
+    		});
+    	</script>
     </th:block>   	
    	
 </html>
