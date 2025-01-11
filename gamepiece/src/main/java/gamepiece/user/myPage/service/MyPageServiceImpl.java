@@ -1,5 +1,7 @@
 package gamepiece.user.myPage.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,13 @@ public class MyPageServiceImpl implements MyPageService {
 	public MyPage myPageUser(String id) {
 		
 		return myPageMapper.myPageUser(id);
+	}
+
+	// 마이페이지 - 사용자정보조회 (포인트 내역)
+	@Override
+	public List<MyPage> myPagePointLog(String id) {
+		
+		return myPageMapper.myPagePointLog(id);
 	}
 
 }

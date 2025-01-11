@@ -16,6 +16,16 @@
 		<result column="user_telno" property="userTelno"/>
 		<result column="user_nn" property="userNn"/>
 		<result column="join_ymd" property="joinYmd"/>
+	
+		<association property="pointLog" javaType="gamepiece.user.pointShop.domain.PointLog">
+			<id column="point_no" property="pointNo" />
+			<result column="id" property="id"/>
+			<result column="point_receive_ymd" property="pry"/>
+			<result column="point_receive_content" property="prc"/>
+			<result column="point_receive" property="pointReceive"/>
+			<result column="point_division" property="pointDivision"/>
+			<result column="remaining_point" property="totalPoint"/>
+		</association>
 	</resultMap>
 
 	<!-- 마이페이지 - 사용자정보조회 (정보수정) -->
@@ -26,6 +36,20 @@
 			user
 		WHERE
 			id = #{id};
+	</select>
+	
+	<select id="myPagePointLog" resultMap="myPageResultMap">
+		SELECT
+			point_no,
+			id,
+			point_receive_ymd,
+			point_receive_content,
+			point_receive,
+			point_division
+		FROM
+			point_log
+		WHERE
+			id = #{id}
 	</select>
 	
 </mapper>
