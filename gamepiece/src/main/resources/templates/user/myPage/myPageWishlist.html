@@ -50,7 +50,6 @@
 		                    <table class="table">
 		                        <thead>
 		                            <tr>
-		                                <th scope="col">순번</th>
 		                                <th scope="col">포인트 적립/사용 날짜</th>
 		                                <th scope="col">포인트 내역</th>
 		                                <th scope="col">적립/사용 포인트</th>
@@ -58,27 +57,14 @@
 		                            </tr>
 		                        </thead>
 		                        <tbody>
-		                            <tr>
-		                                <td scope="row">1</td>
-		                                <td>2024-01-01</td>
-		                                <td>회원가입</td>
-		                                <td>1000</td>
-		                                <td>적립</td>
-		                            </tr>
-		                            <tr>
-		                                <td scope="row">2</td>
-		                                <td>2024-02-02</td>
-		                                <td>포인트샵 아이템 구매</td>
-		                                <td>100</td>
-		                                <td>사용</td>
-		                            </tr>
-		                            <tr>
-		                                <td scope="row">3</td>
-		                                <td>2024-02-03</td>
-		                                <td>포인트샵 아이템 환불</td>
-		                                <td>100</td>
-		                                <td>적립</td>
-		                            </tr>
+		                        	<th:block th:if="${myPagePointLog != null}">
+			                            <tr th:each="myPagePointLog : ${myPagePointLog}">
+			                                <td th:text="${myPagePointLog.pry}"></td>
+			                                <td th:text="${myPagePointLog.prc}"></td>
+			                                <td th:text="${myPagePointLog.pointReceive}"></td>
+			                                <td th:text="${myPagePointLog.pointDivision}"></td>
+			                            </tr>
+		                        	</th:block>
 		                        </tbody>
 		                    </table>
 		                </div>

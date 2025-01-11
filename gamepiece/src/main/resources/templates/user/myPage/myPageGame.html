@@ -50,7 +50,6 @@
 		                    <table class="table">
 		                        <thead>
 		                            <tr>
-		                                <th scope="col">순번</th>
 		                                <th scope="col">포인트 적립/사용 날짜</th>
 		                                <th scope="col">포인트 내역</th>
 		                                <th scope="col">적립/사용 포인트</th>
@@ -60,7 +59,6 @@
 		                        <tbody>
 		                        	<th:block th:if="${myPagePointLog != null}">
 			                            <tr th:each="myPagePointLog : ${myPagePointLog}">
-			                                <td scope="row" th:text="${myPagePointLog.pointNo}"></td>
 			                                <td th:text="${myPagePointLog.pry}"></td>
 			                                <td th:text="${myPagePointLog.prc}"></td>
 			                                <td th:text="${myPagePointLog.pointReceive}"></td>

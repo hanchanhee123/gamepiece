@@ -45,6 +45,7 @@ public class MyPageController {
 		
 		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
 		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageGame";
 	}
@@ -52,13 +53,17 @@ public class MyPageController {
 	@GetMapping("/myPageWishlist")
 	public String myPageWishlist(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageWishlist";
 	}
@@ -66,13 +71,17 @@ public class MyPageController {
 	@GetMapping("/myPageReview")
 	public String myPageReview(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageReview";
 	}
@@ -80,13 +89,17 @@ public class MyPageController {
 	@GetMapping("/myPageRefundPayment")
 	public String myPageRefundPayment(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageRefundPayment";
 	}
@@ -94,13 +107,17 @@ public class MyPageController {
 	@GetMapping("/myPageCommunity")
 	public String myPageCommunity(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageCommunity";
 	}
@@ -108,13 +125,17 @@ public class MyPageController {
 	@GetMapping("/myPageEmoticon")
 	public String myPageEmoticon(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageEmoticon";
 	}
@@ -122,13 +143,17 @@ public class MyPageController {
 	@GetMapping("/myPageBoard")
 	public String myPageBoard(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageBoard";
 	}
@@ -136,13 +161,17 @@ public class MyPageController {
 	@GetMapping("/myPageInquiry")
 	public String myPageInquiry(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageInquiry";
 	}
@@ -150,13 +179,17 @@ public class MyPageController {
 	@GetMapping("/myPageEvent")
 	public String myPageEvent(Model model, HttpSession session) {
 		
-		String id = (String) session.getAttribute("SID");
+String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
 		var userPoint = pointshopService.getPointsHeld(id);
 		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
+		
+		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
+		model.addAttribute("myPagePointLog", myPagePointLog);
+		log.info("myPagePointLog : {}", myPagePointLog);
 		
 		return "/user/myPage/myPageEvent";
 	}
