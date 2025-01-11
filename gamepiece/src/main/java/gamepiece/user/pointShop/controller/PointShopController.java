@@ -32,13 +32,15 @@ public class PointShopController {
 		int startPageNum = imoticonInfo.getStartPageNum();
 		int endPageNum = imoticonInfo.getEndPageNum();
 		int lastPage = imoticonInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
-		session.getAttribute("SID");
 		model.addAttribute("imoticonList", imoticonList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
 		
 		return "user/points/imoticonList";
 	}
@@ -52,13 +54,16 @@ public class PointShopController {
 		int startPageNum = avatarInfo.getStartPageNum();
 		int endPageNum = avatarInfo.getEndPageNum();
 		int lastPage = avatarInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
-		session.getAttribute("SID");
 		model.addAttribute("avatarList", avatarList );
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
 		
 		return "user/points/avatarList";
 	}
@@ -72,13 +77,16 @@ public class PointShopController {
 		int startPageNum = frameInfo.getStartPageNum();
 		int endPageNum = frameInfo.getEndPageNum();
 		int lastPage = frameInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
-		session.getAttribute("SID");
 		model.addAttribute("frameList", frameList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
 		
 		return "user/points/frameList";
 	}
@@ -92,13 +100,16 @@ public class PointShopController {
 		int startPageNum = etcInfo.getStartPageNum();
 		int endPageNum = etcInfo.getEndPageNum();
 		int lastPage = etcInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
-		session.getAttribute("SID");
 		model.addAttribute("etcList", etcList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
 		
 		return "user/points/etcList";
 	}
@@ -112,13 +123,15 @@ public class PointShopController {
 		int startPageNum = backInfo.getStartPageNum();
 		int endPageNum = backInfo.getEndPageNum();
 		int lastPage = backInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
-		session.getAttribute("SID");
 		model.addAttribute("backList", backList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
 		
 		return "user/points/backgroundList";
 	}
