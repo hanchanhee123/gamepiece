@@ -43,6 +43,8 @@ public class UserController {
 		if(isMatched) {
 			User userInfo = (User) resultMap.get("userInfo");
 			
+			log.info("userInfo : {}", userInfo);
+			
 			session.setAttribute("SID", userInfo.getId());
 			session.setAttribute("SNAME", userInfo.getUserNm());
 			
