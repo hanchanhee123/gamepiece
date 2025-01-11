@@ -21,10 +21,8 @@ public class MyPageController {
 	public String myPageUser(Model model, HttpSession session) {
 		
 		String id = (String) session.getAttribute("SID");
-		/* log.info(id); */
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
-		/* log.info("myPageUser : {}", myPageUser); */
 		model.addAttribute("myPageUser", myPageUser);
 		
 		return "/user/myPage/myPageUser";
