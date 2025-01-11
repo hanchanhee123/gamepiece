@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.domain.PointCategories;
+import gamepiece.user.pointShop.domain.PointLog;
 import gamepiece.user.pointShop.mapper.UserPointShopMapper;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -17,6 +18,11 @@ public class PointShopServiceImpl implements PointShopService{
 	
 	public PointShopServiceImpl(UserPointShopMapper userpointshopMapper) {
 		this.userpointshopMapper = userpointshopMapper;
+	}
+	
+	@Override
+	public PointLog getPointsHeld(String id) {
+		 return userpointshopMapper.getPointsHeld(id);
 	}
 	
 	@Override

@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import gamepiece.user.pointShop.domain.PointCategories;
 import gamepiece.user.pointShop.domain.Point;
+import gamepiece.user.pointShop.domain.PointCategories;
+import gamepiece.user.pointShop.domain.PointLog;
 import gamepiece.util.Pageable;
 
 
@@ -19,6 +20,8 @@ public interface UserPointShopMapper {
 	List<Point> findbackground(Pageable pageable);
 	
 	int getItemCount();
+	
+	PointLog getPointsHeld(String id);
 	
 	List<PointCategories> findCate();
 }

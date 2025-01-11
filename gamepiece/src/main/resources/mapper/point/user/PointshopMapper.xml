@@ -28,6 +28,7 @@
 		<result column="point_receive_content" property="prc"/>
 		<result column="point_receive" property="pointReceive"/>
 		<result column="point_division" property="pointDivision"/>
+		<result column="remaining_point" property="totalPoint"/>
 	</resultMap>
 	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
@@ -223,8 +224,8 @@
 		    point_log pl
 		WHERE
 		    pl.point_division = '적립'
-		GROUP BY
-		    pl.id;
+		    AND
+		    pl.id=#{id};
     </select>
 
 </mapper>
