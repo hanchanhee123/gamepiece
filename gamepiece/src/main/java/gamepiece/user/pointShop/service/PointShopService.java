@@ -10,6 +10,7 @@ import gamepiece.util.Pageable;
 
 public interface PointShopService {
 	
+	
 	// 이모티콘 조회
 	PageInfo<Point> findimoticon(Pageable pageable);
 	// 아바타 조회
@@ -22,6 +23,9 @@ public interface PointShopService {
 	PageInfo<Point> findbackground(Pageable pageable);
 	
 	PointLog getPointsHeld(String id);
+	
+	// 아이템 전체 조회
+	List<Point> findAll();
 	
 	// 아이템 카테고리 조회
 	List<PointCategories> findCate();

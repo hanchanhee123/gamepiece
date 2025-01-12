@@ -25,33 +25,40 @@ public class PointShopServiceImpl implements PointShopService{
 		 return userpointshopMapper.getPointsHeld(id);
 	}
 	
+	
+	@Override	
+	public List<Point> findAll() {
+		
+		return userpointshopMapper.findAll();
+	}
+	
 	@Override
 	public PageInfo<Point> findimoticon(Pageable pageable) {
-		int rowCnt = userpointshopMapper.getItemCount();
+		int rowCnt = userpointshopMapper.getimoticonCount();
 		List<Point> loginList = userpointshopMapper.findimoticon(pageable);
 		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
 	@Override
 	public PageInfo<Point> findavatar(Pageable pageable) {
-		int rowCnt = userpointshopMapper.getItemCount();
+		int rowCnt = userpointshopMapper.getavatarCount();
 		List<Point> loginList = userpointshopMapper.findavatar(pageable);
 		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
 	@Override
 	public PageInfo<Point> findavatarframe(Pageable pageable) {
-		int rowCnt = userpointshopMapper.getItemCount();
+		int rowCnt = userpointshopMapper.getframeCount();
 		List<Point> loginList = userpointshopMapper.findavatarframe(pageable);
 		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
 	@Override
 	public PageInfo<Point> findetc(Pageable pageable) {
-		int rowCnt = userpointshopMapper.getItemCount();
+		int rowCnt = userpointshopMapper.getetcCount();
 		List<Point> loginList = userpointshopMapper.findetc(pageable);
 		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
 	@Override
 	public PageInfo<Point> findbackground(Pageable pageable) {
-		int rowCnt = userpointshopMapper.getItemCount();
+		int rowCnt = userpointshopMapper.getbackCount();
 		List<Point> loginList = userpointshopMapper.findbackground(pageable);
 		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
