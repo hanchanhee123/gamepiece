@@ -19,9 +19,19 @@ public interface UserPointShopMapper {
 	List<Point> findetc(Pageable pageable);
 	List<Point> findbackground(Pageable pageable);
 	
-	int getItemCount();
+	int getimoticonCount();
+	
+	int getframeCount();
+	
+	int getetcCount();
+	
+	int getbackCount();
+	
+	int getavatarCount();
 	
 	PointLog getPointsHeld(String id);
+	
+	List<Point> findAll();
 	
 	List<PointCategories> findCate();
 }
