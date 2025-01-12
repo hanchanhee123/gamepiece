@@ -25,6 +25,10 @@ public class PointShopServiceImpl implements PointShopService{
 		 return userpointshopMapper.getPointsHeld(id);
 	}
 	
+	@Override
+	public Point pointInfo(String itemCd) {
+		return userpointshopMapper.pointInfo(itemCd);
+	}
 	
 	@Override	
 	public List<Point> findAll() {

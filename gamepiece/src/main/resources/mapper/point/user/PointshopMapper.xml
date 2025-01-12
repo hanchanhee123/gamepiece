@@ -46,6 +46,15 @@
 			point_shop;
 	</select>
 	
+	<select id="pointInfo" resultMap="pointshopResultMap" parameterType="String">
+		/* 포인트 코드를 받아서 해당 이이템 정보 조회*/
+		SELECT
+			*
+		FROM
+			point_shop
+		WHERE
+			ps_cd=#{itemCd};
+	</select>
 	
 	<select id="findimoticon" resultMap="pointshopResultMap" parameterType="Pageable">
 		SELECT

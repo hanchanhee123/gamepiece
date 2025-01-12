@@ -31,6 +31,8 @@ public interface UserPointShopMapper {
 	
 	PointLog getPointsHeld(String id);
 	
+	Point pointInfo(String itemCd);
+	
 	List<Point> findAll();
 	
 	List<PointCategories> findCate();

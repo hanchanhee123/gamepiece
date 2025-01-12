@@ -39,7 +39,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${imoticonList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="imoticon">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -62,7 +62,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${avatarList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="avatar">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -85,7 +85,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${backList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="back">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -108,7 +108,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${frameList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="frame">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -130,7 +130,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${etcList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="etc">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -145,71 +145,51 @@
         </div>
     </div>
     <div class="modal fade" id="exampleModalToggle" tabindex="-1" aria-labelledby="exampleModalToggleLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <div>
-                          <h1 class="modal-title fs-5" id="exampleModalToggleLabel" th:text="${itemInfo.itemName}">아이템 이름</h1>
-                      </div>
-                      <div>카테고리</div>
-                  </div>
-                  <div class="modal-body">
-                      <div class="modal-info">
-                          
-                          <div>보유 포인트 : <span class="point" th:text="${itemInfo.itemPrice}">1050</span> Point</div>
-                      </div>
-                      <div class="modal-img">
-                          <img src="data:image/jpeg;base64,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" alt="">
-                      </div>
-                      <p>포인트를 사용해 이 아바타를 받으세요. 이 아바타를 사용하면 내 프로필과 미니 프로필에 항상 아바타가 나타납니다. 또한 내 상태가 변경되거나 채팅으로 메시지를 보낼 때에도 보입니다.</p>
-                      <p>이 아이템을 획득하려면 2,646포인트가 더 필요합니다.</p>
-                      <p>이 아이템은 환불할 수 없습니다.</p>
-                      
-                  </div>
-                  <div class="modal-footer">
-                      <button class="btn btn-primary"  data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">구매하기</button>
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="modal fade" id="exampleModalToggle2" tabindex="-1" aria-labelledby="exampleModalToggleLabel2" aria-hidden="true">
-           <div class="modal-dialog modal-lg">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <div>
-                           <h1 class="modal-title fs-5" id="exampleModalToggleLabel2" th:text="">아이템 이름</h1>
-                       </div>
-                       <div>카테고리</div>
-                   </div>
-                   <div class="modal-body">
-                       <div class="modal-info">
-                           
-                           <div>보유 포인트 : <span class="point">850</span> Point</div>
-                       </div>
-                       <div class="modal-img">
-                           <img src="data:image/jpeg;base64,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" alt="">
-                       </div>
-                       <p>아바타를 구매하셨습니다.</p>
-                       
-                       <p>이 아이템은 환불할 수 없습니다.</p>
-                       
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                   </div>
-               </div>
-           </div>
-       </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modal-name">아이템 이름</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <p>보유 포인트: <span class="point" id="modal-point">1050</span> Point</p>
+                </div>
+                <div class="modal-img">
+                    <img id="item-img" alt="아이템 이미지" class="img-fluid">
+                </div>
+                <p>이 아이템은 환불할 수 없습니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">구매하기</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
          
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-
+		<script>
+			$('.box').click(function(){
+				const itemCd= this.getAttribute('data-ps_cd');
+				fetch('/point/modal?itemCd='+itemCd)
+				.then(response => response.text())  // JSON 대신 text() 사용
+			    .then(data => {
+			        const jsonData = JSON.parse(data);
+			        $('#modal-point').text(jsonData.itemPrice);
+			        $('#modal-name').text(jsonData.itemName);
+			    	$('#item-img').attr('src',jsonData.itemImgurl);
+			    })
+			})
+		</script>
+		
     	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    	  	
+    		
     	</script>
 
     </th:block>
