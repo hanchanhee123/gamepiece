@@ -1,12 +1,15 @@
 package gamepiece.user.pointShop.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.service.PointShopService;
@@ -22,6 +25,16 @@ public class PointShopController {
 	
 	public PointShopController(PointShopService pointshopService) {
 		this.pointshopService = pointshopService;
+	}
+	@GetMapping("/modal")
+	public ResponseEntity<Point> getitemModal(@RequestParam(value="itemCd") String itemCd,
+							Model model) {
+		
+		var pointInfo = pointshopService.pointInfo(itemCd);
+		/* System.out.println("pointinfo 데이터: " + pointInfo); */
+		
+		
+		return ResponseEntity.ok(pointInfo);
 	}
 	
 	
@@ -43,7 +56,7 @@ public class PointShopController {
 		model.addAttribute("imoticonlastPage", imoticonlastPage);
 		var userPoint = pointshopService.getPointsHeld(userId);
 		model.addAttribute("userPoint", userPoint.getTotalPoint());
-		System.out.println(imoticonlastPage);
+
 		
 		return "user/points/imoticonList";
 	}
@@ -149,7 +162,8 @@ public class PointShopController {
 		var frameInfo = pointshopService.findavatarframe(pageable);
 		var etcInfo = pointshopService.findetc(pageable);
 		var backInfo = pointshopService.findbackground(pageable);
-	
+		
+		
 		String userId = (String) session.getAttribute("SID");
 		List<Point> imoticonList = imoticonInfo.getContents();
 		int imoticoncurrentPage = imoticonInfo.getCurrentPage();
