@@ -289,7 +289,52 @@
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
 		<script>
+			let $selectYear = $('.select-year').val();
+			let $selectMonth = $('.select-month').val();
+			const request = $.ajax({
+				url : '/tournament/util/ajax',
+				method : 'GET',
+				data : {'date' : `${$selectYear}-${$selectMonth}`,
+						'gameName' : '',
+						'matchCate' : ''
+				},
+				dataType : 'json'
+			});
+			request.done(function(data){
+				console.log(data);
+			});
 			
+			$('.select-year').change(function(){
+				$selectYear = $('.select-year').val();
+				const request = $.ajax({
+					url : '/tournament/util/ajax',
+					method : 'GET',
+					data : {'date' : `${$selectYear}-${$selectMonth}`,
+							'gameName' : '',
+							'matchCate' : ''
+					},
+					dataType : 'json'
+				});
+				request.done(function(data){
+					console.log(data);
+				});
+			});
+			
+			$('.select-month').change(function(){
+				$selectMonth = $('.select-month').val();
+				const request = $.ajax({
+					url : '/tournament/util/ajax',
+					method : 'GET',
+					data : {'date' : `${$selectYear}-${$selectMonth}`,
+							'gameName' : '',
+							'matchCate' : ''
+					},
+					dataType : 'json'
+				});
+				request.done(function(data){
+					console.log(data);
+				});
+			});
 		</script>
     </th:block>
 </html>
