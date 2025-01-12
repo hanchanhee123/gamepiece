@@ -9,6 +9,15 @@ public interface UserService {
 	// 로그인 (회원 아이디, 비밀번호 확인)
 	Map<String, Object> checkUser(String id, String userPswd);
 
+	// 사용자 로그 확인 (오늘 날짜)
+	int findLoginLog(String sid);
+	
+	// 로그인 로그 삽입
+	void loginLog(String sid);
+	
+	// 로그인 로그 업데이트
+	void modifyLoginLog(String sid);
+
 	// 회원가입
 	void addUser(User user);
 
