@@ -1,6 +1,8 @@
 package gamepiece.admin.notice.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +30,7 @@ public class NoticeServiceImpl implements NoticeService {
 		int rowCnt = noticeMapper.getCntNotice();
 		List<Notice> noticeList = noticeMapper.getNoticeList(pageable);
 		
-		noticeList.forEach(noticeInfo -> {
-			String noticeWriter = noticeInfo.getNoticeWriter(); 
-			switch (noticeWriter) {
-				case "id01" -> {
-					noticeInfo.setNoticeWriter("관리자");
-				}
-				
-				}
-		});
+		
 		
 		return new PageInfo<>(noticeList, pageable, rowCnt);
 	
@@ -70,6 +64,22 @@ public class NoticeServiceImpl implements NoticeService {
 	public int removeNotice(int noticeNum) {
 
 		return noticeMapper.removeNotice(noticeNum);
+	}
+
+
+	@Override
+	public PageInfo<Notice> getSearchList(String searchValue, Pageable pageable) {
+		 Map<String, Object> searchMap = new HashMap<String, Object>();
+		 
+
+		   searchMap.put("searchValue", searchValue);
+		   searchMap.put("offset", pageable.getOffset());
+		   searchMap.put("rowPerPage", pageable.getRowPerPage());
+		   
+		   int rowCnt = noticeMapper.getCntSearchNotice(searchMap);
+		   List<Notice> noticeList = noticeMapper.getNoticeSearchList(searchMap);
+		 
+		   return new PageInfo<>(noticeList, pageable, rowCnt);
 	}
 
 }

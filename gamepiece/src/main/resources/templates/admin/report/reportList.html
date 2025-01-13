@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title" th:text="${title}"></h2>
+          </div>
+          
+      </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   	   <div class="card">
+                    <div class="card-body">
+        <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+      <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+                        <div class="row">
+                          
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead style="text-align: center;">
+                                            <tr>
+                                                
+                                                <th>신고번호</th>
+                                                <th>신고인</th>
+                                                <th>피신고인</th>
+                                                <th>신고내용</th>
+                                                <th>진행상황</th>
+                                                <th>신고일</th>
+                                                <th>비고</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="text-align: center;">
+                                    	   <th:block th:if="${reportList}">
+                               <tr th:each="l : ${reportList}">
+                                        
+                                       <td th:text="${l.reportNo}"></td>
+                                     <td th:text="${l.reportUser}"></td>
+                                     <td th:text="${l.reportedUser}"></td>
+                                       <td th:text="${l.reportContent}"></td>
+                                       <td th:switch="${l.reportProgress}">
+									    <span th:case="'처리 완료'" class="badge rounded-pill alert-success">처리 완료</span>
+									    <span th:case="'검토 중'" class="badge rounded-pill alert-warning">검토 중</span>
+									    <span th:case="'요청 접수'" class="badge rounded-pill alert-danger">요청 접수</span>
+									</td>
+									<td th:text="${l.reportYmd}"></td>
+                                     <td>
+                                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end" style="display: contents;">
+                                                <a th:href="@{/admin/report/detail(reportNo=${l.reportNo})}" 
+                                                class="btn btn-sm btn-light font-sm rounded" style="margin-right: 10px;"> <i class="material-icons md-edit"></i>상세</a>
+                                   
+                                            </div>
+                                 
+                                        </td>                                 
+                                    </tr>
+                                    </th:block>
+                                    <th:block th:unless="${reportList}">
+								<tr>
+									<td colspan="6">등록된 신고내역이 없습니다.</td>
+								</tr>
+							</th:block>
+                                    	
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- .col// -->
+                        </div>
+                        <!-- .row // -->
+                    </div>
+                    <!-- card body .// -->
+                </div>
+                 <div class="pagination-area mt-15 mb-50">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                        		<li class="page-item">
+                        			<a class="page-link" th:href="@{/admin/report/list}">         			
+               						<i class="material-icons md-first_page"></i>
+                        			</a>
+                        
+                        
+                        
+                            <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+                            		<a class="page-link"
+                            			th:href="@{/admin/report/list(currentPage=${currentPage -1})}">
+                            		<i class="material-icons md-chevron_left"></i>
+                            		</a>
+                            </li>
+                            <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">		
+                       				<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+                       				<a class="page-link" th:href="@{/admin/report/list(currentPage=${num})}" th:text="${num}"></a>
+                       		</th:block>
+                            <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
+                                <a class="page-link" 
+                                th:href="@{/admin/report/list(currentPage=${currentPage+1})}">
+                                <i class="material-icons md-chevron_right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+							    <a class="page-link" 
+							       th:href="@{/admin/report/list(currentPage=${lastPage})}">
+							        <i class="material-icons md-last_page"></i>
+							    </a>
+							</li>    
+                        </ul>
+                    </nav>
+                </div>
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	 <script th:inline="javascript">
+  
+    	
+    	</script>
+    </th:block>
+</html>

@@ -9,9 +9,7 @@
               <h2 class="content-title card-title" th:text="${title}"></h2>
          
           </div>
-           <div> 
-          <a th:href="@{/admin/board/write}" class="btn btn-primary btn-sm rounded">게시글작성</a>
-      </div>
+        
       </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
@@ -23,28 +21,27 @@
    			<div class="col">
    				      <div class="card mb-4">
                     <header class="card-header">
-                        <div class="row gx-3">
-                            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                                <select class="form-select">
-                                    <option selected>전체 카테고리</option>
-                                    <option>자유게시판</option>
-                                    <option>공략게시판</option>
-                                    <option>정보게시판</option>
+                        <div class="row gx-5">
+                            <div class="col-md-3">
+                                <select class="form-select" name="searchCate" id="searchCate">
+                                    <option value="all" th:selected="${'all' eq searchCate}">전체 카테고리</option>
+                                    <option value="free" th:selected="${'free' eq searchCate}">자유게시판</option>
+                                    <option value="attack" th:selected="${'attack' eq searchCate}">공략게시판</option>
+                                    <option value="info" th:selected="${'info' eq searchCate}">정보게시판</option>
                                 </select>
                             </div>
-                              <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search..." class="form-control" />
-                            </div>
+                              <div class="col-lg-3 col-md-6 me-auto">
+						<div class="input-group">
+							<input type="text" class="form-control" id="searchValue" 
+								   name="searchValue" th:value="${searchValue}">
+							<button class="btn btn-light bg" id="searchBtn" type="button">
+								<i class="material-icons md-search"></i>
+							</button>
+						</div>
+					</div>
                          
                           
-                            <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
-                                    <option>현황</option>
-                                    <option>Active</option>
-                                    <option>Disabled</option>
-                                    <option>Show all</option>
-                                </select>
-                            </div>
+                           
                            
                         </div>
                     </header>
@@ -74,15 +71,19 @@
                                      <td th:text="${l.boardCategory}"></td>
                                        <td th:text="${l.boardTitle}"></td>
                                        <td th:text="${l.boardViewCnt}"></td>
-                                       <td th:text="${l.boardLikeCnt}"></td>
-                                       <td th:text="${l.boardDisLikeCnt}"></td>
+                                  <td th:text="${l.boardLikeCnt}" th:data-board-num="${l.boardNum}" 
+									    th:onclick="showLikeUsers(this, 'LIKE')" style="cursor: pointer;">
+									</td>
+									<td th:text="${l.boardDisLikeCnt}" th:data-board-num="${l.boardNum}" 
+									    th:onclick="showLikeUsers(this, 'DISLIKE')" style="cursor: pointer;">
+									</td>
                                        <td th:text="${l.userInfo.userNn}"></td>
                                        <td th:text="${l.boardYmd}"></td>                                   
                                       
                                         <td>
                                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end" style="display: contents;">
-                                                <a th:href="@{/admin/board/modify(boardNum=${l.boardNum})}" 
-                                                class="btn btn-sm font-sm rounded btn-brand" style="margin-right: 10px;"> <i class="material-icons md-edit"></i> 수정 </a>
+                                                <a th:href="@{/admin/board/detail(boardNum=${l.boardNum})}" 
+                                                class="btn btn-sm font-sm rounded btn-brand" style="margin-right: 10px;"> <i class="material-icons md-edit"></i>상세</a>
                                                 
                                            <a th:href="@{/admin/board/remove(boardNum=${l.boardNum})}"
 								  class="btn btn-sm font-sm btn-light rounded removeBtn" style="margin-right: 10px;">
@@ -93,59 +94,79 @@
                                         </td>
                                     </tr>
                                     </th:block>
-                                    <th:block th:unless="${boardList}">
+                                    <th:block th:unless="${not #lists.isEmpty(boardList)}">
 								<tr>
 									<td colspan="9">등록된 게시물이 없습니다.</td>
 								</tr>
 							</th:block>
                                  
                                 </tbody>
+                               
                             </table>
                         </div>
                         <!-- table-responsive //end -->
                     </div>
                     <!-- card-body end// -->
                 </div>
-            <div class="pagination-area mt-15 mb-50">
-                    <nav>
-                        <ul class="pagination justify-content-center">
-                        		<li class="page-item">
-                        			<a class="page-link" th:href="@{/admin/board/list}">         			
-               						<i class="material-icons md-first_page"></i>
-                        			</a>
-                        
-                        
-                        
-                            <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
-                            		<a class="page-link"
-                            			th:href="@{/admin/board/list(currentPage=${currentPage -1})}">
-                            		<i class="material-icons md-chevron_left"></i>
-                            		</a>
-                            </li>
-                            <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">		
-                       				<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-                       				<a class="page-link" th:href="@{/admin/board/list(currentPage=${num})}" th:text="${num}"></a>
-                       		</th:block>
-                            <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
-                                <a class="page-link" 
-                                th:href="@{/admin/board/list(currentPage=${currentPage+1})}">
-                                <i class="material-icons md-chevron_right"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-							    <a class="page-link" 
-							       th:href="@{/admin/board/list(currentPage=${lastPage})}">
-							        <i class="material-icons md-last_page"></i>
-							    </a>
-							</li>    
-                        </ul>
-                    </nav>
-                </div>
+					<div class="pagination-area mt-15 mb-50">
+				    <nav aria-label="Page navigation example">
+				        <ul class="pagination justify-content-center">
+				            <li class="page-item">
+				                <a class="page-link" th:href="@{/admin/board/searchList(currentPage=1, searchCate=${searchCate}, searchValue=${searchValue})}">
+				                    <i class="material-icons md-first_page"></i>
+				                </a>
+				            </li>
+				            <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+				                <a class="page-link" th:href="@{/admin/board/searchList(currentPage=${currentPage - 1}, searchCate=${searchCate}, searchValue=${searchValue})}">
+				                    <i class="material-icons md-chevron_left"></i>
+				                </a>
+				            </li>
+				            <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				                <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				                    <a class="page-link" th:href="@{/admin/board/searchList(currentPage=${num}, searchCate=${searchCate}, searchValue=${searchValue})}" th:text="${num}"></a>
+				                </li>
+				            </th:block>
+				            <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+				                <a class="page-link" th:href="@{/admin/board/searchList(currentPage=${currentPage + 1}, searchCate=${searchCate}, searchValue=${searchValue})}">
+				                    <i class="material-icons md-chevron_right"></i>
+				                </a>
+				            </li>
+				            <li class="page-item">
+				                <a class="page-link" th:href="@{/admin/board/searchList(currentPage=${lastPage}, searchCate=${searchCate}, searchValue=${searchValue})}">
+				                    <i class="material-icons md-last_page"></i>
+				                </a>
+				            </li>
+				        </ul>
+				    </nav>
+				</div>
    			</div>
    		</div>
+   			 <div class="modal fade" id="likeUsersModal" tabindex="-1" aria-labelledby="likeUsersModalLabel" aria-hidden="true">
+								  <div class="modal-dialog modal-dialog-centered">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								        <h5 class="modal-title" id="likeUsersModalLabel"></h5>
+								        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								      </div>
+								      <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+								        <ul id="userList" class="list-group">
+								          <!-- 사용자 목록이 여기에 동적으로 추가됩니다 -->
+								        </ul>
+								      </div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+								      </div>
+								    </div>
+								  </div>
+								</div>
    	</th:block>
+   
    	<!--/* 사용자 추가 js file */-->
-    <th:block layout:fragment="customJsResource"></th:block>
+    <th:block layout:fragment="customJsResource">
+    
+    
+    
+    </th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	 <script th:inline="javascript">
@@ -170,6 +191,52 @@
     		       form.submit();
     		   }
     		});
+    	
+    	function showLikeUsers(element, type) {
+    	    const count = parseInt(element.textContent);
+    	    
+    	    if (count === 0) {
+    	        return;
+    	    }
+    	    
+    	    const dummyUsers = [];
+    	    
+    	    for (let i = 1; i <= count; i++) {
+    	        dummyUsers.push({ userNn: `리${i}` });
+    	    }
+    	    
+    	    const userList = document.getElementById('userList');
+    	    userList.innerHTML = ''; // 목록 초기화
+    	    
+    	    dummyUsers.forEach(user => {
+    	        const li = document.createElement('li');
+    	        li.className = 'list-group-item';
+    	        li.textContent = user.userNn;
+    	        userList.appendChild(li);
+    	    });
+    	    
+    	    const modalTitle = document.getElementById('likeUsersModalLabel');
+    	    modalTitle.textContent = type === 'LIKE' ? '좋아요 유저목록' : '싫어요 유저목록';
+    	    
+    	    const modal = new bootstrap.Modal(document.getElementById('likeUsersModal'));
+    	    modal.show();
+    	}
+    	
+    	
+    	
+    	$('#searchBtn').click(function(){
+			const searchCate = $('#searchCate').val();
+			const searchValue = $('#searchValue').val();
+			const $form = $('<form />', { 'action' : '/admin/board/searchList', 'method': 'post'});
+			const $searchCate = 
+					$('<input />', {'type':'hidden', 'name' : 'searchCate'}).val(searchCate);
+			const $searchValue = 
+					$('<input />', {'type':'hidden', 'name' : 'searchValue'}).val(searchValue);
+			$form.append($searchCate, $searchValue);
+			$('body').append($form);
+			$form.submit();
+		});
+    	
     	</script>
     </th:block>
 </html>

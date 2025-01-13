@@ -10,6 +10,7 @@ import lombok.Data;
 public class BoardComment {
 	
 	private String commentNum; //덧글번호
+	private String boardNum; //게시판번호
 	private String commentDetail; //덧글내용
 	private int commnetLikeCnt; //덧글좋아요
 	private int commentDisLikeCnt; //덧글싫어요
