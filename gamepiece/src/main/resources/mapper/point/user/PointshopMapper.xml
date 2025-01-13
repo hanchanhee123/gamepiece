@@ -6,9 +6,9 @@
 			<id column="ps_cd" 			property="itemCd"/>
 			<result column="ps_cate_cd" property="itemCate" />
 			<result column="cate_nm" 	property="cateName" />
-			<result column="ps_nm" 	property="itemName" />
+			<result column="ps_nm" 		property="itemName" />
 			<result column="img_url" 	property="itemImgurl" />
-			<result column="ps_price" 		property="itemPrice" />
+			<result column="ps_price" 	property="itemPrice" />
 			<result column="admin_id" 	property="adminId" />
 			<result column="reg_ymd" 	property="regYmd" />
 			<result column="is_delete"  property="isDelete" />
@@ -22,13 +22,13 @@
 	</resultMap>
 	
 	<resultMap type="gamepiece.user.pointShop.domain.PointLog" id="pointLog">
-		<id column="point_no" property="pointNo" />
-		<result column="id" property="id"/>
-		<result column="point_receive_ymd" property="pry"/>
-		<result column="point_receive_content" property="prc"/>
-		<result column="point_receive" property="pointReceive"/>
-		<result column="point_division" property="pointDivision"/>
-		<result column="remaining_point" property="totalPoint"/>
+		<id column="point_no" 					property="pointNo" />
+		<result column="id" 					property="id"/>
+		<result column="point_receive_ymd" 		property="pry"/>
+		<result column="point_receive_content"  property="prc"/>
+		<result column="point_receive" 			property="pointReceive"/>
+		<result column="point_division" 		property="pointDivision"/>
+		<result column="remaining_point" 		property="totalPoint"/>
 	</resultMap>
 	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
