@@ -30,7 +30,7 @@ public interface PointShopService {
 	// 아이템 전체 조회
 	List<Point> findAll();
 	
-	void psl(String itemCd);
+	PointShopLog addPointShopLog(String id, String itemCd, int itemPrice);
 	
 	// 아이템 카테고리 조회
 	List<PointCategories> findCate();

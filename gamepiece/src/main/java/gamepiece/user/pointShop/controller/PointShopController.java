@@ -26,11 +26,14 @@ public class PointShopController {
 		this.pointshopService = pointshopService;
 	}
 	
-	@PostMapping("/addlog")
-	public void PointShopLog(@RequestParam(value="itemCd") String itemCd, HttpSession session) {
+	@GetMapping("/addlog")
+	@ResponseBody
+	public void PointShopLog(String itemCd,
+							 HttpSession session,
+							 int itemPrice) {
+		String userId = (String) session.getAttribute("SID");
 		
-		
-		pointshopService.psl(itemCd);
+		pointshopService.addPointShopLog(userId, itemCd, itemPrice);
 	}
 	
 	@GetMapping("/modal")
@@ -207,6 +210,7 @@ public class PointShopController {
 		model.addAttribute("title", "포인트샵");
 		model.addAttribute("cateList", pointshopService.findCate());
 		model.addAttribute("itemInfo", pointshopService.findAll());
+		model.addAttribute("userId", userId);
 		
 		
 		model.addAttribute("imoticonList", imoticonList);
