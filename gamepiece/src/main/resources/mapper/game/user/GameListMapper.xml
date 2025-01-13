@@ -71,6 +71,8 @@
 		FROM 
 			platform;
 	</select>
+	
+	
 	<select id="getCntGameListWithPlatform" resultType="int">
 		/* 플랫폼에 따른 게임 목록 총 행의 갯수 */
 		SELECT
