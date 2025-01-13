@@ -24,6 +24,8 @@ public interface UserGameMapper {
 	// 플랫폼 목록 조회
 	ArrayList<String> getPlatformList();
 	
+	
+	
 	// 플랫폼 클릭 시 해당 게임 목록 조회
 	List<UserGame> getGameListWithPlatform(Map<String, Object> paramMap);
 	
