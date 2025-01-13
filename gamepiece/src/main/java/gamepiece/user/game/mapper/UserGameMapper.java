@@ -2,6 +2,7 @@ package gamepiece.user.game.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,6 +18,16 @@ public interface UserGameMapper {
 	// 게임 목록 행 개수 
 	int getCntGameList();
 	
+	// 플랫폼에 따른 게임 목록 행 개수
+	int getCntGameListWithPlatform();
+	
 	// 플랫폼 목록 조회
 	ArrayList<String> getPlatformList();
+	
+	// 플랫폼 클릭 시 해당 게임 목록 조회
+	List<UserGame> getGameListWithPlatform(Map<String, Object> paramMap);
+	
+	
+	
 }
+
