@@ -14,5 +14,6 @@ public class Inquiry {
 	private String inquiryYmd; //문의작성일자
 	private User userInfo; //유저정보
 	private Integer idN = 3; //아이디넘버
+	private InquiryRespone responeInfo; //문의답변정보
 
 }

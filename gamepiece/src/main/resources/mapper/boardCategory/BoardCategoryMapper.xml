@@ -27,8 +27,7 @@
 			COUNT(*)
 		FROM
 			 boards_categories bc
-	WHERE
-        bc.isdelete = 'active'
+
 </select>
 
 <select id="BoardCategoryList" resultMap="BoardCategoryResultMap">
@@ -42,8 +41,7 @@
 		FROM 
 					boards_categories bc LEFT JOIN boards b 
 					ON bc.bbs_cate_cd = b.bbs_cate_cd
-		WHERE 
-				bc.isdelete = 'active'			
+			
 		GROUP BY 
 				bc.bbs_cate_cd, bc.bbs_cate_nm
 		
@@ -69,8 +67,7 @@
 		FROM 
 					boards_categories bc LEFT JOIN boards b 
 					ON bc.bbs_cate_cd = b.bbs_cate_cd
-		WHERE 
-				bc.isdelete = 'active'			
+			
 		GROUP BY 
 				bc.bbs_cate_cd, bc.bbs_cate_nm
 		
@@ -143,7 +140,7 @@ WHERE
 		UPDATE 
 			boards_categories
 		SET
-			isdelete = 'delete'
+			is_delete = 'delete'
 		WHERE 
 			bbs_cate_cd = #{categoryCode}
 

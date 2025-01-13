@@ -28,23 +28,15 @@
    			<div class="col">
    				      <div class="card mb-4">
                     <header class="card-header">
-                        <div class="row gx-3">
-                            
-                              <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search..." class="form-control" />
-                            </div>
-                         
-                          
-                            <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
-                                    <option>현황</option>
-                                    <option>Active</option>
-                                    <option>Disabled</option>
-                                    <option>Show all</option>
-                                </select>
-                            </div>
-                           
-                        </div>
+                       <div class="col-lg-3 col-md-6 me-auto">
+						<div class="input-group">
+							<input type="text" class="form-control" id="searchValue" 
+								   name="searchValue" th:value="${searchValue}">
+							<button class="btn btn-light bg" id="searchBtn" type="button">
+								<i class="material-icons md-search"></i>
+							</button>
+						</div>
+					</div>
                     </header>
                     <!-- card-header end// -->
                     <div class="card-body" style="padding: 3;">
@@ -66,8 +58,8 @@
                                <tr th:each="l : ${noticeList}">
                                        <td th:text="${l.noticeNum}"></td>
                                      <td th:text="${l.noticeTitle}"></td>
-                                       <td th:text="${l.ViewCount}"></td>                                   
-                                       <td th:text="${l.noticeWriter}"></td>                                   
+                                       <td th:text="${l.viewCount}"></td>                                   
+                                       <td th:text="${l.adminId}"></td>                                   
                                        <td th:text="${l.noticeYmd}"></td>                                   
                                       
                                     <td>
@@ -84,7 +76,7 @@
                                         </td> 
                                     </tr>
                                     </th:block>
-                                    <th:block th:unless="${noticeList}">
+                             <th:block th:unless="${not #lists.isEmpty(noticeList)}">
 								<tr>
 									<td colspan="5">등록된 게시물이 없습니다.</td>
 								</tr>
@@ -165,6 +157,23 @@
     		       form.submit();
     		   }
     		});
+    	
+    	
+    	
+    	$('#searchBtn').click(function(){
+			
+			const searchValue = $('#searchValue').val();
+			const $form = $('<form />', { 'action' : '/admin/notice/searchList', 'method': 'post'});
+		
+			const $searchValue = 
+					$('<input />', {'type':'hidden', 'name' : 'searchValue'}).val(searchValue);
+			$form.append($searchValue);
+			$('body').append($form);
+			$form.submit();
+		});
+    	
+    	
+    	
     	</script>
     </th:block>
 </html>

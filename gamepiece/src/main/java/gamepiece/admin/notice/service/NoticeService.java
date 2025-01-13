@@ -1,11 +1,15 @@
 package gamepiece.admin.notice.service;
 
+
 import gamepiece.admin.notice.domain.Notice;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface NoticeService {
 	
+	
+	//공지 검색조회
+	PageInfo<Notice> getSearchList(String searchValue, Pageable pageable);
 	
 	
 	//공지글 삭제

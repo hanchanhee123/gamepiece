@@ -9,10 +9,7 @@
               <h2 class="content-title card-title" th:text="${title}"></h2>
          
           </div>
-           <div> 
-          <a th:href="@{/admin/inquiry/write}" class="btn btn-primary btn-sm rounded">문의글작성</a>
-      </div>
-      </div>
+          </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
    	<div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,19 +26,17 @@
                     <header class="card-header">
                         <div class="row gx-3">
                             
-                              <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search..." class="form-control" />
-                            </div>
-                         
+                              <div class="col-lg-3 col-md-6 me-auto">
+						<div class="input-group">
+							<input type="text" class="form-control" id="searchValue" 
+								   name="searchValue" th:value="${searchValue}">
+							<button class="btn btn-light bg" id="searchBtn" type="button">
+								<i class="material-icons md-search"></i>
+							</button>
+						</div>
+					</div>
                           
-                            <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
-                                    <option>현황</option>
-                                    <option>Active</option>
-                                    <option>Disabled</option>
-                                    <option>Show all</option>
-                                </select>
-                            </div>
+                  
                            
                         </div>
                     </header>
@@ -55,6 +50,7 @@
                                         <th>문의제목</th>
                                         <th>유저</th>
                                         <th>작성일자</th>
+                                   		<th>답변여부</th>
                                         <th>비고</th>
                                      
                                     </tr>
@@ -65,23 +61,25 @@
                                        <td th:text="${l.inquiryNum}"></td>
                                      <td th:text="${l.inquiryTitle}"></td>
                                        <td th:text="${l.userInfo.userNn}"></td>
-                                       <td th:text="${l.inquiryYmd}"></td>                                   
-                                      
-                                    <td>
+                                       <td th:text="${l.inquiryYmd}"></td>   
+                        				
+                        				<td>
+                    					<span th:if="${l.responeInfo.responeNum != null}" 
+                         				 class="badge rounded-pill alert-success">답변완료</span>
+               							 </td> 
+                        				
+                        				
+                                      <td>
                                             <div class="col-lg-2 col-sm-2 col-4 col-action text-end" style="display: contents;">
-                                                <a th:href="@{/admin/inquiry/modify(inquiryNum=${l.inquiryNum})}" 
-                                                class="btn btn-sm font-sm rounded btn-brand" style="margin-right: 10px;"> <i class="material-icons md-edit"></i> 수정 </a>
-                                                
-                                              <a th:href="@{/admin/inquiry/remove(inquiryNum=${l.inquiryNum})}"
-								  class="btn btn-sm font-sm btn-light rounded removeBtn" style="margin-right: 10px;">
-								  <i class="material-icons md-delete_forever"></i>삭제
-															</a>
+                                                <a th:href="@{/admin/inquiry/detail(inquiryNum=${l.inquiryNum})}" 
+                                                class="btn btn-sm btn-light font-sm rounded" style="margin-right: 10px;"> <i class="material-icons md-edit"></i>상세</a>
+                                   
                                             </div>
-                                     <!--        dropdown //end -->
+                                 
                                         </td> 
                                     </tr>
                                     </th:block>
-                                    <th:block th:unless="${inquiryList}">
+                                      <th:block th:unless="${not #lists.isEmpty(inquiryList)}">
 								<tr>
 									<td colspan="5">등록된 게시물이 없습니다.</td>
 								</tr>
@@ -110,6 +108,7 @@
                             		<i class="material-icons md-chevron_left"></i>
                             		</a>
                             </li>
+                            
                             <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">		
                        				<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
                        				<a class="page-link" th:href="@{/admin/board/list(currentPage=${num})}" th:text="${num}"></a>
@@ -139,29 +138,19 @@
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	 <script th:inline="javascript">
-    	const startPageNum = [[${startPageNum}]];
-    	const endPageNum = [[${endPageNum}]];
     	
-    	$('.removeBtn').click(function(e){
-    		   e.preventDefault();
-    		   
-    		   if(confirm('삭제하시겠습니까?')) {
-    		       const inquiryNum = $(this).attr('href').split('=')[1];
-    		       
-    		       const form = document.createElement('form');
-    		       form.method = 'POST';
-    		       form.action = '/admin/inquiry/remove';
-    		       
-    		       const input = document.createElement('input');
-    		       input.type = 'hidden';
-    		       input.name = 'inquiryNum';
-    		       input.value = inquiryNum;
-    		       
-    		       form.appendChild(input);
-    		       document.body.appendChild(form);
-    		       form.submit();
-    		   }
+    		$('#searchBtn').click(function(){
+    			
+    			const searchValue = $('#searchValue').val();
+    			const $form = $('<form />', { 'action' : '/admin/inquiry/searchList', 'method': 'post'});
+    		
+    			const $searchValue = 
+    					$('<input />', {'type':'hidden', 'name' : 'searchValue'}).val(searchValue);
+    			$form.append($searchValue);
+    			$('body').append($form);
+    			$form.submit();
     		});
+    
     	</script>
     </th:block>
 </html>
