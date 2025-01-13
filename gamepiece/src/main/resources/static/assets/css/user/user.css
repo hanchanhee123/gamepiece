@@ -46,6 +46,14 @@ main {
     background-color: white;
 }
 
+.user-info-result {
+	padding: 10px 0px;
+}
+
+.user-info-result span {
+	color: #007bff;
+}
+
 .join-info-form {
     display: inline-block;
     margin: 0 auto;

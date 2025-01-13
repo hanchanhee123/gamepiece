@@ -23,5 +23,14 @@ public interface UserService {
 
 	// 중복 아이디 체크
 	boolean checkId(String id);
+
+	// 아이디 찾기 로직
+	String findUserIdPro(String userNm, String userEmlAddr, String userTelno);
+
+	// 비밀번호 찾기 로직
+	String findUserPswdPro(String id, String userNm, String userEmlAddr, String userTelno);
+
+	// 개인 정보 수정
+	void modifyUserInfo(User user);
 	
 }
