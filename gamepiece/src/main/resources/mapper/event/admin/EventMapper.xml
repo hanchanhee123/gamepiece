@@ -16,8 +16,9 @@
 		<result column="ev_participate_ymd" 	property="evParticipateYmd" />
 		<result column="ev_winner_yn" 			property="evWinnerYn" />
 		<result column="ev_status" 				property="evStatus" />
+		<result column="user_nn"				property="userNn"/>
 	</resultMap>
-
+	
 	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
 		SELECT
 		    e.ev_cd,
@@ -162,12 +163,14 @@
 	
 	<select id="getEventWinner" parameterType="string" resultMap="eventResultMap">
 		SELECT
-			*
+			user_nn
 		FROM
-			event_participations
+			event_participations inner JOIN user
+		USING
+			(id)
 		WHERE
 			ev_cd=#{evCd}
 			AND
-			ev_winner_yn='Y';	
+			ev_winner_yn='Y';		
 	</select>
 </mapper>

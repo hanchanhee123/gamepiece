@@ -16,8 +16,22 @@
 		<result column="ev_participate_ymd" 	property="evParticipateYmd" />
 		<result column="ev_winner_yn" 			property="evWinnerYn" />
 		<result column="ev_status" 				property="evStatus" />
+		<result column="user_nn"				property="userNn"/>
 	</resultMap>
 
+	<resultMap type="gamepiece.user.user.domain.User" id="userResultMap">
+		<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="user_pswd" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+	</resultMap>
+	
 <!-- 이벤트 삭제 -->
 <update id="removeEvent" parameterType="gamepiece.user.event.domain.Event">
 	UPDATE
@@ -132,12 +146,14 @@
 
 <select id="getEventWinner" parameterType="string" resultMap="eventResultMap">
 	SELECT
-		*
+		user_nn
 	FROM
-		event_participations
+		event_participations inner JOIN user
+	USING
+		(id)
 	WHERE
 		ev_cd=#{evCd}
 		AND
-		ev_winner_yn='Y';	
+		ev_winner_yn='Y';		
 </select>
 </mapper>
