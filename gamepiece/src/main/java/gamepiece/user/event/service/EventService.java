@@ -17,4 +17,6 @@ public interface EventService {
 	PageInfo<Event> getWinnerList(Pageable pageable, String evCd);
 
 	List<Event> getEventWinner(String evCd);
+	
+	List<Event> getWinnerInfoByEvCd(String evCd);
 }

@@ -156,4 +156,17 @@
 		AND
 		ev_winner_yn='Y';		
 </select>
+
+<select id="getWinnerInfoByEvCd" parameterType="string" resultMap="eventResultMap">
+	SELECT
+		user_nn
+	FROM
+		event_participations inner JOIN user
+	USING
+		(id)
+	WHERE
+		ev_cd=#{evCd}
+		AND
+		ev_winner_yn='Y';		
+</select>
 </mapper>

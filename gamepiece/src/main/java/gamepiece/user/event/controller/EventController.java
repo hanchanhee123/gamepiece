@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import gamepiece.user.event.domain.Event;
 import gamepiece.user.event.service.EventService;
@@ -79,31 +81,37 @@ public class EventController {
 	}
 	
 	@GetMapping("/winnerList")
-	public String getWinnerList(@RequestParam(required = false) String evCd, Pageable pageable, Model model) {
-		 if (evCd == null || evCd.isEmpty()) {
-		        evCd = "DEFAULT_EVENT"; // 기본값
-		        log.warn("Event Code was null, using default: {}", evCd);
-		    }
+	public String getWinnerList(Pageable pageable, Model model) {
+		/*
+		 * if (evCd == null || evCd.isEmpty()) { evCd = "DEFAULT_EVENT"; // 기본값
+		 * log.warn("Event Code was null, using default: {}", evCd); }
+		 */
 
 	    var pageInfo = eventService.getProgressEvent(pageable);
-	    List<Event> getEventWinner = eventService.getEventWinner(evCd);
-
-	    log.info("Winners: {}", getEventWinner);
+		/* List<Event> getEventWinner = eventService.getEventWinner(evCd); */
 	    
 	    List<Event> eventList = pageInfo.getContents();
 	    eventList.forEach(list -> {
 	        list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
 	    });
 
-	    log.info("Event List: {}", eventList);
-
 	    model.addAttribute("eventList", eventList);
-	    model.addAttribute("getEventWinner", getEventWinner);
+		/* model.addAttribute("getEventWinner", getEventWinner); */
 	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
 	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
 	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
 	    model.addAttribute("lastPage", pageInfo.getLastPage());
 
 	    return "user/event/winnerList";
+	}
+	
+	@PostMapping("/winner/detail")
+	@ResponseBody
+	public List<Event> getWinnerInfoByEvCd(@RequestParam("evCd") String evCd) {
+		log.info("Event evCd: {}", evCd);
+		List<Event> eventList = eventService.getWinnerInfoByEvCd(evCd);
+		
+		log.info("eventList {}",eventList);
+		return eventList;
 	}
 }

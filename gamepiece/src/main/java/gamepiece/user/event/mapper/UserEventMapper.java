@@ -22,4 +22,6 @@ public interface UserEventMapper {
 
 	List<Event> getEventWinner(String evCd);
 
+	List<Event> getWinnerInfoByEvCd(String evCd);
+
 }
