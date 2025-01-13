@@ -54,6 +54,10 @@ body {
     color: white;
     text-decoration: none;
 }
+.gamelist-cate.active a{
+	color:#007AFF;
+	font-weight: bold;
+}
 
 .category-menu ul{
     display : flex;
