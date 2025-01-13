@@ -29,6 +29,7 @@
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
                                 <select class="form-select" name="searchCate" id="searchCate">
+	                                    <option value="all" th:selected="${'all' eq searchCate}">전체</option>
 	                                    <option value="imoticon" th:selected="${'imoticon' eq searchCate}">이모티콘</option>
 	                                    <option value="avatar" th:selected="${'avatar' eq searchCate}">프로필</option>
 	                                    <option value="frame" th:selected="${'frame' eq searchCate}">아바타 액자</option>
@@ -45,7 +46,7 @@
                                 <div class="card card-product-grid">
                                 	<input type="hidden" th:value="${l.itemCd}">
                                     <a href="#" class="img-wrap"> 
-                                    	<img src="assets/imgs/items/1.jpg" alt="Product" /> 
+                                    	<img th:src="@{/assets/imgs/logo/GP_logo.png}" alt="Product" /> 
                                     </a>
                                     <div class="info-wrap">
                                         <a href="#" class="title text-truncate" th:text="${l.itemName}">Haagen-Dazs Caramel Cone Ice</a>
@@ -66,7 +67,7 @@
                     <!-- card-body end// -->
                 </div>
                 <!-- card end// -->
-         <div class="pagination-area mt-30 mb-50" th:if="${not #lists.isEmpty(pointList)}">
+         <div class="pagination-area mt-30 mb-50" th:if="${not #lists.isEmpty(ItemList)}">
 	        <nav>
 	            <ul class="pagination justify-content-center">
 	            	<li class="page-item">
@@ -106,6 +107,8 @@
 	    	$('#searchBtn').click(function(){
 				const searchCate = $('#searchCate').val();
 				const searchValue = $('#searchValue').val();
+				const searchLink = $('.page-link');
+				console.log(searchLink);
 				
 				const $form = $('<form />', { 'action' : '/admin/point/searchList', 'method': 'post'});
 				const $searchCate = 

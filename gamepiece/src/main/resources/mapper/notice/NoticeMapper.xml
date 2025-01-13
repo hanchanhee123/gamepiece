@@ -10,12 +10,40 @@
     <result column="ntc_title" property="noticeTitle" />
     <result column="ntc_cn" property="noticeContent" />
     <result column="ntc_img" property="noticeImg" />
-    <result column="ntc_view" property="ViewCount" />
-    <result column="admin_id" property="noticeWriter" />
+    <result column="ntc_view" property="viewCount" />
+    <result column="admin_id" property="adminId" />
     <result column="reg_ymd" property="noticeYmd" />
 
 
 </resultMap>
+
+				<select id="getNoticeSearchList" parameterType="map" resultMap="NoticeResultMap">
+				   SELECT 
+				   ntc_no, 
+					ntc_title, 
+					ntc_cn, 
+					ntc_img, 
+					ntc_view, 
+					admin_id, 
+					reg_ymd
+				FROM 
+				       ntc_mttr 
+				   WHERE 1=1
+				   <if test="searchValue != null and searchValue != ''">
+				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
+				   </if>
+			
+				   LIMIT #{rowPerPage} OFFSET #{offset}
+				</select>
+				
+				<select id="getCntSearchNotice" parameterType="map" resultType="int">
+				   SELECT COUNT(*)
+				   FROM  ntc_mttr
+				   WHERE 1=1
+				   <if test="searchValue != null and searchValue != ''">
+				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
+				   </if>
+				</select>
 
 
 <select id="getCntNotice" resultType="int">
@@ -23,8 +51,7 @@
 			COUNT(*)
 		FROM
 			 ntc_mttr
-	WHERE
-       	isdelete = 'active'
+	
 </select>
 
 
@@ -41,8 +68,7 @@ SELECT
 	reg_ymd
 FROM
 	 ntc_mttr
- WHERE
-        isdelete = 'active'
+
  LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
@@ -81,7 +107,7 @@ FROM
 			#{noticeTitle},
 			#{noticeContent},
 			#{noticeImg},
-			#{ViewCount},
+			#{viewCount},
 			#{adminId},
 			CURDATE()
 			);
@@ -109,7 +135,7 @@ FROM
  		UPDATE 
 			ntc_mttr
 		SET
-			isdelete = 'delete'
+			is_delete = 'delete'
 		WHERE 
 			ntc_no=#{noticeNum};
  	

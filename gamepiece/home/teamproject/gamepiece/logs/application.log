@@ -1,0 +1,81 @@
+09:20:06.955 [restartedMain] INFO  gamepiece.GamepieceApplication - Starting GamepieceApplication using Java 21.0.4 with PID 776 (C:\Users\ECS\git\gamepiece\gamepiece\target\classes started by ECS in C:\Users\ECS\git\gamepiece\gamepiece)
+09:20:06.957 [restartedMain] INFO  gamepiece.GamepieceApplication - No active profile set, falling back to 1 default profile: "default"
+09:20:08.086 [restartedMain] INFO  gamepiece.GamepieceApplication - Started GamepieceApplication in 1.194 seconds (process running for 578.426)
+09:20:21.832 [restartedMain] INFO  gamepiece.GamepieceApplication - Starting GamepieceApplication using Java 21.0.4 with PID 776 (C:\Users\ECS\git\gamepiece\gamepiece\target\classes started by ECS in C:\Users\ECS\git\gamepiece\gamepiece)
+09:20:21.833 [restartedMain] INFO  gamepiece.GamepieceApplication - No active profile set, falling back to 1 default profile: "default"
+09:20:22.881 [restartedMain] INFO  gamepiece.GamepieceApplication - Started GamepieceApplication in 1.089 seconds (process running for 593.221)
+09:20:33.278 [restartedMain] INFO  gamepiece.GamepieceApplication - Starting GamepieceApplication using Java 21.0.4 with PID 13360 (C:\Users\ECS\git\gamepiece\gamepiece\target\classes started by ECS in C:\Users\ECS\git\gamepiece\gamepiece)
+09:20:33.280 [restartedMain] INFO  gamepiece.GamepieceApplication - No active profile set, falling back to 1 default profile: "default"
+09:20:37.134 [restartedMain] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 80 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 80 or configure this application to listen on another port.
+
+09:20:46.136 [restartedMain] INFO  gamepiece.GamepieceApplication - Starting GamepieceApplication using Java 21.0.4 with PID 8948 (C:\Users\ECS\git\gamepiece\gamepiece\target\classes started by ECS in C:\Users\ECS\git\gamepiece\gamepiece)
+09:20:46.138 [restartedMain] INFO  gamepiece.GamepieceApplication - No active profile set, falling back to 1 default profile: "default"
+09:20:49.575 [restartedMain] INFO  gamepiece.GamepieceApplication - Started GamepieceApplication in 3.981 seconds (process running for 4.847)
+09:29:16.801 [restartedMain] INFO  gamepiece.GamepieceApplication - Starting GamepieceApplication using Java 21.0.4 with PID 8948 (C:\Users\ECS\git\gamepiece\gamepiece\target\classes started by ECS in C:\Users\ECS\git\gamepiece\gamepiece)
+09:29:16.801 [restartedMain] INFO  gamepiece.GamepieceApplication - No active profile set, falling back to 1 default profile: "default"
+09:29:18.082 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'reportController': Lookup method resolution failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:498)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:368)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1316)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1211)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:289)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1122)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1093)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1030)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at gamepiece.GamepieceApplication.main(GamepieceApplication.java:10)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [gamepiece.admin.report.controller.ReportController] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@1a707245]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483)
+	at org.springframework.util.ReflectionUtils.doWithLocalMethods(ReflectionUtils.java:320)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.checkLookupMethods(AutowiredAnnotationBeanPostProcessor.java:476)
+	... 24 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: gamepiece/util/Pageable
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3578)
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2676)
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465)
+	... 26 common frames omitted
+Caused by: java.lang.ClassNotFoundException: gamepiece.util.Pageable
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:534)
+	at java.base/java.lang.Class.forName(Class.java:513)
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:121)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	... 30 common frames omitted
+09:29:20.418 [restartedMain] INFO  gamepiece.GamepieceApplication - Starting GamepieceApplication using Java 21.0.4 with PID 8948 (C:\Users\ECS\git\gamepiece\gamepiece\target\classes started by ECS in C:\Users\ECS\git\gamepiece\gamepiece)
+09:29:20.419 [restartedMain] INFO  gamepiece.GamepieceApplication - No active profile set, falling back to 1 default profile: "default"
+09:29:22.844 [restartedMain] INFO  gamepiece.GamepieceApplication - Started GamepieceApplication in 2.461 seconds (process running for 518.116)
+09:29:24.743 [main] INFO  gamepiece.GamepieceApplicationTests - Starting GamepieceApplicationTests using Java 21.0.4 with PID 2664 (started by ECS in C:\Users\ECS\git\gamepiece\gamepiece)
+09:29:24.747 [main] INFO  gamepiece.GamepieceApplicationTests - No active profile set, falling back to 1 default profile: "default"
+09:29:29.861 [main] INFO  gamepiece.GamepieceApplicationTests - Started GamepieceApplicationTests in 5.763 seconds (process running for 7.855)

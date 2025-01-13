@@ -1,17 +1,23 @@
 package gamepiece.user.pointShop.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.service.PointShopService;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @Controller
 @RequestMapping("/point")
 public class PointShopController {
@@ -20,28 +26,43 @@ public class PointShopController {
 	public PointShopController(PointShopService pointshopService) {
 		this.pointshopService = pointshopService;
 	}
+	@GetMapping("/modal")
+	public ResponseEntity<Point> getitemModal(@RequestParam(value="itemCd") String itemCd,
+							Model model) {
+		
+		var pointInfo = pointshopService.pointInfo(itemCd);
+		/* System.out.println("pointinfo 데이터: " + pointInfo); */
+		
+		
+		return ResponseEntity.ok(pointInfo);
+	}
+	
 	
 	@GetMapping("/imoticon")
-	public String getimoticonList(Pageable pageable,Model model) {
+	public String getimoticonList(Pageable pageable,Model model,HttpSession session) {
 		var imoticonInfo = pointshopService.findimoticon(pageable);
 		
 		List<Point> imoticonList = imoticonInfo.getContents();
-		int currentPage = imoticonInfo.getCurrentPage();
-		int startPageNum = imoticonInfo.getStartPageNum();
-		int endPageNum = imoticonInfo.getEndPageNum();
-		int lastPage = imoticonInfo.getLastPage();
+		int imoticoncurrentPage = imoticonInfo.getCurrentPage();
+		int imoticonstartPageNum = imoticonInfo.getStartPageNum();
+		int imoticonendPageNum = imoticonInfo.getEndPageNum();
+		int imoticonlastPage = imoticonInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
 		model.addAttribute("imoticonList", imoticonList);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("startPageNum", startPageNum);
-		model.addAttribute("endPageNum", endPageNum);
-		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("imoticoncurrentPage", imoticoncurrentPage);
+		model.addAttribute("imoticonstartPageNum", imoticonstartPageNum);
+		model.addAttribute("imoticonendPageNum", imoticonendPageNum);
+		model.addAttribute("imoticonlastPage", imoticonlastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+
 		
 		return "user/points/imoticonList";
 	}
 	
 	@GetMapping("/avatar")
-	public String getavatarList(Pageable pageable,Model model) {
+	public String getavatarList(Pageable pageable,Model model, HttpSession session) {
 		var avatarInfo = pointshopService.findavatar(pageable);
 		
 		List<Point> avatarList = avatarInfo.getContents();
@@ -49,18 +70,22 @@ public class PointShopController {
 		int startPageNum = avatarInfo.getStartPageNum();
 		int endPageNum = avatarInfo.getEndPageNum();
 		int lastPage = avatarInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
 		model.addAttribute("avatarList", avatarList );
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
 		
 		return "user/points/avatarList";
 	}
 	
 	@GetMapping("/frame")
-	public String getframeList(Pageable pageable,Model model) {
+	public String getframeList(Pageable pageable,Model model, HttpSession session) {
 		var frameInfo = pointshopService.findavatarframe(pageable);
 		
 		List<Point> frameList = frameInfo.getContents();
@@ -68,18 +93,22 @@ public class PointShopController {
 		int startPageNum = frameInfo.getStartPageNum();
 		int endPageNum = frameInfo.getEndPageNum();
 		int lastPage = frameInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
 		model.addAttribute("frameList", frameList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
 		
 		return "user/points/frameList";
 	}
 	
 	@GetMapping("/etc")
-	public String getetcList(Pageable pageable,Model model) {
+	public String getetcList(Pageable pageable,Model model, HttpSession session) {
 		var etcInfo = pointshopService.findetc(pageable);
 		
 		List<Point> etcList = etcInfo.getContents();
@@ -87,18 +116,22 @@ public class PointShopController {
 		int startPageNum = etcInfo.getStartPageNum();
 		int endPageNum = etcInfo.getEndPageNum();
 		int lastPage = etcInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
 		model.addAttribute("etcList", etcList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
 		
 		return "user/points/etcList";
 	}
 	
 	@GetMapping("/background")
-	public String getbackgroundList(Pageable pageable,Model model) {
+	public String getbackgroundList(Pageable pageable,Model model, HttpSession session) {
 		var backInfo = pointshopService.findbackground(pageable);
 		
 		List<Point> backList = backInfo.getContents();
@@ -106,12 +139,15 @@ public class PointShopController {
 		int startPageNum = backInfo.getStartPageNum();
 		int endPageNum = backInfo.getEndPageNum();
 		int lastPage = backInfo.getLastPage();
+		String userId = (String) session.getAttribute("SID");
 		
 		model.addAttribute("backList", backList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
 		
 		return "user/points/backgroundList";
 	}
@@ -119,7 +155,7 @@ public class PointShopController {
 	
 	
 	@GetMapping("/shop")
-	public String getItemList(Pageable pageable,Model model) {
+	public String getItemList(Pageable pageable, Model model, HttpSession session) {
 		
 		var imoticonInfo = pointshopService.findimoticon(pageable);
 		var avatarInfo = pointshopService.findavatar(pageable);
@@ -127,6 +163,8 @@ public class PointShopController {
 		var etcInfo = pointshopService.findetc(pageable);
 		var backInfo = pointshopService.findbackground(pageable);
 		
+		
+		String userId = (String) session.getAttribute("SID");
 		List<Point> imoticonList = imoticonInfo.getContents();
 		int imoticoncurrentPage = imoticonInfo.getCurrentPage();
 		int imoticonstartPageNum = imoticonInfo.getStartPageNum();
@@ -159,6 +197,8 @@ public class PointShopController {
 		
 		model.addAttribute("title", "포인트샵");
 		model.addAttribute("cateList", pointshopService.findCate());
+		model.addAttribute("itemInfo", pointshopService.findAll());
+		
 		
 		model.addAttribute("imoticonList", imoticonList);
 		model.addAttribute("imoticoncurrentPage", imoticoncurrentPage);
@@ -189,6 +229,10 @@ public class PointShopController {
 		model.addAttribute("backstartPageNum", backstartPageNum);
 		model.addAttribute("backendPageNum", backendPageNum);
 		model.addAttribute("backlastPage", backlastPage);
+		
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
 		
 		return "user/points/pointshopList";
 	}

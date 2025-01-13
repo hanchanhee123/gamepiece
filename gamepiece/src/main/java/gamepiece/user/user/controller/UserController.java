@@ -23,6 +23,7 @@ public class UserController {
 	
 	private final UserService userService;
 
+	// 로그인창으로 이동
 	@GetMapping("/login")
 	public String login(@RequestParam(value="msg", required = false) String msg, Model model) {
 		
@@ -32,6 +33,7 @@ public class UserController {
 		return "user/user/login";
 	}
 	
+	// 로그인 로직
 	@PostMapping("/loginPro")
 	public String loginPro(@RequestParam(value = "id") String id,
 						   @RequestParam(value = "userPswd") String userPswd,
@@ -43,14 +45,26 @@ public class UserController {
 		if(isMatched) {
 			User userInfo = (User) resultMap.get("userInfo");
 			
-			System.out.println(userInfo.getUserNm());
+			log.info("userInfo : {}", userInfo);
 			
-			String userName = userInfo.getUserNm();
-			
-			session.setAttribute("SID", id);
-			session.setAttribute("SNAME", userName);
+			session.setAttribute("SID", userInfo.getId());
+			session.setAttribute("SNAME", userInfo.getUserNm());
 			
 			viewName = "redirect:/";
+			
+			String sid = (String) session.getAttribute("SID");
+			
+			// 사용자 로그 확인 (오늘 날짜)
+			int findLoginLog = userService.findLoginLog(sid);
+			
+			if(findLoginLog > 0) {
+				// 로그인 로그 업데이트
+				userService.modifyLoginLog(sid);
+			} else {
+				// 로그인 로그 삽입
+				userService.loginLog(sid);
+			}
+			
 		}else {
 			reAttr.addAttribute("msg", "사용자의 정보가 일치하지 않습니다.");
 		}
@@ -58,6 +72,7 @@ public class UserController {
 		return viewName;
 	}
 	
+	// 로그아웃
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		
@@ -66,12 +81,14 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+	// 회원가입
 	@GetMapping("/addUser")
 	public String addUser() {
 		
 		return "user/user/addUser";
 	}
 	
+	// 회원가입 로직
 	@PostMapping("/addUserPro")
 	public String addUserPro(User user) {
 		
@@ -80,6 +97,7 @@ public class UserController {
 		return "user/user/login";
 	}
 	
+	// 중복 아이디 체크
 	@PostMapping("/checkId")
 	@ResponseBody
 	public boolean checkId(@RequestParam(name="id") String id) {
@@ -91,12 +109,14 @@ public class UserController {
 		return isDuplicate;
 	}
 	
+	// 아이디 찾기
 	@GetMapping("/findUserId")
 	public String findUserId() {
 		
 		return "user/user/findUserId";
 	}
 	
+	// 비밀번호 찾기
 	@GetMapping("/findUserPswd")
 	public String findUserPswd() {
 		

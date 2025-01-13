@@ -2,12 +2,14 @@ package gamepiece.user.pointShop.service;
 
 import java.util.List;
 
-import gamepiece.user.pointShop.domain.PointCategories;
 import gamepiece.user.pointShop.domain.Point;
+import gamepiece.user.pointShop.domain.PointCategories;
+import gamepiece.user.pointShop.domain.PointLog;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface PointShopService {
+	
 	
 	// 이모티콘 조회
 	PageInfo<Point> findimoticon(Pageable pageable);
@@ -20,6 +22,12 @@ public interface PointShopService {
 	// 배경프로필 조회
 	PageInfo<Point> findbackground(Pageable pageable);
 	
+	PointLog getPointsHeld(String id);
+	
+	Point pointInfo(String itemCd);
+	
+	// 아이템 전체 조회
+	List<Point> findAll();
 	
 	// 아이템 카테고리 조회
 	List<PointCategories> findCate();

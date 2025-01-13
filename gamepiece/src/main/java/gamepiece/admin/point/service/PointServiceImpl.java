@@ -26,7 +26,7 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
-	public List<Point> searchList(String searchCate, String searchValue, Pageable pageable) {
+	public PageInfo<Point> searchList(String searchCate, String searchValue, Pageable pageable) {
 		String cate = "";
 		switch (searchCate) {
 			case "avatar" 		-> cate = "cate_02";
@@ -38,15 +38,15 @@ public class PointServiceImpl implements PointService {
 		}
 		
 		Map<String, Object> searchMap = new HashMap<String, Object>();
-		//int rowCnt = pointshopMapper.getItemCount();
+		int rowCnt = pointshopMapper.getItemCount();
 		searchMap.put("searchCate", cate);
 		searchMap.put("searchValue", searchValue);
 		searchMap.put("pageable", pageable);
 		
-		
+	
+		List<Point> loginList = pointshopMapper.getSearchList(searchMap);
 		log.info("searchMap: {}", searchMap);
-		List<Point> ItemList = pointshopMapper.getSearchList(searchMap);
-		return ItemList;
+		return new PageInfo<>(loginList, pageable, rowCnt);
 	}
 	
 	@Override
@@ -55,9 +55,20 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
+	public void inactiveItem(String ps_cd) {
+		pointshopMapper.inactiveItem(ps_cd);
+		
+	}
+	
+	@Override
 	public void removeItem(String ps_cd) {
 		
 		pointshopMapper.removeItem(ps_cd);
+	}
+	
+	@Override
+	public void logcount(String ps_cd) {
+		pointshopMapper.logCount(ps_cd); 
 	}
 	
 	@Override

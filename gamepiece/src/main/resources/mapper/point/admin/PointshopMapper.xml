@@ -23,6 +23,7 @@
 	
 	
 	<select id="getSearchList" parameterType="map" resultMap="pointshopResultMap">
+		/* 아이템 검색 */
 		SELECT
 			ps.ps_cd,
 			ps.ps_cate_cd,
@@ -59,13 +60,11 @@
 			reg_ymd
 		FROM 
 			point_shop
-		WHERE
-			is_delete = 'active'
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
 	<select id="getItemCount" resultType="int">
-		/* 아이템 갯수 총 행의 갯수*/
+		/* 아이템 갯수 총 행의 갯수 */
 		SELECT
 			COUNT(*)
 		FROM
@@ -85,7 +84,7 @@
 	
 	
 	<select id="getItemInfoByItemName" resultMap="pointshopResultMap" >
-		/* 특정 아이템 조회*/
+		/* 특정 아이템 조회 */
 		SELECT
 			*
 		FROM
@@ -95,6 +94,7 @@
 	</select>
 	
 	<update id="modifyItem" parameterType="gamepiece.admin.point.domain.Point">
+		/* 아이템 정보 수정 */
 		UPDATE point_shop
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="itemCate != null and itemCate != ''">
@@ -121,6 +121,7 @@
 	</update>
 	
 	<insert id="addItem" parameterType="gamepiece.admin.point.domain.Point">
+        /*아이템 추가*/
         INSERT INTO point_shop (
         	ps_cd, 
 			ps_cate_cd, 
@@ -144,12 +145,32 @@
 		);
     </insert>
     
-    <update id="removeItem" parameterType="gamepiece.admin.point.domain.Point">
+    <delete id="removeItem" parameterType="gamepiece.admin.point.domain.Point">
+    	/* 아이템 삭제 */
+    	DELETE 
+		FROM 
+			point_shop 
+		WHERE
+			ps_cd=#{itemCd};
+    </delete>
+    
+    <select id="logCount" resultType="int">
+    	SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_logs pl
+			ON ps.ps_cd = pl.ps_cd
+		WHERE
+			ps.ps_cd=#{itemCd};
+    </select>
+    
+    <update id="inactiveItem" parameterType="gamepiece.admin.point.domain.Point">
+    	/*아이템 판매 중지*/
     	UPDATE point_shop
 		SET
 			is_delete='delete'
 		WHERE
-			ps_cd=#{ps_cd};
+			ps_cd=#{itemCd};
     </update>
     
 

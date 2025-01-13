@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.admin.report.mapper.ReportMapper">
+
+
+
+	
+	<resultMap type="gamepiece.admin.report.domain.Report" id="ReportResultMap">
+	  <id column="report_no"  property="reportNo" />
+    <result column="reporter_id" property="reportUser" />
+    <result column="reported_id" property="reportedUser" />
+    <result column="report_content" property="reportContent" />
+    <result column="diposal_situation" property="reportProgress" />
+    <result column="report_ymd" property="reportYmd" />
+    
+
+	</resultMap>
+	
+	
+	
+
+<select id="getCntReport" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			 u_report
+</select>
+
+
+
+<select id="getReportList" parameterType="gamepiece.util.Pageable" resultMap="ReportResultMap">
+
+SELECT 
+	report_no, 
+	reporter_id, 
+	reported_id, 
+	report_content,
+	diposal_situation, 
+	report_ymd
+FROM 
+	u_report
+	  ORDER BY
+        CAST(SUBSTRING_INDEX(report_no,'r_',-1) AS UNSIGNED)
+
+</select>
+
+
+</mapper>
+
+

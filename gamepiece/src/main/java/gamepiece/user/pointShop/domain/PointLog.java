@@ -11,5 +11,6 @@ public class PointLog {
 	private String prc;
 	private int pointReceive;
 	private String pointDivision;
+	private int totalPoint;
 	
 }

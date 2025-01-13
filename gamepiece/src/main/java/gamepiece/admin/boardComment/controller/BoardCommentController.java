@@ -31,7 +31,7 @@ public class BoardCommentController {
 		    int result = boardCommentService.removeComment(commentNum);
 
 		 
-		        rttr.addFlashAttribute("message", "덧글이 삭제되었습니다.");
+		        rttr.addFlashAttribute("message", "댓글이 삭제되었습니다.");
 		  
 		    return "redirect:/admin/boardComment/list";
 		}
@@ -62,7 +62,7 @@ public class BoardCommentController {
 			BoardComment commentInfo = boardCommentService.getCommentInfo(commentNum);
 			
 			
-			model.addAttribute("title", "덧글수정");
+			model.addAttribute("title", "댓글수정");
 			model.addAttribute("commentInfo", commentInfo);
 			
 			
@@ -84,7 +84,7 @@ public class BoardCommentController {
 		@GetMapping("/write")
 		public String addCommentView(Model model) {
 			
-			model.addAttribute("title", "덧글작성");
+			model.addAttribute("title", "댓글작성");
 			
 			return "admin/boardComment/addBoardComment";
 		}
@@ -103,7 +103,7 @@ public class BoardCommentController {
 			    int lastPage = pageInfo.getLastPage();
 
 			
-			    model.addAttribute("title", "덧글내역");
+			    model.addAttribute("title", "댓글내역");
 			    model.addAttribute("commentList", commentList);
 				  model.addAttribute("currentPage", currentPage);
 				    model.addAttribute("startPageNum", startPageNum);
