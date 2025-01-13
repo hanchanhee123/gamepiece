@@ -124,6 +124,7 @@ header {
     border-radius: 30px;
     margin-bottom: 10px;
     margin-left: 9px;
+    color: #000000;
 }
 
 .icon-img-active{
@@ -134,6 +135,10 @@ header {
     margin-bottom: 10px;
     margin-left: 9px;
     color: #ffffff;
+}
+
+.icon-img + p{
+    color: #000000;
 }
 
 .icon-img-active + p{
