@@ -272,26 +272,22 @@
 			ps_cd = #{itemCd};
 	</update>
 	
-	<insert id="addItem" parameterType="gamepiece.user.pointShop.domain.Point">
-        INSERT INTO point_shop (
-        	ps_cd, 
-			ps_cate_cd, 
-			ps_nm, 
-			img_url,
-			ps_price, 
-			admin_id,
-			reg_ymd
+	<insert id="addPointShopLog" parameterType="gamepiece.user.pointShop.domain.PointShopLog">
+        INSERT INTO pointshop_logs (
+        	psl_no, 
+			id, 
+			ps_cd, 
+			psl_used_point,
+			psl_log_ymd
 		) VALUES (
 			<![CDATA[(SELECT 
-				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,4)+1),0),
-				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))),'0')) ]]>
+				CONCAT('psl_',LPAD(IFNULL(MAX(SUBSTRING(pl.psl_cd,4)+1),0),
+				IF(LENGTH(MAX(SUBSTRING(pl.psl_no,4)+1))<=2,2,LENGTH(MAX(SUBSTRING(pl.psl_no,4)+1))),'0')) ]]>
 			FROM 
-				point_shop ps),
-			#{itemCate},
-			#{itemName},
-			#{itemImgurl},
+				pointshop_logs pl),
+			#{id},
+			#{itemCd},
 			#{itemPrice},
-			#{adminId},
 			CURDATE()
 		);
     </insert>

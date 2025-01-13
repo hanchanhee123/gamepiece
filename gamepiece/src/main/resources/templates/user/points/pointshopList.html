@@ -198,8 +198,11 @@
 			    		return ;
 			    	}
 			    	$('#exampleModalToggle').modal('show');
-			    	$('#point-order-Btn').click(function(){
-						alert('구매완료');
+			    	$('.point-order-Btn').click(function(){
+						const itemCd = data.itemCd
+						const id = "userId";
+						const usedPoint = data.itemPrice;
+						fetch("/point/addlog")
 						return ;
 					});
 				});
