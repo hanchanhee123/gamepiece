@@ -20,264 +20,279 @@
 			<div class="tournament-div">
 			    <div class="tournament-list">
 			        <div class="tournament-icon">
-			        	<a href="#" class="text-primary">
-				            <div class="icon-img-active d-flex align-items-center justify-content-center">
-				                <i class="bi bi-trophy-fill h2 text-light mt-1"></i>
+			        	<a th:href="@{/tournament/list(leageName='world_championship')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'world_championship' ? icon-img-active : icon-img">
+				                <i class="bi bi-suit-diamond-fill h2 mt-1"></i>
 				            </div>
-				            <p>전체</p>
+				            <p>월드챔피언쉽</p>
 			            </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img icon-img-active d-flex align-items-center justify-content-center">
-			                <i class="bi bi-suit-diamond-fill h2 mt-1"></i>
-			            </div>
-			            <p>월드챔피언쉽</p>
+			        	<a th:href="@{/tournament/list(leageName='asci')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'asci' ? icon-img-active : icon-img">
+				                <i class="bi bi-suit-heart-fill h2 mt-1"></i>
+				            </div>
+				            <p>ASCI</p>
+				        </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-suit-heart-fill h2 mt-1"></i>
-			            </div>
-			            <p>ASCI</p>
+			        	<a th:href="@{/tournament/list(leageName='lck')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'lck' ? icon-img-active : icon-img">
+				                <i class="bi bi-pentagon-fill h2 mt-1"></i>
+				            </div>
+				            <p>LCK</p>
+				        </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-pentagon-fill h2 mt-1"></i>
-			            </div>
-			            <p>LCK</p>
+			        	<a th:href="@{/tournament/list(leageName='lck_cl')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'lck_cl' ? icon-img-active : icon-img">
+				                <i class="bi bi-question-octagon-fill h2 mt-1"></i>
+				            </div>
+				            <p>LCK CL</p>
+				        </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-question-octagon-fill h2 mt-1"></i>
-			            </div>
-			            <p>LCK CL</p>
+			        	<a th:href="@{/tournament/list(leageName='msi')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'msi' ? icon-img-active : icon-img">
+				                <i class="bi bi-rocket-fill h2 mt-1"></i>
+				            </div>
+				            <p>MSI</p>
+			            </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-rocket-fill h2 mt-1"></i>
-			            </div>
-			            <p>MSI</p>
+			        	<a th:href="@{/tournament/list(leageName='season_opening')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'season_opening' ? icon-img-active : icon-img">
+				                <i class="bi bi-snapchat h2 mt-1"></i>
+				            </div>
+				            <p>시즌오프닝</p>
+			            </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-snapchat h2 mt-1"></i>
-			            </div>
-			            <p>시즌오프닝</p>
+			        	<a th:href="@{/tournament/list(leageName='lpl')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'lpl' ? icon-img-active : icon-img">
+				                <i class="bi bi-snow2 h2 mt-1"></i>
+				            </div>
+				            <p>LPL</p>
+			            </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-snow2 h2 mt-1"></i>
-			            </div>
-			            <p>LPL</p>
+			        	<a th:href="@{/tournament/list(leageName='lcs')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'lcs' ? icon-img-active : icon-img">
+				                <i class="bi bi-stars h2 mt-1"></i>
+				            </div>
+				            <p>LCS</p>
+			            </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-stars h2 mt-1"></i>
-			            </div>
-			            <p>LCS</p>
+			        	<a th:href="@{/tournament/list(leageName='lec')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'lec' ? icon-img-active : icon-img">
+				                <i class="bi bi-strava h2 mt-1"></i>
+				            </div>
+				            <p>LEC</p>
+			            </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-strava h2 mt-1"></i>
-			            </div>
-			            <p>LEC</p>
+			        	<a th:href="@{/tournament/list(leageName='msc')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'msc' ? icon-img-active : icon-img">
+				                <i class="bi bi-suit-club-fill h2 mt-1"></i>
+				            </div>
+				            <p>MSC</p>
+			            </a>
 			        </div>
 			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-suit-club-fill h2 mt-1"></i>
-			            </div>
-			            <p>MSC</p>
-			        </div>
-			        <div class="tournament-icon">
-			            <div class="icon-img d-flex align-items-center justify-content-center">
-			                <i class="bi bi-suit-spade-fill h2 mt-1"></i>
-			            </div>
-			            <p>케스파컵</p>
+			        	<a th:href="@{/tournament/list(leageName='lol_kespa')}">
+				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'lol_kespa' ? icon-img-active : icon-img">
+				                <i class="bi bi-suit-spade-fill h2 mt-1"></i>
+				            </div>
+				            <p>케스파컵</p>
+			            </a>
 			        </div>
 			    </div>
 			    <div class="match-info">
 			        <select class="select-year" name="year">
-			            <option value="2024" selected>2024년</option>
-			            <option value="2025">2025년</option>
+			            <option value="2024" th:selected="${year} == '2024'">2024년</option>
+			            <option value="2025" th:selected="${year} == '2025'">2025년</option>
 			        </select>
 			        <select class="select-month" name="month">
-			            <option value="1">1월</option>
-			            <option value="2">2월</option>
-			            <option value="3">3월</option>
-			            <option value="4">4월</option>
-			            <option value="5">5월</option>
-			            <option value="6">6월</option>
-			            <option value="7">7월</option>
-			            <option value="8">8월</option>
-			            <option value="9">9월</option>
-			            <option value="10" selected>10월</option>
-			            <option value="11">11월</option>
-			            <option value="12">12월</option>
+			            <option value="01" th:selected="${month} == '01'">1월</option>
+			            <option value="02" th:selected="${month} == '02'">2월</option>
+			            <option value="03" th:selected="${month} == '03'">3월</option>
+			            <option value="04" th:selected="${month} == '04'">4월</option>
+			            <option value="05" th:selected="${month} == '05'">5월</option>
+			            <option value="06" th:selected="${month} == '06'">6월</option>
+			            <option value="07" th:selected="${month} == '07'">7월</option>
+			            <option value="08" th:selected="${month} == '08'">8월</option>
+			            <option value="09" th:selected="${month} == '09'">9월</option>
+			            <option value="10" th:selected="${month} == '10'">10월</option>
+			            <option value="11" th:selected="${month} == '11'">11월</option>
+			            <option value="12" th:selected="${month} == '12'">12월</option>
 			        </select>
 			    </div>
-			    <div class="match-date">
-			        <p>24. 10. 03 목</p>
-			    </div>
-			    <div class="match-time">
-			        <div>
-			            <div class="time-day">
-			                <p>21:00</p>
-			            </div>
-			            <div class="is-state-end">
-			                <p>경기 종료</p>
-			            </div>
-			            <div class="score-div">
-			                <div class="team1">
-			                    <p>team1</p>
-			                    <i class="bi bi-image"></i>
-			                    <div class="team-win">
-			                        <p>1</p>
-			                    </div>
-			                </div>
-			                <div class="team2">
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                    <i class="bi bi-image"></i>
-			                    <p>team2</p>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			    <div class="match-time">
-			        <div>
-			            <div class="time-day">
-			                <p>22:00</p>
-			            </div>
-			            <div class="is-state-end">
-			                <p>경기 종료</p>
-			            </div>
-			            <div class="score-div">
-			                <div class="team1">
-			                    <p>team1</p>
-			                    <i class="bi bi-image"></i>
-			                    <div class="team-win">
-			                        <p>1</p>
-			                    </div>
-			                </div>
-			                <div class="team2">
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                    <i class="bi bi-image"></i>
-			                    <p>team2</p>
-			                </div>
-			            </div>
-			            
-			        </div>
-			    </div>
-			    <div class="match-time">
-			        <div>
-			            <div class="time-day">
-			                <p>23:00</p>
-			            </div>
-			            <div class="is-state-end">
-			                <p>경기 종료</p>
-			            </div>
-			            <div class="score-div">
-			                <div class="team1">
-			                    <p>team1</p>
-			                    <i class="bi bi-image"></i>
-			                    <div class="team-win">
-			                        <p>1</p>
-			                    </div>
-			                </div>
-			                <div class="team2">
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                    <i class="bi bi-image"></i>
-			                    <p>team2</p>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			    <div class="match-date">
-			        <p>24. 10. 04 금</p>
-			    </div>
-			    <div class="match-time">
-			        <div>
-			            <div class="time-day">
-			                <p>00:25</p>
-			            </div>
-			            <div class="is-state-ing">
-			                <p>진행중</p>
-			            </div>
-			            <div class="score-div">
-			                <div class="team1">
-			                    <p>team1</p>
-			                    <i class="bi bi-image"></i>
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                </div>
-			                <div class="team2">
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                    <i class="bi bi-image"></i>
-			                    <p>team2</p>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			    <div class="match-time">
-			        <div>
-			            <div class="time-day">
-			                <p>01:25</p>
-			            </div>
-			            <div class="is-state-end">
-			                <p>예정</p>
-			            </div>
-			            <div class="score-div">
-			                <div class="team1">
-			                    <p>team1</p>
-			                    <i class="bi bi-image"></i>
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                </div>
-			                <div class="team2">
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                    <i class="bi bi-image"></i>
-			                    <p>team2</p>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			    <div class="match-time">
-			        <div>
-			            <div class="time-day">
-			                <p>02:25</p>
-			            </div>
-			            <div class="is-state-end">
-			                <p>예정</p>
-			            </div>
-			            <div class="score-div">
-			                <div class="team1">
-			                    <p>team1</p>
-			                    <i class="bi bi-image"></i>
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                </div>
-			                <div class="team2">
-			                    <div class="team-lose">
-			                        <p>0</p>
-			                    </div>
-			                    <i class="bi bi-image"></i>
-			                    <p>team2</p>
-			                </div>
-			            </div>
-			            
-			        </div>
-			    </div>
+			    <div class="tournament-match">
+				    <!-- <div class="match-date">
+				        <p>24. 10. 03 목</p>
+				    </div>
+				    <div class="match-time">
+				        <div>
+				            <div class="time-day">
+				                <p>21:00</p>
+				            </div>
+				            <div class="is-state-end">
+				                <p>경기 종료</p>
+				            </div>
+				            <div class="score-div">
+				                <div class="team1">
+				                    <p>team1</p>
+				                    <i class="bi bi-image"></i>
+				                    <div class="team-win">
+				                        <p>1</p>
+				                    </div>
+				                </div>
+				                <div class="team2">
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                    <i class="bi bi-image"></i>
+				                    <p>team2</p>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    <div class="match-time">
+				        <div>
+				            <div class="time-day">
+				                <p>22:00</p>
+				            </div>
+				            <div class="is-state-end">
+				                <p>경기 종료</p>
+				            </div>
+				            <div class="score-div">
+				                <div class="team1">
+				                    <p>team1</p>
+				                    <i class="bi bi-image"></i>
+				                    <div class="team-win">
+				                        <p>1</p>
+				                    </div>
+				                </div>
+				                <div class="team2">
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                    <i class="bi bi-image"></i>
+				                    <p>team2</p>
+				                </div>
+				            </div>
+				            
+				        </div>
+				    </div>
+				    <div class="match-time">
+				        <div>
+				            <div class="time-day">
+				                <p>23:00</p>
+				            </div>
+				            <div class="is-state-end">
+				                <p>경기 종료</p>
+				            </div>
+				            <div class="score-div">
+				                <div class="team1">
+				                    <p>team1</p>
+				                    <i class="bi bi-image"></i>
+				                    <div class="team-win">
+				                        <p>1</p>
+				                    </div>
+				                </div>
+				                <div class="team2">
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                    <i class="bi bi-image"></i>
+				                    <p>team2</p>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    <div class="match-date">
+				        <p>24. 10. 04 금</p>
+				    </div>
+				    <div class="match-time">
+				        <div>
+				            <div class="time-day">
+				                <p>00:25</p>
+				            </div>
+				            <div class="is-state-ing">
+				                <p>진행중</p>
+				            </div>
+				            <div class="score-div">
+				                <div class="team1">
+				                    <p>team1</p>
+				                    <i class="bi bi-image"></i>
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                </div>
+				                <div class="team2">
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                    <i class="bi bi-image"></i>
+				                    <p>team2</p>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    <div class="match-time">
+				        <div>
+				            <div class="time-day">
+				                <p>01:25</p>
+				            </div>
+				            <div class="is-state-end">
+				                <p>예정</p>
+				            </div>
+				            <div class="score-div">
+				                <div class="team1">
+				                    <p>team1</p>
+				                    <i class="bi bi-image"></i>
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                </div>
+				                <div class="team2">
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                    <i class="bi bi-image"></i>
+				                    <p>team2</p>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    <div class="match-time">
+				        <div>
+				            <div class="time-day">
+				                <p>02:25</p>
+				            </div>
+				            <div class="is-state-end">
+				                <p>예정</p>
+				            </div>
+				            <div class="score-div">
+				                <div class="team1">
+				                    <p>team1</p>
+				                    <i class="bi bi-image"></i>
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                </div>
+				                <div class="team2">
+				                    <div class="team-lose">
+				                        <p>0</p>
+				                    </div>
+				                    <i class="bi bi-image"></i>
+				                    <p>team2</p>
+				                </div>
+				            </div>
+				        </div>
+				    </div> -->
+				</div>
 			</div>
 		</th:block>
     </div>
@@ -288,52 +303,185 @@
     </th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-		<script>
+		<script th:inline="javascript">
 			let $selectYear = $('.select-year').val();
 			let $selectMonth = $('.select-month').val();
-			const request = $.ajax({
-				url : '/tournament/util/ajax',
-				method : 'GET',
-				data : {'date' : `${$selectYear}-${$selectMonth}`,
-						'gameName' : '',
-						'matchCate' : ''
-				},
-				dataType : 'json'
-			});
-			request.done(function(data){
-				console.log(data);
-			});
 			
-			$('.select-year').change(function(){
-				$selectYear = $('.select-year').val();
+			const leageName = /*[[${leageName}]]*/"";
+			console.log(leageName);
+			
+			
+			function getAjaxFn(selectYear, selectMonth){
 				const request = $.ajax({
 					url : '/tournament/util/ajax',
-					method : 'GET',
+					method : 'POST',
 					data : {'date' : `${$selectYear}-${$selectMonth}`,
 							'gameName' : '',
-							'matchCate' : ''
+							'matchCate' : leageName
 					},
 					dataType : 'json'
 				});
 				request.done(function(data){
 					console.log(data);
+					const $tournamentDiv = $('.tournament-match');
+					$tournamentDiv.empty();
+					
+					if(data.data != null){
+						for(const list of data.data){
+							const $div = $('<div />',{
+								'class' : 'match-date'
+							});
+							const $p = $('<p />');
+							$p.text(list.groupName);
+							$div.append($p);
+							$tournamentDiv.append($div);
+							for(const match of list.schedules){
+								const $matchTime = $('<div />',{
+									'class' : 'match-time'
+								})
+								const $div = $('<div />');
+								const $timeDay = $('<div />', {
+									'class' : 'time-day'
+								})
+								const $p = $('<p />');
+								$p.text(match.time);
+								$timeDay.append($p);
+								$div.append($timeDay);
+								
+								if(match.matchStatus == 'RESULT' || match.matchStatus == 'BEFORE'){
+									const $p = $('<p />');
+									const $state = $('<div />',{
+										'class' : 'is-state-end'
+									});
+									if(match.matchStatus == 'RESULT'){
+										$p.text('경기종료');
+									}else{
+										$p.text('예정');
+									}
+									
+									$state.append($p);
+									$div.append($state);
+								}else{
+									const $p = $('<p />');
+									const $state = $('<div />',{
+										'class' : 'is-state-ing'
+									});
+									$p.text('진행중');
+									$state.append($p);
+									$div.append($state);
+								}
+								
+								if(leageName != 'season_opening'){
+									const $scoreDiv = $('<div />',{
+										'class' : 'score-div'
+									});
+									const $team1 = $('<div />',{
+										'class' : 'team1'
+									});
+									const $team2 = $('<div />',{
+										'class' : 'team2'
+									});
+									
+									const $tp = $('<p />');
+									const $i = $('<i />',{
+										'class' : 'bi bi-image'
+									});
+									const $tp2 = $('<p />');
+									const $i2 = $('<i />',{
+										'class' : 'bi bi-image'
+									});
+									
+									$tp.text(match.homeTeam.name);
+									$team1.append($tp);
+									$team1.append($i);
+									if(match.winner == 'HOME'){
+										const $teamWin = $('<div />',{
+											'class' : 'team-win'
+										});
+										const $p = $('<p />');
+										$p.text(match.homeScore);
+										$teamWin.append($p);
+										$team1.append($teamWin);
+									}else{
+										const $teamLose = $('<div />',{
+											'class' : 'team-lose'
+										});
+										const $p = $('<p />');
+										$p.text(match.homeScore);
+										$teamLose.append($p);
+										$team1.append($teamLose);
+									}
+									$scoreDiv.append($team1);
+									
+									if(match.winner == 'AWAY'){
+										const $teamWin = $('<div />',{
+											'class' : 'team-win'
+										});
+										const $p = $('<p />');
+										$p.text(match.awayScore);
+										$teamWin.append($p);
+										$team2.append($teamWin);
+									}else{
+										const $teamLose = $('<div />',{
+											'class' : 'team-lose'
+										});
+										const $p = $('<p />');
+										$p.text(match.awayScore);
+										$teamLose.append($p);
+										$team2.append($teamLose);
+									}
+									
+									$tp2.text(match.awayTeam.name);
+									$team2.append($i2);
+									$team2.append($tp2);
+									
+									
+									$scoreDiv.append($team2);
+									
+									$div.append($scoreDiv);
+								} else {
+									const $scoreDiv = $('<div />',{
+										'class' : 'score-div'
+									});
+									const $p = $('<p />');
+									
+									$p.text(match.title);
+									
+									$scoreDiv.append($p);
+									$div.append($scoreDiv);
+								}
+								$matchTime.append($div);
+								$tournamentDiv.append($matchTime);
+							}
+						}
+					} else {
+						const $div = $('<div />',{
+							'class' : 'match-date'
+						});
+						const $p = $('<p />');
+						$p.text('대회 일정을 찾을 수 없습니다.');
+						$div.append($p);
+						$tournamentDiv.append($div);
+					}
+					
 				});
+				request.fail(function(jQXHR, textStatus, error){
+    				console.log(error);
+    			});	
+			}
+			
+			getAjaxFn($selectYear, $selectMonth);
+			
+			$('.select-year').change(function(){
+				$selectYear = $('.select-year').val();
+				getAjaxFn($selectYear, $selectMonth);
+				location.href = `/tournament/list?leageName=${leageName}&year=${$selectYear}&month=${$selectMonth}`;
 			});
 			
 			$('.select-month').change(function(){
 				$selectMonth = $('.select-month').val();
-				const request = $.ajax({
-					url : '/tournament/util/ajax',
-					method : 'GET',
-					data : {'date' : `${$selectYear}-${$selectMonth}`,
-							'gameName' : '',
-							'matchCate' : ''
-					},
-					dataType : 'json'
-				});
-				request.done(function(data){
-					console.log(data);
-				});
+				getAjaxFn($selectYear, $selectMonth);
+				location.href = `/tournament/list?leageName=${leageName}&year=${$selectYear}&month=${$selectMonth}`;
 			});
 		</script>
     </th:block>
