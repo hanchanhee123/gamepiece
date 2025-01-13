@@ -19,6 +19,8 @@ public interface UserPointShopMapper {
 	List<Point> findetc(Pageable pageable);
 	List<Point> findbackground(Pageable pageable);
 	
+	void addpsl(String pslNo, String itemCd);
+	
 	int getimoticonCount();
 	
 	int getframeCount();

@@ -33,7 +33,8 @@ public class UserGameController {
 		
 		List<UserGame> gameList = pageInfo.getContents();
 		ArrayList<String> platformList = userGameService.getPlatformList();
-		log.info("platformList : {}", platformList);
+		
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
@@ -55,12 +56,13 @@ public class UserGameController {
 		
 		List<UserGame> gameList = pageInfo.getContents();
 		ArrayList<String> platformList = userGameService.getPlatformList();
-		log.info("platformList : {}", platformList);
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
 		int lastPage = pageInfo.getLastPage();
 		
+		model.addAttribute("currentPlatformCode", platformCode);
 		model.addAttribute("userGameList", gameList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);

@@ -37,6 +37,8 @@ public class UserGameServiceImpl implements UserGameService {
 		return platformList;
 	}
 	
+	
+	
 	@Override
 	public PageInfo<UserGame> getGameListWithPlatform(Pageable pageable, String platformCode) {
 		int rowCnt = userGameMapper.getCntGameListWithPlatform();
