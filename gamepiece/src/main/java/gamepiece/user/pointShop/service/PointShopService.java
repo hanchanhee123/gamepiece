@@ -5,6 +5,7 @@ import java.util.List;
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.domain.PointCategories;
 import gamepiece.user.pointShop.domain.PointLog;
+import gamepiece.user.pointShop.domain.PointShopLog;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
@@ -28,6 +29,8 @@ public interface PointShopService {
 	
 	// 아이템 전체 조회
 	List<Point> findAll();
+	
+	void psl(String itemCd);
 	
 	// 아이템 카테고리 조회
 	List<PointCategories> findCate();

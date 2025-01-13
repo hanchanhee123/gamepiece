@@ -38,7 +38,6 @@
 
 	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource">
-    	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
     </th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
@@ -47,19 +46,29 @@
     	const msg = /*[[${msg}]]*/ "msg";
 		if(msg) alert(msg);
     		
-    	$('#loginBtn').click(function() {
-			let isSubmit = true;
-			$('#loginForm input').each((idx, item) => {
-				const inputValue = $(item).val();
-				if(!inputValue) {
-					isSubmit = false;
-					$(item).focus();
-					return false;
-				}
-			});
-			
-			if(isSubmit) $('#loginForm').submit();
+		$('#loginBtn').click(function() {
+		    LoginSubmit();
 		});
+
+		$('#loginForm').keyup(function(event) {
+		    if (event.keyCode === 13) {
+		    	LoginSubmit();
+		    }
+		});
+
+		function LoginSubmit() {
+		    let isSubmit = true;
+		    $('#loginForm input').each((idx, item) => {
+		        const inputValue = $(item).val();
+		        if (!inputValue) {
+		            isSubmit = false;
+		            $(item).focus();
+		            return false;
+		        }
+		    });
+
+		    if (isSubmit) $('#loginForm').submit();
+		}
     	
     	</script>
     </th:block>
