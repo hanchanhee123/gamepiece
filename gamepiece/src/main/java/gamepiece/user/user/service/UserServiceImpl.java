@@ -76,4 +76,25 @@ public class UserServiceImpl implements UserService {
 		return userMapper.checkId(id);
 	}
 
+	// 아이디 찾기 로직
+	@Override
+	public String findUserIdPro(String userNm, String userEmlAddr, String userTelno) {
+
+		return userMapper.findUserIdPro(userNm, userEmlAddr, userTelno);
+	}
+	
+	// 비밀번호 찾기 로직
+	@Override
+	public String findUserPswdPro(String id, String userNm, String userEmlAddr, String userTelno) {
+
+		return userMapper.findUserPswdPro(id, userNm, userEmlAddr, userTelno);
+	}
+	
+	// 개인 정보 수정
+	@Override
+	public void modifyUserInfo(User user) {
+		
+		userMapper.modifyUserInfo(user);
+	}
+
 }

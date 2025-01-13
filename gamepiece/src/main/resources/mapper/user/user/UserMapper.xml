@@ -103,5 +103,59 @@
 			AND
 			DATE(lgn_dt) = DATE(NOW());
     </update>
+    
+    <!-- 아이디 찾기 로직 -->
+    <select id="findUserIdPro" resultType="string">
+    	SELECT
+			id
+		FROM
+			user
+		WHERE
+			user_nm = #{userNm}
+			AND
+			user_eml_addr = #{userEmlAddr}
+			AND
+			user_telno = #{userTelno};
+    </select>
+    
+    <!-- 비밀번호 찾기 로직 -->
+    <select id="findUserPswdPro" resultType="string">
+    	SELECT
+			user_pswd
+		FROM
+			user
+		WHERE
+			id = #{id}
+			AND
+			user_nm = #{userNm}
+			AND
+			user_eml_addr = #{userEmlAddr}
+			AND
+			user_telno = #{userTelno};
+    </select>
+    
+    <!-- 개인 정보 수정 -->
+	<update id="modifyUserInfo" parameterType="gamepiece.user.user.domain.User">
+		UPDATE user
+		<set>
+			<if test="userPswd != null and userPswd != ''">
+				user_pswd = #{userPswd},
+			</if>
+			<if test="userNm != null and userNm != ''">
+				user_nm = #{userNm},
+			</if>
+			<if test="userEmlAddr != null and userEmlAddr != ''">
+				user_eml_addr = #{userEmlAddr},
+			</if>
+			<if test="userTelno != null and userTelno != ''">
+				user_telno = #{userTelno},
+			</if>
+			<if test="userNn != null and userNn != ''">
+				user_nn = #{userNn}
+			</if>
+		</set>
+		WHERE
+			id = #{id};
+	</update>
 	
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gamepiece.user.myPage.domain.MyPage;
 import gamepiece.user.myPage.mapper.MyPageMapper;
+import gamepiece.user.pointShop.domain.Point;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +31,13 @@ public class MyPageServiceImpl implements MyPageService {
 	public List<MyPage> myPagePointLog(String id) {
 		
 		return myPageMapper.myPagePointLog(id);
+	}
+
+	// 마이페이지 - 아바타
+	@Override
+	public List<Point> getAvatar(String id) {
+
+		return myPageMapper.getAvatar(id);
 	}
 
 }
