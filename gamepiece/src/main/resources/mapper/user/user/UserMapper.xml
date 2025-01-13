@@ -16,7 +16,12 @@
 		<result column="user_telno" property="userTelno"/>
 		<result column="user_nn" property="userNn"/>
 		<result column="join_ymd" property="joinYmd"/>
-		<result column="whdwl_ymd" property="whdwlYmd"/>
+	</resultMap>
+	
+	<resultMap type="gamepiece.user.user.domain.Login" id="loginMap">
+		<id column="login_no" property="loginNo" />
+		<result column="id" property="id"/>
+		<result column="lgn_dt" property="lgnDt"/>
 	</resultMap>
 
 	<!-- 전체 회원정보 조회 -->
@@ -28,5 +33,75 @@
 		WHERE
 			id = #{id};
 	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="addUser" parameterType="gamepiece.user.user.domain.User">
+		INSERT INTO user(
+			id,
+			user_pswd,
+			user_nm,
+			user_gender,
+			user_eml_addr,
+			user_brdt,
+			user_telno,
+			user_nn,
+			join_ymd
+		) VALUES (
+			#{id},
+			#{userPswd},
+			#{userNm},
+			#{userGender},
+			#{userEmlAddr},
+			#{userBrdt},
+			#{userTelno}, 
+			#{userNn},
+			CURDATE());
+	</insert>
+	
+	<!-- 중복 아이디 체크 -->
+	<select id="checkId" parameterType="string" resultType="boolean">
+		SELECT
+			COUNT(*)
+		FROM
+			user
+		WHERE
+			id = #{id};
+	</select>
+	
+    <!-- 사용자 로그 확인 (오늘 날짜) -->
+    <select id="findLoginLog" resultType="int">
+    	SELECT
+			COUNT(*)
+		FROM
+			user_login_log 
+		WHERE
+			id = #{id}
+			AND
+			DATE(lgn_dt) = DATE(NOW());
+    </select>
+    
+    <!-- 로그인 로그 삽입 -->
+	<insert id="addloginLog" parameterType="gamepiece.user.user.domain.Login">
+        INSERT INTO user_login_log(
+        	login_no,
+        	id,
+        	lgn_dt
+       	) VALUES (
+       		#{loginNo},
+       		#{id},
+       		NOW());
+    </insert>
+    
+    <!-- 로그인 로그 업데이트 -->
+    <update id="modifyLoginLog" parameterType="gamepiece.user.user.domain.Login">
+    	UPDATE
+			user_login_log 
+		SET
+			lgn_dt = NOW()
+		WHERE
+			id = #{id} 
+			AND
+			DATE(lgn_dt) = DATE(NOW());
+    </update>
 	
 </mapper>

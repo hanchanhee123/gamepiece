@@ -1,16 +1,22 @@
 package gamepiece.admin.point.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
 import gamepiece.admin.point.mapper.PointshopMapper;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Transactional
+@Slf4j
 public class PointServiceImpl implements PointService {
 	
 	private final PointshopMapper pointshopMapper;
@@ -19,6 +25,29 @@ public class PointServiceImpl implements PointService {
 		this.pointshopMapper = pointshopMapper;
 	}
 	
+	@Override
+	public PageInfo<Point> searchList(String searchCate, String searchValue, Pageable pageable) {
+		String cate = "";
+		switch (searchCate) {
+			case "avatar" 		-> cate = "cate_02";
+			case "frame" 		-> cate = "cate_03";
+			case "imoticon" 	-> cate = "cate_01";
+			case "background" 	-> cate = "cate_05";
+			case "etc" 			-> cate = "cate_04";
+		
+		}
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		int rowCnt = pointshopMapper.getItemCount();
+		searchMap.put("searchCate", cate);
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("pageable", pageable);
+		
+	
+		List<Point> loginList = pointshopMapper.getSearchList(searchMap);
+		log.info("searchMap: {}", searchMap);
+		return new PageInfo<>(loginList, pageable, rowCnt);
+	}
 	
 	@Override
 	public void modifyItem(Point point) {
@@ -26,9 +55,20 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
+	public void inactiveItem(String ps_cd) {
+		pointshopMapper.inactiveItem(ps_cd);
+		
+	}
+	
+	@Override
 	public void removeItem(String ps_cd) {
 		
 		pointshopMapper.removeItem(ps_cd);
+	}
+	
+	@Override
+	public void logcount(String ps_cd) {
+		pointshopMapper.logCount(ps_cd); 
 	}
 	
 	@Override

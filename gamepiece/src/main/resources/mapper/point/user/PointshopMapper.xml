@@ -28,9 +28,33 @@
 		<result column="point_receive_content" property="prc"/>
 		<result column="point_receive" property="pointReceive"/>
 		<result column="point_division" property="pointDivision"/>
+		<result column="remaining_point" property="totalPoint"/>
 	</resultMap>
 	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
+	<select id="findAll" resultMap="pointshopResultMap" parameterType="String">
+		/* 포인트샵 아이템 목록 조회 */
+		SELECT 
+			ps_cd, 
+			ps_cate_cd, 
+			ps_nm, 
+			img_url,
+			ps_price,
+			admin_id,
+			reg_ymd
+		FROM 
+			point_shop;
+	</select>
+	
+	<select id="pointInfo" resultMap="pointshopResultMap" parameterType="String">
+		/* 포인트 코드를 받아서 해당 이이템 정보 조회*/
+		SELECT
+			*
+		FROM
+			point_shop
+		WHERE
+			ps_cd=#{itemCd};
+	</select>
 	
 	<select id="findimoticon" resultMap="pointshopResultMap" parameterType="Pageable">
 		SELECT
@@ -118,12 +142,65 @@
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
-	<select id="getItemCount" resultType="int">
+	<select id="getavatarCount" resultType="int">
 		/* 아이템 갯수 총 행의 갯수*/
 		SELECT
 			COUNT(*)
 		FROM
-			point_shop;
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='프로필이미지'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getbackCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='배경프로필'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getetcCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='기타'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getframeCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='아바타액자'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getimoticonCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='이모티콘'
+			AND
+			ps.is_delete='active';
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">
@@ -223,8 +300,8 @@
 		    point_log pl
 		WHERE
 		    pl.point_division = '적립'
-		GROUP BY
-		    pl.id;
+		    AND
+		    pl.id=#{id};
     </select>
 
 </mapper>

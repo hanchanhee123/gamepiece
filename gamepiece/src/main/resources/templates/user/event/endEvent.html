@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link th:href="@{/assets/css/event/event.css}" rel="stylesheet" type="text/css">
+</head>
+
+<th:block layout:fragment="contents-header">  
+	<div class="main-div">
+	    <div class="detail-cate">
+	        <a th:href="@{/event/progressEvent}" class="item-active">진행중 이벤트</a>
+            <a th:href="@{/event/endEvent}" class="item-active active">종료된 이벤트</a>
+            <a th:href="@{/event/winnerList}" class="item-active">당첨자 발표</a>
+    	</div>
+    </div>
+    </th:block>
+    <th:block layout:fragment="contents-body"> 
+    <!-- <div class="main-height"> -->
+    <div class="main-div"> 
+        <div class="list-event">
+            <ul>
+                <!-- 이벤트 목록이 null이 아닌 경우 반복 -->
+                <th:block th:if="${eventList != null}">
+                    <th:block th:each="event : ${eventList}">
+                        <!-- 진행 중인 이벤트만 표시 -->
+                        <li class="event" th:if="${event.evStatus == '종료'}">
+                            <div class="list-thumb">
+                                <img th:src="@{|/assets/imgs/event/${event.evImg}|}" alt="Event Thumbnail">
+                            </div>
+                            <div class="list-contents">
+                                <div class="list-con">
+                                    <div class="list-subject" aria-label="제목">
+                                        <span class="list-title" th:text="${event.evNm}"></span>
+                                    </div>
+                                    <div class="list-term">
+                                        <strong>이벤트 기간</strong>
+                                        <span th:text="${event.evStartYmd}"></span>
+                                        <span>~</span>
+                                        <span th:text="${event.evEndYmd}"></span>
+                                    </div>
+                                </div>
+                                <div class="list-status">
+                                    <span class="list-status-ongoing" th:text="${event.evStatus}"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </th:block>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+   <!--  </div> -->
+     	 <div class="pagination-area mt-30 mb-50">
+            <nav>
+                <ul class="pagination justify-content-center">
+                	<li class="page-item">
+                		<a class="page-link " 
+                			th:href="@{/event/endEvent}">
+                			<i class="material-icons md-first_page">
+                			</i>
+                		</a>
+                	</li>
+                	<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+                		<a class="page-link " 
+                			th:href="@{/event/endEvent(currentPage=${currentPage - 1})}">
+                			<i class="material-icons md-chevron_left">
+                			</i>
+                		</a>
+                	</li>
+                	<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+                    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+                    		<a class="page-link" th:href="@{/event/endEvent(currentPage=${num})}" th:text="${num}"></a>
+                    	</li>
+                    </th:block>
+                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+                        <a class="page-link" 
+                        	th:href="@{/event/endEvent(currentPage=${currentPage + 1})}">
+                        	<i class="material-icons md-chevron_right"></i>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                		<a class="page-link " 
+                			th:href="@{/event/endEvent(currentPage=${lastPage})}">
+                			<i class="material-icons md-last_page">
+                			</i>
+                		</a>
+                	</li>
+                </ul>
+           </nav>
+ 	 </div>
+</th:block>
+</html>

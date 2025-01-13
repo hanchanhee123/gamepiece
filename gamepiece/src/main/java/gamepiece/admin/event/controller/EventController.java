@@ -12,8 +12,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.service.EventService;
+import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin/event")
 public class EventController {
@@ -122,6 +125,38 @@ public class EventController {
 		eventService.removeEvent(evCd);
 		
 		return "redirect:/admin/event/eventList";
+	}
+	
+	@PostMapping("/searchList")
+	public String searchListView(@RequestParam(value="searchValue") String searchValue,
+								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
+								 Model model,
+								 Pageable pageable) {
+		PageInfo pageInfo = eventService.searchList(searchValue, searchCate, pageable);
+		
+		
+		log.info("searchCate:{}, searchValue:{}", searchCate,searchValue);
+		
+		
+		List<Event> eventList = pageInfo.getContents();
+		eventList.forEach(list -> {
+			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
+		});
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("searchCate", searchCate);
+		model.addAttribute("eventList", eventList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		
+		return "admin/event/eventList";
 	}
 }
 

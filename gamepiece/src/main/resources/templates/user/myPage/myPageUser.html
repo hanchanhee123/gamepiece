@@ -8,7 +8,7 @@
 	
 	<th:block layout:fragment="contents-body">
 		<div class="mypage-modify">
-	        <span>개인 정보 수정</span>
+	        <span>개인 정보 조회/수정</span>
 	
 	        <div class="mypage-modify-form">
 	            <div class="mypage-profile-frame">
@@ -109,27 +109,29 @@
 	                    </div>
 	                </div>
 	            </div>
-	            <div>
-	                <input type="hidden" id="authrt-cd" name="authrt-cd" value="회원">
-	            </div>
-	            <div class="user-form-group">
-	                <input type="password" id="user-pswd" class="user-insert-form" placeholder="변경할 비밀번호를 입력해주세요">
-	            </div>
-	            <div class="user-form-group">
-	                <input type="password" class="user-insert-form" placeholder="비밀번호를 재입력해주세요">
-	            </div>
-	            <div class="user-form-group">
-	                <input type="email" id="user-eml-addr" class="user-insert-form" value="ksmart1@naver.com" placeholder="변경할 이메일을 입력해주세요">
-	            </div>
-	            <div class="user-form-group">
-	                <input type="tel" id="user-telno" class="user-insert-form" value="010-1234-5678" placeholder="변경할 전화번호를 입력해주세요">
-	            </div>
-	            <div class="user-form-group">
-	                <input type="text" id="user-nn" class="user-insert-form" value="리1" placeholder="변경할 닉네임을 입력해주세요">
-	            </div>
-	            <div class="user-form-group">
-	                <button type="button" class="btn btn-primary common-btn-lg">정보 수정</button>
-	            </div>
+	            <th:block th:object="${myPageUser}">
+	            	<div class="user-form-group">
+		                <input type="text" id="id" class="user-insert-form" th:value="${myPageUser.id}" readonly>
+		            </div>
+		            <div class="user-form-group">
+		                <input type="password" id="user-pswd" class="user-insert-form" th:value="${myPageUser.userPswd}" placeholder="변경할 비밀번호를 입력해주세요">
+		            </div>
+		            <div class="user-form-group">
+		                <input type="password" class="user-insert-form" placeholder="비밀번호를 재입력해주세요">
+		            </div>
+		            <div class="user-form-group">
+		                <input type="email" id="user-eml-addr" class="user-insert-form" th:value="${myPageUser.userEmlAddr}" placeholder="변경할 이메일을 입력해주세요">
+		            </div>
+		            <div class="user-form-group">
+		                <input type="tel" id="user-telno" class="user-insert-form" th:value="${myPageUser.userTelno}" placeholder="변경할 전화번호를 입력해주세요">
+		            </div>
+		            <div class="user-form-group">
+		                <input type="text" id="user-nn" class="user-insert-form" th:value="${myPageUser.userNn}" placeholder="변경할 닉네임을 입력해주세요">
+		            </div>
+		            <div class="user-form-group">
+		                <button type="button" class="btn btn-primary common-btn-lg">정보 수정</button>
+		            </div>
+	            </th:block>
 	        </div>
 	    </div>
 	</th:block>

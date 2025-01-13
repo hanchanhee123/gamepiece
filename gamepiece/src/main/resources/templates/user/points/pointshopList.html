@@ -9,20 +9,19 @@
          <div class="">
               <div class="main-div">
             <ul>
-                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">이모티콘</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/avatar}">아바타</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/background}">배경프로필</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/frame}">아바타액자</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/etc}">기타</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">구매내역</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/imoticon}">이모티콘</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/avatar}">아바타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/background}">배경프로필</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/frame}">아바타액자</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/etc}">기타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/imoticon}">구매내역</a></li>
             </ul>
         <div class="pointshop-Hd">
             <div class="pointshop-top">
-                <div class="search">
-                    <input type="text" class="item-search"/>
-                    <i class="bi bi-search"></i>
+                <div>
+                    
                 </div>
-                <div class = "myPoint">보유 포인트<div><span class="point">1050</span> Point</div></div>
+                <div class = "myPoint">보유 포인트<div><span class="point" th:text="${userPoint}"></span> Point</div></div>
             </div>
         </div>
           </div>
@@ -40,7 +39,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${imoticonList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="imoticon">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -63,7 +62,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${avatarList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="avatar">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -86,7 +85,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${backList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="back">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -109,7 +108,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${frameList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="frame">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -131,7 +130,7 @@
                 <div class="carousel-inner">
                     <div class="sub-games carousel-item active">
                         <div class="box-list" th:each="l : ${etcList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps_cd="${l.itemCd}" th:data-type="etc">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
@@ -144,14 +143,54 @@
                 </div>
             </div>
         </div>
-         </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle" tabindex="-1" aria-labelledby="exampleModalToggleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modal-name">아이템 이름</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <p>보유 포인트: <span class="point" id="modal-point">1050</span> Point</p>
+                </div>
+                <div class="modal-img">
+                    <img id="item-img" alt="아이템 이미지" class="img-fluid">
+                </div>
+                <p>이 아이템은 환불할 수 없습니다.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">구매하기</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+         
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-
-    	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+		<script>
+			$('.box').click(function(){
+				const itemCd= this.getAttribute('data-ps_cd');
+				fetch('/point/modal?itemCd='+itemCd)
+				.then(response => response.text())  // JSON 대신 text() 사용
+			    .then(data => {
+			        const jsonData = JSON.parse(data);
+			        $('#modal-point').text(jsonData.itemPrice);
+			        $('#modal-name').text(jsonData.itemName);
+			    	$('#item-img').attr('src',jsonData.itemImgurl);
+			    })
+			})
+		</script>
+		
+    	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    		
+    	</script>
 
     </th:block>
 </html>

@@ -1,6 +1,8 @@
 package gamepiece.admin.event.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,4 +74,19 @@ public class EventServiceImpl implements EventService {
 		eventMapper.removeEvent(evCd);
 		
 	}
+
+	@Override
+	public PageInfo<Event> searchList(String searchValue, String searchCate, Pageable pageable) {
+		
+		searchCate = "e.ev_nm";
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchCate", searchCate);
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("pageable", pageable);
+		int rowCnt = eventMapper.getSearchCntEventList(searchMap);
+		List<Event> eventList = eventMapper.getSearchList(searchMap);
+		
+		return new PageInfo<>(eventList, pageable, rowCnt);
+	}	
 }

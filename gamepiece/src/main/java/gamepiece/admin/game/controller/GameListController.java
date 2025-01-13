@@ -76,7 +76,6 @@ public class GameListController {
 	// 특정 게임 정보 수정
 	@PostMapping("/modify")
 	public String modifyGame(Game game, RedirectAttributes reAttr) {
-		System.out.println(game);
 		gameListService.modifyGame(game);
 		reAttr.addAttribute("gameCode", game.getGameCode());
 		return "redirect:/admin/game/gameList";
@@ -90,6 +89,9 @@ public class GameListController {
 		List<Game> gameList = gameListService.searchList(searchValue);
 		var pageInfo = gameListService.getGameList(pageable);
 		
+		List<Map<String, Object>> platformList = gameListService.getPlatform();
+		List<Game> genreList = gameListService.getGenreList();
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int lastPage = pageInfo.getLastPage();
 		int startPageNum = pageInfo.getStartPageNum();
@@ -97,6 +99,8 @@ public class GameListController {
 		
 		model.addAttribute("gameList", gameList);
 		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("platformList", platformList);
+		model.addAttribute("genreList", genreList);
 		
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("lastPage", lastPage);
@@ -104,6 +108,65 @@ public class GameListController {
 		model.addAttribute("endPageNum", endPageNum);
 		return "admin/game/gameList";
 	}
+	
+	@PostMapping("/searchGenre")
+	public String searchGameWithGenre(@RequestParam(value="searchGenre") String searchGenre, Model model, Pageable pageable) {
+		
+		List<Game> gameList = gameListService.searchGameWithGenre(searchGenre);
+		var pageInfo = gameListService.getGameList(pageable);
+		List<Game> genreList = gameListService.getGenreList();
+		
+		List<Map<String, Object>> platformList = gameListService.getPlatform();
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int lastPage = pageInfo.getLastPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		
+		model.addAttribute("gameList", gameList);
+		model.addAttribute("searchGenre", searchGenre);
+		model.addAttribute("genreList", genreList);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		
+		model.addAttribute("platformList", platformList);
+		
+		return "admin/game/gameList";
+	}
+	
+	@PostMapping("/searchPlatform")
+	public String searchGameWithPlatform(@RequestParam(value="searchPlatform") String searchPlatform, Model model, Pageable pageable) {
+		
+		
+		List<Game> gameList = gameListService.searchGameWithPlatform(searchPlatform);
+		var pageInfo = gameListService.getGameList(pageable);
+		List<Map<String, Object>> platformList = gameListService.getPlatform();
+		
+		List<Game> genreList = gameListService.getGenreList();
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int lastPage = pageInfo.getLastPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		
+		model.addAttribute("gameList", gameList);
+		model.addAttribute("searchPlatform", searchPlatform);
+		model.addAttribute("platformList", platformList);
+		model.addAttribute("genreList", genreList);
+		
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		
+		return "admin/game/gameList";
+	}
+	
+	
+	
 	
 	
 	

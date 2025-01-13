@@ -29,5 +29,7 @@ public interface EventService {
 	List<Event> getEventWinner(String evCd);
 
 	void removeEvent(String evCd);
+
+	PageInfo<Event> searchList(String searchValue, String searchCate, Pageable pageable);
 	
 }

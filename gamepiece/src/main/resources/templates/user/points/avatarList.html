@@ -9,23 +9,22 @@
          <div class="">
               <div class="main-div">
             <ul>
-                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">이모티콘</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/avatar}" class="text-primary">아바타</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/background}">배경프로필</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/frame}">아바타액자</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/etc}">기타</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">구매내역</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/imoticon}">이모티콘</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/avatar}" class="text-primary">아바타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/background}">배경프로필</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/frame}">아바타액자</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/etc}">기타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/imoticon}">구매내역</a></li>
             </ul>
-        <div class="pointshop-Hd">
-            <div class="pointshop-top">
-                <div class="search">
-                    <input type="text" class="item-search"/>
-                    <i class="bi bi-search"></i>
-                </div>
-                <div class = "myPoint">보유 포인트<div><span class="point">1050</span> Point</div></div>
-            </div>
-        </div>
-          </div>
+		        <div class="pointshop-Hd">
+		            <div class="pointshop-top">
+		                <div>
+		                   
+		                </div>
+		                	<div class = "myPoint">보유 포인트<div><span class="point" th:text="${userPoint}"></span> Point</div></div>
+		            </div>
+		        </div>
+          	</div>
          </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
@@ -42,27 +41,27 @@
 	        <nav>
 	            <ul class="pagination justify-content-center">
 	            	<li class="page-item">
-	                    <a class="page-link" th:href="@{/user/point/avatar}">
+	                    <a class="page-link" th:href="@{/point/avatar}">
 	                    	<i class="material-icons md-first_page"></i>
                     	</a>
 	                </li>
 	            	<li class="page-item" th:classappend="${currentPage < 2} ? disabled">
-	                    <a class="page-link" th:href="@{/user/point/avatar(currentPage=${currentPage - 1})}">
+	                    <a class="page-link" th:href="@{/point/avatar(currentPage=${currentPage - 1})}">
 	                    	<i class="material-icons md-chevron_left"></i>
                     	</a>
 	                </li>
 	                <th:block th:each="num : ${#numbers.sequence(startPageNum,endPageNum)}">
 		                <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-		                	<a class="page-link" th:href="@{/user/point/avatar(currentPage=${num})}" th:text="${num}"></a>
+		                	<a class="page-link" th:href="@{/point/avatar(currentPage=${num})}" th:text="${num}"></a>
 		                </li>
 	                </th:block>
 	                <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
-	                    <a class="page-link" th:href="@{/user/point/avatar(currentPage=${currentPage + 1})}">
+	                    <a class="page-link" th:href="@{/point/avatar(currentPage=${currentPage + 1})}">
 	                    	<i class="material-icons md-chevron_right"></i>
 	                    </a>
 	                </li>
 	                <li class="page-item">
-	                    <a class="page-link" th:href="@{/user/point/avatar(currentPage=${lastPage})}">
+	                    <a class="page-link" th:href="@{/point/avatar(currentPage=${lastPage})}">
 	                    	<i class="material-icons md-last_page"></i>
 	                    </a>
 	                </li>
