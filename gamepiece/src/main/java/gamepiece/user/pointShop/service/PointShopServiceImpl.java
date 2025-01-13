@@ -21,15 +21,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PointShopServiceImpl implements PointShopService{
 	private final UserPointShopMapper userpointshopMapper;
-	private final CommonMapper commonMapper;
 	
 	
 	@Override
-	public void psl(String itemCd) {
-		String pslNo = commonMapper.getPrimaryKey("psl_", "pointshop_logs", "psl_no");
-		System.out.println("user_login_log 생성된 기본키 : " + pslNo);
-		userpointshopMapper.addpsl(pslNo, itemCd);
+	public PointShopLog addPointShopLog(String id, String itemCd, int itemPrice) {
 		
+		return userpointshopMapper.addPointShopLog(id, itemCd, itemPrice);
 	}
 	
 	@Override
