@@ -23,6 +23,7 @@ public class Event {
 	private String evParticipateYmd;
 	private String evWinnerYn;
 	private String evStatus;
+	private String userNn;
 
 }
 

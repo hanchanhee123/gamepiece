@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{admin/layout/default}">
+
+ <th:block layout:fragment="contents-header">
+   <div class="col-6">
+     <div class="content-header">
+       <div>
+         <h2 class="content-title card-title" th:text="${title}"></h2>
+       </div>
+     </div>
+   </div>
+ </th:block>
+
+ <th:block layout:fragment="contents-body">
+  	<div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+   <div class="row">
+       <div class="col-lg-6">  
+           <div class="card mb-4">
+               <div class="card-body">
+                   <div class="mb-4">
+                       <label class="form-label">제목</label>
+                       <input type="text" class="form-control" th:value="${inquiryInfo.inquiryTitle}" readonly>
+                   </div>
+                   <div class="mb-4">
+                       <label class="form-label">문의내용</label>
+                       <textarea class="form-control" rows="7" style="resize: none;" 
+                               th:text="${inquiryInfo.inquiryContent}" readonly></textarea>
+                   </div>
+               </div>
+           </div>
+
+       
+           <form id="responseForm" method="post">
+               <input type="hidden" name="inquiryNum" th:value="${inquiryInfo.inquiryNum}">
+               <input type="hidden" name="responeNum" th:value="${responeInfo != null ? responeInfo.responeNum : ''}">
+               
+               <div class="card mb-4">
+                   <div class="card-header d-flex justify-content-between align-items-center">
+                       <h4 class="mb-0">답변</h4>
+                       <button type="button" 
+                               class="btn btn-primary btn-sm rounded"
+                               th:text="${responeInfo != null} ? '수정' : '등록'"
+                               th:onclick="${responeInfo != null} ? 'modifyResponse()' : 'addResponse()'">등록</button>
+                   </div>
+
+                   <div class="card-body">
+                       <div class="mb-4">
+                           <label class="form-label">답변자</label>
+                           <input type="text" class="form-control" name="adminId" id="adminId"
+                               th:value="${responeInfo != null} ? ${responeInfo.adminId} : ''">
+                       </div>
+                       <div class="mb-4">
+                           <label class="form-label">답변내용</label>
+                           <textarea class="form-control" rows="7" style="resize: none;"
+                               placeholder="답변을 입력해주세요" name="responeContent" id="responeContent"
+                               th:text="${responeInfo != null} ? ${responeInfo.responeContent} : ''"></textarea>
+                       </div>
+                       <div class="mb-4">
+                           <label class="form-label">답변일</label>
+                           <input type="text" class="form-control" name="responeYmd"
+                               th:value="${responeInfo != null} ? ${responeInfo.responeYmd} : ${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly>
+                       </div>
+                   </div>
+               </div>
+           </form>
+       </div>
+   </div>
+ </th:block>
+ 
+ <th:block layout:fragment="customJsResource"></th:block>
+ <th:block layout:fragment="customJs">
+  <script th:inline="javascript">
+  function modifyResponse() {
+      if(confirm('수정하시겠습니까?')) {
+          let isSubmit = true;
+          const $formControl = $('#responseForm').find('#adminId, #responeContent');
+          
+          $formControl.each((idx, elem) => {
+              const value = $(elem).val();
+              if(!value) {
+                  isSubmit = false;
+                  alert('필수 입력 항목입니다.');
+                  $(elem).focus();
+                  return false;
+              }
+          });
+
+          if(isSubmit) {
+              $('#responseForm').attr('action', '/admin/inquiry/respone/modify');
+              $('#responseForm').submit();
+          }
+      }
+   }
+
+   function addResponse() {
+	   if(confirm('답변하시겠습니까?')) {
+      let isSubmit = true;
+      const $formControl = $('#responseForm').find('#adminId, #responeContent');
+      
+      $formControl.each((idx, elem) => {
+          const value = $(elem).val();
+          if(!value) {
+              isSubmit = false;
+              alert('필수 입력 항목입니다.');
+              $(elem).focus();
+              return false;
+          }
+      });
+
+      if(isSubmit) {
+          $('#responseForm').attr('action', '/admin/inquiry/respone/add');
+          $('#responseForm').submit();
+      }
+	   }
+   }
+   </script>
+ </th:block>
+</html>

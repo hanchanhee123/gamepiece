@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.admin.report.mapper.DisposalMapper">
+
+
+
+	<resultMap type="gamepiece.admin.report.domain.Disposal" id="DisposalResultMap">
+	  <id column="disposal_cd"  property="disposalCode" />
+    <result column="report_no" property="reportNo" />
+    <result column="disposal_content" property="disposalContent" />
+    <result column="disposal_ymd" property="disposalYmd" />
+    <result column="disposal_criteria" property="disposalCriteria" />
+    <result column="disposal_start_ymd" property="disposalStartYmd" />
+    <result column="disposal_end_ymd" property="disposalEndYmd" />
+    <result column="admin_id" property="adminId" />
+    <result column="reg_ymd" property="disposalRegdate" />
+    
+	</resultMap>
+	
+	
+
+<select id="getDisposalInfo" parameterType="string" resultMap="DisposalResultMap">
+	
+	
+	SELECT 
+		disposal_cd, 
+		REPLACE(disposal_criteria, '\n', '') AS disposal_criteria,
+		disposal_content, 
+		disposal_ymd, 
+		disposal_start_ymd, 
+		disposal_end_ymd, 
+		admin_id
+FROM 
+	u_disposal
+WHERE
+report_no =#{reportNo}
+	
+
+</select>
+
+</mapper>
+
+

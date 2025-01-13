@@ -31,6 +31,14 @@
 		<result column="remaining_point" 		property="totalPoint"/>
 	</resultMap>
 	
+	<resultMap type="gamepiece.user.pointShop.domain.PointShopLog" id="pointShopLog">
+		<id column="psl_no" property="pslNo" />
+		<result column="id" property="id" />
+		<result column="ps_cd" property="psCd" />
+		<result column="psl_used_point" property="usedPoint" />
+		<result column="psl_log_ymd" property="logYmd" />
+	</resultMap>
+	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
 	<select id="findAll" resultMap="pointshopResultMap" parameterType="String">
 		/* 포인트샵 아이템 목록 조회 */
@@ -49,9 +57,15 @@
 	<select id="pointInfo" resultMap="pointshopResultMap" parameterType="String">
 		/* 포인트 코드를 받아서 해당 이이템 정보 조회*/
 		SELECT
-			*
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			ps.img_url,
+			pc.cate_nm
 		FROM
-			point_shop
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
 		WHERE
 			ps_cd=#{itemCd};
 	</select>
@@ -214,6 +228,13 @@
 			cate_nm DESC;
 	</select>
 	
+	<!-- 포인트샵 구매내역 추가 -->
+	<!-- <insert id="addpsl" parameterType="PointShopLog">
+		INSERT INTO pointshop_logs
+			(psl_no, id, ps_cd, psl_used_point, psl_log_ymd)
+		VALUES 
+			(#{pslNo}, #{id}, #{itemCd}, #{itemPrice}, NOW())
+	</insert> -->
 	
 	<select id="getItemInfoByItemName" resultMap="pointshopResultMap" >
 		/* 특정 아이템 조회*/

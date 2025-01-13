@@ -1,6 +1,8 @@
 package gamepiece.admin.boardComment.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,15 +24,6 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 	
 	private final BoardCommentMapper boardCommentMapper;
  	
-	@Override
-	public PageInfo<BoardComment> getCommentList(Pageable pageable) {
-
-		int rowCnt = boardCommentMapper.getCntComment();
-		List<BoardComment> commentList = boardCommentMapper.getCommentList(pageable);
-		
-		return new PageInfo<>(commentList, pageable, rowCnt);
-		
-	}
 
 	@Override
 	public int addComment(BoardComment boardComment) {
@@ -57,5 +50,31 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 		// TODO Auto-generated method stub
 		return boardCommentMapper.removeComment(commentNum);
 	}
+	
+	@Override
+	public PageInfo<BoardComment> getCommentList(Pageable pageable) {
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("offset", pageable.getOffset());
+	    paramMap.put("rowPerPage", pageable.getRowPerPage());
+	    
+	    List<BoardComment> commentList = boardCommentMapper.getCommentList(pageable);
+	    int rowCnt = boardCommentMapper.getCntComment();
+
+	    return new PageInfo<>(commentList, pageable, rowCnt);
+	}
+
+	@Override
+	public PageInfo<BoardComment> getBoardCommentInfo(String boardNum, Pageable pageable) {
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("boardNum", boardNum);
+	    paramMap.put("offset", pageable.getOffset());
+	    paramMap.put("rowPerPage", pageable.getRowPerPage());
+	    
+	    List<BoardComment> commentList = boardCommentMapper.getBoardCommentInfo(paramMap);
+	    int rowCnt = boardCommentMapper.getCntBoardComment(boardNum);
+	    
+	    return new PageInfo<>(commentList, pageable, rowCnt);
+	}
+
 
 }

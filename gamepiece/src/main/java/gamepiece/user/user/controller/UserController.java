@@ -1,5 +1,6 @@
 package gamepiece.user.user.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -116,10 +117,63 @@ public class UserController {
 		return "user/user/findUserId";
 	}
 	
+	// 아이디 찾기 로직
+	@PostMapping("/findUserIdPro")
+	@ResponseBody
+	public Map<String, String> findUserIdPro(@RequestParam(name="userNm") String userNm,
+								@RequestParam(name="userEmlAddr") String userEmlAddr,
+								@RequestParam(name="userTelno") String userTelno) {
+		
+		String findUserId = userService.findUserIdPro(userNm, userEmlAddr, userTelno);
+		
+		Map<String, String> response = new HashMap<>();
+		if(findUserId != null) {
+			response.put("status", "success");
+	        response.put("findUserId", findUserId);
+	        log.info(findUserId);
+	    } else {
+	        response.put("status", "fail");
+	        response.put("message", "아이디를 찾을 수 없습니다.");
+	    }
+		
+		return response;
+	}
+	
 	// 비밀번호 찾기
 	@GetMapping("/findUserPswd")
 	public String findUserPswd() {
 		
 		return "user/user/findUserPswd";
+	}
+	
+	// 비밀번호 찾기 로직
+	@PostMapping("/findUserPswdPro")
+	@ResponseBody
+	public Map<String, String> findUserPswdPro(@RequestParam(name="id") String id,
+								@RequestParam(name="userNm") String userNm,
+								@RequestParam(name="userEmlAddr") String userEmlAddr,
+								@RequestParam(name="userTelno") String userTelno) {
+		
+		String findUserPswd = userService.findUserPswdPro(id, userNm, userEmlAddr, userTelno);
+		
+		Map<String, String> response = new HashMap<>();
+		if(findUserPswd != null) {
+			response.put("status", "success");
+	        response.put("findUserPswd", findUserPswd);
+	        log.info(findUserPswd);
+	    } else {
+	        response.put("status", "fail");
+	        response.put("message", "비밀번호를 찾을 수 없습니다.");
+	    }
+		
+		return response;
+	}
+	
+	// 개인 정보 수정
+	public String modifyUserInfo(User user, Model model) {
+		
+		userService.modifyUserInfo(user);
+		
+		return "/user/myPage/myPageUser";
 	}
 }

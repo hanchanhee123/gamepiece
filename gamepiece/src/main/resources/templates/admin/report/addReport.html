@@ -10,54 +10,38 @@
               <h2 class="content-title card-title" th:text="${title}"></h2>
           </div>
           <div>
-                    <a th:href="@{/admin/board/list}" id="cancelBtn" class="btn btn-light rounded font-sm mr-5 text-body hover-up">취소</a>
-                     <button type="submit" id="modifyBtn" class="btn btn-md rounded font-sm hover-up">수정</button>
+                    <a th:href="@{/admin/report/list}" id="cancelBtn" class="btn btn-light rounded font-sm mr-5 text-body hover-up">취소</a>
+                     <button type="submit" id="submitBtn" class="btn btn-md rounded font-sm hover-up">등록</button>
              </div>
       </div>
      </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
-   	<form id="modifyBoardForm" th:action="@{/admin/board/modify}" method="post" th:object="${boardInfo}">
-   	    <input type="hidden" name="boardNum" th:value="${boardInfo.boardNum}">
+   	<form id="addBoardForm" th:action="@{/admin/board/write}" method="post">
    		    <div class="row">
                 <div class="col-lg-6">
                     <div class="card mb-4">
                         <div class="card-body">
                        
                    
-                   		
-                   	
-				             
                        
               				
-								<div class="mb-4">
-						    <label for="boardCategory" class="form-label">회원등급</label>
-						    <select name="boardCategory" id="boardCategory" class="form-control text-center">
-						        <option value="">게시판을 선택하세요</option>
-						        <option th:each="l : ${categoryList}"
-						                th:value="${l.categoryCode}"
-						                th:text="${l.categoryName}"
-						                th:selected="${l.categoryCode == boardInfo.boardCategory}">
-						        </option>
-						    </select>
-						</div>
-												
+							
+						
                        
                             <div class="mb-4">
                                 <label for="boardTitle" class="form-label">제목</label>
                                 <input type="text" class="form-control" 
-                                    id="boardTitle" name="boardTitle" th:value="*{boardTitle}">
+                                    id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요">
                             </div>
                            
-                          <div class="mb-4">
-						    <label for="boardContent" class="form-label">게시내용</label>
-						    <textarea class="form-control" rows="7" 
-						        style="height: 300px; resize: none;" 
-						        id="boardContent" 
-						        name="boardContent" 
-						        th:text="*{boardContent}"></textarea>
-						</div>
-						                          
+                            <div class="mb-4">
+                                <label for="boardContent" class="form-label">게시내용</label>
+                                <textarea placeholder="내용을 입력하세요" class="form-control" rows="7" 
+                                style="height: 300px; resize: none;" 
+                                id="boardContent" name="boardContent"></textarea>
+                            </div>
+                          
                          
                          
                             <div class="row">
@@ -78,11 +62,6 @@
                     </div>
                 </div>
             </div>
-            
-            
-				    
-				    
-				  
             </form>
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
@@ -91,9 +70,9 @@
     <th:block layout:fragment="customJs">
     	<script>
 		// 게시글 등록
-		$('#modifyBtn').click(function(){
+		$('#submitBtn').click(function(){
 			let isSubmit = true;
-			const $formControl = $('#modifyBoardForm').find('#boardTitle, select, textarea');
+			const $formControl = $('#addBoardForm').find('#boardTitle, select, textarea');
 			$formControl.each((idx, elem) => {
 				const value = $(elem).val();
 				if(!value){
@@ -104,10 +83,10 @@
 				}
 			});
 			
-			if(isSubmit) $('#modifyBoardForm').submit();
+			if(isSubmit) $('#addBoardForm').submit();
 		})
 		
-		
+		console.log(document.getElementById('boardTitle').value);
     		
     	</script>
     </th:block>

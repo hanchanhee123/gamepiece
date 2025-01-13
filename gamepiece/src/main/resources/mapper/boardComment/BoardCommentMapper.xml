@@ -6,13 +6,14 @@
 
 
 
-
 	<resultMap type="gamepiece.admin.boardComment.domain.BoardComment" id="BoardCommentResultMap">
 	  <id column="bc_no"  property="commentNum" />
+	 <result column="bbs_no"  property="boardNum" />
     <result column="bc_cn" property="commentDetail" />
     <result column="bc_like" property="commnetLikeCnt" />
     <result column="bc_dislike" property="commentDisLikeCnt" />
     <result column="bc_ymd" property="commentYmd" />
+    
     
 
 	<association property="boardInfo" javaType="gamepiece.admin.board.domain.Board">
@@ -51,6 +52,18 @@
 
 
 
+
+<select id="getCntBoardComment" parameterType="string" resultType="int">
+    SELECT
+        COUNT(*)
+    FROM
+        board_comments bco INNER JOIN user u
+        ON bco.bc_id = u.id
+    WHERE
+        bbs_no = #{boardNum}
+</select>
+
+
 <select id="getCommentList" parameterType="gamepiece.util.Pageable" resultMap="BoardCommentResultMap">
 	SELECT
 		bco.bc_no,
@@ -65,8 +78,7 @@
 		USING (bbs_no)
 		INNER JOIN user u
 		ON bco.bc_id = u.id
-	 WHERE
-        bco.isdelete = 'active'
+	
 	  ORDER BY
         CAST(SUBSTRING_INDEX(bc_no,'bc_',-1) AS UNSIGNED)
 	    LIMIT #{rowPerPage} OFFSET #{offset};
@@ -78,8 +90,7 @@
 			COUNT(*)
 		FROM
 			board_comments 
-	WHERE
-        isdelete = 'active'
+
 	
 
 </select>
@@ -119,6 +130,21 @@
 	)
 </insert>
 
+<select id="getBoardCommentInfo" parameterType="map" resultMap="BoardCommentResultMap">
+    SELECT
+        bco.bc_no,
+        bco.bc_cn,
+        bco.bc_like,
+        bco.bc_dislike,
+        u.user_nn,
+        bco.bc_ymd
+    FROM
+        board_comments bco INNER JOIN user u
+        ON bco.bc_id = u.id
+    WHERE
+        bbs_no = #{boardNum}
+    LIMIT #{rowPerPage} OFFSET #{offset}
+</select>
 
 <select id="getCommentInfo" parameterType="string" resultMap="BoardCommentResultMap">
 	SELECT
@@ -154,7 +180,7 @@ WHERE
 		UPDATE 
 			board_comments
 		SET
-			isdelete = 'delete'
+			is_delete = 'delete'
 		WHERE 
 			bc_no = #{commentNum}
 

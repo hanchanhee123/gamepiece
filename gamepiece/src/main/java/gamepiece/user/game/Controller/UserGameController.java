@@ -33,7 +33,8 @@ public class UserGameController {
 		
 		List<UserGame> gameList = pageInfo.getContents();
 		ArrayList<String> platformList = userGameService.getPlatformList();
-		log.info("platformList : {}", platformList);
+		
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
@@ -47,6 +48,33 @@ public class UserGameController {
 		model.addAttribute("platformList", platformList);
 		return "user/game/gameList";
 	}
+	
+	@GetMapping("/platform")
+	public String getUserGameListWithPlatform(@RequestParam(value="platformCode") String platformCode, Model model, Pageable pageable) {
+		var pageInfo = userGameService.getGameListWithPlatform(pageable, platformCode);
+		
+		
+		List<UserGame> gameList = pageInfo.getContents();
+		ArrayList<String> platformList = userGameService.getPlatformList();
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("currentPlatformCode", platformCode);
+		model.addAttribute("userGameList", gameList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("platformList", platformList);
+		
+		return "user/game/gameList";
+	}
+	
+	
+	
 	
 	
 	

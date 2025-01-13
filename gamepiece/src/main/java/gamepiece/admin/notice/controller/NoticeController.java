@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import gamepiece.admin.inquiry.domain.Inquiry;
 import gamepiece.admin.notice.domain.Notice;
 import gamepiece.admin.notice.service.NoticeService;
+import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +22,46 @@ import lombok.RequiredArgsConstructor;
 public class NoticeController {
 	
 	private final NoticeService noticeService;
+	
+	
+	
+	@PostMapping("/searchList")
+	public String postNoticeSearchList(@RequestParam(value="searchValue") String searchValue,
+						Pageable pageable, Model model) {
+
+	   PageInfo<Notice> pageInfo = noticeService.getSearchList(searchValue, pageable);
+
+	   model.addAttribute("title", "공지사항 목록");
+	   model.addAttribute("noticeList", pageInfo.getContents());
+	   model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	   model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	   model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	   model.addAttribute("lastPage", pageInfo.getLastPage());
+	   model.addAttribute("searchValue", searchValue);
+
+	   return "admin/notice/noticeList";
+	}
+
+	@GetMapping("/searchList")
+	public String noticeSearchList(
+	   @RequestParam(value="searchValue", required = false) String searchValue,
+	   Pageable pageable,
+	   Model model) {
+
+	   PageInfo<Notice> pageInfo = noticeService.getSearchList(searchValue, pageable);
+
+	   model.addAttribute("title", "공지사항 목록");
+	   model.addAttribute("noticeList", pageInfo.getContents());
+	   model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	   model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	   model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	   model.addAttribute("lastPage", pageInfo.getLastPage());
+	   model.addAttribute("searchValue", searchValue);
+
+	   return "admin/notice/noticeList";
+	}
+	
+	
 	
 	
 	@PostMapping("/remove")

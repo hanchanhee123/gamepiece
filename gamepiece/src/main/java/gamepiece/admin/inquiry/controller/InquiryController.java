@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.inquiry.domain.Inquiry;
+import gamepiece.admin.inquiry.domain.InquiryRespone;
 import gamepiece.admin.inquiry.service.InquiryService;
+import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
 
@@ -27,45 +29,75 @@ public class InquiryController {
 	
 	
 	
-	@PostMapping("/remove")
-	public String removeInquiry(@RequestParam("inquiryNum") String inquiryNum, RedirectAttributes rttr) {
-	    int result = inquiryService.removeInquiry(inquiryNum);
+	@PostMapping("/searchList")
+	public String postInquirySearchList(@RequestParam(value="searchValue") String searchValue,Pageable pageable,
+	   Model model) {
 
-	 
-	        rttr.addFlashAttribute("message", "문의글 삭제되었습니다.");
-	  
-	    return "redirect:/admin/inquiry/list";
+	   PageInfo<Inquiry> pageInfo = inquiryService.getSearchList(searchValue, pageable);
+
+	   model.addAttribute("title", "문의사항 목록");
+	   model.addAttribute("inquiryList", pageInfo.getContents());
+	   model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	   model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	   model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	   model.addAttribute("lastPage", pageInfo.getLastPage());
+	   model.addAttribute("searchValue", searchValue);
+
+	   return "admin/inquiry/inquiryList";
+	}
+
+	@GetMapping("/searchList")
+	public String inquirySearchList( @RequestParam(value="searchValue", required = false) String searchValue,
+	   Pageable pageable,
+	   Model model) {
+
+	   PageInfo<Inquiry> pageInfo = inquiryService.getSearchList(searchValue, pageable);
+
+	   model.addAttribute("title", "문의사항 목록");
+	   model.addAttribute("inquiryList", pageInfo.getContents());
+	   model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	   model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	   model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	   model.addAttribute("lastPage", pageInfo.getLastPage());
+	   model.addAttribute("searchValue", searchValue);
+
+	   return "admin/inquiry/inquiryList";
 	}
 	
-  
-	@PostMapping("/modify")
-	public String modifyInquiry(Inquiry inquiry, RedirectAttributes rttr) {
-	    int result = inquiryService.modifyInquiry(inquiry);
-	    
-	    
 	
-	    
-	    if(result > 0) {
-	        rttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
-		 
-	    } else {
-	        rttr.addFlashAttribute("error", "게시글 수정에 실패했습니다.");
-	       
-	    }
-	    return "redirect:/admin/inquiry/list";
 
+	
+	@PostMapping("/respone/add")
+	public String addInquiryResponse(InquiryRespone inquiryRespone, RedirectAttributes rttr) {
+	    inquiryService.addInquiryRespone(inquiryRespone);
+	    rttr.addFlashAttribute("message", "답변이 입력되었습니다.");
+	    
+	    return "redirect:/admin/inquiry/detail?inquiryNum=" + inquiryRespone.getInquiryNum();
+	}
+
+	@PostMapping("/respone/modify") 
+	public String modifyInquiryResponse(InquiryRespone inquiryRespone, RedirectAttributes rttr) {
+	    inquiryService.modifyInquiryRespone(inquiryRespone);
+	    rttr.addFlashAttribute("message", "답변이 수정되었습니다.");
+	    
+	    return "redirect:/admin/inquiry/detail?inquiryNum=" + inquiryRespone.getInquiryNum();
 	}
 	
-	@GetMapping("/modify")
-	public String modifyInquiryView(@RequestParam(name="inquiryNum") String inquiryNum, Model model) {
+	
+
+	
+	@GetMapping("/detail")
+	public String inquiryDetailView(@RequestParam(name="inquiryNum") String inquiryNum, Model model) {
 		Inquiry inquiryInfo = inquiryService.getInquiryInfo(inquiryNum);
+		InquiryRespone responeInfo = inquiryService.getInquiryResponeInfo(inquiryNum);
 		
 		
-		model.addAttribute("title","문의글수정");
+		model.addAttribute("title","문의글상세");
 		model.addAttribute("inquiryInfo", inquiryInfo);
+		model.addAttribute("responeInfo", responeInfo);
 	
 		
-		return "admin/inquiry/modifyInquiry";
+		return "admin/inquiry/inquiryDetail";
 	}
 	
 

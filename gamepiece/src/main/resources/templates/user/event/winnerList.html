@@ -24,7 +24,6 @@
 	                    <th>번호</th>
 	                    <th width="80%">제목</th>
 	                    <th>작성자</th>
-	                    <th>작성날짜</th>
 	                </tr>
 	            </thead>
 	            <tbody>
@@ -32,13 +31,55 @@
 			      		<tr th:if="${event.evStatus == '종료'}"
 							th:each="event, iter :${eventList}">
 						<td th:text="${eventList.size() - iter.index}"></td>
-		      			<td th:text="${event.evNm}"></td>
+		      			<td th:text="${event.evNm}" 
+						    th:data-event-cd="${event.evCd}" 
+						    class="event-title"
+						    data-bs-toggle="modal" data-bs-target="#winnerModal"></td>
 		      			<td th:text="${event.adminId}"></td> 			
-		      			<td th:text="${event.regYmd}"></td>
 		      			</tr>
+		      			
 		      		</th:block>
+		      		
 	      		</tbody>	    
             </table>
+       <div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="winnerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="winnerModalLabel">당첨자 발표</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="winner-table">
+                    <table class="table winner">
+                        <thead>
+                            <tr>
+                                <th scope="col">당첨자</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 당첨자 목록이 있는 경우 -->
+                            <th:block th:if="${getEventWinner != null}" th:each="winner : ${getEventWinner}">
+                                <tr>
+                                    <td th:text="${winner.userNn}"></td>
+                                </tr>
+                            </th:block>
+                            <!-- 당첨자 목록이 없는 경우 -->
+                            <th:block th:if="${getEventWinner == null || #lists.isEmpty(getEventWinner)}">
+                                <tr>
+                                    <td colspan="1">당첨자가 없습니다</td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
         </div>
     </div>
     <div class="pagination-area mt-30 mb-50">
@@ -80,4 +121,40 @@
            </nav>
  	 </div>
 </th:block>
+<!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+		<script th:inline="javascript">
+			$('.event-title').click(function(){
+				const eventCd = $(this).data('eventCd');
+				console.log(eventCd);
+				
+				const request = $.ajax({
+					url : '/event/winner/detail',
+					method : 'POST',
+					data : {'evCd' : eventCd},
+					dataType : 'json'
+				});
+				
+				request.done(data=>{
+					console.log(data.length);
+					const $tbody = $('.winner tbody');
+										
+					$tbody.empty();
+					
+					const $tr = $("<tr />");
+					for(const list of data){
+						
+						const $td = $("<td />");
+						$td.text(list.userNn);
+						$tr.append($td);				
+					}
+					$tbody.append($tr);
+				});
+			});
+			
+		
+		
+		</script>
+	    </th:block>
+
 </html>
