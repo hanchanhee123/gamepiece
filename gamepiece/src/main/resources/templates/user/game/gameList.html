@@ -13,13 +13,14 @@
 			        <div class="category-menu">
 			            <ul>
 			            	<th:block th:each="l : ${platformList}">
-			            		<li class="gamelist-cate" th:text="${l.platformName}"><a href="#" style="color : #007AFF">스팀</a></li>
+			            			<li class="gamelist-cate"><a th:href="@{/game/platform(platformCode=${l.platformCode})}" th:text="${l.platformName}"></a></li>
+			            		
 			            	</th:block>
-			                <!-- 
-			                <li class="gamelist-cate"><a href="#">에픽게임즈</a></li>
-			                <li class="gamelist-cate"><a href="#">닌</a></li>
-			                <li class="gamelist-cate"><a href="#">Riot Games</a></li>
-			                <li class="gamelist-cate"><a href="#">기타</a></li>  -->
+			            	<!-- <li class="gamelist-cate"><a th:href="@{/game/steam}">스팀</a></li>
+			                <li class="gamelist-cate"><a th:href="@{/game/epic}">에픽게임즈</a></li>
+			                <li class="gamelist-cate"><a th:href="@{/game/nintendo}">닌텐도</a></li>
+			                <li class="gamelist-cate"><a th:href="@{/game/riot}">라이엇게임즈</a></li> -->
+			                <li class="gamelist-cate"><a th:href="@{/game/gameList}">기타</a></li>
 			            </ul>
 			        </div>
 			        <div class="search">
@@ -52,7 +53,7 @@
 			            <nav>
 			                <ul class="pagination justify-content-center">
 			                    <li class="page-item">
-			                        <a class="page-link" th:href="@{/admin/login/history}">
+			                        <a class="page-link" th:href="@{/game/gameList}">
 			                        	<i class="material-icons md-first_page"></i>
 			                        </a>
 			                    </li>
@@ -95,5 +96,9 @@
 </th:block>
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+		
+		
+	</script>
 </th:block>
 </html>
