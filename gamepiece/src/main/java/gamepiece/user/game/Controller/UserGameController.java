@@ -61,6 +61,7 @@ public class UserGameController {
 		int endPageNum = pageInfo.getEndPageNum();
 		int lastPage = pageInfo.getLastPage();
 		
+		model.addAttribute("currentPlatformCode", platformCode);
 		model.addAttribute("userGameList", gameList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);

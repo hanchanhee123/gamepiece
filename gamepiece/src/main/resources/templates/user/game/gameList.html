@@ -13,14 +13,14 @@
 			        <div class="category-menu">
 			            <ul>
 			            	<th:block th:each="l : ${platformList}">
-			            			<li class="gamelist-cate"><a th:href="@{/game/platform(platformCode=${l.platformCode})}" th:text="${l.platformName}"></a></li>
-			            		
+			            			<li class="gamelist-cate" th:classappend="${l.platformCode == currentPlatformCode} ? 'active'"><a th:href="@{/game/platform(platformCode=${l.platformCode})}" th:text="${l.platformName}"></a></li>
 			            	</th:block>
+			            	
+			            	
 			            	<!-- <li class="gamelist-cate"><a th:href="@{/game/steam}">스팀</a></li>
 			                <li class="gamelist-cate"><a th:href="@{/game/epic}">에픽게임즈</a></li>
 			                <li class="gamelist-cate"><a th:href="@{/game/nintendo}">닌텐도</a></li>
 			                <li class="gamelist-cate"><a th:href="@{/game/riot}">라이엇게임즈</a></li> -->
-			                <li class="gamelist-cate"><a th:href="@{/game/gameList}">기타</a></li>
 			            </ul>
 			        </div>
 			        <div class="search">
@@ -41,9 +41,9 @@
 						        <div class="col">
 						        	<div class="game-info">
 						                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1812450/9edcb48a97b6073fc7e74dbec5d2fbb77ec6f566/capsule_616x353.jpg?t=1732789392">
-						                <p class="game-name" th:text="${l.gameName}">Bellwright</p>
-						                <p class="game-price" th:text="${l.price}">₩ 10,000</p>
-						                <p class="game-platform" th:text="${l.platformName}">Steam</p>
+						                <p class="game-name" th:text="${l.gameName}"></p>
+						                <p class="game-price" th:text="${l.price}"></p>
+						                <p class="game-platform" th:text="${l.platformName}"></p>
 						            </div>
 						        </div>
 					        </th:block>
@@ -97,7 +97,6 @@
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
-		
 		
 	</script>
 </th:block>
