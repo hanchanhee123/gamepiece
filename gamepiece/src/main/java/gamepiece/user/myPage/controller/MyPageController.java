@@ -108,6 +108,9 @@ public class MyPageController {
 		
 		String id = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
+		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
@@ -125,6 +128,9 @@ public class MyPageController {
 	public String myPageWishlist(Model model, HttpSession session) {
 		
 		String id = (String) session.getAttribute("SID");
+		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -144,6 +150,9 @@ public class MyPageController {
 		
 		String id = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
+		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
@@ -161,6 +170,9 @@ public class MyPageController {
 	public String myPageRefundPayment(Model model, HttpSession session) {
 		
 		String id = (String) session.getAttribute("SID");
+		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -180,6 +192,9 @@ public class MyPageController {
 		
 		String id = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
+		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
@@ -198,6 +213,9 @@ public class MyPageController {
 		
 		String id = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
+		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
@@ -208,6 +226,7 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
+		
 		return "/user/myPage/myPageEmoticon";
 	}
 	
@@ -215,6 +234,9 @@ public class MyPageController {
 	public String myPageBoard(Model model, HttpSession session) {
 		
 		String id = (String) session.getAttribute("SID");
+		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -234,6 +256,9 @@ public class MyPageController {
 		
 		String id = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
+		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
 		
@@ -251,6 +276,9 @@ public class MyPageController {
 	public String myPageEvent(Model model, HttpSession session) {
 		
 		String id = (String) session.getAttribute("SID");
+		
+		String avatar = userService.getUserAvatar(id);
+		model.addAttribute("avatar", avatar);
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
