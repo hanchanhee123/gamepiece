@@ -17,6 +17,8 @@ public interface EventService {
 	List<Event> getEventDetail(String evCd);
 
 	void addEvent(Event event);
+	
+	/* void addEventWinnerList(String evCd, Event event); */
 
 	// 특정
 	Event getEventInfoById(String evCd);
@@ -31,5 +33,13 @@ public interface EventService {
 	void removeEvent(String evCd);
 
 	PageInfo<Event> searchList(String searchValue, String searchCate, Pageable pageable);
+
+	PageInfo<Event> getEventWinnerList(Pageable pageable);
+
+	List<Event> getEventsList();
+
+	List<Event> getWinnerListInfo(String evCd);
+	
+	void addEventWinnerList(Event event);
 	
 }
