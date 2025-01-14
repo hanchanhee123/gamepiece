@@ -9,7 +9,7 @@ public class BoardCategory {
 
 	private String categoryCode;
 	private String categoryName;	
-	private String adminId = "id01";
+	private String adminId;
 	private String categoryYmd;
 	private Integer boardCount;
 

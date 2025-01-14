@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.board.mapper.InquiryMapper">
+
+
+	<resultMap type="gamepiece.user.board.domain.Inquiry" id="InquiryResultMap">
+		<id column="inquiry_id" property="inquiryNum" />
+		<result column="id" property="inquiryUserId" />
+		<result column="inquiry_title" property="inquiryTitle" />
+		<result column="inquiry_content" property="inquiryContent" />
+		<result column="inquiry_ymd" property="inquiryYmd" />
+
+	<association property="userInfo" javaType="gamepiece.user.user.domain.User">
+			<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="authrt_nm" property="authrtNm"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+		<result column="login_no" property="loginNo"/>
+		<result column="lgn_dt" property="lgnDt"/>
+		<result column="inactive_days" property="inactiveDays"/>
+		</association>
+
+	
+	
+
+	<association property="responeInfo" javaType="gamepiece.user.board.domain.InquiryRespone">
+				<id column="response_id" property="responeNum" />
+		<result column="inquiry_id" property="inquiryNum"/>
+		<result column="response_content" property="responeContent"/>
+		<result column="admin_id" property="adminId"/>
+		<result column="response_ymd" property="responeYmd"/>
+		
+		</association>
+		
+	
+		</resultMap>
+		
+		
+					<!-- <select id="getInquirySearchList" parameterType="map" resultMap="InquiryResultMap">
+					   SELECT 
+					      	i.inquiry_id,
+							ir.response_id,
+							i.inquiry_title,
+							i.inquiry_content,
+							u.user_nn,
+							i.inquiry_ymd
+					   FROM 
+					       	inquiry i INNER JOIN user u
+							ON i.id = u.id
+							LEFT JOIN inquiry_response ir
+						   USING (inquiry_id)
+					   WHERE 1=1
+					   <if test="searchValue != null and searchValue != ''">
+					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
+					   </if>
+					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED)
+					   LIMIT #{rowPerPage} OFFSET #{offset}
+					</select>
+					
+					<select id="getCntSearchInquiry" parameterType="map" resultType="int">
+					   SELECT 
+					   		COUNT(*)
+					   FROM  
+					   		inquiry i
+					   WHERE 1=1
+					   <if test="searchValue != null and searchValue != ''">
+					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
+					   </if>
+					</select>
+		 -->
+		
+		
+	
+
+<select id="getCntInquiry" resultType="int">
+	SELECT
+		COUNT(*)
+	FROM
+		inquiry i
+		WHERE
+	  	i.is_delete = 'active'
+	
+	
+	</select>
+
+
+<select id="getInquiryList" parameterType="gamepiece.util.Pageable" resultMap="InquiryResultMap">
+
+SELECT
+		i.inquiry_id,
+		ir.response_id,
+		i.inquiry_title,
+		i.inquiry_content,
+		u.user_nn,
+		i.inquiry_ymd
+	FROM
+		inquiry i INNER JOIN user u
+		ON i.id = u.id
+		LEFT JOIN inquiry_response ir
+	   USING (inquiry_id)
+	WHERE
+	  	i.is_delete = 'active'
+
+	</select>
+
+
+<insert id="addInquiry" parameterType="Inquiry">
+
+		INSERT INTO inquiry(
+			inquiry_id,
+			id,
+			inquiry_title,
+			inquiry_content,
+			inquiry_ymd
+			)VALUES(
+			CONCAT('inq_', LPAD(COALESCE((
+			SELECT next_num FROM (
+			SELECT MAX(CAST(SUBSTRING_INDEX(inquiry_id, 'inq_', -1) AS UNSIGNED)) + 1 AS
+			next_num FROM inquiry
+			) AS temp
+			), 1), 2, '0')),
+			
+			
+			CONCAT('id', LPAD((
+            SELECT next_num FROM (
+                SELECT MAX(CAST(SUBSTRING_INDEX(id, 'id', -1) AS UNSIGNED)) + 1 AS next_num 
+                FROM inquiry
+            ) AS temp
+        ), 2, '0')),
+			#{inquiryTitle},
+			#{inquiryContent},
+			CURDATE()
+			);
+
+	</insert>
+
+
+
+<!-- 	
+
+
+	<select id="getInquiryInfo" parameterType="string" resultMap="InquiryResultMap">
+	SELECT
+	i.inquiry_id,
+	i.inquiry_title,
+	i.inquiry_content
+	FROM
+		inquiry i 
+	WHERE
+		inquiry_id =#{inquiryNum};
+
+	</select> -->
+
+
+
+</mapper>
