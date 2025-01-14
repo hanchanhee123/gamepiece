@@ -27,13 +27,17 @@ public class PointShopController {
 	}
 	
 	@GetMapping("/addlog")
-	@ResponseBody
-	public void PointShopLog(String itemCd,
-							 HttpSession session,
-							 int itemPrice) {
+	public String PointShopLog(String itemCd,
+							   String itemName,
+							   HttpSession session,
+							   int itemPrice) {
 		String userId = (String) session.getAttribute("SID");
 		
+		
+		pointshopService.addPointLog(userId, itemName, itemPrice);
 		pointshopService.addPointShopLog(userId, itemCd, itemPrice);
+		
+		return "redirect:/point/shop";
 	}
 	
 	@GetMapping("/modal")
@@ -178,70 +182,28 @@ public class PointShopController {
 		
 		String userId = (String) session.getAttribute("SID");
 		List<Point> imoticonList = imoticonInfo.getContents();
-		int imoticoncurrentPage = imoticonInfo.getCurrentPage();
-		int imoticonstartPageNum = imoticonInfo.getStartPageNum();
-		int imoticonendPageNum = imoticonInfo.getEndPageNum();
-		int imoticonlastPage = imoticonInfo.getLastPage();
 		
 		List<Point> avatarList = avatarInfo.getContents();
-		int avatarcurrentPage = avatarInfo.getCurrentPage();
-		int avatarstartPageNum = avatarInfo.getStartPageNum();
-		int avatarendPageNum = avatarInfo.getEndPageNum();
-		int avatarlastPage = avatarInfo.getLastPage();
 		
 		List<Point> frameList = frameInfo.getContents();
-		int framecurrentPage = frameInfo.getCurrentPage();
-		int framestartPageNum = frameInfo.getStartPageNum();
-		int frameendPageNum = frameInfo.getEndPageNum();
-		int framelastPage = frameInfo.getLastPage();
 		
 		List<Point> etcList = etcInfo.getContents();
-		int etccurrentPage = etcInfo.getCurrentPage();
-		int etcstartPageNum = etcInfo.getStartPageNum();
-		int etcendPageNum = etcInfo.getEndPageNum();
-		int etclastPage = etcInfo.getLastPage();
 		
 		List<Point> backList = backInfo.getContents();
-		int backcurrentPage = backInfo.getCurrentPage();
-		int backstartPageNum = backInfo.getStartPageNum();
-		int backendPageNum = backInfo.getEndPageNum();
-		int backlastPage = backInfo.getLastPage();
 		
 		model.addAttribute("title", "포인트샵");
-		model.addAttribute("cateList", pointshopService.findCate());
-		model.addAttribute("itemInfo", pointshopService.findAll());
+		
 		model.addAttribute("userId", userId);
 		
-		
 		model.addAttribute("imoticonList", imoticonList);
-		model.addAttribute("imoticoncurrentPage", imoticoncurrentPage);
-		model.addAttribute("imoticonstartPageNum", imoticonstartPageNum);
-		model.addAttribute("imoticonendPageNum", imoticonendPageNum);
-		model.addAttribute("imoticonlastPage", imoticonlastPage);
 		
 		model.addAttribute("avatarList", avatarList );
-		model.addAttribute("avatarcurrentPage", avatarcurrentPage);
-		model.addAttribute("avatarstartPageNum", avatarstartPageNum);
-		model.addAttribute("avatarendPageNum", avatarendPageNum);
-		model.addAttribute("avatarlastPage", avatarlastPage);
 		
 		model.addAttribute("frameList", frameList);
-		model.addAttribute("framecurrentPage", framecurrentPage);
-		model.addAttribute("framestartPageNum", framestartPageNum);
-		model.addAttribute("frameendPageNum", frameendPageNum);
-		model.addAttribute("framelastPage", framelastPage);
 		
 		model.addAttribute("etcList", etcList);
-		model.addAttribute("etccurrentPage", etccurrentPage);
-		model.addAttribute("etcstartPageNum", etcstartPageNum);
-		model.addAttribute("etcendPageNum", etcendPageNum);
-		model.addAttribute("etclastPage", etclastPage);
 		
 		model.addAttribute("backList", backList);
-		model.addAttribute("backcurrentPage", backcurrentPage);
-		model.addAttribute("backstartPageNum", backstartPageNum);
-		model.addAttribute("backendPageNum", backendPageNum);
-		model.addAttribute("backlastPage", backlastPage);
 		
 		var userPoint = pointshopService.getPointsHeld(userId);
 		model.addAttribute("userPoint", userPoint.getTotalPoint());
