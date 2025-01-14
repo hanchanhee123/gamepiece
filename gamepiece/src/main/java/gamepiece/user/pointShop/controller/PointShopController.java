@@ -1,15 +1,15 @@
 package gamepiece.user.pointShop.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.service.PointShopService;
 import gamepiece.util.Pageable;
@@ -189,7 +189,7 @@ public class PointShopController {
 		
 		List<Point> etcList = etcInfo.getContents();
 		
-		List<Point> backList = backInfo.getContents();
+		List<Point> backList = backInfo.getContents(); 
 		
 		model.addAttribute("title", "포인트샵");
 		
@@ -204,6 +204,7 @@ public class PointShopController {
 		model.addAttribute("etcList", etcList);
 		
 		model.addAttribute("backList", backList);
+		
 		
 		var userPoint = pointshopService.getPointsHeld(userId);
 		model.addAttribute("userPoint", userPoint.getTotalPoint());

@@ -32,19 +32,22 @@
    		<!-- 이모티콘  -->
 	   	 <div class="pointshop-cate-name">이모티콘</div>
         <div class="pointShopImg">
-            <div id="pointShopImg" class="slider carousel slide">
-                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
+            <div id="pointShopImg1" class="slider carousel slide">
+                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg1" data-bs-slide="prev">
                     <i class="bi bi-chevron-left"></i>
                 </div>
                 <div class="carousel-inner">
-                    <div class="sub-games carousel-item active">
-                        <div class="box-list modal-items" th:each="l : ${imoticonList}">
+                    <div class="sub-games carousel-item" th:each="l, num : ${imoticonList}">
+                    	<h1 th:text="${num.count}"></h1>
+                    	<!--/*  
+                        <div class="box-list modal-items d-block w-100">
                             <div class="box" th:data-ps-cd="${l.itemCd}" th:data-type="imoticon">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
                                 <div th:text="${l.itemPrice}" class="itemName"></div>
                             </div>    
                         </div>
+                        */-->
                     </div>  
                 </div>
                 <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
@@ -128,8 +131,8 @@
                     <i class="bi bi-chevron-left"></i>
                 </div>
                 <div class="carousel-inner">
-                    <div class="sub-games carousel-item active">
-                        <div class="box-list modal-items" th:each="l : ${etcList}">
+                    <div class="sub-games carousel-item " th:each="l, status : ${etcList}" th:classappend="${status.first}? 'active'">
+                        <div class="box-list modal-items">
                             <div class="box"  th:data-ps-cd="${l.itemCd}" th:data-type="etc">
                                 <img th:src="${l.itemImgurl}">
                                 <div th:text="${l.itemName}"></div>
@@ -143,7 +146,26 @@
                 </div>
             </div>
         </div>
+        
+        
+        <div class="slide-div">
+            <div class="left-arrow carousel-control-prev" data-bs-target="#sub-game-list" data-bs-slide="prev">
+                <i class="bi bi-chevron-left"></i>
+            </div>
+            <div id="sub-game-list" class="slider carousel slide">
+                <div class="carousel-inner">
+                    <div class="sub-games carousel-item" th:each="l, status : ${backList}" th:classappend="${status.first}? 'active'">
+	                     <img class="game d-block w-100" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/433340/capsule_616x353.jpg?t=1732647440"/>
+                    </div>
+                </div>
+            </div>
+            <div class="right-arrow carousel-control-next" data-bs-target="#sub-game-list" data-bs-slide="next">
+                <i class="bi bi-chevron-right"></i>
+            </div>
+        </div>
     </div>
+    
+    
     <div class="modal fade" id="exampleModalToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalToggleLabel" aria-modal="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
