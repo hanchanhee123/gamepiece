@@ -32,6 +32,8 @@ public interface PointShopService {
 	
 	PointShopLog addPointShopLog(String id, String itemCd, int itemPrice);
 	
+	PointLog addPointLog(String id, String itemName, int itemPrice);
+	
 	// 아이템 카테고리 조회
 	List<PointCategories> findCate();
 }

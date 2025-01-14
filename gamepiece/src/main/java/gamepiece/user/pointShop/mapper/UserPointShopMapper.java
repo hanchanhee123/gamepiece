@@ -20,7 +20,9 @@ public interface UserPointShopMapper {
 	List<Point> findetc(Pageable pageable);
 	List<Point> findbackground(Pageable pageable);
 	
-	PointShopLog addPointShopLog(String id, String itemCd, int itemPrice);
+	int addPointShopLog(PointShopLog pointShopLog);
+	
+	int addPointLog(PointLog pointLog);
 	
 	int getimoticonCount();
 	

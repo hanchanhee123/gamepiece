@@ -14,19 +14,38 @@ import gamepiece.user.pointShop.mapper.UserPointShopMapper;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PointShopServiceImpl implements PointShopService{
 	private final UserPointShopMapper userpointshopMapper;
 	
 	
 	@Override
-	public PointShopLog addPointShopLog(String id, String itemCd, int itemPrice) {
+	public PointLog addPointLog(String id, String itemName, int itemPrice) {
+		PointLog pointLog = new PointLog();
+		String content = "포인트샵 아이템 구매";
+		pointLog.setId(id);
+		pointLog.setPointReceive(itemPrice);
+		pointLog.setPrc(content);
+		userpointshopMapper.addPointLog(pointLog);
 		
-		return userpointshopMapper.addPointShopLog(id, itemCd, itemPrice);
+		return pointLog;
+	}
+	
+	@Override
+	public PointShopLog addPointShopLog(String id, String itemCd, int itemPrice) {
+		PointShopLog pointShopLog = new PointShopLog();
+		pointShopLog.setId(id);
+		pointShopLog.setPsCd(itemCd);
+		pointShopLog.setUsedPoint(itemPrice);
+		userpointshopMapper.addPointShopLog(pointShopLog);
+		log.info("insert 후 pointShopLog : {}", pointShopLog);
+		return pointShopLog;
 	}
 	
 	@Override

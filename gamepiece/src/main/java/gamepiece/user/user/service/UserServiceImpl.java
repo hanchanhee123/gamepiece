@@ -96,5 +96,19 @@ public class UserServiceImpl implements UserService {
 		
 		userMapper.modifyUserInfo(user);
 	}
+	
+	// 아바타
+	@Override
+	public String getUserAvatar(String id) {
+
+		return userMapper.getUserAvatar(id);
+	}
+	
+	// 아바타액자
+	@Override
+	public String getUserAvatarFrame(String id) {
+
+		return userMapper.getUserAvatarFrame(id);
+	}
 
 }
