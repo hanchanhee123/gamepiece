@@ -10,9 +10,9 @@
 		   <div class = "tournament-menu">
 		       <ul>
 		           <li><a th:href="@{/tournament/list}" class="button-list active">LoL</a></li>
-		           <li><a href="#" class="button-list">Valorant</a></li>
-		           <li><a href="#" class="button-list">PUBG</a></li>
-		           <li><a href="#" class="button-list">승부예측</a></li>
+		           <li><a th:href="@{/tournament/list/valorant}" class="button-list">Valorant</a></li>
+		           <li><a th:href="@{/tournament/list/pubg}" class="button-list">PUBG</a></li>
+		           <li><a th:href="@{/tournament/matchPrediction}" class="button-list">승부예측</a></li>
 		       </ul>
 			</div>
 		</th:block>
@@ -20,7 +20,7 @@
 			<div class="tournament-div">
 			    <div class="tournament-list">
 			        <div class="tournament-icon">
-			        	<a th:href="@{/tournament/list(leageName='world_championship')}" class="text-decoration-none">
+			        	<a th:href="@{/tournament/list}" class="text-decoration-none">
 				            <div class="d-flex align-items-center justify-content-center" th:classappend="${leageName} == 'world_championship' ? icon-img-active : icon-img">
 				                <i class="bi bi-suit-diamond-fill h2 mt-1"></i>
 				            </div>
@@ -382,18 +382,22 @@
 										'class' : 'team2'
 									});
 									
-									const $tp = $('<p />');
-									const $i = $('<i />',{
+									const $tp = $('<p />',{
+										'style' : 'margin-right : 15px'
+										});
+									/* const $i = $('<i />',{
 										'class' : 'bi bi-image'
+									}); */
+									const $tp2 = $('<p />',{
+										'style' : 'margin-left : 15px'
 									});
-									const $tp2 = $('<p />');
-									const $i2 = $('<i />',{
+									/* const $i2 = $('<i />',{
 										'class' : 'bi bi-image'
-									});
+									}); */
 									
 									$tp.text(match.homeTeam.name);
 									$team1.append($tp);
-									$team1.append($i);
+									// $team1.append($i);
 									if(match.winner == 'HOME'){
 										const $teamWin = $('<div />',{
 											'class' : 'team-win'
@@ -432,7 +436,7 @@
 									}
 									
 									$tp2.text(match.awayTeam.name);
-									$team2.append($i2);
+									// $team2.append($i2);
 									$team2.append($tp2);
 									
 									
