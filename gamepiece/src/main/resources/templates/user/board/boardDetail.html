@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/assets/css/board/boardDetail.css}" />
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 스마트 에디터 스크립트 -->
+    <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+    <!-- 웹폰트 추가 -->
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css" rel="stylesheet">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-myeongjo.css" rel="stylesheet">
+</head>
+
+<th:block layout:fragment="contents-body">
+    <form id="detailForm" th:action="@{/board/detail}" method="get">
+        <input type="hidden" name="boardNum" th:value="${boardInfo?.boardNum}">
+        
+        <main>  
+            <div class="main_div">
+                <div class="boards-div">
+                    <div class="board-bar">
+                        <div class="board"><a th:href="@{/board/free}" class="boardWord">자유게시판</a></div>
+                        <div class="board"><a th:href="@{/board/attack}" class="boardWord">공략게시판</a></div>
+                        <div class="board"><a th:href="@{/board/info}" class="boardWord">정보게시판</a></div>
+                        <div class="board"><a th:href="@{/board/notice}" class="boardWord">공지사항</a></div>
+                        <div class="board"><a th:href="@{/board/inquiry}" class="boardWord">문의사항</a></div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <div class="titleDiv">
+                        <div class="title-details">
+                            <div>
+                                <span class="titleFont" th:text="${boardInfo?.boardTitle}">갓츠팟</span>
+                            </div>
+                            <div class="user-info-row">
+                                <span class="username" th:text="${userInfo?.userNm}">회원</span>
+                                <span class="report-text" data-bs-toggle="modal" data-bs-target="#reportModal">
+                                    <i class="bi bi-exclamation-circle-fill" id="titleReport"></i>신고
+                                </span>
+                            </div>   
+                        </div>
+                    </div>
+                    
+                    <div class="boards-content">
+                        <div class="title-details">
+                            <div>
+                                <span class="content-font" th:text="${boardInfo?.boardContent}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="likeAndDis">
+                        <div class="like-button" id="likeButton">
+                            <i class="bi bi-hand-thumbs-up-fill" id="like"></i>
+                            <span class="likeCnt">0</span>
+                        </div>
+                        <div class="dislike-button" id="dislikeButton">
+                            <i class="bi bi-hand-thumbs-down-fill" id="disLike"></i>
+                            <span class="dislikeCnt">0</span>
+                        </div>
+                    </div>
+
+                    <!-- 댓글 영역 -->
+                    <div class="board-commentBar">
+                        <div>
+                            <img id="profile-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAilBMVEX///8AAADV1dX4+Pj29vb7+/usrKzu7u5gYGB0dHR3d3fg4OC8vLzp6ektLS3z8/MnJydubm4hISHHx8d/f3/GxsbZ2dksLCyQkJCampo1NTWioqK+vr5paWnNzc2IiIhBQUFZWVkODg6UlJRISEg7OztPT0+oqKgVFRWysrIiIiJSUlKDg4MaGhptt/UyAAAMmklEQVR4nO1d6...">
+                            <span>id01</span>
+                            <span>게시날짜 : 2024-11-26</span> 
+                            <span class="report-text" data-bs-toggle="modal" data-bs-target="#reportModal">
+                                <i class="bi bi-exclamation-circle-fill" id="commentReport"></i>신고
+                            </span>             
+                        </div>
+
+                        <div>
+                            <span class="commentInfo">에이 거짓말 캐밥 없는 마스터가 어딨어</span>
+                        </div>
+
+                        <div class="likeAndDis2">
+                            <div class="like-button2" id="likeButton2">
+                                <i class="bi bi-hand-thumbs-up-fill" id="like2"></i>
+                                <span class="likeCnt2">0</span>
+                            </div>
+                            <div class="dislike-button2" id="dislikeButton2">
+                                <i class="bi bi-hand-thumbs-down-fill" id="disLike2"></i>
+                                <span class="dislikeCnt2">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 댓글 입력 영역 -->
+                    <div class="CommentInput-div">
+                        <div class="inputComment">
+                            <textarea class="comment-bar" placeholder="덧글내용을 입력해주세요"></textarea>
+                        </div>
+                        <div class="commentSubmit-btn">
+                            <button type="submit" class="commentSubmit">등록</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </form>
+
+    <!-- 신고 모달 -->
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="reportModalLabel">신고하기</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reportForm">
+                        <div class="mb-3">
+                            <label for="report-type" class="col-form-label">신고 사항</label>
+                            <select class="form-control" id="report-type">
+                                <option value="">선택해주세요</option>
+                                <option value="spam">스팸/광고</option>
+                                <option value="abuse">욕설/비방</option>
+                                <option value="politics">정치적 발언</option>
+                                <option value="adult">음란물</option>
+                                <option value="copyright">저작권 침해</option>
+                                <option value="etc">기타</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="report-detail" class="col-form-label">신고 사유</label>
+                            <textarea class="form-control" id="report-detail" placeholder="신고 사유를 입력해주세요."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-danger" onclick="validateAndSubmit()">신고하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 신고 완료 모달 -->
+    <div class="modal fade" id="reportCompleteModal" aria-hidden="true" aria-labelledby="reportCompleteModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="reportCompleteModalLabel">신고완료</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    신고가 접수되었습니다.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="customJs">
+    <script th:inline="javascript">
+        document.getElementById('likeButton').addEventListener('click', function() {
+            const likeCountElement = document.querySelector('.likeCnt');
+            let currentCount = parseInt(likeCountElement.textContent, 10);
+            likeCountElement.textContent = currentCount + 1;
+        });
+        
+        document.getElementById('dislikeButton').addEventListener('click', function() {
+            const dislikeCountElement = document.querySelector('.dislikeCnt');
+            let currentCount = parseInt(dislikeCountElement.textContent, 10);
+            dislikeCountElement.textContent = currentCount + 1;
+        });
+        
+        document.getElementById('likeButton2').addEventListener('click', function() {
+            const likeCountElement = document.querySelector('.likeCnt2');
+            let currentCount = parseInt(likeCountElement.textContent, 10);
+            likeCountElement.textContent = currentCount + 1;
+        });
+        
+        document.getElementById('dislikeButton2').addEventListener('click', function() {
+            const dislikeCountElement = document.querySelector('.dislikeCnt2');
+            let currentCount = parseInt(dislikeCountElement.textContent, 10);
+            dislikeCountElement.textContent = currentCount + 1;
+        });
+        
+        function validateAndSubmit() {
+            const reportType = document.getElementById('report-type').value;
+            const reportDetail = document.getElementById('report-detail').value.trim();
+            
+            if (reportType === '') {
+                alert('신고 사항을 선택해주세요.');
+                return;
+            }
+            
+            if (reportDetail === '') {
+                alert('신고 사유를 입력해주세요.');
+                return;
+            }
+            
+            const reportModal = bootstrap.Modal.getInstance(document.getElementById('reportModal'));
+            reportModal.hide();
+            
+            const completeModal = new bootstrap.Modal(document.getElementById('reportCompleteModal'));
+            completeModal.show();
+            
+            document.getElementById('report-type').value = '';
+            document.getElementById('report-detail').value = '';
+        }
+    </script>
+</th:block>
+</html>
