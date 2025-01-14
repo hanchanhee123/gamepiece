@@ -191,6 +191,8 @@
 					$('#modal-name').text(data.itemName);
 			    	$('#item-img').attr('src', data.itemImgurl);
 			    	$('#modal-cate').text(data.cateName);
+			    	$('.modal-footer').find('.point-order-Btn').attr('data-ps-cd', data.itemCd)
+			    											   .attr('data-item-price', data.itemPrice);
 			    	const itemPrice = data.itemPrice
 			    	const myPointValue = /*[[${userPoint}]]*/"userPoint"; 
 			    	if(Number(itemPrice) >= Number(myPointValue)){
@@ -198,19 +200,32 @@
 			    		return ;
 			    	}
 			    	$('#exampleModalToggle').modal('show');
-			    	$('.point-order-Btn').click(function(){
-						const itemCd = data.itemCd
-						const id = "userId";
-						const usedPoint = data.itemPrice;
-						fetch("/point/addlog")
-						return ;
-					});
 				});
 				request.fail( (jqXHR, textStatus, error) => {
 					console.log(error)
 				});
 			});
-			
+	    	$('.point-order-Btn').click(function(){
+	    		const itemCd= this.dataset.psCd;
+	    		const itemPrice= this.dataset.itemPrice;
+				console.log(itemCd)
+				if(!itemCd) return ;
+				
+				const $form = $('<form />',{action :'/point/addlog', method :'GET'});
+				const log={
+					'itemCd' 	: itemCd,
+					'userId' 	: /*[[${userId}]]*/"userId",
+					'itemPrice' : itemPrice
+				}
+				for(const key in log){
+					const $input = $('<input/>',{name:key, type : 'hidden'});
+					$input.val(log[key]);
+					$form.append($input)
+				}
+				$('body').append($form)
+				$form.submit();
+				
+			});
 			$('#exampleModalToggle').on('hide.bs.modal', function () {
               //모달이 꺼질때 모든 버튼 인풋 셀렉트 텍스트 에어리어의 포커스를 날린다.
                 $('button, input, select, textarea').each(function () {

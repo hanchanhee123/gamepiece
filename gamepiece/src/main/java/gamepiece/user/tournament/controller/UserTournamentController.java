@@ -55,6 +55,64 @@ public class UserTournamentController {
 		return "user/tournament/tournamentList";
 	}
 	
+	@GetMapping("/list/valorant")
+	public String getUserValorantTournamentList(Model model, 
+			@RequestParam(value = "leageName",defaultValue = "") String tournament,
+			String month,
+			String year) {
+		if(tournament.isEmpty()) {
+			tournament = "vck";
+		}
+		
+		if(year == null && month == null) {
+			LocalDate now = LocalDate.now();
+			year = Integer.toString(now.getYear());
+			month = now.getMonth().toString();
+		}
+		
+		log.info("month : {}, year : {}",month,year);
+		
+		model.addAttribute("gameName", "Valorant");
+		model.addAttribute("year", year);
+		model.addAttribute("month", month);
+		model.addAttribute("leageName", tournament);
+		
+		return "user/tournament/tournament_val";
+	}
+	
+	@GetMapping("/list/pubg")
+	public String getUserPubgTournamentList(Model model,
+											@RequestParam(value = "leageName",defaultValue = "") String tournament,
+											String month,
+											String year) {
+		
+		if(tournament.isEmpty()) {
+			tournament = "pgc";
+		}
+		
+		if(year == null && month == null) {
+			LocalDate now = LocalDate.now();
+			year = Integer.toString(now.getYear());
+			month = now.getMonth().toString();
+		}
+		
+		log.info("month : {}, year : {}",month,year);
+		
+		model.addAttribute("gameName", "Player_Unknowns_Battle_Grounds");
+		model.addAttribute("leageName", tournament);
+		model.addAttribute("year", year);
+		model.addAttribute("month", month);
+		
+		return "user/tournament/tournament_pubg";
+	}
+	
+	@GetMapping("/matchPrediction")
+	public String getTournamentMatchpredictionView() {
+		
+		
+		return "user/tournament/tournament_bet";
+	}
+	
 	@PostMapping("/util/ajax")
 	@ResponseBody
 	public ResponseTemplate<List<MatchGroup>> getMetchList(@RequestParam(value = "gameName",required = false, defaultValue = "League_of_Legends") String gameName,

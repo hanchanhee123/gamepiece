@@ -104,7 +104,8 @@ SELECT
 		LEFT JOIN inquiry_response ir
 	   USING (inquiry_id)
 	ORDER BY
-		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED);
+		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED)
+	LIMIT #{rowPerPage} OFFSET #{offset}
 
 	</select>
 

@@ -243,8 +243,9 @@ header {
 
 .match-time > div{
     display: flex;
-    padding: 8px 10px;
+    padding-left: 8px;
     align-items: center;
+    height: 100%;
 }
 
 .is-state-end{
@@ -290,6 +291,7 @@ header {
     display: flex;
     text-align: center;
     width: 100%;
+    height: 100%;
     justify-content: center;
 }
 

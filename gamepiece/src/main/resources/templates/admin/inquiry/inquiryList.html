@@ -65,7 +65,7 @@
                         				
                         				<td>
                     					<span th:if="${l.responeInfo.responeNum != null}" 
-                         				 class="badge rounded-pill alert-success">답변완료</span>
+                         				 class="badge rounded-pill alert-success" style="font-weight: bolder;">답변완료</span>
                							 </td> 
                         				
                         				
@@ -96,7 +96,7 @@
                     <nav>
                         <ul class="pagination justify-content-center">
                         		<li class="page-item">
-                        			<a class="page-link" th:href="@{/admin/board/list}">         			
+                        			<a class="page-link" th:href="@{/admin/inquiry/list}">         			
                						<i class="material-icons md-first_page"></i>
                         			</a>
                         
@@ -111,7 +111,7 @@
                             
                             <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">		
                        				<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-                       				<a class="page-link" th:href="@{/admin/board/list(currentPage=${num})}" th:text="${num}"></a>
+                       				<a class="page-link" th:href="@{/admin/inquiry/list(currentPage=${num})}" th:text="${num}"></a>
                        		</th:block>
                             <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
                                 <a class="page-link" 

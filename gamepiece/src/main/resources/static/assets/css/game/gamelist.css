@@ -58,6 +58,14 @@ body {
 	color:#007AFF;
 	font-weight: bold;
 }
+.gamelist-cateA  a{
+    color: white;
+    text-decoration: none;
+}
+.gamelist-cateA.active a{
+	color:#007AFF;
+	font-weight: bold;
+}
 
 .category-menu ul{
     display : flex;
