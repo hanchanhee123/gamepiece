@@ -56,7 +56,7 @@ public class PointShopController {
 	@GetMapping("/history")
 	public String gethistory(Pageable pageable, Model model, HttpSession session) {
 		String userId = (String) session.getAttribute("SID");
-		var historyInfo = pointshopService.findhistory(pageable, userId);
+		var historyInfo = pointshopService.findhistory(pageable);
 		
 		List<Point> historyList = historyInfo.getContents();
 		int currentPage = historyInfo.getCurrentPage();

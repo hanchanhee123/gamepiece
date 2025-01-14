@@ -19,7 +19,7 @@ public interface UserPointShopMapper {
 	List<Point> findavatarframe(Pageable pageable);
 	List<Point> findetc(Pageable pageable);
 	List<Point> findbackground(Pageable pageable);
-	List<Point> findhistory(Pageable pageable, String id);
+	List<Point> findhistory(Pageable pageable);
 	
 	int addPointShopLog(PointShopLog pointShopLog);
 	
@@ -35,7 +35,7 @@ public interface UserPointShopMapper {
 	
 	int getavatarCount();
 	
-	int gethistoryCount(String id);
+	int gethistoryCount();
 	
 	PointLog getPointsHeld(String id);
 	
