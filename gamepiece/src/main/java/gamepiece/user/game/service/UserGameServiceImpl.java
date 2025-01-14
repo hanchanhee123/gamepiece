@@ -37,6 +37,14 @@ public class UserGameServiceImpl implements UserGameService {
 		return platformList;
 	}
 	
+	@Override
+	public ArrayList<String> getGenreList() {
+		
+		ArrayList<String> genreList = userGameMapper.getGenreList();
+		
+		return genreList;
+	}
+	
 	
 	
 	@Override

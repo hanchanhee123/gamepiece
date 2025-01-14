@@ -13,6 +13,8 @@
 		<result column="video_id" property="videoId"></result>
 		<result column="description" property="description"></result>
 		<result column="price" property="price"></result>
+		<result column="genre_code" property="genreCode"/>
+		<result column="genre_name" property="genreName"/>
 		<result column="genre" property="genre"></result>
 		<result column="review_count" property="reviewCount"></result>
 		<result column="review_avg" property="reviewAvg"></result>
@@ -70,6 +72,15 @@
 			p_nm
 		FROM 
 			platform;
+	</select>
+	
+	<select id="getGenreList" resultMap="gameList">
+		/* 장르 목록 조회 */
+		SELECT
+			genre_cd,
+			genre_name
+		FROM
+			game_genre;
 	</select>
 	
 	

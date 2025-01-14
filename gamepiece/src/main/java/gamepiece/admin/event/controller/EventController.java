@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.event.domain.Event;
@@ -28,7 +29,7 @@ public class EventController {
 	}
 	
 	@GetMapping("/eventList")
-	public String getEventsList(Pageable pageable, Model model) {
+	public String getEventList(Pageable pageable, Model model) {
 			
 		var pageInfo = eventService.getEventList(pageable);
 		
@@ -53,12 +54,66 @@ public class EventController {
 		return "admin/event/eventList";
 	}
 	
+	@GetMapping("/eventWinnerList")
+	public String getEventWinnerList(Pageable pageable, Model model) {
+		
+		var pageInfo = eventService.getEventWinnerList(pageable);
+		
+		List<Event> eventWinnerList = pageInfo.getContents();
+		
+		eventWinnerList.forEach(list -> {
+			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
+		});
+		
+		log.info("list : {}", eventWinnerList);
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("title", "이벤트목록");
+		model.addAttribute("eventWinnerList", eventWinnerList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		
+		return "admin/event/eventWinnerList";
+	}
+	
 	@GetMapping("/addEvent")
 	public String AddEvent(Model model) {
 		
 		model.addAttribute("title", "이벤트목록 추가");
 		
 		return "admin/event/addEvent";
+	}
+	
+	@GetMapping("/addEventWinnerList")
+	public String addEventWinnerList(Model model) {
+		
+		List<Event> eventList = eventService.getEventsList();
+		
+		model.addAttribute("title", "이벤트당첨자리스트 추가");
+		model.addAttribute("eventList", eventList);
+		
+		log.info("eventList {}",eventList);
+		
+		return "admin/event/addEventWinnerList";
+	}
+	
+	@PostMapping("/winner/winners")
+	@ResponseBody
+	public List<Event> getWinnerListInfo(@RequestParam("evCd") String evCd){
+		
+		log.info("Event evCd: {}", evCd);
+		
+		List<Event> addEventList = eventService.getWinnerListInfo(evCd);
+		
+		log.info("eventList {}",addEventList);
+		
+		return addEventList;
 	}
 	
 	@GetMapping("/eventDetail")
@@ -85,6 +140,16 @@ public class EventController {
 		model.addAttribute("eventDetail", eventDetail);
 		model.addAttribute("getEventWinner", getEventWinner);
 		return "admin/event/eventWinner";
+	}
+	
+	@PostMapping("/listWrite")
+	public String addEventWinnerList(Event event) {
+		log.info("evCd : {}", event.getEvCd());
+		
+		eventService.addEventWinnerList(event);
+		
+		return "redirect:/admin/event/eventWinnerList";
+		
 	}
 	
 	@PostMapping("/write")
@@ -133,7 +198,7 @@ public class EventController {
 								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
 								 Model model,
 								 Pageable pageable) {
-		PageInfo pageInfo = eventService.searchList(searchValue, searchCate, pageable);
+		PageInfo<Event> pageInfo = eventService.searchList(searchValue, searchCate, pageable);
 		
 		
 		log.info("searchCate:{}, searchValue:{}", searchCate,searchValue);

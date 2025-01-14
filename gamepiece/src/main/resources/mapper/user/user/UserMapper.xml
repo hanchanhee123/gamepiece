@@ -23,7 +23,27 @@
 		<result column="id" property="id"/>
 		<result column="lgn_dt" property="lgnDt"/>
 	</resultMap>
-
+	
+	<resultMap type="gamepiece.user.user.domain.Avatar" id="avatarMap">
+		<id column="avatar_no" property="avatarNo" />
+		<result column="id" property="id"/>
+		<result column="ps_cd" property="psCd"/>
+		<result column="avatar_yn" property="avatarYn"/>
+		<result column="reg_ymd" property="regYmd"/>
+		<result column="ps_nm" property="psNm"/>
+		<result column="img_url" property="imgUrl"/>
+	</resultMap>
+	
+	<resultMap type="gamepiece.user.user.domain.AvatarFrame" id="avatarFrameMap">
+		<id column="avatarframe_no" property="avatarframeNo" />
+		<result column="id" property="id"/>
+		<result column="ps_cd" property="psCd"/>
+		<result column="avatarframe_yn" property="avatarframeYn"/>
+		<result column="reg_ymd" property="regYmd"/>
+		<result column="ps_nm" property="psNm"/>
+		<result column="img_url" property="imgUrl"/>
+	</resultMap>
+	
 	<!-- 전체 회원정보 조회 -->
 	<select id="checkUser" resultMap="userResultMap">
 		SELECT
@@ -157,5 +177,35 @@
 		WHERE
 			id = #{id};
 	</update>
+	
+	<!-- 아바타 -->
+	<select id="getUserAvatar" resultType="string">
+		SELECT 
+			p.img_url
+		FROM 
+			avatar a JOIN point_shop p
+		ON a.ps_cd = p.ps_cd
+		WHERE
+			a.id = #{id}
+			AND
+			a.avatar_yn = '선택'
+			AND
+			p.ps_cate_cd = 'cate_02';
+	</select>
+	
+	<!-- 아바타액자 -->
+	<select id="getUserAvatarFrame" resultType="string">
+		SELECT 
+			p.img_url
+		FROM 
+			avatar_frame af JOIN point_shop p
+		ON af.ps_cd = p.ps_cd
+		WHERE
+			af.id = #{id}
+			AND
+			af.avatarframe_yn = '선택'
+			AND
+			p.ps_cate_cd = 'cate_03';
+	</select>
 	
 </mapper>

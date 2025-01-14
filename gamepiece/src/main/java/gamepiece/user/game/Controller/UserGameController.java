@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,6 +32,9 @@ public class UserGameController {
 		
 		List<UserGame> gameList = pageInfo.getContents();
 		ArrayList<String> platformList = userGameService.getPlatformList();
+		ArrayList<String> genreList = userGameService.getGenreList();
+		
+		
 		
 		
 		int currentPage = pageInfo.getCurrentPage();
@@ -46,6 +48,7 @@ public class UserGameController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("platformList", platformList);
+		model.addAttribute("genreList", genreList);
 		return "user/game/gameList";
 	}
 	
@@ -56,6 +59,7 @@ public class UserGameController {
 		
 		List<UserGame> gameList = pageInfo.getContents();
 		ArrayList<String> platformList = userGameService.getPlatformList();
+		ArrayList<String> genreList = userGameService.getGenreList();
 		
 		int currentPage = pageInfo.getCurrentPage();
 		int startPageNum = pageInfo.getStartPageNum();
@@ -69,7 +73,7 @@ public class UserGameController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("platformList", platformList);
-		
+		model.addAttribute("genreList", genreList);
 		return "user/game/gameList";
 	}
 	

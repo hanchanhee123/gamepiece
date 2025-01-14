@@ -65,19 +65,70 @@
 			id = #{id};
 	</select>
 	
-	<!-- 마이페이지 - 아바타 -->
+	<!-- 아바타 조회 -->
 	<select id="getAvatar" resultMap="pointshopResultMap">
 		SELECT
-			ps.img_url
+			ps.img_url,
+			ps.ps_nm,
+			ps.ps_cd
 		FROM
-			pointshop_categories pc INNER JOIN point_shop ps
-			ON pc.cate_cd = ps.ps_cate_cd
-			INNER JOIN pointshop_logs pl
+			point_shop ps INNER JOIN pointshop_logs pl
 			USING (ps_cd)
 		WHERE
 			id = #{id}
 			AND
-			ps_cate_cd = 'cate_02';
+			ps.ps_cate_cd = 'cate_02';
 	</select>
+	
+	<!-- 기존 아바타 -->
+	<update id="updateAvatar" parameterType="gamepiece.user.user.domain.Avatar">
+	    UPDATE
+	    	avatar
+	    SET
+	    	avatar_yn = '미선택'
+	    WHERE
+	    	id = #{id};
+	</update>
+	
+	<!-- 새로운 아바타 -->
+	<insert id="insertAvatar" parameterType="gamepiece.user.user.domain.Avatar">
+	    INSERT INTO avatar (
+	    	avatar_no, id, ps_cd, reg_ymd
+   		) VALUES (
+   			#{avatarNo}, #{id}, #{selectAvatar}, CURDATE());
+	</insert>
+	
+	<!-- 아바타액자 조회 -->
+	<select id="getAvatarFrame" resultMap="pointshopResultMap">
+		SELECT
+			ps.img_url,
+			ps.ps_nm,
+			ps.ps_cd
+		FROM
+			point_shop ps INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+		WHERE
+			id = #{id}
+			AND
+			ps.ps_cate_cd = 'cate_03';
+	</select>
+	
+	<!-- 기존 아바타액자 -->
+	<update id="updateAvatarFrame" parameterType="gamepiece.user.user.domain.Avatar">
+	    UPDATE
+	    	avatar_frame
+	    SET
+	    	avatarframe_yn = '미선택'
+	    WHERE
+	    	id = #{id};
+	</update>
+	
+	<!-- 새로운 아바타액자 -->
+	<insert id="insertAvatarFrame" parameterType="gamepiece.user.user.domain.AvatarFrame">
+	    INSERT INTO avatar_frame (
+	    	avatarframe_no, id, ps_cd, reg_ymd
+   		) VALUES (
+   			#{avatarFrameNo}, #{id}, #{selectAvatarFrame}, CURDATE());
+	</insert>
 	
 </mapper>

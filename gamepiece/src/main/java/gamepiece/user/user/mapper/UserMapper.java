@@ -34,4 +34,10 @@ public interface UserMapper {
 	// 개인 정보 수정
 	void modifyUserInfo(User user);
 
+	// 아바타
+	String getUserAvatar(String id);
+
+	// 아바타액자
+	String getUserAvatarFrame(String id);
+
 }
