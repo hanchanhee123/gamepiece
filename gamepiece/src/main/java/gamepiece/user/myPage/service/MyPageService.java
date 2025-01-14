@@ -13,7 +13,16 @@ public interface MyPageService {
 	// 마이페이지 - 사용자정보조회 (포인트 내역)
 	List<MyPage> myPagePointLog(String id);
 
-	// 마이페이지 - 아바타
+	// 아바타 조회
 	List<Point> getAvatar(String id);
+
+	// 아바타 저장
+	void saveAvatar(String id, String selectAvatar);
+	
+	// 아바타액자 조회
+	List<Point> getAvatarFrame(String id);
+
+	// 아바타액자 저장
+	void saveAvatarFrame(String id, String selectAvatarFrame);
 
 }
