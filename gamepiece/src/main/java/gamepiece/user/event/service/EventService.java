@@ -1,5 +1,7 @@
 package gamepiece.user.event.service;
 
+import java.util.List;
+
 import gamepiece.user.event.domain.Event;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -12,5 +14,9 @@ public interface EventService {
 	
 	String getEventsWithStatus(String evCd);
 
-	PageInfo<Event> getWinnerList(Pageable pageable);
+	PageInfo<Event> getWinnerList(Pageable pageable, String evCd);
+
+	List<Event> getEventWinner(String evCd);
+	
+	List<Event> getWinnerInfoByEvCd(String evCd);
 }

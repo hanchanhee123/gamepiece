@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,7 +32,11 @@ public class UserGameController {
 		
 		List<UserGame> gameList = pageInfo.getContents();
 		ArrayList<String> platformList = userGameService.getPlatformList();
-		log.info("platformList : {}", platformList);
+		ArrayList<String> genreList = userGameService.getGenreList();
+		
+		
+		
+		
 		int currentPage = pageInfo.getCurrentPage();
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
@@ -45,8 +48,37 @@ public class UserGameController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("platformList", platformList);
+		model.addAttribute("genreList", genreList);
 		return "user/game/gameList";
 	}
+	
+	@GetMapping("/platform")
+	public String getUserGameListWithPlatform(@RequestParam(value="platformCode") String platformCode, Model model, Pageable pageable) {
+		var pageInfo = userGameService.getGameListWithPlatform(pageable, platformCode);
+		
+		
+		List<UserGame> gameList = pageInfo.getContents();
+		ArrayList<String> platformList = userGameService.getPlatformList();
+		ArrayList<String> genreList = userGameService.getGenreList();
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("currentPlatformCode", platformCode);
+		model.addAttribute("userGameList", gameList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("platformList", platformList);
+		model.addAttribute("genreList", genreList);
+		return "user/game/gameList";
+	}
+	
+	
+	
 	
 	
 	

@@ -17,6 +17,8 @@ public class UserGame {
 	private String description;
 	private int price;
 	private String genre;
+	private String genreCode;
+	private String genreName;
 	private int reviewCount;
 	private int reviewAvg;
 	private String summation;

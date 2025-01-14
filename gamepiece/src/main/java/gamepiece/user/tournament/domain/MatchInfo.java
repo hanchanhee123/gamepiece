@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @JsonIgnoreProperties({"gameId",
-					   "title",
 					   "replayVideoId",
 					   "matchPredictable",
 					   "matchTalk",
@@ -25,6 +24,7 @@ import lombok.Data;
 public class MatchInfo {
 	private String leagueId;
 	private String topLeagueId;
+	private String title;
 	private String gameCode;
 	private String stadium;
 	private String startDate;

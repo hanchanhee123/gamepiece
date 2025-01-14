@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import gamepiece.user.myPage.domain.MyPage;
 import gamepiece.user.myPage.service.MyPageService;
+import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.service.PointShopService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,15 @@ public class MyPageController {
 		return "/user/myPage/myPageUser";
 	}
 	
+	// 아바타
+	@GetMapping("/avatar")
+	public List<Point> getAvatar(Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+		
+		return myPageService.getAvatar(id);
+	}
+	
 	@GetMapping("/myPageGame")
 	public String myPageGame(Model model, HttpSession session) {
 		
@@ -53,7 +63,7 @@ public class MyPageController {
 	@GetMapping("/myPageWishlist")
 	public String myPageWishlist(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -71,7 +81,7 @@ String id = (String) session.getAttribute("SID");
 	@GetMapping("/myPageReview")
 	public String myPageReview(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -89,7 +99,7 @@ String id = (String) session.getAttribute("SID");
 	@GetMapping("/myPageRefundPayment")
 	public String myPageRefundPayment(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -107,7 +117,7 @@ String id = (String) session.getAttribute("SID");
 	@GetMapping("/myPageCommunity")
 	public String myPageCommunity(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -125,7 +135,7 @@ String id = (String) session.getAttribute("SID");
 	@GetMapping("/myPageEmoticon")
 	public String myPageEmoticon(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -143,7 +153,7 @@ String id = (String) session.getAttribute("SID");
 	@GetMapping("/myPageBoard")
 	public String myPageBoard(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -161,7 +171,7 @@ String id = (String) session.getAttribute("SID");
 	@GetMapping("/myPageInquiry")
 	public String myPageInquiry(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());
@@ -179,7 +189,7 @@ String id = (String) session.getAttribute("SID");
 	@GetMapping("/myPageEvent")
 	public String myPageEvent(Model model, HttpSession session) {
 		
-String id = (String) session.getAttribute("SID");
+		String id = (String) session.getAttribute("SID");
 		
 		MyPage myPageUser = myPageService.myPageUser(id);
 		model.addAttribute("myPageUserName", myPageUser.getUserNm());

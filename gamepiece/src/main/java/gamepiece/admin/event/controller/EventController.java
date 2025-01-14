@@ -79,6 +79,7 @@ public class EventController {
 		List<Event> eventDetail = eventService.getEventDetail(evCd);
 		List<Event> getEventWinner = eventService.getEventWinner(evCd);
 		
+		log.info("getEventWinner : {}", getEventWinner);
 		
 		model.addAttribute("title", "이벤트 당첨자");
 		model.addAttribute("eventDetail", eventDetail);

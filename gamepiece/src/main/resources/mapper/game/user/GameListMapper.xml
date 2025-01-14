@@ -13,6 +13,8 @@
 		<result column="video_id" property="videoId"></result>
 		<result column="description" property="description"></result>
 		<result column="price" property="price"></result>
+		<result column="genre_code" property="genreCode"/>
+		<result column="genre_name" property="genreName"/>
 		<result column="genre" property="genre"></result>
 		<result column="review_count" property="reviewCount"></result>
 		<result column="review_avg" property="reviewAvg"></result>
@@ -71,5 +73,64 @@
 		FROM 
 			platform;
 	</select>
+	
+	<select id="getGenreList" resultMap="gameList">
+		/* 장르 목록 조회 */
+		SELECT
+			genre_cd,
+			genre_name
+		FROM
+			game_genre;
+	</select>
+	
+	
+	<select id="getCntGameListWithPlatform" resultType="int">
+		/* 플랫폼에 따른 게임 목록 총 행의 갯수 */
+		SELECT
+			COUNT(*)
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+			INNER JOIN platform p
+			ON g.p_cd = p.p_cd
+		WHERE 
+			g.p_cd=#{platformCode};
+	</select>
+	
+	<select id="getGameListWithPlatform" parameterType="map" resultMap="gameList">
+		/* 플랫폼 클릭시 해당 게임 목록 조회 */
+		SELECT
+			g.gm_cd,
+			g.gm_nm,
+			g.p_cd,
+			p.p_nm,
+			g.developer,
+			g.gm_enrollment_ymd,
+			gd.detail_id,
+			gd.img_id,
+			gd.video_id,
+			gd.`description`,
+			gd.price,
+			gd.genre,
+			gd.review_count,
+			gd.review_avg,
+			gd.summation,
+			gd.admin_id,
+			gd.reg_ymd,
+			g.is_delete
+		FROM
+			games g INNER JOIN game_detail gd
+			ON g.gm_cd = gd.gm_cd
+			INNER JOIN platform p
+			ON g.p_cd = p.p_cd
+		WHERE 
+			p.p_cd = #{platformCode}
+			AND
+			g.is_delete = 'active'
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	
+	
 	
 </mapper>

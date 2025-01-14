@@ -28,6 +28,18 @@
 		<result column="remaining_point" property="totalPoint"/>
 	</resultMap>
 	
+	<resultMap type="gamepiece.user.pointShop.domain.Point" id="pointshopResultMap">
+			<id column="ps_cd" 			property="itemCd"/>
+			<result column="ps_cate_cd" property="itemCate" />
+			<result column="cate_nm" 	property="cateName" />
+			<result column="ps_nm" 	property="itemName" />
+			<result column="img_url" 	property="itemImgurl" />
+			<result column="ps_price" 		property="itemPrice" />
+			<result column="admin_id" 	property="adminId" />
+			<result column="reg_ymd" 	property="regYmd" />
+			<result column="is_delete"  property="isDelete" />
+	</resultMap>
+	
 	<!-- 마이페이지 - 사용자정보조회 (정보수정) -->
 	<select id="myPageUser" resultMap="myPageResultMap">
 		SELECT
@@ -38,6 +50,7 @@
 			id = #{id};
 	</select>
 	
+	<!-- 마이페이지 - 사용자정보조회 (포인트 내역) -->
 	<select id="myPagePointLog" resultMap="pointLogMap">
 		SELECT
 			point_no,
@@ -50,6 +63,21 @@
 			point_log
 		WHERE
 			id = #{id};
+	</select>
+	
+	<!-- 마이페이지 - 아바타 -->
+	<select id="getAvatar" resultMap="pointshopResultMap">
+		SELECT
+			ps.img_url
+		FROM
+			pointshop_categories pc INNER JOIN point_shop ps
+			ON pc.cate_cd = ps.ps_cate_cd
+			INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+		WHERE
+			id = #{id}
+			AND
+			ps_cate_cd = 'cate_02';
 	</select>
 	
 </mapper>
