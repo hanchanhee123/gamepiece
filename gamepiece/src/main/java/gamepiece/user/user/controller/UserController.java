@@ -174,6 +174,6 @@ public class UserController {
 		
 		userService.modifyUserInfo(user);
 		
-		return "/user/myPage/myPageUser";
+		return "user/myPage/myPageUser";
 	}
 }

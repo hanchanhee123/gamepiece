@@ -44,7 +44,7 @@ public class MyPageController {
 		String avatarFrame = userService.getUserAvatarFrame(id);
 		model.addAttribute("avatarFrame", avatarFrame);
 		
-		return "/user/myPage/myPageUser";
+		return "user/myPage/myPageUser";
 	}
 	
 	// 아바타조회
@@ -123,7 +123,7 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
-		return "/user/myPage/myPageGame";
+		return "user/myPage/myPageGame";
 	}
 	
 	@GetMapping("/myPageWishlist")
@@ -144,7 +144,7 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
-		return "/user/myPage/myPageWishlist";
+		return "user/myPage/myPageWishlist";
 	}
 	
 	@GetMapping("/myPageReview")
@@ -165,7 +165,7 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
-		return "/user/myPage/myPageReview";
+		return "user/myPage/myPageReview";
 	}
 	
 	@GetMapping("/myPageRefundPayment")
@@ -186,7 +186,7 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
-		return "/user/myPage/myPageRefundPayment";
+		return "user/myPage/myPageRefundPayment";
 	}
 	
 	@GetMapping("/myPageCommunity")
@@ -207,7 +207,7 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
-		return "/user/myPage/myPageCommunity";
+		return "user/myPage/myPageCommunity";
 	}
 	
 	@GetMapping("/myPageEmoticon")
@@ -232,7 +232,7 @@ public class MyPageController {
 		model.addAttribute("myPageEmoticon", myPageEmoticon);
 		log.info("myPageEmoticon : {}", myPageEmoticon);
 		
-		return "/user/myPage/myPageEmoticon";
+		return "user/myPage/myPageEmoticon";
 	}
 	
 	@GetMapping("/myPageBoard")
@@ -260,7 +260,7 @@ public class MyPageController {
 //		model.addAttribute("myPageBoardComments", myPageBoardComments);
 		
 		
-		return "/user/myPage/myPageBoard";
+		return "user/myPage/myPageBoard";
 	}
 	
 	@GetMapping("/myPageInquiry")
@@ -281,7 +281,7 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
-		return "/user/myPage/myPageInquiry";
+		return "user/myPage/myPageInquiry";
 	}
 	
 	@GetMapping("/myPageEvent")
@@ -302,6 +302,6 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
-		return "/user/myPage/myPageEvent";
+		return "user/myPage/myPageEvent";
 	}
 }
