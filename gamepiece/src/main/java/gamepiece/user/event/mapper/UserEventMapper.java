@@ -1,6 +1,7 @@
 package gamepiece.user.event.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,5 +26,7 @@ public interface UserEventMapper {
 	List<Event> getWinnerInfoByEvCd(String evCd);
 
 	List<Event> eventDetail(String evCd);
+
+	int getParticipations(Map resultMap);
 
 }
