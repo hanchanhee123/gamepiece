@@ -28,4 +28,8 @@ public interface EventMapper {
 	List<Event> getEventsList();
 	void addEventWinnerList(Event event);
 	List<Event> getWinnerListInfo(String evNm);
+	List<Event> EventWinnerListDetail(String evCd);
+	Event getEventWinnerListInfoInfoById(String evCd);
+	void modifyEventWinnerList(Event event);
+	void removeEventWinnerList(String evCd);
 }

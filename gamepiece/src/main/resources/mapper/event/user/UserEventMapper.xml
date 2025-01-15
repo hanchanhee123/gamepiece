@@ -169,4 +169,21 @@
 		AND
 		ev_winner_yn='Y';		
 </select>
+
+<select id="eventDetail" parameterType="string" resultMap="eventResultMap">
+	SELECT	
+		ev_cd,
+		ev_nm,
+		ev_contents,
+		ev_start_ymd,
+		ev_end_ymd,
+		ev_winners_num,
+		ev_img
+	FROM
+		events
+	WHERE
+		ev_cd=#{evCd};
+
+</select>
+
 </mapper>

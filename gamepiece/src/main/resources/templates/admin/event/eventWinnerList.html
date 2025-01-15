@@ -45,9 +45,9 @@
       			<th>당첨자리스트코드</th>
       			<th width="40%">이벤트당첨자리스트명</th> 
       			<th>작성일자</th>    					
-      			<!-- <th>상세</th>
+      			<th>상세</th>
       			<th>수정</th>      			
-      			<th>삭제</th> -->      			
+      			<th>삭제</th>    			
       			
       		</tr>
       	</thead>
@@ -57,9 +57,9 @@
       			<td th:text="${add.ewCd}"></td>
       			<td th:text="${add.ewNm}"></td>
       			<td th:text="${add.regYmd}"></td>     			
-      			<!-- <td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
-      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
-      			<td><a th:href="@{/admin/event/remove(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td> 			 -->
+      			<td><a th:href="@{/admin/event/eventWinnerListDetail(evCd=${add.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
+      			<td><a th:href="@{/admin/event/modifyEventWinnerList(evCd=${add.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td><a th:href="@{/admin/event/removeEventWinnerList(evCd=${add.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td>
       		</tr>
       	</tbody>
       </table>

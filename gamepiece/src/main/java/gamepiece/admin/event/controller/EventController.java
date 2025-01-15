@@ -128,6 +128,21 @@ public class EventController {
 		return "admin/event/eventDetail";
 	}
 	
+	@GetMapping("/eventWinnerListDetail")
+	public String EventWinnerListDetail(@RequestParam String evCd, Model model) {
+		
+		List<Event> eventWinnerListDetail = eventService.EventWinnerListDetail(evCd);
+		List<Event> getEventWinner = eventService.getEventWinner(evCd);
+		
+		model.addAttribute("title", "이벤트 상세");
+		model.addAttribute("eventWinnerListDetail", eventWinnerListDetail);
+		model.addAttribute("getEventWinner", getEventWinner);
+		
+		return "admin/event/eventWinnerListDetail";
+	}
+	
+	
+	
 	@GetMapping("/eventWinner")
 	public String EventWinner(@RequestParam String evCd, Model model) {
 		
@@ -185,12 +200,44 @@ public class EventController {
 		return "admin/event/modifyEvent";
 	}
 	
+	@GetMapping("/modifyEventWinnerList")
+	public String modifyEventWinnerListView(@RequestParam(name="evCd") String evCd, Model model) {
+		
+		/* var eventList = eventService.getEventList(); */
+		Event eventWinnerListInfo = eventService.getEventWinnerListInfoInfoById(evCd);
+		
+		model.addAttribute("title", "이벤트 당첨자 리스트 수정");
+		/* model.addAttribute("eventList", eventList); */
+		model.addAttribute("eventWinnerListInfo", eventWinnerListInfo);
+		
+		return "admin/event/modifyEventWinnerList";
+	}
+	
+	@PostMapping("/eventWinnerListmodify")
+	public String modifyEventWinnerList(Event event,
+							   RedirectAttributes reAttr) {
+		
+		eventService.modifyEventWinnerList(event);
+		
+		reAttr.addAttribute("evCd", event.getEvCd());
+		
+		return "redirect:/admin/event/eventWinnerList";
+	}
+	
 	@GetMapping("/remove")
 	public String removeEvent(String evCd) {
 		
 		eventService.removeEvent(evCd);
 		
 		return "redirect:/admin/event/eventList";
+	}
+	
+	@GetMapping("/removeEventWinnerList")
+	public String removeEventWinnerList(String evCd) {
+		
+		eventService.removeEventWinnerList(evCd);
+		
+		return "redirect:/admin/event/eventWinnerList";
 	}
 	
 	@PostMapping("/searchList")
