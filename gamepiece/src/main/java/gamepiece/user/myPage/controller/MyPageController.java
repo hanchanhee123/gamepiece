@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import gamepiece.user.board.domain.Board;
 import gamepiece.user.myPage.domain.MyPage;
 import gamepiece.user.myPage.service.MyPageService;
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.service.PointShopService;
 import gamepiece.user.user.service.UserService;
+import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -209,7 +211,7 @@ public class MyPageController {
 	}
 	
 	@GetMapping("/myPageEmoticon")
-	public String myPageEmoticon(Model model, HttpSession session) {
+	public String myPageEmoticon(Model model, HttpSession session, Pageable pageable) {
 		
 		String id = (String) session.getAttribute("SID");
 		
@@ -226,6 +228,9 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
+		List<Point> myPageEmoticon = myPageService.myPageEmoticon(id);
+		model.addAttribute("myPageEmoticon", myPageEmoticon);
+		log.info("myPageEmoticon : {}", myPageEmoticon);
 		
 		return "/user/myPage/myPageEmoticon";
 	}
@@ -247,6 +252,13 @@ public class MyPageController {
 		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
+		
+		List<Board> myPageBoard = myPageService.myPageBoard(id);
+		model.addAttribute("myPageBoard", myPageBoard);
+		log.info("myPageBoard : {}", myPageBoard);
+//		int myPageBoardComments = myPageService.myPageBoardComments(id);
+//		model.addAttribute("myPageBoardComments", myPageBoardComments);
+		
 		
 		return "/user/myPage/myPageBoard";
 	}

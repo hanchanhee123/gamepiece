@@ -78,6 +78,24 @@
 			CURDATE());
 	</insert>
 	
+	<!-- 회원가입 포인트 지급 -->
+	<insert id="addUserPoint">
+		INSERT INTO point_log (
+			point_no,
+			id,
+			point_receive_ymd,
+			point_receive_content,
+			point_receive,
+			point_division
+			) VALUES (
+			#{pointNo},
+			#{id},
+			CURDATE(),
+			'회원가입',
+			1000,
+			'적립');
+	</insert>
+	
 	<!-- 중복 아이디 체크 -->
 	<select id="checkId" parameterType="string" resultType="boolean">
 		SELECT
