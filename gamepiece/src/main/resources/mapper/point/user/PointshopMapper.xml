@@ -234,7 +234,7 @@
 			point_shop ps INNER JOIN pointshop_categories pc
 			ON ps.ps_cate_cd = pc.cate_cd
 		WHERE
-			pc.cate_nm='아바타액자'
+			pc.cate_nm='아바타 액자'
 			AND
 			ps.is_delete='active';
 	</select>

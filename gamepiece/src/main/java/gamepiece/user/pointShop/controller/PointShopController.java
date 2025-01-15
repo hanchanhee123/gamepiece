@@ -77,6 +77,7 @@ public class PointShopController {
 	
 	@GetMapping("/imoticon")
 	public String getimoticonList(Pageable pageable,Model model,HttpSession session) {
+		
 		var imoticonInfo = pointshopService.findimoticon(pageable);
 		
 		List<Point> imoticonList = imoticonInfo.getContents();
@@ -85,7 +86,6 @@ public class PointShopController {
 		int imoticonendPageNum = imoticonInfo.getEndPageNum();
 		int imoticonlastPage = imoticonInfo.getLastPage();
 		String userId = (String) session.getAttribute("SID");
-		
 		model.addAttribute("imoticonList", imoticonList);
 		model.addAttribute("imoticoncurrentPage", imoticoncurrentPage);
 		model.addAttribute("imoticonstartPageNum", imoticonstartPageNum);
