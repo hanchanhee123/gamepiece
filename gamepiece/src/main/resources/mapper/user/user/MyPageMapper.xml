@@ -29,16 +29,28 @@
 	</resultMap>
 	
 	<resultMap type="gamepiece.user.pointShop.domain.Point" id="pointshopResultMap">
-			<id column="ps_cd" 			property="itemCd"/>
-			<result column="ps_cate_cd" property="itemCate" />
-			<result column="cate_nm" 	property="cateName" />
-			<result column="ps_nm" 	property="itemName" />
-			<result column="img_url" 	property="itemImgurl" />
-			<result column="ps_price" 		property="itemPrice" />
-			<result column="admin_id" 	property="adminId" />
-			<result column="reg_ymd" 	property="regYmd" />
-			<result column="is_delete"  property="isDelete" />
+		<id column="ps_cd" 			property="itemCd"/>
+		<result column="ps_cate_cd" property="itemCate" />
+		<result column="cate_nm" 	property="cateName" />
+		<result column="ps_nm" 	property="itemName" />
+		<result column="img_url" 	property="itemImgurl" />
+		<result column="ps_price" 		property="itemPrice" />
+		<result column="admin_id" 	property="adminId" />
+		<result column="reg_ymd" 	property="regYmd" />
+		<result column="is_delete"  property="isDelete" />
 	</resultMap>
+	
+	<resultMap type="gamepiece.user.board.domain.Board" id="BoardResultMap">
+	    <id column="bbs_no"  property="boardNum" />
+	    <result column="bbs_cate_cd" property="boardCategory" />
+	    <result column="bbs_title" property="boardTitle" />
+	    <result column="bbs_cn" property="boardContent" />
+	    <result column="id" property="boardUserid" />
+	    <result column="bbs_like" property="boardLikeCnt" />
+	    <result column="bbs_dislike" property="boardDisLikeCnt" />
+	    <result column="bbs_view" property="boardViewCnt" />
+	    <result column="bbs_ymd" property="boardYmd" />
+    </resultMap>
 	
 	<!-- 마이페이지 - 사용자정보조회 (정보수정) -->
 	<select id="myPageUser" resultMap="myPageResultMap">
@@ -68,9 +80,9 @@
 	<!-- 아바타 조회 -->
 	<select id="getAvatar" resultMap="pointshopResultMap">
 		SELECT
-			ps.img_url,
+			ps.ps_cd,
 			ps.ps_nm,
-			ps.ps_cd
+			ps.img_url
 		FROM
 			point_shop ps INNER JOIN pointshop_logs pl
 			USING (ps_cd)
@@ -101,9 +113,9 @@
 	<!-- 아바타액자 조회 -->
 	<select id="getAvatarFrame" resultMap="pointshopResultMap">
 		SELECT
-			ps.img_url,
+			ps.ps_cd,
 			ps.ps_nm,
-			ps.ps_cd
+			ps.img_url
 		FROM
 			point_shop ps INNER JOIN pointshop_logs pl
 			USING (ps_cd)
@@ -130,5 +142,44 @@
    		) VALUES (
    			#{avatarFrameNo}, #{id}, #{selectAvatarFrame}, CURDATE());
 	</insert>
+	
+	<!-- 마이페이지 - 보유 이모티콘 -->
+	<select id="myPageEmoticon" resultMap="pointshopResultMap">
+		SELECT
+			ps.ps_cd,
+			ps.ps_nm,
+			ps.img_url
+		FROM
+			point_shop ps INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+		WHERE
+			id = #{id}
+			AND
+			ps.ps_cate_cd = 'cate_01';
+	</select>
+	
+	<select id="myPageBoard" resultMap="BoardResultMap">
+		SELECT
+			*
+		FROM
+			boards_categories bc INNER JOIN boards b
+			USING (bbs_cate_cd)
+		WHERE
+			id = #{id}
+			AND
+			b.is_delete = 'active';
+	</select>
+	
+	<!-- <select id="myPageBoardComments" resultMap="BoardResultMap">
+		SELECT
+			COUNT(*)
+		FROM
+			boards b INNER JOIN board_comments
+			USING (bbs_no)
+		WHERE
+			id = #{id}
+			AND
+			b.is_delete = 'active';
+	</select> -->
 	
 </mapper>

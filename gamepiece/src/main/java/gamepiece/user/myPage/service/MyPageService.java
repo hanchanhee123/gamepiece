@@ -2,6 +2,7 @@ package gamepiece.user.myPage.service;
 
 import java.util.List;
 
+import gamepiece.user.board.domain.Board;
 import gamepiece.user.myPage.domain.MyPage;
 import gamepiece.user.pointShop.domain.Point;
 
@@ -24,5 +25,14 @@ public interface MyPageService {
 
 	// 아바타액자 저장
 	void saveAvatarFrame(String id, String selectAvatarFrame);
+
+	// 마이페이지 - 보유 이모티콘
+	List<Point> myPageEmoticon(String id);
+
+	// 마이페이지 - 내 게시글
+	List<Board> myPageBoard(String id);
+	
+	// 마이페이지 - 내 게시글에 대한 댓글 수
+//	int myPageBoardComments(String id);
 
 }

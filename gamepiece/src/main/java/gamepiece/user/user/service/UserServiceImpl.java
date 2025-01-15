@@ -67,6 +67,12 @@ public class UserServiceImpl implements UserService {
 	public void addUser(User user) {
 		
 		userMapper.addUser(user);
+		
+		String pointNo = commonMapper.getPrimaryKey("pn_", "point_log", "point_no");
+		System.out.println("point_log 생성된 기본키 : " + pointNo);
+		
+		// 회원가입 포인트 지급
+		userMapper.addUserPoint(pointNo, user.getId());
 	}
 	
 	// 중복 아이디 체크

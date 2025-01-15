@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gamepiece.common.mapper.CommonMapper;
+import gamepiece.user.board.domain.Board;
 import gamepiece.user.myPage.domain.MyPage;
 import gamepiece.user.myPage.mapper.MyPageMapper;
 import gamepiece.user.pointShop.domain.Point;
@@ -74,7 +75,27 @@ public class MyPageServiceImpl implements MyPageService {
 
 		// 새로운 아바타 액자
 		myPageMapper.insertAvatarFrame(avatarFrameNo, id, selectAvatarFrame);
-		
 	}
+	
+	// 마이페이지 - 보유 이모티콘
+	@Override
+	public List<Point> myPageEmoticon(String id) {
+
+		return myPageMapper.myPageEmoticon(id);
+	}
+	
+	// 마이페이지 - 내 게시글
+	@Override
+	public List<Board> myPageBoard(String id) {
+
+		return myPageMapper.myPageBoard(id);
+	}
+	
+	// 마이페이지 - 내 게시글에 대한 댓글 수
+//	@Override
+//	public int myPageBoardComments(String id) {
+//		
+//		return myPageMapper.myPageBoardComments(id);
+//	}
 	
 }

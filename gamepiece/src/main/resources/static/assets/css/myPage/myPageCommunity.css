@@ -6,6 +6,10 @@
     background-color: rgba(0,0,0,0.4);
 }
 
+.content-main {
+	width: 100%;
+}
+
 /* 보유 이모티콘 */
 .mypage-emoticon {
     margin: 30px 10px;
