@@ -21,7 +21,7 @@ public interface UserGameService {
 	// 플랫폼 클릭 시 해당 게임 목록 조회
 	PageInfo<UserGame> getGameListWithPlatform(Pageable pageable, String platformCode);
 	
-	Map<String, Object> getGameListApi(int currentPage);
+	Map<String, Object> getGameListApi(String searchValue, int currentPage);
 	
 	
 }

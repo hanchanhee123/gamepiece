@@ -69,122 +69,122 @@ public class UserGameServiceImpl implements UserGameService {
 	}
 	
 	// steam 페이지 크롤링
-		@Override
-		public Map<String, Object> getGameListApi(int currentPage) {
-			Map<String, Object> resultMap = new HashMap<>();
-		    List<Map<String, Object>> resultList = new ArrayList<>();
-		    
-		    double totalAmount = 0;
-		    int lastPage = 0;
-		    int startPageNum = 1;
-		    
-		    
-		    
-		    
+	@Override
+	public Map<String, Object> getGameListApi(String searchValue, int currentPage) {
+		Map<String, Object> resultMap = new HashMap<>();
+	    List<Map<String, Object>> resultList = new ArrayList<>();
+	    
+	    double totalAmount = 0;
+	    int lastPage = 0;
+	    int startPageNum = 1;
+	    
+	    
+	    
+	    
 
-	        String searchResult = "";
-		    try {
-		        // 1. 수집 대상 URL
-		        String url = "https://store.steampowered.com/search/results?page=" + currentPage + "sort_by=_ASC&term=A";
-		        // 2. Connection 생성
-		        Connection conn = Jsoup.connect(url);
-		        
-		        // 3. HTML 파싱.
-		        Document html = conn.get();
-		        
-		        // 검색결과 없음 : 0, 검색결과 있음 : 마지막페이지번호
-	            Elements searchResultsElement = html.select(".search_results_count");
-	            if(searchResultsElement.isEmpty()) {
-	            	searchResultsElement = html.select("#search_results_filtered_warning");
-	            	searchResult = searchResultsElement.get(0).children().first().text();
-	            }else {
-	            	searchResult = searchResultsElement.text();
+        String searchResult = "";
+	    try {
+	        // 1. 수집 대상 URL
+	        String url = "https://store.steampowered.com/search/results?page=" + currentPage + "sort_by=_ASC&term=" + searchValue;
+	        // 2. Connection 생성
+	        Connection conn = Jsoup.connect(url);
+	        
+	        // 3. HTML 파싱.
+	        Document html = conn.get();
+	        
+	        // 검색결과 없음 : 0, 검색결과 있음 : 마지막페이지번호
+            Elements searchResultsElement = html.select(".search_results_count");
+            if(searchResultsElement.isEmpty()) {
+            	searchResultsElement = html.select("#search_results_filtered_warning");
+            	searchResult = searchResultsElement.get(0).children().first().text();
+            }else {
+            	searchResult = searchResultsElement.text();
+            }
+            searchResult = searchResult.substring(0, searchResult.indexOf("result")).trim();
+            searchResult = searchResult.replaceAll("[^0-9]","");
+            if(!"0".equals(searchResult)) {            	
+            	totalAmount = Double.parseDouble(searchResult);
+            	lastPage = (int) Math.ceil(totalAmount/25);
+            	searchResult = "" + lastPage;
+            }
+            
+            int endPageNum = lastPage < 10 ? lastPage : 10;
+            if(currentPage > 6 && lastPage > 9) {
+            	startPageNum = currentPage -5;
+            	endPageNum = currentPage + 4;
+            	if(endPageNum >= lastPage) {
+            		startPageNum = lastPage - 9;
+            		endPageNum = lastPage;
+            	}
+            }
+            
+            
+            System.out.println(searchResult);
+            
+	        // 4. 게임 정보 추출
+	        Elements element = html.select("#search_resultsRows");
+	        Elements aElement = element.select("a");
+	        
+	        aElement.forEach(a -> {
+	            Map<String, Object> game = new HashMap<>();
+	            String urlSrc = a.select(".search_capsule > img").attr("src");
+	            String title = a.select(".search_name > .title").text();
+	            String released = a.select(".search_released").text();
+	            if (released.isEmpty() || released.length() < 12) {
+	                released = "출시예정";
 	            }
-	            searchResult = searchResult.substring(0, searchResult.indexOf("result")).trim();
-	            searchResult = searchResult.replaceAll("[^0-9]","");
-	            if(!"0".equals(searchResult)) {            	
-	            	totalAmount = Double.parseDouble(searchResult);
-	            	lastPage = (int) Math.ceil(totalAmount/25);
-	            	searchResult = "" + lastPage;
+	            
+	            String finalPrice = "0";
+	            String disCountPrice = "0";
+	            String originalPrice = finalPrice;
+	            
+	            if (!"출시예정".equals(released)) {
+	                try {
+	                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
+	                    LocalDate dateTime = LocalDate.parse(released, formatter);
+	                    released = dateTime.toString();
+	                } catch (DateTimeParseException e) {
+	                    // 예외 처리 (파싱 실패 시)
+	                    released = "출시예정";
+	                }
+	                
+	                finalPrice = a.select(".discount_block").attr("data-price-final");
+	                if (finalPrice.length() > 2) {
+	                    finalPrice = finalPrice.substring(0, finalPrice.length() - 2);
+	                }
+	                disCountPrice = a.select(".discount_block").attr("data-discount");
+	                originalPrice = finalPrice;
+	                
+	                if (!"0".equals(disCountPrice)) {
+	                    originalPrice = a.select(".discount_original_price").text();
+	                    originalPrice = originalPrice.replaceAll("[^0-9]", "");
+	                }
 	            }
 	            
-	            int endPageNum = lastPage < 10 ? lastPage : 10;
-	            if(currentPage > 6 && lastPage > 9) {
-	            	startPageNum = currentPage -5;
-	            	endPageNum = currentPage + 4;
-	            	if(endPageNum >= lastPage) {
-	            		startPageNum = lastPage - 9;
-	            		endPageNum = lastPage;
-	            	}
-	            }
-	            
-	            
-	            System.out.println(searchResult);
-	            
-		        // 4. 게임 정보 추출
-		        Elements element = html.select("#search_resultsRows");
-		        Elements aElement = element.select("a");
-		        
-		        aElement.forEach(a -> {
-		            Map<String, Object> game = new HashMap<>();
-		            String urlSrc = a.select(".search_capsule > img").attr("src");
-		            String title = a.select(".search_name > .title").text();
-		            String released = a.select(".search_released").text();
-		            if (released.isEmpty() || released.length() < 12) {
-		                released = "출시예정";
-		            }
-		            
-		            String finalPrice = "0";
-		            String disCountPrice = "0";
-		            String originalPrice = finalPrice;
-		            
-		            if (!"출시예정".equals(released)) {
-		                try {
-		                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
-		                    LocalDate dateTime = LocalDate.parse(released, formatter);
-		                    released = dateTime.toString();
-		                } catch (DateTimeParseException e) {
-		                    // 예외 처리 (파싱 실패 시)
-		                    released = "출시예정";
-		                }
-		                
-		                finalPrice = a.select(".discount_block").attr("data-price-final");
-		                if (finalPrice.length() > 2) {
-		                    finalPrice = finalPrice.substring(0, finalPrice.length() - 2);
-		                }
-		                disCountPrice = a.select(".discount_block").attr("data-discount");
-		                originalPrice = finalPrice;
-		                
-		                if (!"0".equals(disCountPrice)) {
-		                    originalPrice = a.select(".discount_original_price").text();
-		                    originalPrice = originalPrice.replaceAll("[^0-9]", "");
-		                }
-		            }
-		            
-		            game.put("urlSrc", urlSrc);
-		            game.put("title", title);
-		            game.put("released", released);
-		            game.put("finalPrice", finalPrice);
-		            game.put("disCountPrice", disCountPrice);
-		            game.put("originalPrice", originalPrice);
-		            resultList.add(game);
-		        });
-		        resultMap.put("currentPage", currentPage);
-		        resultMap.put("totalAmount", totalAmount);
-		        resultMap.put("lastPage", lastPage);
-		        resultMap.put("startPageNum", startPageNum);
-		        resultMap.put("endPageNum", endPageNum);
-		        
-		        
-			    resultMap.put("searchResult", searchResult);
-		        
-		    } catch (Exception e) {
-		        System.out.println(e);
-		    }
-		    
-		    resultMap.put("games", resultList);
-		    
-		    return resultMap;
-		}
+	            game.put("urlSrc", urlSrc);
+	            game.put("title", title);
+	            game.put("released", released);
+	            game.put("finalPrice", finalPrice);
+	            game.put("disCountPrice", disCountPrice);
+	            game.put("originalPrice", originalPrice);
+	            resultList.add(game);
+	        });
+	        resultMap.put("currentPage", currentPage);
+	        resultMap.put("totalAmount", totalAmount);
+	        resultMap.put("lastPage", lastPage);
+	        resultMap.put("startPageNum", startPageNum);
+	        resultMap.put("endPageNum", endPageNum);
+	        resultMap.put("searchValue", searchValue);
+	        
+		    resultMap.put("searchResult", searchResult);
+	        
+	    } catch (Exception e) {
+	        System.out.println(e);
+	    }
+	    
+	    resultMap.put("games", resultList);
+	    
+	    return resultMap;
+	}
 	
 }
