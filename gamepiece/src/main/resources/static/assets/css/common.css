@@ -161,6 +161,7 @@ main {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    height: 200px;
 }
 
 .mypage-user-modify {
@@ -176,6 +177,7 @@ main {
     width: 150px;
     height: 150px;
     margin: 20px;
+    border-radius: 10px;
 }
 
 .mypage-user-name {

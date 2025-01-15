@@ -55,6 +55,27 @@ public class PointShopController {
 		return pointInfo;
 	}
 	
+	@GetMapping("/history")
+	public String gethistory(Pageable pageable, Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("SID");
+		var historyInfo = pointshopService.findhistory(pageable);
+		
+		List<Point> historyList = historyInfo.getContents();
+		int currentPage = historyInfo.getCurrentPage();
+		int startPageNum = historyInfo.getStartPageNum();
+		int endPageNum = historyInfo.getEndPageNum();
+		int lastPage = historyInfo.getLastPage();
+		
+		model.addAttribute("historyList", historyList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		var userPoint = pointshopService.getPointsHeld(userId);
+		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		return "user/points/pointHistory";
+	}
 	
 	@GetMapping("/imoticon")
 	public String getimoticonList(Pageable pageable,Model model,HttpSession session) {
