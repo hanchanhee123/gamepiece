@@ -40,8 +40,15 @@
 		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
 	
-	
-	
+	<!-- 이벤트당첨자리스트 삭제 -->
+	<update id="removeEventWinnerList" parameterType="gamepiece.admin.event.mapper.EventMapper">
+		UPDATE
+			events_winners
+		SET
+			is_delete = 'delete'
+		WHERE
+			ev_cd = #{evCd};
+	</update>
 	
 	<!-- 이벤트 삭제 -->
 	<update id="removeEvent" parameterType="gamepiece.admin.event.mapper.EventMapper">
@@ -227,4 +234,48 @@
 			AND
 			ev_winner_yn='Y';		
 	</select>
+	
+	<select id="EventWinnerListDetail" parameterType="string" resultMap="eventResultMap">
+		SELECT
+			*
+		FROM
+			events_winners
+		WHERE
+			ev_cd=#{evCd};
+	</select>
+	
+	<select id="getEventWinnerListInfoInfoById" parameterType="String" resultMap="eventResultMap">
+		SELECT
+			*
+		FROM
+			events_winners
+		WHERE
+			ev_cd=#{evCd};
+	</select>
+	
+	<update id="modifyEventWinnerList" parameterType="gamepiece.admin.event.domain.Event">
+		UPDATE events_winners
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="ewNm != null and ewNm != ''">
+				ew_nm=#{ewNm},
+			</if>
+			<!-- <if test="evContents != null and evContents != ''">
+				ev_contents=#{evContents},
+			</if>		
+			<if test="evStartYmd != null and evStartYmd != ''">			
+				ev_start_ymd=#{evStartYmd},
+			</if>		
+			<if test="evEndYmd != null and evEndYmd != ''">		
+				ev_end_ymd=#{evEndYmd},
+			</if>		
+			<if test="evWinnersNum != null and evWinnersNum != ''">
+				ev_winners_num=#{evWinnersNum},
+			</if>		
+			<if test="evImg != null and evImg !=''">
+				ev_img=#{evImg}
+			</if>		 -->	
+		</trim>
+		WHERE 
+			ev_cd=#{evCd};
+	</update>
 </mapper>

@@ -114,4 +114,14 @@ public class EventController {
 		log.info("eventList {}",eventList);
 		return eventList;
 	}
+	
+	@GetMapping("/eventDetail")
+	public String eventDetail(@RequestParam("evCd") String evCd, Model model) {
+		
+		List<Event> eventDetail = eventService.eventDetail(evCd);
+		
+		model.addAttribute("eventDetail", eventDetail);
+		
+		return "user/event/eventDetail";
+	}
 }
