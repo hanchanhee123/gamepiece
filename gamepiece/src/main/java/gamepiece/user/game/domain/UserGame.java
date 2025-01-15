@@ -41,4 +41,6 @@ public class UserGame {
 	private int startPageNum;
 	private int endPageNum;
 	
+	private String searchValue;
+	
 }
