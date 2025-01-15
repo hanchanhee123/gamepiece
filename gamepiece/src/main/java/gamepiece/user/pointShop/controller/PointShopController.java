@@ -1,6 +1,5 @@
 package gamepiece.user.pointShop.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -12,19 +11,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.service.PointShopService;
+import gamepiece.user.user.service.UserService;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
 @RequestMapping("/point")
+@RequiredArgsConstructor
 public class PointShopController {
 	private final PointShopService pointshopService;
+	private final UserService userService;
 	
-	public PointShopController(PointShopService pointshopService) {
-		this.pointshopService = pointshopService;
-	}
 	
 	@GetMapping("/addlog")
 	public String PointShopLog(String itemCd,
@@ -77,6 +77,7 @@ public class PointShopController {
 	
 	@GetMapping("/imoticon")
 	public String getimoticonList(Pageable pageable,Model model,HttpSession session) {
+		
 		var imoticonInfo = pointshopService.findimoticon(pageable);
 		
 		List<Point> imoticonList = imoticonInfo.getContents();
@@ -85,7 +86,6 @@ public class PointShopController {
 		int imoticonendPageNum = imoticonInfo.getEndPageNum();
 		int imoticonlastPage = imoticonInfo.getLastPage();
 		String userId = (String) session.getAttribute("SID");
-		
 		model.addAttribute("imoticonList", imoticonList);
 		model.addAttribute("imoticoncurrentPage", imoticoncurrentPage);
 		model.addAttribute("imoticonstartPageNum", imoticonstartPageNum);
@@ -193,15 +193,19 @@ public class PointShopController {
 	
 	@GetMapping("/shop")
 	public String getItemList(Pageable pageable, Model model, HttpSession session) {
-		
 		var imoticonInfo = pointshopService.findimoticon(pageable);
 		var avatarInfo = pointshopService.findavatar(pageable);
 		var frameInfo = pointshopService.findavatarframe(pageable);
 		var etcInfo = pointshopService.findetc(pageable);
 		var backInfo = pointshopService.findbackground(pageable);
-		
-		
 		String userId = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(userId);
+        model.addAttribute("avatar", avatar);
+		
+		
+		var purchaseList = pointshopService.purchaseList(userId);
+		
 		List<Point> imoticonList = imoticonInfo.getContents();
 		
 		List<Point> avatarList = avatarInfo.getContents();
@@ -211,6 +215,8 @@ public class PointShopController {
 		List<Point> etcList = etcInfo.getContents();
 		
 		List<Point> backList = backInfo.getContents(); 
+		
+		model.addAttribute("purchaseList", purchaseList);
 		
 		model.addAttribute("title", "포인트샵");
 		
@@ -225,6 +231,8 @@ public class PointShopController {
 		model.addAttribute("etcList", etcList);
 		
 		model.addAttribute("backList", backList);
+		
+		
 		
 		
 		var userPoint = pointshopService.getPointsHeld(userId);

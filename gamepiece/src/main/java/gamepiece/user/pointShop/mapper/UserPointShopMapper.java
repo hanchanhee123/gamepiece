@@ -39,6 +39,8 @@ public interface UserPointShopMapper {
 	
 	PointLog getPointsHeld(String id);
 	
+	List<PointShopLog> purchaseList(String id);
+	
 	Point pointInfo(String itemCd);
 	
 	List<Point> findAll();
