@@ -118,9 +118,12 @@ public class EventController {
 	@GetMapping("/eventDetail")
 	public String eventDetail(@RequestParam("evCd") String evCd, Model model) {
 		
+		
 		List<Event> eventDetail = eventService.eventDetail(evCd);
+		List<Event> getParticipations = eventService.getParticipations(evCd);
 		
 		model.addAttribute("eventDetail", eventDetail);
+		model.addAttribute("getParticipations", getParticipations);
 		
 		return "user/event/eventDetail";
 	}

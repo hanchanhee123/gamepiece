@@ -68,4 +68,10 @@ public class EventServiceImpl implements EventService {
 		return userEventMapper.eventDetail(evCd);
 	}
 
+	@Override
+	public List<Event> getParticipations(String evCd) {
+		
+		return userEventMapper.getParticipations(evCd);
+	}
+
 }

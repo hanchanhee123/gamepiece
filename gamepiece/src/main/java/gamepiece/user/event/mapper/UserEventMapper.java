@@ -26,4 +26,6 @@ public interface UserEventMapper {
 
 	List<Event> eventDetail(String evCd);
 
+	List<Event> getParticipations(String evCd);
+
 }
