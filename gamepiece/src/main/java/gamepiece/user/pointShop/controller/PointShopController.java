@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.collect.Lists;
+
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.service.PointShopService;
 import gamepiece.util.Pageable;
@@ -205,6 +207,10 @@ public class PointShopController {
 		
 		model.addAttribute("backList", backList);
 		
+		var partitionImoticonList = Lists.partition(imoticonList, 5);
+		model.addAttribute("partitionImoticonList", partitionImoticonList);
+		
+		log.info(">>>>>>>>>>>>>>{}", partitionImoticonList);
 		
 		var userPoint = pointshopService.getPointsHeld(userId);
 		model.addAttribute("userPoint", userPoint.getTotalPoint());
