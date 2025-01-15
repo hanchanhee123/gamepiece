@@ -99,7 +99,7 @@ public class UserTournamentController {
 		log.info("month : {}, year : {}",month,year);
 		
 		model.addAttribute("gameName", "Player_Unknowns_Battle_Grounds");
-		model.addAttribute("leageName", tournament);
+		// model.addAttribute("leageName", tournament);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		
