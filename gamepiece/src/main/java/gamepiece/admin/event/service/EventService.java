@@ -41,5 +41,13 @@ public interface EventService {
 	List<Event> getWinnerListInfo(String evCd);
 	
 	void addEventWinnerList(Event event);
+
+	List<Event> EventWinnerListDetail(String evCd);
+
+	Event getEventWinnerListInfoInfoById(String evCd);
+
+	void modifyEventWinnerList(Event event);
+
+	void removeEventWinnerList(String evCd);
 	
 }

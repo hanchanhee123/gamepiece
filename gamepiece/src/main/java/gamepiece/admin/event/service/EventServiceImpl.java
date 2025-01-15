@@ -125,5 +125,29 @@ public class EventServiceImpl implements EventService {
 		return eventMapper.getWinnerListInfo(evCd);
 	}
 
+	@Override
+	public List<Event> EventWinnerListDetail(String evCd) {
+		
+		return eventMapper.EventWinnerListDetail(evCd);
+	}
+
+	@Override
+	public Event getEventWinnerListInfoInfoById(String evCd) {
+
+		return eventMapper.getEventWinnerListInfoInfoById(evCd);
+	}
+
+	@Override
+	public void modifyEventWinnerList(Event event) {
+
+		eventMapper.modifyEventWinnerList(event);	
+	}
+
+	@Override
+	public void removeEventWinnerList(String evCd) {
+
+		eventMapper.removeEventWinnerList(evCd);
+	}
+
 
 }

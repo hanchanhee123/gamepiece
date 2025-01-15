@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link th:href="@{/assets/css/event/eventDetail.css}" rel="stylesheet" type="text/css">
+</head>
+
+	<th:block layout:fragment="contents-header">  
+		<div class="main-div">
+		    <div class="detail-cate">
+		        <a th:href="@{/event/progressEvent}" class="item-active active">진행중 이벤트</a>
+	            <a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
+	            <a th:href="@{/event/winnerList}" class="item-active">당첨자 발표</a>
+	    	</div>
+	    </div>
+	</th:block>
+	<th:block layout:fragment="contents-body" th:if="${eventDetail != null}">
+	    <th:block th:each="ed : ${eventDetail}"> 
+			<div class="main-div">
+			    <div class="event-detail">
+					<div class="img">
+					    <img th:src="@{|/assets/imgs/event/${ed.evImg}|}">
+					</div>
+					<div class="name">
+					     <span th:text="${ed.evNm}"></span>
+					</div>
+					<div class="contents">
+					        <span th:text="${ed.evContents}"></span>
+					</div>
+					<div class="date">
+					    <strong>이벤트기간</strong>
+					        <div>
+					            <span th:text="${ed.evStartYmd}"></span>
+					            <span>~</span>
+					            <span th:text="${ed.evEndYmd}"></span>
+					        </div>
+					</div>
+					<div class="winnersNum">
+						<strong>당첨 인원 : </strong>
+					    <span th:text="${ed.evWinnersNum}"></span>
+					</div>
+					<div class="button">
+					    <button class="w-btn w-btn-indigo" type="button">이벤트 참여</button>
+					</div>
+			    </div>
+			</div>
+		</th:block>
+	</th:block>
+</html>
