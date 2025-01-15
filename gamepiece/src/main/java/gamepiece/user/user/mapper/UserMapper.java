@@ -14,16 +14,19 @@ public interface UserMapper {
 	int findLoginLog(String id);
 
 	// 로그인 로그 삽입
-	void addloginLog(String loginNo, String id);
+	void addLoginLog(String loginNo, String id);
 	
 	// 로그인 로그 업데이트
 	void modifyLoginLog(String id);
 
+	// 로그인 포인트 지급
+	void addLoginPointLog(String pointNo, String id);
+	
 	// 회원가입
 	int addUser(User user);
 
 	// 회원가입 포인트 지급
-	void addUserPoint(String pointNo, String id);
+	void addUserPointLog(String pointNo, String id);
 
 	// 중복 아이디 체크
 	boolean checkId(String id);

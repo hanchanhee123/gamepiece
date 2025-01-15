@@ -24,7 +24,7 @@
 
 .mypage-modify-form {
     margin-top: 15px;
-    margin-bottom: 75px;
+    margin-bottom: 65px;
     border: 1px solid #007bff;
     border-radius: 10px;
     background-color: white;
@@ -106,10 +106,6 @@
     padding: 10px;
     margin: 0px 10px 20px 10px;
     cursor: pointer;
-}
-
-.card-section:hover {
-
 }
 
 .card-section p {
