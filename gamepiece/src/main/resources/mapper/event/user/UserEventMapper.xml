@@ -172,16 +172,20 @@
 			ev_cd=#{evCd};
 	</select>
 
-	<select id="getParticipations" parameterType="string" resultMap="eventResultMap">
+	<select id="getParticipations" parameterType="Map" resultType="int">
 		SELECT
-			id
+			COUNT(*)
 		FROM
 			event_participations inner JOIN user	
 		USING
-		(id)
+			(id)
 		WHERE
-			ev_cd= #{evCd}
-			AND
-			ev_winner_yn='Y';	
+			id= #{id}
+		AND
+			ev_cd=#{evCd}
+		AND
+			ev_winner_yn='Y';
 	</select>
+	
+	
 </mapper>

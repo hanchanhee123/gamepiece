@@ -1,6 +1,7 @@
 package gamepiece.user.event.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -26,6 +27,6 @@ public interface UserEventMapper {
 
 	List<Event> eventDetail(String evCd);
 
-	List<Event> getParticipations(String evCd);
+	int getParticipations(Map resultMap);
 
 }

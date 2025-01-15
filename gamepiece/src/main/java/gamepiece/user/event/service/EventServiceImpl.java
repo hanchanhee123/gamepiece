@@ -1,7 +1,9 @@
 package gamepiece.user.event.service;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.catalina.util.ParameterMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,9 +71,12 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public List<Event> getParticipations(String evCd) {
+	public int getParticipations(String evCd, String loginId) {
+		Map<String, Object> resultMap = new ParameterMap<String, Object>();
+		resultMap.put("id", loginId);
+		resultMap.put("evCd", evCd);
 		
-		return userEventMapper.getParticipations(evCd);
+		return userEventMapper.getParticipations(resultMap);
 	}
 
 }
