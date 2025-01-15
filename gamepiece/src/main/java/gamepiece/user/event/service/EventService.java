@@ -22,4 +22,6 @@ public interface EventService {
 
 	List<Event> eventDetail(String evCd);
 
+	int getParticipations(String evCd, String loginId);
+
 }

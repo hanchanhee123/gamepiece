@@ -25,41 +25,49 @@ public class UserGameController {
 	private final UserGameService userGameService;
 	
 	// 사용자 게임 목록 조회
-	@GetMapping("/gameList")
-	public String getUserGameListView(@RequestParam(value="currentPage", required=false, defaultValue = "1") int currentPage, Model model) {
+	// 사용자 스팀 게임 목록 조회
+		@GetMapping("/steam")
+		public String getUserGameListView(@RequestParam(value="currentPage", required=false, defaultValue = "1") int currentPage,
+										  @RequestParam(value="searchValue", required=false, defaultValue = "") String searchValue,
+										  Model model) {
 		
-		/*
-		 * var pageInfo = userGameService.getGameList(pageable);
-		 * 
-		 * 
-		 * List<UserGame> gameList = pageInfo.getContents();
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * int currentPage = pageInfo.getCurrentPage(); int startPageNum =
-		 * pageInfo.getStartPageNum(); int endPageNum = pageInfo.getEndPageNum(); int
-		 * lastPage = pageInfo.getLastPage();
-		 * 
-		 * model.addAttribute("userGameList", gameList);
-		 * model.addAttribute("currentPage", currentPage);
-		 * model.addAttribute("startPageNum", startPageNum);
-		 * model.addAttribute("endPageNum", endPageNum); 
-		 * model.addAttribute("lastPage", lastPage); 
-		 * model.addAttribute("platformList", platformList);
-		 * model.addAttribute("genreList", genreList); 
-		 * return "user/game/gameList";
-		 */
-		ArrayList<String> platformList = userGameService.getPlatformList();
-		
-		
-		Map<String, Object> gameList = userGameService.getGameListApi(currentPage);
-		model.addAttribute("gameList", gameList);
-		model.addAttribute("platformList", platformList);
-		
-		return "user/game/gameList";
-	}
+			
+			
+			/*
+			 * var pageInfo = userGameService.getGameList(pageable);
+			 * 
+			 * 
+			 * List<UserGame> gameList = pageInfo.getContents();
+			 * 
+			 * 
+			 * 
+			 * 
+			 * 
+			 * int currentPage = pageInfo.getCurrentPage(); int startPageNum =
+			 * pageInfo.getStartPageNum(); int endPageNum = pageInfo.getEndPageNum(); int
+			 * lastPage = pageInfo.getLastPage();
+			 * 
+			 * model.addAttribute("userGameList", gameList);
+			 * model.addAttribute("currentPage", currentPage);
+			 * model.addAttribute("startPageNum", startPageNum);
+			 * model.addAttribute("endPageNum", endPageNum); 
+			 * model.addAttribute("lastPage", lastPage); 
+			 * model.addAttribute("platformList", platformList);
+			 * model.addAttribute("genreList", genreList); 
+			 * return "user/game/gameList";
+			 */
+			
+			
+			 
+			ArrayList<String> platformList = userGameService.getPlatformList();
+			
+			
+			Map<String, Object> gameList = userGameService.getGameListApi(searchValue, currentPage);
+			model.addAttribute("gameList", gameList);
+			model.addAttribute("platformList", platformList);
+			
+			return "user/game/steamList";
+		}
 	
 	@GetMapping("/platform")
 	public String getUserGameListWithPlatform(@RequestParam(value="platformCode") String platformCode, Model model, Pageable pageable) {
