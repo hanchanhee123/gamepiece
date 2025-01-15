@@ -26,6 +26,13 @@ public class PointShopServiceImpl implements PointShopService{
 	
 	
 	@Override
+	public PageInfo<Point> findhistory(Pageable pageable) {
+		int rowCnt = userpointshopMapper.gethistoryCount();
+		List<Point> historyList = userpointshopMapper.findhistory(pageable);
+		return new PageInfo<>(historyList, pageable, rowCnt);
+	}
+	
+	@Override
 	public PointLog addPointLog(String id, String itemName, int itemPrice) {
 		PointLog pointLog = new PointLog();
 		String content = "포인트샵 아이템 구매";

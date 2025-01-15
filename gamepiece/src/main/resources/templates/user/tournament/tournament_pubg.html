@@ -223,10 +223,10 @@
 			const leageName = /*[[${leageName}]]*/"";
 			const gameName = /*[[${gameName}]]*/"";
 			
-			const startStrDate = createDate(startDay);
-			const endStrDate = createDate(endDay);
+			const startStrDate = createSearchDate(startDay);
+			const endStrDate = createSearchDate(endDay);
 			
-			function createDate(day){
+			function createSearchDate(day){
 				const year = day.getFullYear();
 				const month = day.getMonth()+1;
 				const date = day.getDate();
@@ -237,6 +237,7 @@
 			}
 			
 			function getAjaxFn(selectYear, selectMonth){
+				const $tournamentDiv = $('.tournament-match');
 				const request = $.ajax({
 					url : 'https://api-foc.krafton.com/tournament/match-schedule',
 					method : 'get',
@@ -257,13 +258,23 @@
 						const $matchDate = $('<div />',{
 							'class' : 'match-date'
 						});
+						
+						console.log(list.startAt);
+						
 						const $p = $('<p />');
-						$p.text(list.startAt);
+						$p.text();
 						console.log($p[0]);
 					}
 				});
 				request.fail(function(jQXHR, textStatus, error){
     				console.log(error);
+    				const $div = $('<div />',{
+						'class' : 'match-date'
+					});
+					const $p = $('<p />');
+					$p.text('대회 일정을 찾을 수 없습니다.');
+					$div.append($p);
+					$tournamentDiv.append($div);
     			});	
 			}
 			

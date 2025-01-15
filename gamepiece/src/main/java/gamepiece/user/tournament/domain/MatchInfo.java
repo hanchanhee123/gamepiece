@@ -12,6 +12,8 @@ import lombok.Data;
 					   "replayVideoId",
 					   "matchPredictable",
 					   "matchTalk",
+					   "chzzkLiveLinked",
+					   "chzzkChannelId",
 					   "esportsLoungeId",
 					   "videos",
 					   "teamMatch",

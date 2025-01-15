@@ -156,6 +156,21 @@
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
+	<select id="findhistory" resultMap="pointshopResultMap" parameterType="Pageable">
+		SELECT 
+			pl.psl_used_point,
+			ps.ps_nm,
+			pc.cate_nm,
+			ps.img_url
+		FROM 
+			pointshop_logs pl INNER JOIN point_shop ps
+			ON pl.ps_cd = ps.ps_cd INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			id=#{id};
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
 	<select id="getavatarCount" resultType="int">
 		/* 아이템 갯수 총 행의 갯수*/
 		SELECT
@@ -215,6 +230,15 @@
 			pc.cate_nm='이모티콘'
 			AND
 			ps.is_delete='active';
+	</select>
+	
+	<select id="gethistoryCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			pointshop_logs pl 
+		WHERE
+			id=#{id};
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">
