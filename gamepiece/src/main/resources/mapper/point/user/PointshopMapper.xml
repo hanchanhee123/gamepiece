@@ -156,8 +156,27 @@
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
-	<select id="findhistory" resultMap="pointshopResultMap" parameterType="Pageable">
+	<select id="gethistoryCount" resultType="int">
 		SELECT 
+			COUNT(*)
+		FROM 
+			pointshop_logs pl 
+		WHERE
+			pl.id=#{id};
+	</select>
+	
+	<select id="purchaseList" resultMap="pointShopLog">
+		SELECT 
+			ps_cd
+		FROM 
+			pointshop_logs
+		WHERE
+			id=#{id};
+	</select>
+	
+	<select id="findhistory" resultMap="pointshopResultMap" parameterType="Pageable">
+		SELECT
+			ps.ps_cd,
 			pl.psl_used_point,
 			ps.ps_nm,
 			pc.cate_nm,
@@ -167,7 +186,7 @@
 			ON pl.ps_cd = ps.ps_cd INNER JOIN pointshop_categories pc
 			ON ps.ps_cate_cd = pc.cate_cd
 		WHERE
-			id=#{id};
+			pl.id=#{id};
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
@@ -215,7 +234,7 @@
 			point_shop ps INNER JOIN pointshop_categories pc
 			ON ps.ps_cate_cd = pc.cate_cd
 		WHERE
-			pc.cate_nm='아바타액자'
+			pc.cate_nm='아바타 액자'
 			AND
 			ps.is_delete='active';
 	</select>
@@ -230,15 +249,6 @@
 			pc.cate_nm='이모티콘'
 			AND
 			ps.is_delete='active';
-	</select>
-	
-	<select id="gethistoryCount" resultType="int">
-		SELECT 
-			COUNT(*)
-		FROM 
-			pointshop_logs pl 
-		WHERE
-			id=#{id};
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">

@@ -29,6 +29,8 @@ public interface PointShopService {
 	
 	Point pointInfo(String itemCd);
 	
+	List<PointShopLog> purchaseList(String id);
+	
 	// 아이템 전체 조회
 	List<Point> findAll();
 	
