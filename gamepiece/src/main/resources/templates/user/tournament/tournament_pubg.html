@@ -476,7 +476,7 @@
 							});
 							
 							const $tdRank = (`<div class="col">${item.rank}</div>`);
-							const $tdTeam = (`<div class="col col-5">${item.teamDisplayTitle}</div>`);
+							const $tdTeam = (`<div class="col col-5 text-start">${item.teamDisplayTitle}</div>`);
 							const $tdTotal = (`<div class="col">${item.total}</div>`);
 							const $tdPlace = (`<div class="col">${item.place}</div>`);
 							const $tdKill = (`<div class="col">${item.kill}</div>`);
@@ -488,8 +488,10 @@
 						});
 						
 						$modalBody.append($container);
+						$modalBody.attr('style','height: 60vh;')
 					}else{
 						$modalBody.append('<span>경기결과가 없습니다.</span>');
+						$modalBody.attr('style','height: 30vh;')
 					}
 				});
 				request.fail(function(jQXHR, textStatus, error){
