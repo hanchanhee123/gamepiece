@@ -23,6 +23,7 @@ import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.user.board.service.BoardService;
+import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 
 	private final BoardService boardService;
+	private final UserService userService;
 
 	/*  
 	 * 
