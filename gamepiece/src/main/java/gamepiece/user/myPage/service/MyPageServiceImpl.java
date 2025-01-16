@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gamepiece.common.mapper.CommonMapper;
 import gamepiece.user.board.domain.Board;
+import gamepiece.user.board.domain.Inquiry;
+import gamepiece.user.event.domain.Event;
 import gamepiece.user.myPage.domain.MyPage;
 import gamepiece.user.myPage.mapper.MyPageMapper;
 import gamepiece.user.pointShop.domain.Point;
@@ -89,6 +91,20 @@ public class MyPageServiceImpl implements MyPageService {
 	public List<Board> myPageBoard(String id) {
 
 		return myPageMapper.myPageBoard(id);
+	}
+	
+	// 마이페이지 - 내 문의글
+	@Override
+	public List<Inquiry> myPageInquiry(String id) {
+
+		return myPageMapper.myPageInquiry(id);
+	}
+	
+	// 참여한 이벤트
+	@Override
+	public List<Event> myPageEvent(String id) {
+
+		return myPageMapper.myPageEvent(id);
 	}
 	
 	// 마이페이지 - 내 게시글에 대한 댓글 수

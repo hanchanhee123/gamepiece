@@ -102,11 +102,18 @@ public class UserServiceImpl implements UserService {
 		return userMapper.findUserPswdPro(id, userNm, userEmlAddr, userTelno);
 	}
 	
-	// 개인 정보 수정
+	// 회원 정보 수정
 	@Override
-	public void modifyUserInfo(User user) {
+	public void modifyUser(User user) {
 		
-		userMapper.modifyUserInfo(user);
+		userMapper.modifyUser(user);
+	}
+	
+	// 회원 탈퇴
+	@Override
+	public void removeUser(String id) {
+
+		userMapper.removeUser(id);
 	}
 	
 	// 아바타

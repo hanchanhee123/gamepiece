@@ -16,6 +16,7 @@
 		<result column="user_telno" property="userTelno"/>
 		<result column="user_nn" property="userNn"/>
 		<result column="join_ymd" property="joinYmd"/>
+		<result column="is_delete" property="isDelete"/>
 	</resultMap>
 	
 	<resultMap type="gamepiece.user.user.domain.Login" id="loginMap">
@@ -51,7 +52,9 @@
 		FROM
 			user
 		WHERE
-			id = #{id};
+			id = #{id}
+			AND
+			is_delete = 'active';
 	</select>
 	
 	<!-- 회원가입 -->
@@ -171,7 +174,9 @@
 			AND
 			user_eml_addr = #{userEmlAddr}
 			AND
-			user_telno = #{userTelno};
+			user_telno = #{userTelno}
+			AND
+			is_delete = 'active';
     </select>
     
     <!-- 비밀번호 찾기 로직 -->
@@ -187,11 +192,13 @@
 			AND
 			user_eml_addr = #{userEmlAddr}
 			AND
-			user_telno = #{userTelno};
+			user_telno = #{userTelno}
+			AND
+			is_delete = 'active';
     </select>
     
     <!-- 개인 정보 수정 -->
-	<update id="modifyUserInfo" parameterType="gamepiece.user.user.domain.User">
+	<update id="modifyUser" parameterType="gamepiece.user.user.domain.User">
 		UPDATE user
 		<set>
 			<if test="userPswd != null and userPswd != ''">
@@ -210,6 +217,15 @@
 				user_nn = #{userNn}
 			</if>
 		</set>
+		WHERE
+			id = #{id};
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="removeUser" parameterType="gamepiece.user.user.domain.User">
+		UPDATE user
+		SET
+			is_delete = 'delete'
 		WHERE
 			id = #{id};
 	</update>
