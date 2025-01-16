@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.user.event.domain.Event;
 import gamepiece.user.event.service.EventService;
@@ -117,13 +118,14 @@ public class EventController {
 	}
 	
 	@GetMapping("/eventDetail")
-	public String eventDetail(@RequestParam("evCd") String evCd, Model model, HttpSession session) {
+	public String eventDetail(@RequestParam("evCd") String evCd, String evStatus, Model model, HttpSession session) {
 		String loginId = (String)session.getAttribute("SID");
 		
 		List<Event> eventDetail = eventService.eventDetail(evCd);
 		
 		model.addAttribute("eventDetail", eventDetail);
 		model.addAttribute("loginId", loginId);
+		model.addAttribute("status", evStatus);
 		
 		return "user/event/eventDetail";
 	}
@@ -143,4 +145,18 @@ public class EventController {
 		
 		return getParticipations;
 	}
+	
+	@GetMapping("/insertParticipant")
+	public String insertParticipant(Event event, Model model, RedirectAttributes reAttr) {
+		
+		eventService.insertParticipant(event);
+		
+		
+		reAttr.addAttribute("evCd", event.getEvCd());
+		reAttr.addAttribute("evStatus", event.getEvStatus());
+		
+		System.out.println(reAttr);
+		return "redirect:/event/eventDetail";
+	}
+	
 }

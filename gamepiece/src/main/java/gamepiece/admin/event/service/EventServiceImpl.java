@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.catalina.util.ParameterMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -147,6 +148,28 @@ public class EventServiceImpl implements EventService {
 	public void removeEventWinnerList(String evCd) {
 
 		eventMapper.removeEventWinnerList(evCd);
+	}
+
+	@Override
+	public List<Event> selectEventWinners(String evCd, int evWinnersNum) {
+		
+		return eventMapper.selectEventWinners(evCd, evWinnersNum);
+	}
+
+	@Override
+	public void updateWinners(Event event) {
+
+		eventMapper.updateWinners(event);
+	}
+
+	@Override
+	public int countWinner(String evCd, int evWinnersNum) {
+		
+		Map<String, Object> resultMap = new ParameterMap<String, Object>();
+		resultMap.put("evCd", evCd);
+		resultMap.put("evWinnersNum", evWinnersNum);		
+		
+		return eventMapper.countWinner(resultMap);
 	}
 
 
