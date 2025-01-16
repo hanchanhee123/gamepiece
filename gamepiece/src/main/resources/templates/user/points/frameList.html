@@ -14,9 +14,9 @@
                 <li class="pointshop-cate"><a th:href="@{/point/background}">배경프로필</a></li>
                 <li class="pointshop-cate"><a th:href="@{/point/frame}"  class="text-primary">아바타액자</a></li>
                 <li class="pointshop-cate"><a th:href="@{/point/etc}">기타</a></li>
-                <li class="pointshop-cate"><a th:href="@{/point/history}">구매내역</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/history}" th:if="${userId != null}">구매내역</a></li>
             </ul>
-        <div class="pointshop-Hd">
+        <div class="pointshop-Hd" th:if="${userId != null}">
             <div class="pointshop-top">
                 <div>
                     
@@ -74,7 +74,7 @@
 		            <div class="modal-header">
 		            	<div class="modal-top">
 			                <h1 class="modal-title fs-5" id="modal-name">아이템 이름</h1>
-			                <p>보유 포인트: <span class="point" th:text="${userPoint}"></span> Point</p>
+			                <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span> Point</p>
 		                </div>
 		                <p id="modal-cate"></p>
 		            </div>
@@ -86,7 +86,12 @@
 		                <p>이 아이템은 환불할 수 없습니다.</p>
 		            </div>
 		            <div class="modal-footer">
-		                <button class="btn btn-primary point-order-Btn">구매하기</button>
+		                <th:block th:if="${userId != null}">
+		                	<button class="btn btn-primary point-order-Btn">구매하기</button>
+		                </th:block>
+		            	<th:block th:unless="${userId != null}">
+		                	<button class="btn btn-secondary point-order-Btn disabled">로그인 후 구매가 가능합니다.</button>
+		                </th:block>
 		                <button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
 		            </div>
 		        </div>

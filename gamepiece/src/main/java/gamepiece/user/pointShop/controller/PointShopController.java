@@ -70,7 +70,10 @@ public class PointShopController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		var userPoint = pointshopService.getPointsHeld(userId);
-		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		if(userId != null) {
+			model.addAttribute("userPoint", userPoint.getTotalPoint());
+		}
 		
 		return "user/points/pointHistory";
 	}
@@ -92,7 +95,10 @@ public class PointShopController {
 		model.addAttribute("imoticonendPageNum", imoticonendPageNum);
 		model.addAttribute("imoticonlastPage", imoticonlastPage);
 		var userPoint = pointshopService.getPointsHeld(userId);
-		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		if(userId != null) {
+			model.addAttribute("userPoint", userPoint.getTotalPoint());
+		}
 
 		
 		return "user/points/imoticonList";
@@ -115,7 +121,10 @@ public class PointShopController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		var userPoint = pointshopService.getPointsHeld(userId);
-		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		if(userId != null) {
+			model.addAttribute("userPoint", userPoint.getTotalPoint());
+		}
 		
 		
 		return "user/points/avatarList";
@@ -138,7 +147,10 @@ public class PointShopController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		var userPoint = pointshopService.getPointsHeld(userId);
-		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		if(userId != null) {
+			model.addAttribute("userPoint", userPoint.getTotalPoint());
+		}
 		
 		
 		return "user/points/frameList";
@@ -161,7 +173,10 @@ public class PointShopController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		var userPoint = pointshopService.getPointsHeld(userId);
-		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		if(userId != null) {
+			model.addAttribute("userPoint", userPoint.getTotalPoint());
+		}
 		
 		
 		return "user/points/etcList";
@@ -184,7 +199,10 @@ public class PointShopController {
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 		var userPoint = pointshopService.getPointsHeld(userId);
-		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		if(userId != null) {
+			model.addAttribute("userPoint", userPoint.getTotalPoint());
+		}
 		
 		return "user/points/backgroundList";
 	}
@@ -236,7 +254,10 @@ public class PointShopController {
 		
 		
 		var userPoint = pointshopService.getPointsHeld(userId);
-		model.addAttribute("userPoint", userPoint.getTotalPoint());
+		
+		if(userId != null) {
+			model.addAttribute("userPoint", userPoint.getTotalPoint());
+		}
 		
 		
 		return "user/points/pointshopList";
