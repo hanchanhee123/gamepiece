@@ -23,19 +23,22 @@
 			            <button type="button" class="search-button"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
 			        </div>
 			        <div class="card-body">
-			        	<div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
-					       <th:block th:each="l : ${gameList.games}">
-						        <div class="col">
-						        	<div class="game-info">
-						                <img th:src="${l.urlSrc}">
-						                <p class="game-name" th:text="${l.title}"></p>
-						                <p class="game-price" th:text="${l.finalPrice}"></p>
-						            </div>
-						        </div>
-					        </th:block>
-					        
-			        	</div>
-			        	</div>
+			        	<a th:href="@{/game/steamDetail}">
+				        	<div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+						       <th:block th:each="l : ${gameList.games}">
+							        <div class="col">
+							        	<div class="game-info">
+							                <img th:src="${l.urlSrc}">
+							                <p class="game-name" th:text="${l.title}"></p>
+							                <p class="game-price" th:text="${l.finalPrice}"></p>
+							                <input type="hidden" th:value="${l.gameCode}" readOnly/>
+							            </div>
+							        </div>
+						        </th:block>
+				        	</div>
+			        	</a>
+			        </div>
+			        	
 			        </div>
 			        <div class="pagination-area mt-15 mb-50">
 			            <nav>
