@@ -2,19 +2,25 @@ package gamepiece.user.board.service;
 
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gamepiece.user.board.domain.Board;
+import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
+import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.user.board.mapper.AllBoardMapper;
 import gamepiece.user.board.mapper.AttackBoardMapper;
+import gamepiece.user.board.mapper.BoardCommentMapper;
 import gamepiece.user.board.mapper.FreeBoardMapper;
 import gamepiece.user.board.mapper.InfoBoardMapper;
 import gamepiece.user.board.mapper.InquiryMapper;
+import gamepiece.user.board.mapper.InquiryResponeMapper;
 import gamepiece.user.board.mapper.NoticeMapper;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -33,7 +39,8 @@ public class BoardServiceImpl implements BoardService{
 	private final NoticeMapper noticeMapper;
 	private final InquiryMapper inquiryMapper;
 	private final AllBoardMapper allBoardMapper;
-	
+	private final BoardCommentMapper boardCommentMapper;
+	private final InquiryResponeMapper inquiryResponeMapper;
 	
 	
 	@Override
@@ -197,8 +204,63 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		return allBoardMapper.getBoardInfo(boardNum);
 	}
+
+
+
+	@Override
+	public PageInfo<BoardComment> getBoardCommentInfo(String boardNum, Pageable pageable) {
+	    // 페이징을 위한 파라미터 Map
+	    Map<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("boardNum", boardNum);
+	    paramMap.put("offset", pageable.getOffset());
+	    paramMap.put("rowPerPage", pageable.getRowPerPage());
+
+	    // 댓글 목록 조회
+	    List<BoardComment> commentList = boardCommentMapper.getBoardCommentInfo(paramMap);
+
+	    // 댓글 수 조회를 위한 Map
+	    Map<String, Object> searchMap = new HashMap<>();
+	    searchMap.put("boardNum", boardNum);
+	    int rowCnt = boardCommentMapper.getCntBoardComment(searchMap);
+
+	    return new PageInfo<>(commentList, pageable, rowCnt);
+	}
+
+
+
+	@Override
+	public int addComment(BoardComment boardComment) {
+		// TODO Auto-generated method stub
 	
-	
+		int result = boardCommentMapper.addComment(boardComment);
+		
+		return result;
+		
+	}
+
+
+
+	@Override
+	public Notice getNoticeInfo(int noticeNum) {
+		// TODO Auto-generated method stub
+		return noticeMapper.getNoticeInfo(noticeNum);
+	}
+
+
+
+	@Override
+	public Inquiry getInquiryInfo(String inquiryNum) {
+		// TODO Auto-generated method stub
+		return inquiryMapper.getInquiryInfo(inquiryNum);
+	}
+
+
+
+	@Override
+	public InquiryRespone getInquiryResponeInfo(String inquiryNum) {
+		// TODO Auto-generated method stub
+		return inquiryResponeMapper.getInquiryResponeInfo(inquiryNum);
+	}
 	
 
 	}

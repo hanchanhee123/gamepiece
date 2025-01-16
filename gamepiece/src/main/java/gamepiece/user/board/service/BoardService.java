@@ -1,10 +1,10 @@
 package gamepiece.user.board.service;
 
 
-
-
 import gamepiece.user.board.domain.Board;
+import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
+import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -12,6 +12,23 @@ import gamepiece.util.Pageable;
 public interface BoardService {
 	
 	
+	
+	
+	//문의답변 확인
+	InquiryRespone getInquiryResponeInfo(String inquiryNum);
+	
+	//문의게시물 상세
+	Inquiry getInquiryInfo(String inquiryNum);
+	
+
+	//공지글 상세
+	Notice getNoticeInfo(int noticeNum);
+	
+	//덧글작성
+	 int addComment(BoardComment boardComment);
+	
+	   //특정 게시물 덧글 조회 (페이징 처리)
+	   PageInfo<BoardComment> getBoardCommentInfo(String boardNum, Pageable pageable);
 	
 	//특정게시물조회
 	Board getBoardInfo(String boardNum);

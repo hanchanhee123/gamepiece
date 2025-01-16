@@ -110,7 +110,7 @@ SELECT
 	   USING (inquiry_id)
 	WHERE
 	  	i.is_delete = 'active'
-
+ LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 
 
@@ -129,14 +129,7 @@ SELECT
 			next_num FROM inquiry
 			) AS temp
 			), 1), 2, '0')),
-			
-			
-			CONCAT('id', LPAD((
-            SELECT next_num FROM (
-                SELECT MAX(CAST(SUBSTRING_INDEX(id, 'id', -1) AS UNSIGNED)) + 1 AS next_num 
-                FROM inquiry
-            ) AS temp
-        ), 2, '0')),
+			#{inquiryUserId},
 			#{inquiryTitle},
 			#{inquiryContent},
 			CURDATE()
@@ -146,20 +139,30 @@ SELECT
 
 
 
-<!-- 	
-
-
-	<select id="getInquiryInfo" parameterType="string" resultMap="InquiryResultMap">
+		<select id="getInquiryInfo" parameterType="string" resultMap="InquiryResultMap">
+	
 	SELECT
-	i.inquiry_id,
-	i.inquiry_title,
-	i.inquiry_content
+			i.inquiry_id,
+			u.user_nn,
+			i.inquiry_title,
+			i.inquiry_content
 	FROM
-		inquiry i 
+		inquiry i INNER JOIN user u
+		ON i.id = u.id
+
 	WHERE
 		inquiry_id =#{inquiryNum};
 
-	</select> -->
+	</select> 
+
+
+<!-- 	
+
+
+	
+	
+	
+	-->
 
 
 

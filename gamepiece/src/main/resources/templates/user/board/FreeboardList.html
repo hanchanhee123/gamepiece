@@ -24,12 +24,13 @@
                     <input type="text" class="item-search"/>
                     <i class="bi bi-search"></i>
                 </div>
-                <div class = "board-make">
-                    <button class="button" onclick="location.href='/board/write';">게시물 생성</button>
-            </div>
+             <div class="board-make">
+   <button class="button" th:if="${session.SID != null}" onclick="location.href='/board/write';">게시물 작성</button>
+   <button class="button" th:unless="${session.SID != null}" onclick="checkLogin();">게시물 작성</button>
+</div>
             </div>
             
-            <table class="table">
+               <table class="table table-hover">
                 <thead>
                 <tr class="header">
                     <th class="num"><span>번호</span></th>
@@ -46,7 +47,12 @@
                                <tr th:each="l : ${freeBoardList}">
                                         
                                        <td th:text="${l.boardNum}"></td>
-                                       <td th:text="${l.boardTitle}"></td>
+                                      <td id="boardTitle">
+									    <a th:href="@{/board/detail(boardNum=${'bbs_' + #numbers.formatInteger(l.boardNum, 2)})}" 
+									       th:text="${l.boardTitle}" 
+									       style="text-decoration: none; color: inherit; cursor: pointer;">
+									    </a>
+									</td>
                                        <td th:text="${l.boardViewCnt}"></td>
                                   <td th:text="${l.boardLikeCnt}"></td>
 									<td th:text="${l.boardDisLikeCnt}"></td>
@@ -126,6 +132,14 @@
 <th:block layout:fragment="customJs">
     <script>
 
+    function checkLogin() {
+ 	   alert('로그인 후 작성 가능합니다');
+ 	   window.location.href = '/login';
+ 	}
+ 
+ 
+ 
+    
 window.addEventListener('load', function() {
     const memberMenu = document.getElementById('memberMenu');
     const members = document.querySelectorAll('.member');

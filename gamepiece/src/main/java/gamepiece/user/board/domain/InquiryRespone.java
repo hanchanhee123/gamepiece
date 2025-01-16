@@ -1,5 +1,6 @@
 package gamepiece.user.board.domain;
 
+import gamepiece.user.user.domain.User;
 import lombok.Data;
 
 @Data
@@ -11,6 +12,7 @@ public class InquiryRespone {
 	private String responeContent; //답변내용
 	private String responeYmd; //답변일
 	private String adminId; //담당자id
+	private User userInfo;
 	
 
 }
