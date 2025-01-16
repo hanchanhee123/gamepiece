@@ -159,10 +159,10 @@
 	<select id="gethistoryCount" resultType="int">
 		SELECT 
 			COUNT(*)
-		FROM 
+		FROM
 			pointshop_logs pl 
 		WHERE
-			pl.id=#{id};
+			id=#{id};
 	</select>
 	
 	<select id="purchaseList" resultMap="pointShopLog">
@@ -185,8 +185,6 @@
 			pointshop_logs pl INNER JOIN point_shop ps
 			ON pl.ps_cd = ps.ps_cd INNER JOIN pointshop_categories pc
 			ON ps.ps_cate_cd = pc.cate_cd
-		WHERE
-			pl.id=#{id};
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
