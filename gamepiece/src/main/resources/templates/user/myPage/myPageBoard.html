@@ -156,8 +156,14 @@
     <th:block layout:fragment="customJsResource"></th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-    	<script>
+    	<script th:inline="javascript">
+    		const $mypageBoardContent = $('.mypage-board-content');
+    		const borderContent = /*[[${myPageBoard}]]*/"";
+    		console.log(borderContent);
     		
+    		$($mypageBoardContent).each((idx, content) => {
+    			$(content).html(borderContent[idx].boardContent);
+    		});
     	</script>
     </th:block>
             
