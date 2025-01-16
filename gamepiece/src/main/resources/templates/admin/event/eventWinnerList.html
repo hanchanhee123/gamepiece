@@ -9,7 +9,7 @@
           <h2 class="content-title card-title" th:text="${title}"></h2>
       </div>
       <div> 
-          <a th:href="@{/admin/event/addEvent}" class="btn btn-primary btn-sm rounded">이벤트 추가</a>
+          <a th:href="@{/admin/event/addEventWinnerList}" class="btn btn-primary btn-sm rounded">이벤트 당첨자 리스트 추가</a>
       </div>
   </div>
   </th:block>
@@ -20,7 +20,7 @@
       <header class="card-header">
       <div class="col-lg-2 col-md-3 col-6">
 						<select class="form-select" name="searchCate" id="searchCate">
-							<option value="name" th:selected="${'name' eq searchCate}">이벤트명</option>  
+							<option value="name" th:selected="${'name' eq searchCate}">이벤트당첨자리스트명</option>  
 							<!-- <option value="name" th:selected="${'name' eq searchCate}">회원이름</option>
 							<option value="grade" th:selected="${'grade' eq searchCate}">회원등급</option>
 							<option value="email" th:selected="${'email' eq searchCate}">회원이메일</option> -->
@@ -42,30 +42,24 @@
       <table class="table table-hover" style="text-align: center;">
       	<thead>
       		<tr>
-      			<th>이벤트코드</th>
-      			<th width="40%">이벤트명</th>
-      			<th>이벤트시작날짜</th>
-      			<th>이벤트종료날짜</th>      			
-      			<th>상태</th>      			
-      			<th>당첨자</th>
+      			<th>당첨자리스트코드</th>
+      			<th width="40%">이벤트당첨자리스트명</th> 
+      			<th>작성일자</th>    					
       			<th>상세</th>
       			<th>수정</th>      			
-      			<th>삭제</th>      			
+      			<th>삭제</th>    			
       			
       		</tr>
       	</thead>
       	<tbody>
-      		<tr th:if="${eventList != null}"
-				th:each="eventList :${eventList}">
-      			<td th:text="${eventList.evCd}"></td>
-      			<td th:text="${eventList.evNm}"></td>
-      			<td th:text="${eventList.evStartYmd}"></td>
-      			<td th:text="${eventList.evEndYmd}"></td>		
-      			<td th:text="${eventList.evStatus}"></td>           			
-      			<td><a th:if="${eventList.evStatus == '종료'}" th:href="@{/admin/event/eventWinner(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 당첨자 </a></td> 			
-      			<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
-      			<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
-      			<td><a th:href="@{/admin/event/remove(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td> 			
+      		<tr th:if="${eventWinnerList != null}"
+				th:each="add :${eventWinnerList}">
+      			<td th:text="${add.ewCd}"></td>
+      			<td th:text="${add.ewNm}"></td>
+      			<td th:text="${add.regYmd}"></td>     			
+      			<td><a th:href="@{/admin/event/eventWinnerListDetail(evCd=${add.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
+      			<td><a th:href="@{/admin/event/modifyEventWinnerList(evCd=${add.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+      			<td><a th:href="@{/admin/event/removeEventWinnerList(evCd=${add.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td>
       		</tr>
       	</tbody>
       </table>
@@ -81,32 +75,32 @@
                 <ul class="pagination justify-content-center">
                 	<li class="page-item">
                 		<a class="page-link " 
-                			th:href="@{/admin/event/eventList}">
+                			th:href="@{/admin/event/eventWinnerList}">
                 			<i class="material-icons md-first_page">
                 			</i>
                 		</a>
                 	</li>
                 	<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
                 		<a class="page-link " 
-                			th:href="@{/admin/event/eventList(currentPage=${currentPage - 1})}">
+                			th:href="@{/admin/event/eventWinnerList(currentPage=${currentPage - 1})}">
                 			<i class="material-icons md-chevron_left">
                 			</i>
                 		</a>
                 	</li>
                 	<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
                     	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-                    		<a class="page-link" th:href="@{/admin/event/eventList(currentPage=${num})}" th:text="${num}"></a>
+                    		<a class="page-link" th:href="@{/admin/event/eventWinnerList(currentPage=${num})}" th:text="${num}"></a>
                     	</li>
                     </th:block>
                     <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
                         <a class="page-link" 
-                        	th:href="@{/admin/event/eventList(currentPage=${currentPage + 1})}">
+                        	th:href="@{/admin/event/eventWinnerList(currentPage=${currentPage + 1})}">
                         	<i class="material-icons md-chevron_right"></i>
                         </a>
                     </li>
                     <li class="page-item">
                 		<a class="page-link " 
-                			th:href="@{/admin/event/eventList(currentPage=${lastPage})}">
+                			th:href="@{/admin/event/eventWinnerList(currentPage=${lastPage})}">
                 			<i class="material-icons md-last_page">
                 			</i>
                 		</a>

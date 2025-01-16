@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link th:href="@{/assets/css/event/eventDetail.css}" rel="stylesheet" type="text/css">
+</head>
+
+	<th:block layout:fragment="contents-header">  
+		<div class="main-div">
+		    <div class="detail-cate">
+		        <a th:href="@{/event/progressEvent}" class="item-active active">진행중 이벤트</a>
+	            <a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
+	            <a th:href="@{/event/winnerList}" class="item-active">당첨자 발표</a>
+	    	</div>
+	    </div>
+	</th:block>
+	<th:block layout:fragment="contents-body" th:if="${eventDetail != null}">
+	    <th:block th:each="ed : ${eventDetail}"> 
+			<div class="main-div">
+			    <div class="event-detail">
+					<div class="img">
+					    <img th:src="@{|/assets/imgs/event/${ed.evImg}|}">
+					</div>
+					<div class="name">
+					     <span th:text="${ed.evNm}"></span>
+					</div>
+					<div class="contents">
+					        <span th:text="${ed.evContents}"></span>
+					</div>
+					<div class="date">
+					    <strong>이벤트기간</strong>
+					        <div>
+					            <span th:text="${ed.evStartYmd}"></span>
+					            <span>~</span>
+					            <span th:text="${ed.evEndYmd}"></span>
+					        </div>
+					</div>
+					<div class="winnersNum">
+						<strong>당첨 인원 : </strong>
+					    <span th:text="${ed.evWinnersNum}"></span>
+					</div>
+					<div class="button">
+					    <button class="w-btn w-btn-indigo" id="participate-btn" type="button" th:data-event-cd="${ed.evCd}">이벤트 참여</button>
+					</div>
+			    </div>
+			</div>
+		</th:block>
+	</th:block>
+	<th:block layout:fragment="customJs">
+		<script th:inline="javascript">
+		$('#participate-btn').click(function () {
+		    const eventCd = $('#participate-btn').data('eventCd'); // 이벤트 코드 값을 가져옴 (숨겨진 input에서)
+		    const loginId = /*[[${loginId}]]*/"";
+		    console.log(eventCd);
+		    
+		    $.ajax({
+		        url: '/event/eventDetail',
+		        method: 'post',
+		        data: { 'evCd': eventCd },
+		        dataType: 'text',
+
+		        success: function (response) {
+		            // 성공 시 처리 (이벤트 참여 성공)
+		            console.log(response);
+		            if(loginId == null){
+		            	alert('로그인 후 사용해주세요.');
+		            	return false;
+		            }
+		            
+		            if(response > 0){
+		                alert('이미 이벤트에 참여하셨습니다.');			            	            	
+		            } else {
+		            	
+		            	alert('이벤트에 참여하셨습니다.');
+		            }
+		        },
+		        error: function (jQXHR, textStatus, error) {
+		        	console.log(error);
+		        	alert('오류가 발생했습니다. 다시 시도해주세요.');
+		            // 에러 응답 처리
+		        }
+		    });
+		});
+		</script>
+	</th:block>
+</html>

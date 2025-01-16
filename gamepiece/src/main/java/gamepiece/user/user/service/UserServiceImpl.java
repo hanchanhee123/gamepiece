@@ -50,9 +50,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void loginLog(String sid) {
 		
+		// 로그인 로그 삽입
 		String loginNo = commonMapper.getPrimaryKey("login_", "user_login_log", "login_no");
 		System.out.println("user_login_log 생성된 기본키 : " + loginNo);
-		userMapper.addloginLog(loginNo, sid);
+		userMapper.addLoginLog(loginNo, sid);
+		
+		// 로그인 포인트 지급
+		String pointNo = commonMapper.getPrimaryKey("pn_", "point_log", "point_no");
+		System.out.println("point_log 생성된 기본키 : " + pointNo);
+		userMapper.addLoginPointLog(pointNo, sid);
 	}
 	
 	// 로그인 로그 업데이트
@@ -67,6 +73,12 @@ public class UserServiceImpl implements UserService {
 	public void addUser(User user) {
 		
 		userMapper.addUser(user);
+		
+		String pointNo = commonMapper.getPrimaryKey("pn_", "point_log", "point_no");
+		System.out.println("point_log 생성된 기본키 : " + pointNo);
+		
+		// 회원가입 포인트 지급
+		userMapper.addUserPointLog(pointNo, user.getId());
 	}
 	
 	// 중복 아이디 체크
@@ -95,6 +107,20 @@ public class UserServiceImpl implements UserService {
 	public void modifyUserInfo(User user) {
 		
 		userMapper.modifyUserInfo(user);
+	}
+	
+	// 아바타
+	@Override
+	public String getUserAvatar(String id) {
+
+		return userMapper.getUserAvatar(id);
+	}
+	
+	// 아바타액자
+	@Override
+	public String getUserAvatarFrame(String id) {
+
+		return userMapper.getUserAvatarFrame(id);
 	}
 
 }

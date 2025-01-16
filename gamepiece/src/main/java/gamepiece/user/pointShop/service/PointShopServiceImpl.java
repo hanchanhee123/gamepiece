@@ -24,6 +24,19 @@ import lombok.extern.slf4j.Slf4j;
 public class PointShopServiceImpl implements PointShopService{
 	private final UserPointShopMapper userpointshopMapper;
 	
+	@Override
+	public List<PointShopLog> purchaseList(String id) {
+		List<PointShopLog> purchaseList = userpointshopMapper.purchaseList(id);
+		
+		return purchaseList;
+	}
+	
+	@Override
+	public PageInfo<Point> findhistory(Pageable pageable) {
+		int rowCnt = userpointshopMapper.gethistoryCount();
+		List<Point> historyList = userpointshopMapper.findhistory(pageable);
+		return new PageInfo<>(historyList, pageable, rowCnt);
+	}
 	
 	@Override
 	public PointLog addPointLog(String id, String itemName, int itemPrice) {

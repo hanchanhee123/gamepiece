@@ -26,4 +26,21 @@ public class UserGame {
 	private String regYmd;
 	private String isDelete;
 	
+	
+	private String urlSrc;
+	private String title;
+	private String released;
+	private String finalPrice;
+	private String disCountPrice;
+	private String originalPrice;
+	private String searchResult;
+	
+	private int currentPage;
+	private int lastPage;
+	private double totalAmount;
+	private int startPageNum;
+	private int endPageNum;
+	
+	private String searchValue;
+	
 }

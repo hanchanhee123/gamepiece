@@ -19,4 +19,9 @@ public interface EventService {
 	List<Event> getEventWinner(String evCd);
 	
 	List<Event> getWinnerInfoByEvCd(String evCd);
+
+	List<Event> eventDetail(String evCd);
+
+	int getParticipations(String evCd, String loginId);
+
 }

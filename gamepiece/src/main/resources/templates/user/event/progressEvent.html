@@ -26,7 +26,7 @@
                         <!-- 진행 중인 이벤트만 표시 -->
                         <li class="event" th:if="${event.evStatus == '진행중'}">
                             <div class="list-thumb">
-                                <img th:src="@{|/assets/imgs/event/${event.evImg}|}" alt="Event Thumbnail">
+                                <img th:onclick="|location.href='@{/event/eventDetail(evCd=${event.evCd})}'|" th:src="@{|/assets/imgs/event/${event.evImg}|}" alt="Event Thumbnail">
                             </div>
                             <div class="list-contents">
                                 <div class="list-con">

@@ -88,5 +88,66 @@ public class EventServiceImpl implements EventService {
 		List<Event> eventList = eventMapper.getSearchList(searchMap);
 		
 		return new PageInfo<>(eventList, pageable, rowCnt);
-	}	
+	}
+
+	@Override
+	public PageInfo<Event> getEventWinnerList(Pageable pageable) {
+	
+		int rowCnt = eventMapper.getCntEventList();
+		List<Event> eventList = eventMapper.getEventWinnerList(pageable); 
+		return new PageInfo<>(eventList, pageable, rowCnt);
+	}
+
+	/*
+	 * @Override public void addEventWinnerList(String evCd, Event event) {
+	 * 
+	 * event.setAdminId("id01"); eventMapper.addEventWinnerList(evCd, event); }
+	 */
+
+	@Override
+	public List<Event> getEventsList() {
+		
+		
+		return eventMapper.getEventsList();
+	}
+
+	@Override
+	public void addEventWinnerList(Event event) {
+	
+		event.setAdminId("id01");
+		eventMapper.addEventWinnerList(event);
+		
+	}
+
+	@Override
+	public List<Event> getWinnerListInfo(String evCd) {
+		
+		return eventMapper.getWinnerListInfo(evCd);
+	}
+
+	@Override
+	public List<Event> EventWinnerListDetail(String evCd) {
+		
+		return eventMapper.EventWinnerListDetail(evCd);
+	}
+
+	@Override
+	public Event getEventWinnerListInfoInfoById(String evCd) {
+
+		return eventMapper.getEventWinnerListInfoInfoById(evCd);
+	}
+
+	@Override
+	public void modifyEventWinnerList(Event event) {
+
+		eventMapper.modifyEventWinnerList(event);	
+	}
+
+	@Override
+	public void removeEventWinnerList(String evCd) {
+
+		eventMapper.removeEventWinnerList(evCd);
+	}
+
+
 }

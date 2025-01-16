@@ -14,13 +14,19 @@ public interface UserMapper {
 	int findLoginLog(String id);
 
 	// 로그인 로그 삽입
-	void addloginLog(String loginNo, String id);
+	void addLoginLog(String loginNo, String id);
 	
 	// 로그인 로그 업데이트
 	void modifyLoginLog(String id);
 
+	// 로그인 포인트 지급
+	void addLoginPointLog(String pointNo, String id);
+	
 	// 회원가입
 	int addUser(User user);
+
+	// 회원가입 포인트 지급
+	void addUserPointLog(String pointNo, String id);
 
 	// 중복 아이디 체크
 	boolean checkId(String id);
@@ -33,5 +39,11 @@ public interface UserMapper {
 
 	// 개인 정보 수정
 	void modifyUserInfo(User user);
+
+	// 아바타
+	String getUserAvatar(String id);
+
+	// 아바타액자
+	String getUserAvatarFrame(String id);
 
 }

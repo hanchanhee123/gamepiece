@@ -9,7 +9,7 @@
 		<result column="ev_end_ymd"				property="evEndYmd" />
 		<result column="ev_winners_num" 		property="evWinnersNum" />
 		<result column="admin_id"	 			property="adminId" />
-		<result column="reg-ymd" 				property="regYmd" />
+		<result column="reg_ymd" 				property="regYmd" />
 		<result column="ev_img" 				property="evImg" />
 		<result column="evp_no" 				property="evpNo" />
 		<result column="id" 					property="id" />
@@ -17,6 +17,10 @@
 		<result column="ev_winner_yn" 			property="evWinnerYn" />
 		<result column="ev_status" 				property="evStatus" />
 		<result column="user_nn"				property="userNn"/>
+		<result column="ew_cd"					property="ewCd"/>
+		<result column="ew_nm"					property="ewNm"/>
+		
+		
 	</resultMap>
 	
 	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
@@ -36,6 +40,15 @@
 		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
 	
+	<!-- 이벤트당첨자리스트 삭제 -->
+	<update id="removeEventWinnerList" parameterType="gamepiece.admin.event.mapper.EventMapper">
+		UPDATE
+			events_winners
+		SET
+			is_delete = 'delete'
+		WHERE
+			ev_cd = #{evCd};
+	</update>
 	
 	<!-- 이벤트 삭제 -->
 	<update id="removeEvent" parameterType="gamepiece.admin.event.mapper.EventMapper">
@@ -77,6 +90,26 @@
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
+	<select id="getEventsList" parameterType="string" resultMap="eventResultMap">
+		SELECT
+			ev_nm, ev_cd
+		FROM
+			events
+		WHERE
+			is_delete='active';
+	</select>
+	
+	<select id="getEventWinnerList" parameterType="pageable" resultMap="eventResultMap">
+		SELECT
+		*
+		FROM
+			events_winners
+		WHERE
+			is_delete='active'
+		ORDER BY ev_cd DESC
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
 	<select id="getEventParticipant" parameterType="string" resultMap="eventResultMap">
 		SELECT
 			id
@@ -111,6 +144,21 @@
 		    #{adminId}, 
 		    CURDATE(), 
 		    #{evImg}
+		  );
+	</insert>
+	
+	<insert id="addEventWinnerList" parameterType="gamepiece.admin.event.domain.Event">
+		INSERT INTO events_winners
+		  (ew_cd, ev_cd, ew_nm, admin_id, reg_ymd)
+		VALUES 
+		  (	
+		    <![CDATA[(SELECT CONCAT('ew_', LPAD(IFNULL(MAX(SUBSTRING(ew.ew_cd, 4) + 1), 0), 
+		                          IF(LENGTH(MAX(SUBSTRING(ew.ew_cd, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(ew.ew_cd, 4) + 1))), '0')) ]]>
+		     FROM events_winners ew),
+		    #{evCd},
+		    #{ewNm}, 
+		    #{adminId}, 
+		    CURDATE()
 		  );
 	</insert>
 	
@@ -173,4 +221,61 @@
 			AND
 			ev_winner_yn='Y';		
 	</select>
+	
+	<select id="getWinnerListInfo" resultType="string">
+		SELECT
+			user_nn
+		FROM
+			event_participations inner JOIN user
+		USING
+			(id)
+		WHERE
+			ev_cd=#{evCd}
+			AND
+			ev_winner_yn='Y';		
+	</select>
+	
+	<select id="EventWinnerListDetail" parameterType="string" resultMap="eventResultMap">
+		SELECT
+			*
+		FROM
+			events_winners
+		WHERE
+			ev_cd=#{evCd};
+	</select>
+	
+	<select id="getEventWinnerListInfoInfoById" parameterType="String" resultMap="eventResultMap">
+		SELECT
+			*
+		FROM
+			events_winners
+		WHERE
+			ev_cd=#{evCd};
+	</select>
+	
+	<update id="modifyEventWinnerList" parameterType="gamepiece.admin.event.domain.Event">
+		UPDATE events_winners
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="ewNm != null and ewNm != ''">
+				ew_nm=#{ewNm},
+			</if>
+			<!-- <if test="evContents != null and evContents != ''">
+				ev_contents=#{evContents},
+			</if>		
+			<if test="evStartYmd != null and evStartYmd != ''">			
+				ev_start_ymd=#{evStartYmd},
+			</if>		
+			<if test="evEndYmd != null and evEndYmd != ''">		
+				ev_end_ymd=#{evEndYmd},
+			</if>		
+			<if test="evWinnersNum != null and evWinnersNum != ''">
+				ev_winners_num=#{evWinnersNum},
+			</if>		
+			<if test="evImg != null and evImg !=''">
+				ev_img=#{evImg}
+			</if>		 -->	
+		</trim>
+		WHERE 
+			ev_cd=#{evCd};
+	</update>
 </mapper>

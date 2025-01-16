@@ -23,4 +23,13 @@ public interface EventMapper {
 	void removeEvent(String evCd);
 	List<Event> getSearchList(Map<String, Object> searchMap);
 	int getSearchCntEventList(Map<String, Object> searchMap);
+	List<Event> getEventWinnerList(Pageable pageable);
+	/* int addEventWinnerList(String evCd, Event event); */
+	List<Event> getEventsList();
+	void addEventWinnerList(Event event);
+	List<Event> getWinnerListInfo(String evNm);
+	List<Event> EventWinnerListDetail(String evCd);
+	Event getEventWinnerListInfoInfoById(String evCd);
+	void modifyEventWinnerList(Event event);
+	void removeEventWinnerList(String evCd);
 }

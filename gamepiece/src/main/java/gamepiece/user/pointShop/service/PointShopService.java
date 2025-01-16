@@ -23,9 +23,13 @@ public interface PointShopService {
 	// 배경프로필 조회
 	PageInfo<Point> findbackground(Pageable pageable);
 	
+	PageInfo<Point> findhistory(Pageable pageable);
+	
 	PointLog getPointsHeld(String id);
 	
 	Point pointInfo(String itemCd);
+	
+	List<PointShopLog> purchaseList(String id);
 	
 	// 아이템 전체 조회
 	List<Point> findAll();

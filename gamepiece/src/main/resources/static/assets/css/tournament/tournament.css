@@ -216,7 +216,6 @@ header {
 
 .match-time{
     width: 98%;
-    height: 46px;
     border: 1px solid #007AFF;
     border-radius: 8px;
     margin-top: 10px;
@@ -312,4 +311,8 @@ header {
 
 .bi-caret-right-fill{
     color: #007AFF;
+}
+
+.row{
+	padding: 10px;
 }

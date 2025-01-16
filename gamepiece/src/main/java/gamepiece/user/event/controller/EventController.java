@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import gamepiece.user.event.domain.Event;
 import gamepiece.user.event.service.EventService;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller("userEventController")
@@ -113,5 +114,33 @@ public class EventController {
 		
 		log.info("eventList {}",eventList);
 		return eventList;
+	}
+	
+	@GetMapping("/eventDetail")
+	public String eventDetail(@RequestParam("evCd") String evCd, Model model, HttpSession session) {
+		String loginId = (String)session.getAttribute("SID");
+		
+		List<Event> eventDetail = eventService.eventDetail(evCd);
+		
+		model.addAttribute("eventDetail", eventDetail);
+		model.addAttribute("loginId", loginId);
+		
+		return "user/event/eventDetail";
+	}
+	
+	@PostMapping("/eventDetail")
+	@ResponseBody
+	public int getEventDetail(@RequestParam("evCd") String evCd, Model model, HttpSession session) {
+		
+		String loginId = (String) session.getAttribute("SID");
+		
+		List<Event> eventDetail = eventService.eventDetail(evCd);
+		int getParticipations = eventService.getParticipations(evCd, loginId);
+		
+		model.addAttribute("eventDetail", eventDetail);
+		model.addAttribute("getParticipations", getParticipations);
+		log.info("getParticipations {}", getParticipations);
+		
+		return getParticipations;
 	}
 }
