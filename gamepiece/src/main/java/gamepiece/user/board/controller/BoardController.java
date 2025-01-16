@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.user.board.domain.Board;
@@ -22,6 +23,7 @@ import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
+import gamepiece.user.board.domain.Report;
 import gamepiece.user.board.service.BoardService;
 import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
@@ -46,6 +48,21 @@ public class BoardController {
 	 * 			
 	 * */
 	
+	@PostMapping("/report")
+	@ResponseBody
+	public String addReport(Report report, HttpSession session) {
+	    String loginId = (String) session.getAttribute("SID");
+	    report.setReportUser(loginId);
+	   
+	    boardService.addReport(report);
+	    
+	    System.out.println("신고자 아이디 : " + report.getReportUser());
+	    System.out.println("피신고자 아이디 : " + report.getReportedUser());
+	    return "/board/detail?boardNum=" + report.getBoardNum();
+	}
+	
+	
+
 	
 	
 	@GetMapping("/inquiry/detail")
@@ -117,10 +134,11 @@ public class BoardController {
 
 
 	@PostMapping("/inquiry/write")
-	public String addInquiry(Inquiry inquiry, HttpSession session, RedirectAttributes rttr) {
+	public String addInquiry(Inquiry inquiry, HttpSession session, RedirectAttributes rttr, Report report) {
 
 		String loginId = (String) session.getAttribute("SID");
 		inquiry.setInquiryUserId(loginId);
+		report.setReportedUser(loginId);
 
 	
 
@@ -143,11 +161,12 @@ public class BoardController {
 	}
 
 	@PostMapping("/write")
-	public String addBoard(Board board, HttpSession session, RedirectAttributes rttr) {
+	public String addBoard(Board board, HttpSession session, RedirectAttributes rttr, Report report) {
 
 		String loginId = (String) session.getAttribute("SID");
 
 		board.setBoardUserid(loginId);
+		report.setReportedUser(loginId);
 	
 	
 		

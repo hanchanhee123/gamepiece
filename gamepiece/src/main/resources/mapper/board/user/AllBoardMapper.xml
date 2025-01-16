@@ -193,7 +193,8 @@ WHERE
 	  b.bbs_like,
 	  b.bbs_dislike,
 	  b.bbs_ymd,
-	  u.user_nn
+	  u.user_nn,
+	  u.id
 	FROM
 	    boards b INNER JOIN user u
 	    ON b.id = u.id

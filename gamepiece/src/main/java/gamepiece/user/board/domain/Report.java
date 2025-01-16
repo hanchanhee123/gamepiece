@@ -1,11 +1,11 @@
-package gamepiece.admin.report.domain;
+package gamepiece.user.board.domain;
 
-import gamepiece.admin.user.domain.User;
+import gamepiece.user.user.domain.User;
 import lombok.Data;
 
 @Data
 public class Report {
-
+	
 	private String reportNo; //신고번호
 	private String reportUser; //신고인
 	private String reportedUser;//피신고인
@@ -13,7 +13,7 @@ public class Report {
 	private String reportProgress; //진행상황
 	private String reportYmd; //신고일
 	private User userInfo; //유저정보
+	private String boardNum;  
 
-	
-	
+
 }

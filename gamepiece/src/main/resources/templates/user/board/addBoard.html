@@ -161,6 +161,7 @@
 
             // 내용 검사 
             const content = $("#editorTxt").val();
+            console.log(content);
             if(!content || content === '<p>&nbsp;</p>' || content === '') {
                 alert("내용을 입력해주세요.");
                 oEditors.getById["editorTxt"].exec("FOCUS");
@@ -169,7 +170,7 @@
 
             // 모든 검증을 통과했을 때만 폼 제출
             if(isSubmit) {
-                $("#addBoardForm").submit();
+                // $("#addBoardForm").submit();
             }
         }
     	
