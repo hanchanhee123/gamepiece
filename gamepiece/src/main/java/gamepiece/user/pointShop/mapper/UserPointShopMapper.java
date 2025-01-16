@@ -35,7 +35,7 @@ public interface UserPointShopMapper {
 	
 	int getavatarCount();
 	
-	int gethistoryCount();
+	int gethistoryCount(String id);
 	
 	PointLog getPointsHeld(String id);
 	

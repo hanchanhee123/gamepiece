@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 import gamepiece.user.exception.TournamentException;
 import gamepiece.user.tournament.domain.MatchGroup;
 import gamepiece.user.tournament.domain.ResponseTemplate;
 import gamepiece.user.tournament.service.UserTournamentService;
+import gamepiece.user.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,15 +31,20 @@ import lombok.extern.slf4j.Slf4j;
 public class UserTournamentController {
 	
 	private final UserTournamentService tournamentService;
+	private final UserService userService;
 	
 	@GetMapping("/list")
 	public String getUserTournamentList(Model model, 
+										HttpSession session,
 										@RequestParam(value = "leageName",defaultValue = "") String tournament,
 										String month,
 										String year) {
 		if(tournament.isEmpty()) {
 			tournament = "world_championship";
 		}
+		
+		String userId = (String) session.getAttribute("SID");
+		String avatar = userService.getUserAvatar(userId);
 		
 		if(year == null && month == null) {
 			LocalDate now = LocalDate.now();
@@ -48,6 +54,7 @@ public class UserTournamentController {
 		
 		log.info("month : {}, year : {}",month,year);
 		
+		model.addAttribute("avatar", avatar);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		model.addAttribute("leageName", tournament);
@@ -57,6 +64,7 @@ public class UserTournamentController {
 	
 	@GetMapping("/list/valorant")
 	public String getUserValorantTournamentList(Model model, 
+			HttpSession session,
 			@RequestParam(value = "leageName",defaultValue = "") String tournament,
 			String month,
 			String year) {
@@ -70,8 +78,12 @@ public class UserTournamentController {
 			month = now.getMonth().toString();
 		}
 		
+		String userId = (String) session.getAttribute("SID");
+		String avatar = userService.getUserAvatar(userId);
+		
 		log.info("month : {}, year : {}",month,year);
 		
+		model.addAttribute("avatar", avatar);
 		model.addAttribute("gameName", "Valorant");
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
@@ -82,6 +94,7 @@ public class UserTournamentController {
 	
 	@GetMapping("/list/pubg")
 	public String getUserPubgTournamentList(Model model,
+											HttpSession session,
 											@RequestParam(value = "leageName",defaultValue = "") String tournament,
 											String month,
 											String year) {
@@ -96,12 +109,16 @@ public class UserTournamentController {
 			month = now.getMonth().toString();
 		}
 		
+		String userId = (String) session.getAttribute("SID");
+		String avatar = userService.getUserAvatar(userId);
+		
 		log.info("month : {}, year : {}",month,year);
 		
 		model.addAttribute("gameName", "Player_Unknowns_Battle_Grounds");
 		// model.addAttribute("leageName", tournament);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
+		model.addAttribute("avatar", avatar);
 		
 		return "user/tournament/tournament_pubg";
 	}

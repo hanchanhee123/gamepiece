@@ -126,10 +126,13 @@ public class UserGameServiceImpl implements UserGameService {
 	        Elements aElement = element.select("a");
 	        
 	        aElement.forEach(a -> {
+	        	String gameCode = a.attr("data-ds-itemkey");
+	        	gameCode = gameCode.substring(4);
 	            Map<String, Object> game = new HashMap<>();
 	            String urlSrc = a.select(".search_capsule > img").attr("src");
 	            String title = a.select(".search_name > .title").text();
 	            String released = a.select(".search_released").text();
+	            
 	            if (released.isEmpty() || released.length() < 12) {
 	                released = "출시예정";
 	            }
@@ -167,6 +170,7 @@ public class UserGameServiceImpl implements UserGameService {
 	            game.put("finalPrice", finalPrice);
 	            game.put("disCountPrice", disCountPrice);
 	            game.put("originalPrice", originalPrice);
+	            game.put("gameCode", gameCode);
 	            resultList.add(game);
 	        });
 	        resultMap.put("currentPage", currentPage);
@@ -186,5 +190,6 @@ public class UserGameServiceImpl implements UserGameService {
 	    
 	    return resultMap;
 	}
+
 	
 }

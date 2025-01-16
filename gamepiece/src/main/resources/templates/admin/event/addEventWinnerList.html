@@ -89,7 +89,7 @@
     
     <!-- 사용자 추가 js script -->
     <th:block layout:fragment="customJs">
-        <script>
+        <script th:inline="javascript">
             // 폼 제출 로직
             $('#addEventBtn').click(function () {
                 let isSubmit = true;
@@ -113,9 +113,12 @@
 
             // 이벤트 선택 시 당첨자 목록 업데이트
             $('.custom-select').change(function () {
-                const eventCd = $(this).val();
+                const eventCd = $(this).val()
+                const eventList = /*[[${eventList}]]*/"";
                 
-                console.log(eventCd);
+                const filter = $(eventList).filter((idx, element) => element.evCd == eventCd);
+                
+                const evWinnersNum = filter[0].evWinnersNum;
                 
                 if (!eventCd) {
                     alert('올바른 이벤트를 선택해주세요.');
@@ -125,7 +128,8 @@
                 $.ajax({
                     url: '/admin/event/winner/winners',
                     method: 'POST',
-                    data: { 'evCd' : eventCd },
+                    data: { 'evCd' : eventCd ,
+                    		'evWinnersNum' : evWinnersNum },
                     dataType: 'json',
                     success: function (data) {
                     	console.log(data);

@@ -24,4 +24,5 @@ public interface UserGameService {
 	Map<String, Object> getGameListApi(String searchValue, int currentPage);
 	
 	
+	
 }

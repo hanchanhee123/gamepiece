@@ -49,5 +49,11 @@ public interface EventService {
 	void modifyEventWinnerList(Event event);
 
 	void removeEventWinnerList(String evCd);
+
+	List<Event> selectEventWinners(String evCd, int evWinnersNum);
+
+	void updateWinners(Event event);
+
+	int countWinner(String evCd, int evWinnersNum);
 	
 }

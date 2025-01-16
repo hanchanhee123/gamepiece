@@ -32,4 +32,7 @@ public interface EventMapper {
 	Event getEventWinnerListInfoInfoById(String evCd);
 	void modifyEventWinnerList(Event event);
 	void removeEventWinnerList(String evCd);
+	List<Event> selectEventWinners(String evCd, int evWinnersNum);
+	void updateWinners(Event event);
+	int countWinner(Map<String, Object> resultMap);
 }
