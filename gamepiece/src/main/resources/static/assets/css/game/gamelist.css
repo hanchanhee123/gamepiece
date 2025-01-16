@@ -50,6 +50,10 @@ body {
     width: 1280px;
     margin: 0 auto;
 }
+
+.card-body a {
+	text-decoration: none;
+}
 .gamelist-cate  a{
     color: white;
     text-decoration: none;
