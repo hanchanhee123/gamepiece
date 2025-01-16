@@ -32,8 +32,8 @@ public class PointShopServiceImpl implements PointShopService{
 	}
 	
 	@Override
-	public PageInfo<Point> findhistory(Pageable pageable) {
-		int rowCnt = userpointshopMapper.gethistoryCount();
+	public PageInfo<Point> findhistory(Pageable pageable, String id) {
+		int rowCnt = userpointshopMapper.gethistoryCount(id);
 		List<Point> historyList = userpointshopMapper.findhistory(pageable);
 		return new PageInfo<>(historyList, pageable, rowCnt);
 	}
