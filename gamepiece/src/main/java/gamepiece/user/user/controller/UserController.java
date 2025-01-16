@@ -169,11 +169,26 @@ public class UserController {
 		return response;
 	}
 	
-	// 개인 정보 수정
-	public String modifyUserInfo(User user, Model model) {
+	// 회원 정보 수정
+	@PostMapping("/modifyUser")
+	public String modifyUser(User user, Model model) {
 		
-		userService.modifyUserInfo(user);
+		userService.modifyUser(user);
 		
-		return "user/myPage/myPageUser";
+		return "redirect:/myPageUser";
 	}
+	
+	// 회원 탈퇴
+	@GetMapping("/removeUser")
+	public String removeUser(HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+		
+		userService.removeUser(id);
+		
+		session.invalidate();
+		
+		return "redirect:/";
+	}
+	
 }

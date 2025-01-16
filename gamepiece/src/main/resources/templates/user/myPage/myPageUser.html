@@ -88,28 +88,28 @@
 	                </div>
 	            </div>
 	            <th:block th:object="${myPageUser}">
-		            <form id="modifyUserForm" class="modify-info-form" th:action="@{/modifyUserPro}" method="post">
+		            <form id="modifyUserForm" class="modify-info-form" th:action="@{/modifyUser}" method="post">
 		            	<div class="user-form-group">
-			                <input type="text" id="id" class="user-insert-form" th:value="${myPageUser.id}" readonly>
+			                <input type="text" id="id" name="id" class="user-insert-form" th:value="${myPageUser.id}" readonly>
 			            </div>
 			            <div class="user-form-group">
-			                <input type="password" id="user-pswd" class="user-insert-form" th:value="${myPageUser.userPswd}" placeholder="변경할 비밀번호를 입력해주세요">
+			                <input type="password" id="user-pswd" name="userPswd" class="user-insert-form" th:value="${myPageUser.userPswd}" placeholder="변경할 비밀번호를 입력해주세요">
 			            </div>
 			            <div class="user-form-group">
 			                <input type="password" class="user-insert-form" placeholder="비밀번호를 재입력해주세요">
 			            </div>
 			            <div class="user-form-group">
-			                <input type="email" id="user-eml-addr" class="user-insert-form" th:value="${myPageUser.userEmlAddr}" placeholder="변경할 이메일을 입력해주세요">
+			                <input type="email" id="user-eml-addr" name="userEmlAddr" class="user-insert-form" th:value="${myPageUser.userEmlAddr}" placeholder="변경할 이메일을 입력해주세요">
 			            </div>
 			            <div class="user-form-group">
-			                <input type="tel" id="user-telno" class="user-insert-form" th:value="${myPageUser.userTelno}" placeholder="변경할 전화번호를 입력해주세요">
+			                <input type="tel" id="user-telno" name="userTelno" class="user-insert-form" th:value="${myPageUser.userTelno}" placeholder="변경할 전화번호를 입력해주세요">
 			            </div>
 			            <div class="user-form-group">
-			                <input type="text" id="user-nn" class="user-insert-form" th:value="${myPageUser.userNn}" placeholder="변경할 닉네임을 입력해주세요">
+			                <input type="text" id="user-nn" name="userNn" class="user-insert-form" th:value="${myPageUser.userNn}" placeholder="변경할 닉네임을 입력해주세요">
 			            </div>
 			            <div class="user-form-group">
-			                <button type="button" id="modifyUserBtn" class="btn btn-primary common-btn-lg">정보 수정</button>
-			                <button type="button" id="removeUserBtn" class="btn btn-danger common-btn-lg">탈퇴</button>
+			                <button type="submit" id="modifyUserBtn" class="btn btn-primary common-btn-lg" onclick="return confirm('수정하시겠습니까?')">정보 수정</button>
+			                <button type="button" id="removeUserBtn" class="btn btn-danger common-btn-lg" onclick="removeUser()">탈퇴</button>
 			            </div>
 		            </form>
 	            </th:block>
@@ -235,7 +235,15 @@
 		        }
 		    });
 		});
-    	
+		
+		// 회원 탈퇴
+		function removeUser() {
+			if(confirm('정말 탈퇴하시겠습니까?')) {
+				alert('탈퇴되었습니다.');
+				location.href="/removeUser";
+			}
+		};
+		
     	</script>
     </th:block>
             

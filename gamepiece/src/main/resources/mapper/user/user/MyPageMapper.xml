@@ -51,6 +51,32 @@
 	    <result column="bbs_view" property="boardViewCnt" />
 	    <result column="bbs_ymd" property="boardYmd" />
     </resultMap>
+    
+	<resultMap type="gamepiece.user.board.domain.Inquiry" id="InquiryResultMap">
+		<id column="inquiry_id" property="inquiryNum" />
+		<result column="id" property="inquiryUserId" />
+		<result column="inquiry_title" property="inquiryTitle" />
+		<result column="inquiry_content" property="inquiryContent" />
+		<result column="inquiry_ymd" property="inquiryYmd" />
+	</resultMap>
+	
+    <resultMap type="gamepiece.user.event.domain.Event" id="EventResultMap">
+		<id column="ev_cd" 	property="evCd"/>
+		<result column="ev_nm" 	property="evNm" />
+		<result column="ev_contents" property="evContents" />
+		<result column="ev_start_ymd" property="evStartYmd" />
+		<result column="ev_end_ymd"	property="evEndYmd" />
+		<result column="ev_winners_num" property="evWinnersNum" />
+		<result column="admin_id" property="adminId" />
+		<result column="reg_ymd" property="regYmd" />
+		<result column="ev_img" property="evImg" />
+		<result column="evp_no" property="evpNo" />
+		<result column="id" property="id" />
+		<result column="ev_participate_ymd" property="evParticipateYmd" />
+		<result column="ev_winner_yn" property="evWinnerYn" />
+		<result column="ev_status" property="evStatus" />
+		<result column="user_nn" property="userNn"/>
+	</resultMap>
 	
 	<!-- 마이페이지 - 사용자정보조회 (정보수정) -->
 	<select id="myPageUser" resultMap="myPageResultMap">
@@ -158,6 +184,7 @@
 			ps.ps_cate_cd = 'cate_01';
 	</select>
 	
+	<!-- 마이페이지 - 내 게시글 -->
 	<select id="myPageBoard" resultMap="BoardResultMap">
 		SELECT
 			*
@@ -168,6 +195,31 @@
 			id = #{id}
 			AND
 			b.is_delete = 'active';
+	</select>
+	
+	<!-- 마이페이지 - 내 문의글 -->
+	<select id="myPageInquiry" resultMap="InquiryResultMap">
+		SELECT
+			*
+		FROM
+			inquiry
+		WHERE
+			id = #{id}
+			AND
+			is_delete = 'active';
+	</select>
+	
+	<!-- 마이페이지 - 참여한 이벤트 -->
+	<select id="myPageEvent" resultMap="EventResultMap">
+		SELECT
+			*
+		FROM
+			`events` e INNER JOIN event_participations ep
+			USING (ev_cd)
+		WHERE
+			id = #{id}
+			AND
+			ev_winner_yn = 'Y';
 	</select>
 	
 	<!-- <select id="myPageBoardComments" resultMap="BoardResultMap">

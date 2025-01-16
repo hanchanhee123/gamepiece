@@ -124,6 +124,9 @@
                     </div>
                 </div>
 
+
+
+		   
                <div class="board-commentBar" th:each="l : ${commentList}">
     <!-- 댓글 목록 시작 -->
     <div  class="card mb-3 commentBox">
@@ -166,7 +169,7 @@
 				         
                 </div>
                 
-                 <div class="pagination-area mt-15">
+                 <div class="pagination-area mt-15" th:if="${commentList != null and not #lists.isEmpty(commentList)}">
 				    <nav>
     <ul class="pagination justify-content-center">
         <li class="page-item">
@@ -207,6 +210,8 @@
     </ul>
 </nav>
 				</div>
+				
+				
                 
                 
       <form id="addCommentForm" method="post" th:action="@{/board/addComment}">
@@ -220,9 +225,11 @@
                      rows="3"
                      style="resize: none;"></textarea>
        </div>
-       <div class="d-flex justify-content-end">
-           <button type="submit" class="btn btn-primary commentSubmitBtn">등록</button>
-       </div>
+      <div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary commentSubmitBtn" th:if="${session.SID != null}" onclick="submitComment();">등록</button>
+    <button type="button" class="btn btn-primary commentSubmitBtn" 
+            th:unless="${session.SID != null}" onclick="checkLogin();">등록</button>
+		</div>
    </div>
 </form>
 </th:block>
@@ -235,6 +242,13 @@
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
     <script th:inline="javascript">
+    
+    function checkLogin() {
+        alert('로그인 후 작성 가능합니다.');
+        location.href = '/login';
+    }
+    
+    
         document.getElementById('likeButton').addEventListener('click', function() {
             const likeCountElement = document.querySelector('.likeCnt');
             let currentCount = parseInt(likeCountElement.textContent, 10);
@@ -298,23 +312,19 @@
         
         
      // 덧글 등록
-		$('.commentSubmitBtn').click(function(){
-			let isSubmit = true;
-			const $formControl = $('#addCommentForm').find('#commentDetail');
-			$formControl.each((idx, elem) => {
-				const value = $(elem).val();
-				if(!value){
-					isSubmit = false;
-					alert('필수 입력 항목입니다.');
-					$(elem).focus();
-					return false;
-				}
-			});
-			
-			if(isSubmit) $('#addCommentForm').submit();
-		})
-		
-        
+	function submitComment() {
+    const $formControl = $('#addCommentForm').find('#commentDetail');
+    const value = $formControl.val();
+    
+    if(!value) {
+        alert('필수 입력 항목입니다.');
+        $formControl.focus();
+        return false;
+    }
+    
+    $('#addCommentForm').submit();
+}
+
         
     </script>
 </th:block>

@@ -126,26 +126,18 @@
 		<div class="mypage-event">
 	        <span>참여한 이벤트 보기</span>
 	        <div class="common-card-section">
+	        <th:block th:if="${myPageEvent != null}" th:each="myPageEvent : ${myPageEvent}">
 	            <div class="card-section-md">
-	                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV953LLT612kt6UhgdxG9ruFiReF9iqV5Qjw&s" />
-	                <span class="mypage-event-name">이벤트 이름</span>
-	                <span class="mypage-event-period">기간 : 2024.12-01 ~ 2024.12.31</span>
-	            </div>    
-	            <div class="card-section-md">
-	                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV953LLT612kt6UhgdxG9ruFiReF9iqV5Qjw&s" />
-	                <span class="mypage-event-name">이벤트 이름</span>
-	                <span class="mypage-event-period">기간 : 2024.12-01 ~ 2024.12.31</span>
-	            </div>    
-	            <div class="card-section-md">
-	                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV953LLT612kt6UhgdxG9ruFiReF9iqV5Qjw&s" />
-	                <span class="mypage-event-name">이벤트 이름</span>
-	                <span class="mypage-event-period">기간 : 2024.12-01 ~ 2024.12.31</span>
+	                <img th:src="@{|${myPageEvent.evImg}|}" alt="이미지" />
+	                <span class="mypage-event-name" th:text="${myPageEvent.evNm}"></span>
+	                <div class="mypage-event-period">
+						<span>이벤트 기간 : </span>
+		                <span th:text="${myPageEvent.evStartYmd}"></span>
+						<span>~</span>
+						<span th:text="${myPageEvent.evEndYmd}"></span>
+					</div>
 	            </div>
-	            <div class="card-section-md">
-	                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV953LLT612kt6UhgdxG9ruFiReF9iqV5Qjw&s" />
-	                <span class="mypage-event-name">이벤트 이름</span>
-	                <span class="mypage-event-period">기간 : 2024.12-01 ~ 2024.12.31</span>
-	            </div>
+	        </th:block>    
 	        </div>
 	    </div>
 	</th:block>
