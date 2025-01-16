@@ -6,6 +6,7 @@ import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
+import gamepiece.user.board.domain.Report;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
@@ -13,6 +14,8 @@ public interface BoardService {
 	
 	
 	
+	//신고하기
+	int addReport(Report report);
 	
 	//문의답변 확인
 	InquiryRespone getInquiryResponeInfo(String inquiryNum);

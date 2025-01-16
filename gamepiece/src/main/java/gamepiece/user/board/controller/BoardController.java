@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.user.board.domain.Board;
@@ -46,8 +47,7 @@ public class BoardController {
 	 * 			
 	 * */
 	
-	
-	
+
 	@GetMapping("/inquiry/detail")
 	public String inquiryView(@RequestParam(name="inquiryNum") String inquiryNum, Model model) {
 		

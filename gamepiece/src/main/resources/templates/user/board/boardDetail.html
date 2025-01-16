@@ -33,63 +33,98 @@
 				                <span class="username fw-semibold" th:text="${boardInfo.userInfo.userNn}">회원</span>
 				                <span class="text-muted small" th:text="${boardInfo.boardYmd}">2012-11-11</span>
 				            </div>
-				            <span class="report-text ms-auto" data-bs-toggle="modal" data-bs-target="#reportModal">
-				                <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>
-				                신고
-				            </span>
+				            <!-- 로그인 상태일 때 -->
+							<span class="report-text ms-auto" 
+							      data-bs-toggle="modal" 
+							      data-bs-target="#reportModal"
+							      th:if="${session.SID != null}">
+							    <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>
+							    신고
+							</span>
+							
+							<!-- 비로그인 상태일 때 -->
+							<span class="report-text ms-auto" 
+							      th:unless="${session.SID != null}"
+							      onclick="checkLogin()">
+							    <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>
+							    신고
+							</span>
 				        </div> 
 
-                    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="reportModalLabel">신고하기</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              <form>
-                                <div class="mb-3">
-                                  <label for="report-type" class="col-form-label">신고 사항</label>
-                                  <select class="form-control" id="report-type">
-                                    <option value="">선택해주세요</option>
-                                    <option value="spam">스팸/광고</option>
-                                    <option value="abuse">욕설/비방</option>
-                                    <option value="politics">정치적 발언</option>
-                                    <option value="adult">음란물</option>
-                                    <option value="copyright">저작권 침해</option>
-                                    <option value="etc">기타</option>
-                                  </select>
-                                </div>
-                                <div class="mb-3">
-                                  <label for="report-detail" class="col-form-label">신고 사유</label>
-                                  <textarea class="form-control" id="report-detail" placeholder="신고 사유를 입력해주세요."></textarea>
-                                </div>
-                              </form>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                              <button type="button" class="btn btn-danger" onclick="validateAndSubmit()">신고하기</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+			                    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+			    <div class="modal-dialog modal-dialog-centered">
+			        <div class="modal-content border-0 shadow-lg">
+							     <div class="modal-header bg-dark text-white">
+    <h1 class="modal-title fs-5" id="reportModalLabel">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-octagon-fill text-danger"></i>
+            <span>신고하기</span>
+        </div>
+    </h1>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+	</div>
+	
 
-                      <div class="modal fade" id="reportCompleteModal" aria-hidden="true" aria-labelledby="reportCompleteModalLabel" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-centered">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="reportCompleteModalLabel">신고완료</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                              신고가 접수되었습니다.
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+							           <div class="modal-body p-4">
+				    <form>
+				        <div class="mb-4">
+				            <label for="report-detail" class="form-label fw-semibold">신고 유저</label>
+				            <textarea class="form-control border border-2" 
+				                      id="reportedUsernM"
+				                      name="reportedUserNm" 
+				                      th:text="${boardInfo.userInfo.userNn}"
+				                      readonly 
+				                      style="resize: none; height: 50px; background-color: #f8f9fa; "
+				                      
+				            ></textarea>
+				            	 <input type="hidden" id="reportedUser" th:value="${boardInfo.userInfo.id}">
+				        </div>
+				        <div class="mb-3">
+				            <label for="report-detail" class="form-label fw-semibold">신고 사유</label>
+				            <textarea class="form-control border border-2" 
+				                      id="reportContent"
+				                      name="reportContent" 
+				                      placeholder="신고 사유를 입력해주세요."
+				                      style="resize: none; height: 120px;"
+				            ></textarea>
+				        </div>
+				    </form>
+				</div>
+			            <div class="modal-footer border-top-0">
+			                <button type="button" class="btn btn-light rounded-pill px-4" 
+			                        data-bs-dismiss="modal">취소</button>
+			                <button type="button" class="btn btn-danger rounded-pill px-4" 
+			                        onclick="userReport()">신고하기</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+                      
+                      
+                      
+                      
+
+					                     <div class="modal fade" id="reportCompleteModal" aria-hidden="true" 
+					     aria-labelledby="reportCompleteModalLabel" tabindex="-1">
+					    <div class="modal-dialog modal-dialog-centered">
+					        <div class="modal-content border-0 shadow-lg">
+					            <div class="modal-header bg-success bg-opacity-10 border-bottom-0">
+					                <h1 class="modal-title fs-5 text-success" id="reportCompleteModalLabel">신고완료</h1>
+					                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					            </div>
+					            <div class="modal-body p-4 text-center">
+					                <div class="mb-3">
+					                    <i class="bi bi-check-circle-fill text-success fs-1"></i>
+					                </div>
+					                신고가 접수되었습니다.
+					            </div>
+					            <div class="modal-footer border-top-0">
+					                <button type="button" class="btn btn-success rounded-pill px-4 w-100" 
+					                        data-bs-dismiss="modal">확인</button>
+					            </div>
+					        </div>
+					    </div>
+					</div>
 
 
                     
@@ -128,8 +163,10 @@
 
 		   
                <div class="board-commentBar" th:each="l : ${commentList}">
+                        
     <!-- 댓글 목록 시작 -->
     <div  class="card mb-3 commentBox">
+
         <div class="card-body">
             <!-- 댓글 헤더 -->
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -140,10 +177,22 @@
 		            <span class="text-muted small" th:text="| (${l.commentYmd})|">게시날짜</span>
         </div>
                 </div>
-                <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#reportModal">
-                    <i class="bi bi-exclamation-circle-fill"></i>
-                    <span class="ms-1">신고</span>
-                </button>
+				              <button class="btn btn-outline-danger btn-sm" 
+				        data-bs-toggle="modal" 
+				        data-bs-target="#commentReportModal"
+				        th:attr="data-board-num=${l.boardNum}"
+				        th:if="${session.SID != null}">
+				    <i class="bi bi-exclamation-circle-fill"></i>
+				    <span class="ms-1">신고</span>
+				</button>
+								
+				<!-- 비로그인 상태일 때 -->
+				<button class="btn btn-outline-danger btn-sm"
+				        onclick="checkLogin()"
+				        th:unless="${session.SID != null}">
+				    <i class="bi bi-exclamation-circle-fill"></i>
+				    <span class="ms-1">신고</span>
+				</button>
             </div>
 
             <!-- 댓글 내용 -->
@@ -167,6 +216,84 @@
     </div>
    
 				         
+                
+                
+                
+                 <div class="modal fade" id="commentReportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+			    <div class="modal-dialog modal-dialog-centered">
+			        <div class="modal-content border-0 shadow-lg">
+							     <div class="modal-header bg-dark text-white">
+    <h1 class="modal-title fs-5" id="reportModalLabel">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-exclamation-octagon-fill text-danger"></i>
+            <span>신고하기</span>
+        </div>
+    </h1>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+	</div>
+							           <div class="modal-body p-4">
+				    <form>
+				    
+				    	
+				        <div class="mb-4">
+				            <label for="report-detail" class="form-label fw-semibold">신고 유저</label>
+				            <textarea class="form-control border border-2" 
+				                      id="commentReportedUserNn"
+				                      name="commentReportedUserNn" 
+				                     th:text="${l.userInfo.userNn}"
+				                      readonly 
+				                      style="resize: none; height: 50px; background-color: #f8f9fa; "
+				            ></textarea>
+				        </div>
+				        <div class="mb-3">
+				            <label for="report-detail" class="form-label fw-semibold">신고 사유</label>
+				            <textarea class="form-control border border-2" 
+				                      id="commentReportContent"
+				                      name="reportContent" 
+				                      placeholder="신고 사유를 입력해주세요."
+				                      style="resize: none; height: 120px;"
+				            ></textarea>
+				             <input type="hidden" id="reportedUser" th:value="${boardInfo.userInfo.id}">
+				        </div>
+				    </form>
+				</div>
+			            <div class="modal-footer border-top-0">
+			                <button type="button" class="btn btn-light rounded-pill px-4" 
+			                        data-bs-dismiss="modal">취소</button>
+			                <button type="button" class="btn btn-danger rounded-pill px-4" 
+			                        onclick="commentReport()">신고하기</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+                      
+                      
+                      
+                      
+
+					                     <div class="modal fade" id="reportCompleteModal" aria-hidden="true" 
+					     aria-labelledby="reportCompleteModalLabel" tabindex="-1">
+					    <div class="modal-dialog modal-dialog-centered">
+					        <div class="modal-content border-0 shadow-lg">
+					            <div class="modal-header bg-success bg-opacity-10 border-bottom-0">
+					                <h1 class="modal-title fs-5 text-success" id="reportCompleteModalLabel">신고완료</h1>
+					                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					            </div>
+					            <div class="modal-body p-4 text-center">
+					                <div class="mb-3">
+					                    <i class="bi bi-check-circle-fill text-success fs-1"></i>
+					                </div>
+					                신고가 접수되었습니다.
+					            </div>
+					            <div class="modal-footer border-top-0">
+					                <button type="button" class="btn btn-success rounded-pill px-4 w-100" 
+					                        data-bs-dismiss="modal">확인</button>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+                
+                
                 </div>
                 
                  <div class="pagination-area mt-15" th:if="${commentList != null and not #lists.isEmpty(commentList)}">
@@ -226,10 +353,15 @@
                      style="resize: none;"></textarea>
        </div>
       <div class="d-flex justify-content-end">
-    <button type="submit" class="btn btn-primary commentSubmitBtn" th:if="${session.SID != null}" onclick="submitComment();">등록</button>
+    <!-- 로그인 상태일 때 -->
     <button type="button" class="btn btn-primary commentSubmitBtn" 
-            th:unless="${session.SID != null}" onclick="checkLogin();">등록</button>
-		</div>
+            th:if="${session.SID != null}" 
+            onclick="submitComment(); return false;">등록</button>
+    <!-- 비로그인 상태일 때 -->
+    <button type="button" class="btn btn-primary" 
+            th:unless="${session.SID != null}" 
+            onclick="checkLogin();">등록</button>
+</div>
    </div>
 </form>
 </th:block>
@@ -244,7 +376,7 @@
     <script th:inline="javascript">
     
     function checkLogin() {
-        alert('로그인 후 작성 가능합니다.');
+        alert('로그인 후 사용 가능합니다.');
         location.href = '/login';
     }
     
@@ -281,47 +413,89 @@
             dislikeCountElement.textContent = currentCount + 1;
         });
         
-        function validateAndSubmit() {
-            const reportType = document.getElementById('report-type').value;
-            const reportDetail = document.getElementById('report-detail').value.trim();
+        
+        
+        function userReport() {
+        	  const reportContent = document.getElementById('reportContent').value.trim();
+        	  const reportedUser = document.getElementById('reportedUser').value.trim();
+        	  const boardNum = document.getElementById('boardNum').value;
+
+        	  if (reportContent === '') {
+        	    alert('신고 사유를 입력해주세요.');
+        	    return;
+        	  }
+
+        	  $.ajax({
+        	    url: '/board/report',
+        	    type: 'POST',
+        	    data: {
+        	      reportedUser: reportedUser,
+        	      reportContent: reportContent,
+        	      boardNum: boardNum
+        	    },
+        	    success: function(response) {
+        	      // 첫 번째 모달 닫기
+        	      $('#reportModal').modal('hide');
+
+        	      // 첫 번째 모달이 닫힌 후에 리다이렉트
+        	      $('#reportModal').on('hidden.bs.modal', function () {
+        	        window.location.href = response;
+        	      });
+
+        	      // 완료 모달 표시
+        	      $('#reportCompleteModal').modal('show');
+        	    }
+        	  });
+        	}
+        
+        
+        
+        function commentReport() {
+            const reportContent = document.getElementById('commentReportContent').value.trim();
+            const reportedUser = document.getElementById('reportedUser').value.trim();
+            const boardNum = document.getElementById('boardNum').value;
             
-            if (reportType === '') {
-                alert('신고 사항을 선택해주세요.');
-                return;
-            }
-            
-            if (reportDetail === '') {
+            if (reportContent === '') {
                 alert('신고 사유를 입력해주세요.');
                 return;
             }
             
-            const reportModal = bootstrap.Modal.getInstance(document.getElementById('reportModal'));
-            reportModal.hide();
-            
-            const completeModal = new bootstrap.Modal(document.getElementById('reportCompleteModal'));
-            completeModal.show();
-            
-            document.getElementById('report-type').value = '';
-            document.getElementById('report-detail').value = '';
+            $.ajax({
+                url: '/board/report',
+                type: 'POST',
+                data: {
+                    reportedUser: reportedUser,
+                    reportContent: reportContent,
+                    boardNum: boardNum
+                },
+                success: function(response) {
+                    $('#commentReportModal').modal('hide');
+                    
+                    $('#reportCompleteModal').on('hidden.bs.modal', function () {
+                        window.location.href = response;
+                    });
+                    $('#reportCompleteModal').modal('show');
+                    
+                   
+                }
+            });
         }
         
         
         
-       
-        
-        
         
      // 덧글 등록
-	function submitComment() {
+function submitComment() {
     const $formControl = $('#addCommentForm').find('#commentDetail');
-    const value = $formControl.val();
-    
-    if(!value) {
+    const value = $formControl.val().trim();  
+
+    if(!value) { 
         alert('필수 입력 항목입니다.');
         $formControl.focus();
         return false;
     }
-    
+
+   
     $('#addCommentForm').submit();
 }
 
