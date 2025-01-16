@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.user.board.domain.Board;
@@ -22,6 +23,7 @@ import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
+
 import gamepiece.user.board.service.BoardService;
 import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
@@ -46,7 +48,7 @@ public class BoardController {
 	 * 			
 	 * */
 	
-	
+
 	
 	@GetMapping("/inquiry/detail")
 	public String inquiryView(@RequestParam(name="inquiryNum") String inquiryNum, Model model) {
@@ -121,6 +123,7 @@ public class BoardController {
 
 		String loginId = (String) session.getAttribute("SID");
 		inquiry.setInquiryUserId(loginId);
+		
 
 	
 
@@ -148,6 +151,7 @@ public class BoardController {
 		String loginId = (String) session.getAttribute("SID");
 
 		board.setBoardUserid(loginId);
+
 	
 	
 		
