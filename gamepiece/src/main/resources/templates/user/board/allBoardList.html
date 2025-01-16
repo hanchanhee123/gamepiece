@@ -6,14 +6,21 @@
 	<link rel="stylesheet" th:href="@{/assets/css/board/boardList.css}" />
 </head>
 <th:block layout:fragment="contents-body">
-
+<div th:if="${message}" class="alert alert-primary alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    	<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 
 
 	<main>
          <div class="main_div">
         <div class="boards-div">
         <div class="board-bar">
-          <div class="board"><a th:href="@{/board/free}" class="boardWord">자유게시판</a></div>
+               <div class="board"><a th:href="@{/board/free}" class="boardWord">자유게시판</a></div>
             <div class="board"><a th:href="@{/board/attack}" class="boardWord">공략게시판</a></div>
             <div class="board"><a th:href="@{/board/info}" class="boardWord">정보게시판</a></div>
             <div class="board"><a th:href="@{/board/notice}" class="boardWord">공지사항</a></div>
@@ -27,25 +34,17 @@
                     <input type="text" class="item-search"/>
                     <i class="bi bi-search"></i>
                 </div>
-                <div class = "board-make">
-                    <button class="button" onclick="location.href='/board/write';">게시물 생성</button>
-            </div>
+            <div class="board-make">
+   <button class="button" th:if="${session.SID != null}" onclick="location.href='/board/write';">게시물 작성</button>
+   <button class="button" th:unless="${session.SID != null}" onclick="checkLogin();">게시물 작성</button>
+</div>
             </div>
             
-        <div th:if="${message}" class="alert alert-primary alert-dismissible fade show" role="alert">
-        <span th:text="${message}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    	<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <span th:text="${error}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-            
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                 <tr class="header">
                     <th class="num"><span>번호</span></th>
-                    <th><span>카테고리</span></th>
+                           <th><span>카테고리</span></th>
                     <th class="title"><span>제목</span></th>
                     <th><span>조회수</span></th>
                     <th><span>좋아요</span></th>
@@ -60,18 +59,18 @@
                                         
                                        <td th:text="${l.boardNum}"></td>
                                        <td th:text="${l.boardCategory}"></td>
-                             <td id="boardTitle">
-						    <a th:href="@{/board/detail(boardNum=${l.boardNum})}" 
-						       th:text="${l.boardTitle}" 
-						       style="text-decoration: none; color: inherit;">
-						    </a>
-						</td>
-                                       <td th:text="${l.boardViewCnt}"></td>
+								          <td id="boardTitle">
+								    <a th:href="@{/board/detail(boardNum=${'bbs_' + #numbers.formatInteger(l.boardNum, 2)})}" 
+								       th:text="${l.boardTitle}" 
+								       style="text-decoration: none; color: inherit; cursor: pointer;">
+								    </a>
+								</td>
+								  <td th:text="${l.boardViewCnt}"></td>
                                   <td th:text="${l.boardLikeCnt}"></td>
-									<td th:text="${l.boardDisLikeCnt}"></td>
+									<td th:text="${l.boardDisLikeCnt}" ></td>
                                        <td th:text="${l.userInfo.userNn}"></td>
                                        <td th:text="${l.boardYmd}"></td>                                   
-                               
+                                   
                                     </tr>
                                     </th:block>
                                     <th:block th:unless="${not #lists.isEmpty(allBoardList)}">
@@ -93,31 +92,31 @@
 			            <nav>
 			                <ul class="pagination justify-content-center">
 			                    <li class="page-item">
-			                        <a class="page-link" th:href="@{/board/}">
+			                        <a class="page-link" th:href="@{/board}">
 			                        	<i class="material-icons md-first_page"></i>
 			                        </a>
 			                    </li>
 			                    <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
 			                        <a class="page-link"
-			                           th:href="@{/board/(currentPage=${currentPage - 1})}">
+			                           th:href="@{/board(currentPage=${currentPage - 1})}">
 			                        	<i class="material-icons md-chevron_left"></i>
 			                        </a>
 			                    </li>
 			                    <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
 				                    <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-				                    	<a class="page-link" th:href="@{/board/(currentPage=${num})}" 
+				                    	<a class="page-link" th:href="@{/board(currentPage=${num})}" 
 				                    	   th:text="${num}">
 				                    	</a>
 				                    </li>
 			                    </th:block>
 			                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
 			                        <a class="page-link"
-			                           th:href="@{/board/(currentPage=${currentPage + 1})}">
+			                           th:href="@{/board(currentPage=${currentPage + 1})}">
 			                        	<i class="material-icons md-chevron_right"></i>
 			                        </a>
 			                    </li>
 			                    <li class="page-item">
-			                        <a class="page-link" th:href="@{/board/(currentPage=${lastPage})}">
+			                        <a class="page-link" th:href="@{/board(currentPage=${lastPage})}">
 			                        	<i class="material-icons md-last_page"></i>
 			                        </a>
 			                    </li>
@@ -144,7 +143,18 @@
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
     <script>
-
+    function checkLogin() {
+    	   alert('로그인 후 작성 가능합니다');
+    	   window.location.href = '/login';
+    	}
+    
+    
+    
+    
+    
+    
+    
+    
 window.addEventListener('load', function() {
     const memberMenu = document.getElementById('memberMenu');
     const members = document.querySelectorAll('.member');
@@ -181,6 +191,7 @@ window.addEventListener('load', function() {
     memberMenu.addEventListener('click', function(e) {
         e.stopPropagation();
     });
+
 
 
 

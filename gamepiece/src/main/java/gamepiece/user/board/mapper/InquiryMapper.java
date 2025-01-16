@@ -13,6 +13,9 @@ import gamepiece.util.Pageable;
 public interface InquiryMapper {
 	
 	
+	//문의게시물 상세
+	Inquiry getInquiryInfo(String inquiryNum);
+	
 	//문의글 작성
 	int addInquiry(Inquiry inquiry);
 	

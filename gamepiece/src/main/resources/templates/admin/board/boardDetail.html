@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{admin/layout/default}">
+	 layout:decorate="~{admin/layout/default}">
 
 	<th:block layout:fragment="contents-header"> 	
 	<div class="col-6">
@@ -14,7 +14,7 @@
      </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
-   	<form id="modifyBoardForm" th:action="@{/admin/board/modify}" method="post" th:object="${boardInfo}">
+   	<form id="boardDetailForm" th:action="@{/admin/board/detail}" th:object="${boardInfo}">
    	    <input type="hidden" name="boardNum" th:value="${boardInfo.boardNum}">
    		    <div class="row">
                 <div class="col-lg-6">

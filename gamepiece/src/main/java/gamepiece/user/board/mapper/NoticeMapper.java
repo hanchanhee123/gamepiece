@@ -13,6 +13,9 @@ import gamepiece.util.Pageable;
 public interface NoticeMapper {
 	
 	
+	//공지글 상세
+	Notice getNoticeInfo(int noticeNum);
+	
 	//게시물 행 세기
 	int getCntNotice();
 	

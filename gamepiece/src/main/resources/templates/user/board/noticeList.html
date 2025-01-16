@@ -26,7 +26,7 @@
            
             </div>
             
-            <table class="table">
+                <table class="table table-hover">
                 <thead>
                 <tr class="header">
                     <th class="num"><span>번호</span></th>
@@ -41,7 +41,12 @@
                                <tr th:each="l : ${noticeList}">
                                         
                                        <td th:text="${l.noticeNum}"></td>
-                                       <td th:text="${l.noticeTitle}"></td>
+                                       <td id="noticeTitle">
+									    <a th:href="@{/board/notice/detail(noticeNum=${l.noticeNum})}" 
+									       th:text="${l.noticeTitle}" 
+									       style="text-decoration: none; color: inherit; cursor: pointer;">
+									    </a>
+									</td>
                                        <td th:text="${l.viewCount}"></td>
                                        <td th:text="${l.adminId}"></td>
                                        <td th:text="${l.noticeYmd}"></td>                                   
