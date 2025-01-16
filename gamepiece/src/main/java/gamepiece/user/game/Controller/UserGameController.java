@@ -94,6 +94,11 @@ public class UserGameController {
 		return "user/game/gameList";
 	}
 	
+	@GetMapping("/steamDetail")
+	public String getGameDetailView(Model model) {
+		return "user/game/steamDetail";
+	}
+	
 	
 	
 	
