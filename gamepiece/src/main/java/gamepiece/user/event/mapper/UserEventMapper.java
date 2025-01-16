@@ -29,4 +29,7 @@ public interface UserEventMapper {
 
 	int getParticipations(Map resultMap);
 
+	void insertParticipant(Event event);
+
+
 }

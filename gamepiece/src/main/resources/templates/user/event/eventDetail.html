@@ -38,9 +38,10 @@
 					</div>
 					<div class="winnersNum">
 						<strong>당첨 인원 : </strong>
-					    <span th:text="${ed.evWinnersNum}"></span>
+					    <span th:text="${ed.evWinnersNum}+명"></span>
+					    [[${status}]]
 					</div>
-					<div class="button">
+					<div class="button"  th:if="${status == '진행중'}">
 					    <button class="w-btn w-btn-indigo" id="participate-btn" type="button" th:data-event-cd="${ed.evCd}">이벤트 참여</button>
 					</div>
 			    </div>
@@ -51,7 +52,9 @@
 		<script th:inline="javascript">
 		$('#participate-btn').click(function () {
 		    const eventCd = $('#participate-btn').data('eventCd'); // 이벤트 코드 값을 가져옴 (숨겨진 input에서)
+		    const $body = $('body');
 		    const loginId = /*[[${loginId}]]*/"";
+		    const status = /*[[${status}]]*/"";
 		    console.log(eventCd);
 		    
 		    $.ajax({
@@ -71,8 +74,29 @@
 		            if(response > 0){
 		                alert('이미 이벤트에 참여하셨습니다.');			            	            	
 		            } else {
-		            	
 		            	alert('이벤트에 참여하셨습니다.');
+		            	const $form = $('<form />',{
+		            		'action' : '/event/insertParticipant'
+		            	});
+		            	const $inputEvCd = $('<input />',{
+		            		'type' : 'hidden',
+		            		'name' : 'evCd',
+		            		'value' : eventCd
+		            	});
+		            	const $inputId = $('<input />',{
+		            		'type' : 'hidden',
+		            		'name' : 'id',
+		            		'value' : loginId
+		            	});
+		            	const $inputState = $('<input />',{
+		            		'type' : 'hidden',
+		            		'name' : 'evStatus',
+		            		'value' : status
+		            	});
+		            	
+		            	$form.append($inputEvCd, $inputId, $inputState);
+		            	$body.append($form);
+		            	$form.submit();
 		            }
 		        },
 		        error: function (jQXHR, textStatus, error) {
