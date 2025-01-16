@@ -1,5 +1,6 @@
 package gamepiece.user.board.domain;
 
+import gamepiece.user.user.domain.User;
 import lombok.Data;
 
 @Data
@@ -12,6 +13,6 @@ public class Notice {
 	private int viewCount; //공지조회수
 	private String adminId; 
 	private String noticeYmd; //공지작성일
-	
+	private User userInfo; 
 
 }

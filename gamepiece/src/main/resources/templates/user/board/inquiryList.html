@@ -33,12 +33,13 @@
                     <input type="text" class="item-search"/>
                     <i class="bi bi-search"></i>
                 </div>
-                <div class = "board-make">
-          			<button class="button" onclick="location.href='/board/inquiry/write';">게시물 생성</button>
-            </div>
+                <div class="board-make">
+    <button class="button" th:if="${session.SID != null}" onclick="location.href='/board/inquiry/write';">게시물 작성</button>
+     <button class="button" th:unless="${session.SID != null}" onclick="checkLogin();">게시물 작성</button>
+</div>
             </div>
             
-            <table class="table">
+              <table class="table table-hover">
                 <thead>
                 <tr class="header">
                     <th class="num"><span>번호</span></th>
@@ -53,7 +54,13 @@
                                <tr th:each="l : ${inquiryList}">
                                         
                                        <td th:text="${l.inquiryNum}"></td>
-                                       <td th:text="${l.inquiryTitle}"></td>
+                                      <td id="inquiryTitle">
+                                      
+                              <a th:href="@{/board/inquiry/detail(inquiryNum=${'inq_' + #numbers.formatInteger(l.inquiryNum, 2)})}"
+									       th:text="${l.inquiryTitle}" 
+									       style="text-decoration: none; color: inherit; cursor: pointer;">
+									    </a>
+									</td>
                                        <td th:text="${l.userInfo.userNn}"></td>
                                        <td th:text="${l.inquiryYmd}"></td>
                                        <td>
@@ -83,31 +90,31 @@
 			            <nav>
 			                <ul class="pagination justify-content-center">
 			                    <li class="page-item">
-			                        <a class="page-link" th:href="@{/board/notice}">
+			                        <a class="page-link" th:href="@{/board/inquiry}">
 			                        	<i class="material-icons md-first_page"></i>
 			                        </a>
 			                    </li>
 			                    <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
 			                        <a class="page-link"
-			                           th:href="@{/board/notice(currentPage=${currentPage - 1})}">
+			                           th:href="@{/board/inquiry(currentPage=${currentPage - 1})}">
 			                        	<i class="material-icons md-chevron_left"></i>
 			                        </a>
 			                    </li>
 			                    <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
 				                    <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-				                    	<a class="page-link" th:href="@{/board/notice(currentPage=${num})}" 
+				                    	<a class="page-link" th:href="@{/board/inquiry(currentPage=${num})}" 
 				                    	   th:text="${num}">
 				                    	</a>
 				                    </li>
 			                    </th:block>
 			                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
 			                        <a class="page-link"
-			                           th:href="@{/board/notice(currentPage=${currentPage + 1})}">
+			                           th:href="@{/board/inquiry(currentPage=${currentPage + 1})}">
 			                        	<i class="material-icons md-chevron_right"></i>
 			                        </a>
 			                    </li>
 			                    <li class="page-item">
-			                        <a class="page-link" th:href="@{/board/notice(currentPage=${lastPage})}">
+			                        <a class="page-link" th:href="@{/board/inquiry(currentPage=${lastPage})}">
 			                        	<i class="material-icons md-last_page"></i>
 			                        </a>
 			                    </li>
@@ -135,6 +142,15 @@
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
     <script>
+    
+    function checkLogin() {
+ 	   alert('로그인 후 작성 가능합니다');
+ 	   window.location.href = '/login';
+ 	}
+ 
+ 
+ 
+    
 
 window.addEventListener('load', function() {
     const memberMenu = document.getElementById('memberMenu');

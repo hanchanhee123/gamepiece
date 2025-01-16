@@ -151,34 +151,7 @@ WHERE
 
 <!-- 
 
-<insert id="addBoard" parameterType="Board">
-    INSERT INTO boards(
-        bbs_no,
-        bbs_cate_cd,
-        id,
-        bbs_title,
-        bbs_cn,
-        bbs_like,
-        bbs_dislike,
-        bbs_view,
-        bbs_ymd
-    )VALUES(
-        CONCAT('bbs_', LPAD((
-            SELECT next_num FROM (
-                SELECT MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)) + 1 AS next_num 
-                FROM boards
-            ) AS temp
-        ), 2, '0')),
-        #{boardCategory},
-        CONCAT('id', LPAD(#{idN}+1,2,'0')),
-        #{boardTitle},
-        #{boardContent},
-        #{boardLikeCnt},
-        #{boardDisLikeCnt},
-        #{boardViewCnt},
-        CURDATE()
-    );
-</insert>
+
 
 	<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">	
 	

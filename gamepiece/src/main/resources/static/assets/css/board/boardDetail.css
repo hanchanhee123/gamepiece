@@ -5,6 +5,7 @@
 
 
 
+
 #header-img {
     width: 80px;
     height: auto;
@@ -173,8 +174,8 @@
     margin-top: 30px;
     background-color: white;
     border: 1px solid #007bff;
-    border-radius: 10px;
-    margin-bottom: 15px;
+    border-radius: 13px;
+    margin-bottom: 20px;
     margin-left: 2.7%;
     border-width: 2px;
 }
@@ -224,8 +225,7 @@
 .likeCnt2, .dislikeCnt2 {
 
     font-weight: 400;
-    margin-left: 30px;
-    font-size: 25px;
+    font-size: medium;
 
 }
 
@@ -240,39 +240,47 @@
 }
 
 
+
 /* 제목 공간 div */
 .titleDiv {
     border: 1px solid #007bff;
     border-radius: 15px 15px 0 0;
-    padding: 10px;
-    border-width: 2px;
+    border-width: 2.8px;
     margin-left: 3%;
     margin-top: 50px;
     background-color: white;
-    border-bottom-color: black;
+    border-bottom-color: lightgray;
 }
 
-/*게시물에 있는 덧글공간 div */
+
+
 .boards-content {
-    border: 1px solid #007bff;
+    border: 3px solid #007bff;
     border-radius: 0 0 15px 15px;
-    padding: 10px;
+    padding: 18px;
     margin-bottom: 20px;
-    border-width: 2px;
+    border-width: 3px;
     display: flex;
     justify-content: center;
     margin-left: 3%;
     background-color: white;
-    height: 600px;
     border-top-style: none;
+    min-height: 300px;  
+    max-height: 800px;  
+    height: auto;  
 }
 
 /* 게시글 제목 폰트 */
 .titleFont {
 
-    padding: 0px 3px;
-    margin-left: 3px;
-    font-size: x-large;
+     font-size: 1.5rem;
+      font-weight: 600;
+        color: #1f2937;
+         padding: 0.5rem 0;
+         border: none;
+        background: transparent;
+         width: 100%;
+        pointer-events: none;
 }
 
 /* 게시글 이미지 */
@@ -291,10 +299,6 @@
     margin-bottom: 5px;
 }
 
-.CommentInput-div {
-    display: flex;
-
-}
 
 .commentSubmit-btn {
     vertical-align: middle;
@@ -328,25 +332,31 @@
 }
 
 .report-text {
-    color: red;
     cursor: pointer;
-    margin-right: 5px;
-    font-weight: bolder;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    color: #dc2626;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
 }
 
-.user-info-row{
-
-    margin-top: 3px;
-    display: flex;
-    justify-content: space-between;
-
-
+.report-text:hover {
+    background-color: #fee2e2;
 }
+.report-text:hover {
+    background-color: #fee2e2;
+}
+
 
 .username{
-    margin-left: 8px;
-    font-weight: bolder;
-}
+  font-size: 0.95rem;
+     
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            
+                color: #1f2937;
+            }
 
 #commentReport{
     
@@ -365,5 +375,251 @@
 
 .report-text:hover{
 
-    text-decoration: underline;
+     background-color: #fee2e2;
+}
+
+  .report-text i {
+            font-size: 1rem;
+        }
+        
+        
+
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .like-dislike-section {
+            background: #f9fafb;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .like-dislike-section h5 {
+            color: #374151;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .like-dislike-section .form-control {
+            text-align: center;
+            font-weight: 600;
+        }
+
+
+
+
+
+.content-details {
+    font-family: '나눔고딕', 'NanumGothic', sans-serif; 
+    line-height: 1.5;
+    width: 100%;
+}
+
+
+.content-details p {
+    margin: 0;
+}
+
+
+#titleStyle{
+
+    padding: .5rem .75rem;
+ 	background: #fcfcfc;
+    border-radius: 15px 15px 0 0;
+}
+	
+	
+	
+
+
+
+
+
+
+.comment-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.comment-card {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.comment-card:last-child {
+    border-bottom: none;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
+
+.comment-content {
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.report-text {
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.report-text:hover {
+    background-color: #fee2e2;
+}
+
+.comment-actions button {
+    transition: all 0.2s;
+}
+
+.comment-actions button:hover {
+    background-color: #e5e7eb;
+}
+
+.bi-hand-thumbs-up-fill {
+    color: #3b82f6;
+}
+
+.bi-hand-thumbs-down-fill {
+    color: #ef4444;
+}
+	
+	
+	
+	
+.card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+
+
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #fee2e2;
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+}
+
+.btn-light:hover {
+    background-color: #e9ecef;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+
+.inputComment {
+    width: 100%;
+ 
+   
+}
+
+.CommentInput-div {
+
+	 
+    max-width: 97.5%;
+
+    background-color: #fff;
+    border: 1px solid #007bff;
+    margin-left: 32px;
+    border-radius: 13px;
+    border-width: 2.8px;
+}
+
+.form-control {
+    border: none;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+
+.btn-primary {
+    background-color: #3b82f6;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+.CommentInput-div .form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+
+  .commentInsert:focus {
+        outline: none;
+        box-shadow: none !important;
+    }
+.user-info-row {
+	padding: .5rem .75rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 0.5rem;
+}
+
+.commentInsert{
+	
+	border-radius: 13px 13px 0 0;
+	
+}
+
+
+.commentSubmitBtn{
+	
+	margin-bottom: 2px;
+    margin-right: 5px;
+	
+	
+}
+
+.commentBox{
+	
+	box-shadow: none;
+	    padding-top: 3px;
+	    border-radius: 13px 13px 0 0;
+}
+
+
+
+
+/* 에디터 컨텐츠는 스타일 최소화하여 원본 유지 */
+.editor-content {
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.plain-text {
+    font-family: '나눔고딕', 'NanumGothic', sans-serif;
+    font-size: 16px;  /* 글자 크기 증가 */
+    line-height: 1.8;  /* 줄간격 증가 */
+    color: #333;
+    white-space: pre-line;
+    letter-spacing: 0.5px;  /* 자간 살짝 조정 */
 }

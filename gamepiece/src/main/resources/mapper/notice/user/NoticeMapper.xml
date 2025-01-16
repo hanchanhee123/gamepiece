@@ -15,6 +15,23 @@
     <result column="reg_ymd" property="noticeYmd" />
 
 
+	<association property="userInfo" javaType="gamepiece.user.user.domain.User">
+ 			<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+    </association>
+
+
+
+
 </resultMap>
 	<!-- 
 				<select id="getNoticeSearchList" parameterType="map" resultMap="NoticeResultMap">
@@ -76,23 +93,30 @@ WHERE
 </select>
 
 
-<!-- 	<select id="getNoticeInfo" parameterType="Notice" resultMap="NoticeResultMap">
+	<select id="getNoticeInfo" parameterType="Notice" resultMap="NoticeResultMap">
 	
 	SELECT 
-		ntc_no, 
-		ntc_title, 
-		ntc_cn, 
-		ntc_img, 
-		ntc_view, 
-		admin_id, 
-		reg_ymd
+		nm.ntc_no, 
+		nm.ntc_title, 
+		nm.ntc_cn, 
+		nm.ntc_img, 
+		nm.ntc_view, 
+		u.user_nn, 
+		nm.reg_ymd
 	FROM 
-		ntc_mttr
+		ntc_mttr nm INNER JOIN user u 
+		ON nm.admin_id = u.id
 	WHERE
-		ntc_no=#{noticeNum};
+		nm.ntc_no=#{noticeNum};
 		
 	
 	</select>
+	
+	<!-- 
+	
+	
+	
+	
 
 	<insert id="addNotice" parameterType="Notice">
 	

@@ -37,6 +37,7 @@
     
     
   		
+  		
 </resultMap>
 
 					<!-- 	
@@ -170,12 +171,7 @@ WHERE
             ) AS temp
         ), 2, '0')),
         #{boardCategory},
-          CONCAT('id', LPAD((
-            SELECT next_num FROM (
-                SELECT MAX(CAST(SUBSTRING_INDEX(id, 'id', -1) AS UNSIGNED)) + 1 AS next_num 
-                FROM boards
-            ) AS temp
-        ), 2, '0')),
+        #{boardUserid},
         #{boardTitle},
         #{boardContent},
         #{boardLikeCnt},
@@ -207,6 +203,22 @@ WHERE
 		
 	
 	</select>
+
+
+
+
+
+<update id="updateLikeCnt" parameterType="Board">
+			UPDATE
+				 board 
+        SET 
+        		bbs_like=#{boardLikeCnt},
+				bbs_dislike=#{boardDisLikeCnt}	
+        WHERE bbs_no = #{boardNum}
+
+</update>
+
+
 
 
 <!--
