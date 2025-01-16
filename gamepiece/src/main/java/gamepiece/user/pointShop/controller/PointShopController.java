@@ -64,11 +64,15 @@ public class PointShopController {
 		int endPageNum = historyInfo.getEndPageNum();
 		int lastPage = historyInfo.getLastPage();
 		
+		String avatar = userService.getUserAvatar(userId);
+        model.addAttribute("avatar", avatar);
+		
 		model.addAttribute("historyList", historyList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("userId", userId);
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
@@ -89,11 +93,16 @@ public class PointShopController {
 		int imoticonendPageNum = imoticonInfo.getEndPageNum();
 		int imoticonlastPage = imoticonInfo.getLastPage();
 		String userId = (String) session.getAttribute("SID");
+		
+		String avatar = userService.getUserAvatar(userId);
+        model.addAttribute("avatar", avatar);
+        
 		model.addAttribute("imoticonList", imoticonList);
 		model.addAttribute("imoticoncurrentPage", imoticoncurrentPage);
 		model.addAttribute("imoticonstartPageNum", imoticonstartPageNum);
 		model.addAttribute("imoticonendPageNum", imoticonendPageNum);
 		model.addAttribute("imoticonlastPage", imoticonlastPage);
+		model.addAttribute("userId", userId);
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
@@ -115,11 +124,15 @@ public class PointShopController {
 		int lastPage = avatarInfo.getLastPage();
 		String userId = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(userId);
+        model.addAttribute("avatar", avatar);
+		
 		model.addAttribute("avatarList", avatarList );
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("userId", userId);
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
@@ -141,11 +154,15 @@ public class PointShopController {
 		int lastPage = frameInfo.getLastPage();
 		String userId = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(userId);
+        model.addAttribute("avatar", avatar);
+		
 		model.addAttribute("frameList", frameList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("userId", userId);
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
@@ -167,11 +184,15 @@ public class PointShopController {
 		int lastPage = etcInfo.getLastPage();
 		String userId = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(userId);
+        model.addAttribute("avatar", avatar);
+		
 		model.addAttribute("etcList", etcList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("userId", userId);
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
@@ -193,11 +214,15 @@ public class PointShopController {
 		int lastPage = backInfo.getLastPage();
 		String userId = (String) session.getAttribute("SID");
 		
+		String avatar = userService.getUserAvatar(userId);
+        model.addAttribute("avatar", avatar);
+		
 		model.addAttribute("backList", backList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("userId", userId);
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
