@@ -79,4 +79,9 @@ public class EventServiceImpl implements EventService {
 		return userEventMapper.getParticipations(resultMap);
 	}
 
+	@Override
+	public void insertParticipant(Event event) {
+	
+		userEventMapper.insertParticipant(event);
+	}
 }

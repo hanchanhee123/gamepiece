@@ -126,69 +126,16 @@
 		<div class="mypage-inquiry">
 		    <span>내 문의글</span>
 		    <div class="common-card-section">
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
-		        <div class="card-section">
-		            <p class="mypage-board-cate">@@ 문의합니다</p>
-		            <p class="mypage-report-content">문의 내용</p>
-		            <div class="mypage-inquiry-response">
-		                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
-		            </div>
-		        </div>
+			    <th:block th:if="${myPageInquiry != null}" th:each="myPageInquiry : ${myPageInquiry}">
+			        <div class="card-section">
+			            <p class="mypage-inquiry-title" th:text="${myPageInquiry.inquiryTitle}"></p>
+			            <p class="mypage-inquiry-content" th:text="${myPageInquiry.inquiryContent}"></p>
+			            <p class="mypage-inquiry-ymd" th:text="${myPageInquiry.inquiryYmd}"></p>
+			            <div class="mypage-inquiry-response">
+			                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
+			            </div>
+			        </div>
+			    </th:block>
 		    </div>
 		</div>
 	</th:block>

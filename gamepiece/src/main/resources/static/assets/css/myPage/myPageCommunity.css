@@ -85,11 +85,34 @@
     font-size: 18px;
 }
 
+.mypage-board-cate {
+	color: #007bff;
+    border-bottom: 1px solid #007bff;
+    height: 30px;
+}
+
+.mypage-board-title {
+	padding-top: 5px;
+    height: 35px;
+}
+
+.mypage-board-content {
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 5;
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: wrap;
+    height: 120px;
+}
+
 .mypage-board-emp {
-    margin: 30px 0px;
+    margin: 10px 0px;
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
+    border-top: 1px solid #007bff;
+    padding: 10px 0px;
+    height: min-content;
 }
 
 .mypage-board-emp img {

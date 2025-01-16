@@ -92,7 +92,7 @@
 	
 	<select id="getEventsList" parameterType="string" resultMap="eventResultMap">
 		SELECT
-			ev_nm, ev_cd
+			ev_nm, ev_cd, ev_winners_num
 		FROM
 			events
 		WHERE
@@ -235,6 +235,34 @@
 			ev_winner_yn='Y';		
 	</select>
 	
+	<select id="selectEventWinners" parameterType="gamepiece.user.event.domain.Event" resultMap="eventResultMap">
+	    SELECT
+		    ep.id
+		FROM
+		    event_participations ep
+		INNER JOIN events e
+		    ON ep.ev_cd = e.ev_cd
+		WHERE
+		    e.ev_cd = #{evCd}
+		ORDER BY
+		    RAND()
+	    LIMIT #{evWinnersNum};
+	</select>
+	
+	<update id="updateWinners" parameterType="gamepiece.user.event.domain.Event">
+	    UPDATE 
+	    	event_participations
+	    SET 
+	    	ev_winner_yn = 'Y'
+	    <where> 
+	    	ev_winner_yn = 'N'
+	      <if test="id != null">
+	          AND ev_cd=#{evCd}
+	          AND id = #{id}
+      	  </if>
+      	</where>
+	</update>
+	
 	<select id="EventWinnerListDetail" parameterType="string" resultMap="eventResultMap">
 		SELECT
 			*
@@ -278,4 +306,16 @@
 		WHERE 
 			ev_cd=#{evCd};
 	</update>
+	
+	<select id="countWinner" parameterType="Map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			event_participations
+		WHERE
+			ev_cd = #{evCd}
+		AND
+			ev_winner_yn = 'Y'
+	    LIMIT #{evWinnersNum};
+	</select>
 </mapper>

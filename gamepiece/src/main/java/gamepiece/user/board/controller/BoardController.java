@@ -23,7 +23,6 @@ import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
-
 import gamepiece.user.board.service.BoardService;
 import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
@@ -49,7 +48,6 @@ public class BoardController {
 	 * */
 	
 
-	
 	@GetMapping("/inquiry/detail")
 	public String inquiryView(@RequestParam(name="inquiryNum") String inquiryNum, Model model) {
 		
@@ -123,7 +121,6 @@ public class BoardController {
 
 		String loginId = (String) session.getAttribute("SID");
 		inquiry.setInquiryUserId(loginId);
-		
 
 	
 
@@ -151,7 +148,6 @@ public class BoardController {
 		String loginId = (String) session.getAttribute("SID");
 
 		board.setBoardUserid(loginId);
-
 	
 	
 		

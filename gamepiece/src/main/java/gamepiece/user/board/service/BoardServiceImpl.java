@@ -14,6 +14,7 @@ import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
+import gamepiece.user.board.domain.Report;
 import gamepiece.user.board.mapper.AllBoardMapper;
 import gamepiece.user.board.mapper.AttackBoardMapper;
 import gamepiece.user.board.mapper.BoardCommentMapper;
@@ -22,6 +23,7 @@ import gamepiece.user.board.mapper.InfoBoardMapper;
 import gamepiece.user.board.mapper.InquiryMapper;
 import gamepiece.user.board.mapper.InquiryResponeMapper;
 import gamepiece.user.board.mapper.NoticeMapper;
+import gamepiece.user.board.mapper.ReportMapper;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +43,7 @@ public class BoardServiceImpl implements BoardService{
 	private final AllBoardMapper allBoardMapper;
 	private final BoardCommentMapper boardCommentMapper;
 	private final InquiryResponeMapper inquiryResponeMapper;
-	
+	private final ReportMapper reportMapper; 
 	
 	@Override
 	public PageInfo<Board> getFreeBoardsList(Pageable pageable) {
@@ -261,6 +263,19 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		return inquiryResponeMapper.getInquiryResponeInfo(inquiryNum);
 	}
+
+
+
+	@Override
+	public int addReport(Report report) {
+		// TODO Auto-generated method stub
+		
+		return reportMapper.addReport(report);
+	}
+	
+	
+	
+
 	
 
 	}

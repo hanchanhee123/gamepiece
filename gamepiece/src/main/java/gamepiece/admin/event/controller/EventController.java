@@ -105,13 +105,33 @@ public class EventController {
 	
 	@PostMapping("/winner/winners")
 	@ResponseBody
-	public List<Event> getWinnerListInfo(@RequestParam("evCd") String evCd){
+	public List<Event> getWinnerListInfo(@RequestParam("evCd") String evCd, 
+										 @RequestParam(value = "evWinnersNum", required = false, defaultValue = "1") int evWinnersNum, Event event, Model model){
 		
 		log.info("Event evCd: {}", evCd);
+		log.info("Event evWinnersNum: {}", evWinnersNum);
+		
+		List<Event> selectEventWinners = eventService.selectEventWinners(evCd, evWinnersNum);
+		
+		log.info("selectEventWinners: {}", selectEventWinners);
+		
+		int countWinner = eventService.countWinner(evCd, evWinnersNum);
+		model.addAttribute("countWinner", countWinner);
+		
+		if(countWinner == 0) {
+			selectEventWinners.forEach(element -> {
+				event.setEvCd(evCd);
+				event.setId(element.getId());
+				eventService.updateWinners(event);
+			});						
+		}
+		
 		
 		List<Event> addEventList = eventService.getWinnerListInfo(evCd);
 		
-		log.info("eventList {}",addEventList);
+		
+		log.info("countWinner {}", countWinner);
+		log.info("addeventList {}",addEventList);
 		
 		return addEventList;
 	}
