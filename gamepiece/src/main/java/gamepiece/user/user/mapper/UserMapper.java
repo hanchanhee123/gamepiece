@@ -37,9 +37,12 @@ public interface UserMapper {
 	// 비밀번호 찾기 로직
 	String findUserPswdPro(String id, String userNm, String userEmlAddr, String userTelno);
 
-	// 개인 정보 수정
-	void modifyUserInfo(User user);
-
+	// 회원 정보 수정
+	void modifyUser(User user);
+	
+	// 회원 탈퇴
+	void removeUser(String id);
+	
 	// 아바타
 	String getUserAvatar(String id);
 

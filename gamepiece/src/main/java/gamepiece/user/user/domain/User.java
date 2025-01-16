@@ -17,5 +17,6 @@ public class User {
 	private String userNn;
 	private String joinYmd;
 	private String whdwlYmd;
+	private String isDelete;
 	
 }

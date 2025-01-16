@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import gamepiece.user.board.domain.Board;
+import gamepiece.user.board.domain.Inquiry;
+import gamepiece.user.event.domain.Event;
 import gamepiece.user.myPage.domain.MyPage;
 import gamepiece.user.myPage.service.MyPageService;
 import gamepiece.user.pointShop.domain.Point;
@@ -281,6 +283,10 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
+		List<Inquiry> myPageInquiry = myPageService.myPageInquiry(id);
+		model.addAttribute("myPageInquiry", myPageInquiry);
+		log.info("myPageInquiry : {}", myPageInquiry);
+		
 		return "user/myPage/myPageInquiry";
 	}
 	
@@ -301,6 +307,10 @@ public class MyPageController {
 		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
+		
+		List<Event> myPageEvent = myPageService.myPageEvent(id);
+		model.addAttribute("myPageEvent", myPageEvent);
+		log.info("myPageEvent : {}", myPageEvent);
 		
 		return "user/myPage/myPageEvent";
 	}
