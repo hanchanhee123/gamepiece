@@ -97,6 +97,9 @@ public class PointShopController {
 		String avatar = userService.getUserAvatar(userId);
         model.addAttribute("avatar", avatar);
         
+        var purchaseList = pointshopService.purchaseList(userId);
+        model.addAttribute("purchaseList", purchaseList);
+        
 		model.addAttribute("imoticonList", imoticonList);
 		model.addAttribute("imoticoncurrentPage", imoticoncurrentPage);
 		model.addAttribute("imoticonstartPageNum", imoticonstartPageNum);
@@ -126,6 +129,9 @@ public class PointShopController {
 		
 		String avatar = userService.getUserAvatar(userId);
         model.addAttribute("avatar", avatar);
+        
+        var purchaseList = pointshopService.purchaseList(userId);
+        model.addAttribute("purchaseList", purchaseList);
 		
 		model.addAttribute("avatarList", avatarList );
 		model.addAttribute("currentPage", currentPage);
@@ -156,6 +162,9 @@ public class PointShopController {
 		
 		String avatar = userService.getUserAvatar(userId);
         model.addAttribute("avatar", avatar);
+        
+        var purchaseList = pointshopService.purchaseList(userId);
+        model.addAttribute("purchaseList", purchaseList);
 		
 		model.addAttribute("frameList", frameList);
 		model.addAttribute("currentPage", currentPage);
@@ -186,6 +195,8 @@ public class PointShopController {
 		
 		String avatar = userService.getUserAvatar(userId);
         model.addAttribute("avatar", avatar);
+        var purchaseList = pointshopService.purchaseList(userId);
+        model.addAttribute("purchaseList", purchaseList);
 		
 		model.addAttribute("etcList", etcList);
 		model.addAttribute("currentPage", currentPage);
@@ -217,6 +228,9 @@ public class PointShopController {
 		String avatar = userService.getUserAvatar(userId);
         model.addAttribute("avatar", avatar);
 		
+        var purchaseList = pointshopService.purchaseList(userId);
+        model.addAttribute("purchaseList", purchaseList);
+        
 		model.addAttribute("backList", backList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
