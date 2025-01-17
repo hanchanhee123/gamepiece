@@ -58,7 +58,11 @@ public class PointShopController {
 		String userId = (String) session.getAttribute("SID");
 		var historyInfo = pointshopService.findhistory(pageable, userId);
 		
+		
 		List<Point> historyList = historyInfo.getContents();
+		
+		log.info("historyList {}", historyList);
+		
 		int currentPage = historyInfo.getCurrentPage();
 		int startPageNum = historyInfo.getStartPageNum();
 		int endPageNum = historyInfo.getEndPageNum();
