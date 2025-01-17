@@ -13,7 +13,8 @@ public class Report {
 	private String reportProgress; //진행상황
 	private String reportYmd; //신고일
 	private User userInfo; //유저정보
-
+	private Disposal disposalInfo; //처분정보
+	
 	
 	
 }

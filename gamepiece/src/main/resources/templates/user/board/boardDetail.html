@@ -93,8 +93,12 @@
 			            <div class="modal-footer border-top-0">
 			                <button type="button" class="btn btn-light rounded-pill px-4" 
 			                        data-bs-dismiss="modal">취소</button>
-			                <button type="button" class="btn btn-danger rounded-pill px-4" 
-			                        onclick="userReport()">신고하기</button>
+			                <button type="button" 
+						        class="btn btn-danger rounded-pill px-4" 
+						        onclick="userReport()"
+						        style="min-width: 100px;">
+						    신고하기
+						</button>
 			            </div>
 			        </div>
 			    </div>
@@ -260,8 +264,12 @@
 			            <div class="modal-footer border-top-0">
 			                <button type="button" class="btn btn-light rounded-pill px-4" 
 			                        data-bs-dismiss="modal">취소</button>
-			                <button type="button" class="btn btn-danger rounded-pill px-4" 
-			                        onclick="commentReport()">신고하기</button>
+			                <button type="button" 
+							        class="btn btn-danger rounded-pill px-4" 
+							        onclick="commentReport()"
+							        style="min-width: 100px;">
+							    신고하기
+							</button>
 			            </div>
 			        </div>
 			    </div>
@@ -368,7 +376,7 @@
 
 <!--/* 사용자 추가 js file */-->
 <th:block layout:fragment="customJsResource">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
 	<script th:src="@{/assets/js/home/homeJs.js}"></script>
 </th:block>
 <!--/* 사용자 추가 js script */-->
@@ -414,52 +422,72 @@
         });
         
         
-        
         function userReport() {
-        	  const reportContent = document.getElementById('reportContent').value.trim();
-        	  const reportedUser = document.getElementById('reportedUser').value.trim();
-        	  const boardNum = document.getElementById('boardNum').value;
+        	   // 버튼 비활성화 (중복 클릭 방지)
+        	   const reportBtn = document.querySelector('#reportModal .btn-danger');
+        	   if (reportBtn.disabled) {
+        	       return;
+        	   }
+        	   reportBtn.disabled = true;
 
-        	  if (reportContent === '') {
-        	    alert('신고 사유를 입력해주세요.');
-        	    return;
-        	  }
+        	   const reportContent = document.getElementById('reportContent').value.trim();
+        	   const reportedUser = document.getElementById('reportedUser').value.trim();
+        	   const boardNum = document.getElementById('boardNum').value;
 
-        	  $.ajax({
-        	    url: '/board/report',
-        	    type: 'POST',
-        	    data: {
-        	      reportedUser: reportedUser,
-        	      reportContent: reportContent,
-        	      boardNum: boardNum
-        	    },
-        	    success: function(response) {
-        	      // 첫 번째 모달 닫기
-        	      $('#reportModal').modal('hide');
+        	   if (reportContent === '') {
+        	       alert('신고 사유를 입력해주세요.');
+        	       reportBtn.disabled = false;
+        	       return;
+        	   }
 
-        	      // 첫 번째 모달이 닫힌 후에 리다이렉트
-        	      $('#reportModal').on('hidden.bs.modal', function () {
-        	        window.location.href = response;
-        	      });
+        	   // 즉시 모달 전환
+        	   $('#reportModal').modal('hide');
+        	   $('#reportCompleteModal').modal('show');
 
-        	      // 완료 모달 표시
-        	      $('#reportCompleteModal').modal('show');
-        	    }
-        	  });
+        	   $.ajax({
+        	       url: '/board/report',
+        	       type: 'POST',
+        	       data: {
+        	           reportedUser: reportedUser,
+        	           reportContent: reportContent,
+        	           boardNum: boardNum
+        	       },
+        	       success: function(response) {
+        	           // 성공 시 짧은 지연 후 페이지 이동
+        	           setTimeout(() => {
+        	               window.location.href = response;
+        	           }, 800); // 0.8초 후 이동
+        	       },
+        	       error: function() {
+        	           alert('신고 처리 중 오류가 발생했습니다.');
+        	           $('#reportCompleteModal').modal('hide');
+        	           reportBtn.disabled = false;
+        	       }
+        	   });
         	}
-        
-        
-        
+
         function commentReport() {
+            // 버튼 비활성화 (중복 클릭 방지)
+            const reportBtn = document.querySelector('#commentReportModal .btn-danger');
+            if (reportBtn.disabled) {
+                return;
+            }
+            reportBtn.disabled = true;
+
             const reportContent = document.getElementById('commentReportContent').value.trim();
             const reportedUser = document.getElementById('reportedUser').value.trim();
             const boardNum = document.getElementById('boardNum').value;
-            
+
             if (reportContent === '') {
                 alert('신고 사유를 입력해주세요.');
+                reportBtn.disabled = false;
                 return;
             }
-            
+
+            // 즉시 모달 전환
+            $('#commentReportModal').modal('hide');
+            $('#reportCompleteModal').modal('show');
+
             $.ajax({
                 url: '/board/report',
                 type: 'POST',
@@ -469,19 +497,18 @@
                     boardNum: boardNum
                 },
                 success: function(response) {
-                    $('#commentReportModal').modal('hide');
-                    
-                    $('#reportCompleteModal').on('hidden.bs.modal', function () {
+                    // 성공 시 짧은 지연 후 페이지 이동
+                    setTimeout(() => {
                         window.location.href = response;
-                    });
-                    $('#reportCompleteModal').modal('show');
-                    
-                   
+                    }, 800); // 0.8초 후 이동
+                },
+                error: function() {
+                    alert('신고 처리 중 오류가 발생했습니다.');
+                    $('#reportCompleteModal').modal('hide');
+                    reportBtn.disabled = false;
                 }
             });
         }
-        
-        
         
         
      // 덧글 등록
