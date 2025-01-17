@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="gamepiece.admin.event.mapper.EventMapper">
+
 	<resultMap type="gamepiece.admin.event.domain.Event" id="eventResultMap">
 		<id 	column="ev_cd" 					property="evCd"/>
 		<result column="ev_nm" 					property="evNm" />
@@ -19,8 +21,6 @@
 		<result column="user_nn"				property="userNn"/>
 		<result column="ew_cd"					property="ewCd"/>
 		<result column="ew_nm"					property="ewNm"/>
-		
-		
 	</resultMap>
 	
 	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
@@ -287,21 +287,6 @@
 			<if test="ewNm != null and ewNm != ''">
 				ew_nm=#{ewNm},
 			</if>
-			<!-- <if test="evContents != null and evContents != ''">
-				ev_contents=#{evContents},
-			</if>		
-			<if test="evStartYmd != null and evStartYmd != ''">			
-				ev_start_ymd=#{evStartYmd},
-			</if>		
-			<if test="evEndYmd != null and evEndYmd != ''">		
-				ev_end_ymd=#{evEndYmd},
-			</if>		
-			<if test="evWinnersNum != null and evWinnersNum != ''">
-				ev_winners_num=#{evWinnersNum},
-			</if>		
-			<if test="evImg != null and evImg !=''">
-				ev_img=#{evImg}
-			</if>		 -->	
 		</trim>
 		WHERE 
 			ev_cd=#{evCd};

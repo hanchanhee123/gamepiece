@@ -94,6 +94,15 @@ public class UserGameController {
 		return "user/game/gameList";
 	}
 	
+	@GetMapping("/steamDetail")
+	public String getUserGameDetailApi(@RequestParam(value="gameCode") String gameCode,
+									   @RequestParam(value="title", required=false, defaultValue = "" )String title,
+									   Model model) {
+		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
+		model.addAttribute("gameDetail", gameDetail);
+		return "user/game/steamDetail";
+	}
+	
 	
 	
 	
