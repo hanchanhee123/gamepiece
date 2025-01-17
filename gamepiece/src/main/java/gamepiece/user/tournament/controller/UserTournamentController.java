@@ -54,6 +54,7 @@ public class UserTournamentController {
 		
 		log.info("month : {}, year : {}",month,year);
 		
+		model.addAttribute("userId", userId);
 		model.addAttribute("avatar", avatar);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
