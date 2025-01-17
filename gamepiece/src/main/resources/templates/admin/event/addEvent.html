@@ -3,104 +3,104 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{admin/layout/default}">
 	   
- <th:block layout:fragment="contents-header"> 	
-  <div class="row">
-      <div class="col-6">
-          <div class="content-header">
-              <h2 class="content-title" th:text="${title}"></h2>
-              <div>
-                  <button class="btn btn-md rounded font-sm hover-up" id="addEventBtn">생성</button>
-              </div>
-          </div>
-      </div>
-  </div>
-  </th:block>
-  <th:block layout:fragment="contents-body">
- <form id="addEventForm" th:action="@{/admin/event/write}" method="post">
-  <div class="row">
-      <div class="col-lg-6">
-          <div class="card mb-4">
-              <div class="card-body">
-                  <div class="row">
-                      <div class="col-md-3">
-                          <h6>1. 일반 정보</h6>
-                      </div>
-                      <div class="col-md-9">
-                          <div class="mb-4">
-                              <label class="form-label">이벤트명</label>
-                              <input type="text" placeholder="Type here" class="form-control" name="evNm">
-                          </div>
-                          <div class="mb-4">
-                              <label class="form-label">이벤트 설명</label>
-                              <textarea placeholder="Type here" class="form-control" rows="4" name="evContents"></textarea>
-                              <div class="mb-4">
-                                  <label for="date">시작 날짜:</label>
-                                  <input type="date"
-                                          id="date"
-                                          name="evStartYmd"
-                                  >
-                              </div>
-                              <div class="mb-4">
-                                  <label for="date">종료 날짜:</label>
-                                  <input type="date"
-                                          id="date"
-                                          name="evEndYmd"
-                                         >
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                <hr class="mb-4 mt-0">
-                  <div class="row">
-                      <div class="col-md-3">
-                          <h6>2. 당첨인원</h6>
-                      </div>
-                      <div class="col-md-9">
-                          <div class="mb-4">
-                              <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                                 <input type="text" placeholder="Type here" class="form-control" name="evWinnersNum">
-                          </div>
-                      </div>
-                  </div>
-                  <hr class="mb-4 mt-0">
-                  <div class="row">
-                      <div class="col-md-3">
-                          <h6>3. 첨부파일</h6>
-                      </div>
-                      <div class="col-md-9">
-                          <div class="mb-4">
-                             <!--  <label class="form-label">이미지</label> -->
-                              <input class="form-control" type="file" name="evImg">
-                          </div>
-                  </div> <!-- .row end// -->
-              </div>
-          </div>
-      </div>
-  </div>
-  </div>
-  </form>
-     </th:block>
-  
-    <!--/* 사용자 추가 js file */-->
-    <th:block layout:fragment="customJsResource"></th:block>
-    <!--/* 사용자 추가 js script */-->
-    <th:block layout:fragment="customJs">
-    	<script>
-    		$('#addEventBtn').click(function(){
-    			let isSubmit = true;
-    			const $formControl = $('#addEventForm').find('input, select');
-    			$formControl.each((idx, elem) => {
-    				const value = $(elem).val();
-    				if(!value){
-    					isSubmit = false;
-    					// alert('필수 입력 항목입니다.');
-    					$(elem).focus();
-    					return false;
-    				}
-    			});
-    			
-    			if(isSubmit) $('#addEventForm').submit();
-    		})
-</script>
-  </th:block>
+	<th:block layout:fragment="contents-header"> 	
+		<div class="row">
+		    <div class="col-6">
+		        <div class="content-header">
+		            <h2 class="content-title" th:text="${title}"></h2>
+		            <div>
+		                <button class="btn btn-md rounded font-sm hover-up" id="addEventBtn">생성</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="contents-body">
+		<form id="addEventForm" th:action="@{/admin/event/write}" method="post">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-3">
+									<h6>1. 일반 정보</h6>
+								</div>
+								<div class="col-md-9">
+									<div class="mb-4">
+										<label class="form-label">이벤트명</label>
+											<input type="text" placeholder="Type here" class="form-control" name="evNm">
+									</div>
+									<div class="mb-4">
+											<label class="form-label">이벤트 설명</label>
+												<textarea placeholder="Type here" class="form-control" rows="4" name="evContents"></textarea>
+										<div class="mb-4">
+											<label for="date">시작 날짜:</label>
+											<input type="date"
+											        id="date"
+											        name="evStartYmd"
+											>
+										</div>
+										<div class="mb-4">
+											<label for="date">종료 날짜:</label>
+											<input type="date"
+											        id="date"
+											        name="evEndYmd"
+											       >
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr class="mb-4 mt-0">
+							<div class="row">
+								<div class="col-md-3">
+									<h6>2. 당첨인원</h6>
+								</div>
+								<div class="col-md-9">
+									<div class="mb-4">
+										<div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+											<input type="text" placeholder="Type here" class="form-control" name="evWinnersNum">
+										</div>
+									</div>
+								</div>
+								<hr class="mb-4 mt-0">
+								<div class="row">
+									<div class="col-md-3">
+										<h6>3. 첨부파일</h6>
+									</div>
+									<div class="col-md-9">
+										<div class="mb-4">
+											<input class="form-control" type="file" name="evImg">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</th:block>
+	<!--/* 사용자 추가 js file */-->
+	<th:block layout:fragment="customJsResource">
+	</th:block>
+	<!--/* 사용자 추가 js script */-->
+	<th:block layout:fragment="customJs">
+		<script>
+		$('#addEventBtn').click(function(){
+			let isSubmit = true;
+			const $formControl = $('#addEventForm').find('input, select');
+			$formControl.each((idx, elem) => {
+				const value = $(elem).val();
+				if(!value){
+					isSubmit = false;
+					// alert('필수 입력 항목입니다.');
+					$(elem).focus();
+					return false;
+				}
+			});
+			
+			if(isSubmit) $('#addEventForm').submit();
+		})
+		</script>
+	</th:block>
 </html>

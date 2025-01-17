@@ -26,4 +26,6 @@ public interface EventService {
 	
 	void insertParticipant(Event event);
 
+	PageInfo<Event> getEventWinnerList(Pageable pageable);
+
 }

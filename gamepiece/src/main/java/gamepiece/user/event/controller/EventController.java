@@ -16,19 +16,16 @@ import gamepiece.user.event.domain.Event;
 import gamepiece.user.event.service.EventService;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller("userEventController")
 @RequestMapping("/event")
 @Slf4j
+@RequiredArgsConstructor
 public class EventController {
 
 	private final EventService eventService;
-	
-	public EventController(@Qualifier("userEventService") EventService eventService) {
-		this.eventService = eventService;
-	}
-	
 	
 	@GetMapping("/progressEvent")
 	public String getProgressEvent(Pageable pageable, Model model) {
@@ -36,7 +33,6 @@ public class EventController {
 		var pageInfo = eventService.getProgressEvent(pageable);
 		
 		List<Event> eventList = pageInfo.getContents();
-		System.out.println(pageable);
 		
 		eventList.forEach(list -> {
 			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
@@ -62,7 +58,6 @@ public class EventController {
 		var pageInfo = eventService.getProgressEvent(pageable);
 		
 		List<Event> eventList = pageInfo.getContents();
-		System.out.println(eventList);
 		
 		eventList.forEach(list -> {
 			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
@@ -84,21 +79,12 @@ public class EventController {
 	
 	@GetMapping("/winnerList")
 	public String getWinnerList(Pageable pageable, Model model) {
-		/*
-		 * if (evCd == null || evCd.isEmpty()) { evCd = "DEFAULT_EVENT"; // 기본값
-		 * log.warn("Event Code was null, using default: {}", evCd); }
-		 */
-
-	    var pageInfo = eventService.getProgressEvent(pageable);
-		/* List<Event> getEventWinner = eventService.getEventWinner(evCd); */
-	    
+		
+	    var pageInfo = eventService.getEventWinnerList(pageable);
+		
 	    List<Event> eventList = pageInfo.getContents();
-	    eventList.forEach(list -> {
-	        list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
-	    });
-
+	    
 	    model.addAttribute("eventList", eventList);
-		/* model.addAttribute("getEventWinner", getEventWinner); */
 	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
 	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
 	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
@@ -110,15 +96,15 @@ public class EventController {
 	@PostMapping("/winner/detail")
 	@ResponseBody
 	public List<Event> getWinnerInfoByEvCd(@RequestParam("evCd") String evCd) {
-		log.info("Event evCd: {}", evCd);
+		
 		List<Event> eventList = eventService.getWinnerInfoByEvCd(evCd);
 		
-		log.info("eventList {}",eventList);
 		return eventList;
 	}
 	
 	@GetMapping("/eventDetail")
 	public String eventDetail(@RequestParam("evCd") String evCd, String evStatus, Model model, HttpSession session) {
+		
 		String loginId = (String)session.getAttribute("SID");
 		
 		List<Event> eventDetail = eventService.eventDetail(evCd);
@@ -141,7 +127,6 @@ public class EventController {
 		
 		model.addAttribute("eventDetail", eventDetail);
 		model.addAttribute("getParticipations", getParticipations);
-		log.info("getParticipations {}", getParticipations);
 		
 		return getParticipations;
 	}
@@ -151,11 +136,9 @@ public class EventController {
 		
 		eventService.insertParticipant(event);
 		
-		
 		reAttr.addAttribute("evCd", event.getEvCd());
 		reAttr.addAttribute("evStatus", event.getEvStatus());
 		
-		System.out.println(reAttr);
 		return "redirect:/event/eventDetail";
 	}
 	

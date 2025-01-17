@@ -41,9 +41,9 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void addEvent(Event event) {
+		
 		event.setAdminId("id01");
 		eventMapper.addEvent(event);
-		
 	}
 
 	@Override
@@ -60,6 +60,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public String getEventsWithStatus(String evCd) {
+		
 		return eventMapper.getEventListWithStatus(evCd);
 	}
 
@@ -99,15 +100,8 @@ public class EventServiceImpl implements EventService {
 		return new PageInfo<>(eventList, pageable, rowCnt);
 	}
 
-	/*
-	 * @Override public void addEventWinnerList(String evCd, Event event) {
-	 * 
-	 * event.setAdminId("id01"); eventMapper.addEventWinnerList(evCd, event); }
-	 */
-
 	@Override
 	public List<Event> getEventsList() {
-		
 		
 		return eventMapper.getEventsList();
 	}

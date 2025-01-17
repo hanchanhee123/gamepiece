@@ -15,12 +15,11 @@
             </div>
         </div>
     </th:block>
-    
     <th:block layout:fragment="contents-body">
-        <form id="addEventForm" th:action="@{/admin/event/listWrite}" method="post">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card mb-4">
+		<form id="addEventForm" th:action="@{/admin/event/listWrite}" method="post">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card mb-4">
                         <div class="card-body">
                             <!-- 1. 일반 정보 -->
                             <div class="row">
@@ -35,7 +34,6 @@
                                 </div>
                             </div>
                             <hr class="mb-4 mt-0">
-                            
                             <!-- 2. 이벤트 명 -->
                             <div class="row">
                                 <div class="col-md-3">
@@ -46,19 +44,18 @@
                                         <div class="input-group">
                                             <select class="custom-select" aria-label="Event selection" name="evCd">
                                                 <option value="">-선택-</option>
-                                                <th:block th:each="Event : ${eventList}">
-                                                    <option th:data-event-nm="${Event.evNm}" 
-                                                            th:text="${Event.evNm}" 
-                                                            th:value="${Event.evCd}">
-                                                    </option>
-                                                </th:block>
+	                                                <th:block th:each="Event : ${eventList}">
+														<option th:data-event-nm="${Event.evNm}" 
+														        th:text="${Event.evNm}" 
+														        th:value="${Event.evCd}">
+														</option>
+	                                                </th:block>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <hr class="mb-4 mt-0">
-                            
                             <!-- 3. 당첨 인원 -->
                             <div class="row">
                                 <div class="col-md-3">
@@ -72,10 +69,9 @@
 								                <span class="winner-item" th:text="${Event}"></span>
 								            </th:block>
 								        </th:block>
-								
 								        <!-- 당첨자 데이터가 없는 경우 -->
 								        <th:block th:if="${addEventList == null || addEventList.isEmpty()}">
-								            <p class="no-winners">등록된 당첨자가 없습니다.</p>
+											<p class="no-winners">등록된 당첨자가 없습니다.</p>
 								        </th:block>
 								    </div>
 								</div>
@@ -84,69 +80,66 @@
                     </div>
                 </div>
             </div>
-        </form>
+		</form>
     </th:block>
-    
-    <!-- 사용자 추가 js script -->
-    <th:block layout:fragment="customJs">
-        <script th:inline="javascript">
-            // 폼 제출 로직
-            $('#addEventBtn').click(function () {
-                let isSubmit = true;
-                const $formControl = $('#addEventForm').find('input, select');
-                
-                $formControl.each((idx, elem) => {
-                    const value = $(elem).val();
-                    if (!value) {
-                        isSubmit = false;
-                        $(elem).focus();
-                        return false; // 루프 종료
-                    }
-                });
-                
-                if (isSubmit) {
-                    $('#addEventForm').submit();
-                } else {
-                    alert('모든 필수 입력 항목을 작성해주세요.');
-                }
-            });
-
-            // 이벤트 선택 시 당첨자 목록 업데이트
-            $('.custom-select').change(function () {
-                const eventCd = $(this).val()
-                const eventList = /*[[${eventList}]]*/"";
-                
-                const filter = $(eventList).filter((idx, element) => element.evCd == eventCd);
-                
-                const evWinnersNum = filter[0].evWinnersNum;
-                
-                if (!eventCd) {
-                    alert('올바른 이벤트를 선택해주세요.');
-                    return;
-                }
-                
-                $.ajax({
-                    url: '/admin/event/winner/winners',
-                    method: 'POST',
-                    data: { 'evCd' : eventCd ,
-                    		'evWinnersNum' : evWinnersNum },
-                    dataType: 'json',
-                    success: function (data) {
-                    	console.log(data);
-                        const $div = $('.winner-table');
-                        $div.empty();
-                        
-                        data.forEach(item => {
-							console.log(item);	
-						    $div.append(`<span style="padding: 3px;">${item}</span>`);
-                        });
-                    },
-                    error: function (jqXHR, textStatus) {
-                        console.error("요청 실패:", textStatus);
-                    }
-                });
-                
-            });
-        </script>
-    </th:block>
+	<!-- 사용자 추가 js script -->
+	<th:block layout:fragment="customJs">
+		<script th:inline="javascript">
+		// 폼 제출 로직
+		$('#addEventBtn').click(function () {
+			let isSubmit = true;
+			const $formControl = $('#addEventForm').find('input, select');
+		
+			$formControl.each((idx, elem) => {
+			    const value = $(elem).val();
+			    if (!value) {
+			        isSubmit = false;
+			        $(elem).focus();
+			        return false; // 루프 종료
+			    }
+			});
+		
+			if (isSubmit) {
+			    $('#addEventForm').submit();
+			} else {
+			    alert('모든 필수 입력 항목을 작성해주세요.');
+			}
+		});
+		
+		// 이벤트 선택 시 당첨자 목록 업데이트
+		$('.custom-select').change(function () {
+			const eventCd = $(this).val()
+			const eventList = /*[[${eventList}]]*/"";
+			
+			const filter = $(eventList).filter((idx, element) => element.evCd == eventCd);
+			
+			const evWinnersNum = filter[0].evWinnersNum;
+			
+			if (!eventCd) {
+			    alert('올바른 이벤트를 선택해주세요.');
+			    return;
+			}
+			    
+			$.ajax({
+				url: '/admin/event/winner/winners',
+				method: 'POST',
+				data: { 'evCd' : eventCd ,
+						'evWinnersNum' : evWinnersNum },
+				dataType: 'json',
+				success: function (data) {
+				    
+				const $div = $('.winner-table');
+				$div.empty();
+				            
+				data.forEach(item => {
+					$div.append(`<span style="padding: 3px;">${item}</span>`);
+				});
+				},
+				error: function (jqXHR, textStatus) {
+				console.error("요청 실패:", textStatus);
+				}
+			});
+		});
+		</script>
+	</th:block>
 </html>

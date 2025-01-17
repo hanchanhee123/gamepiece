@@ -31,5 +31,7 @@ public interface UserEventMapper {
 
 	void insertParticipant(Event event);
 
+	List<Event> getEventWinnerList(Pageable pageable);
+
 
 }
