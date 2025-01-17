@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+	<div class="col-6">
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title" th:text="${title}"></h2>
+          </div>
+     		<div>
+                    <a th:href="@{/admin/report/list}" id="cancelBtn" class="btn btn-light rounded font-sm mr-5 text-body hover-up">취소</a>
+                    <button type="submit" id="submitBtn" class="btn btn-danger rounded font-sm hover-up">처분</button>
+             </div>
+      </div>
+     </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   	<form id="addDisposalForm" th:action="@{/admin/report/disposal/write}" method="post">
+   
+      
+
+   
+   		    <div class="row">
+   		    <input type="hidden" id="reportNo" name="reportNo" th:value="${reportNo}" />
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                       
+								<div class="mb-4">
+									    <label for="disposalCriteria" class="form-label">처분기준</label>
+						<select name="disposalCriteria" id="disposalCriteria" class="form-control text-center">
+						  <option value="">처분기준을 선택하세요</option>
+						  <option value="허위신고 ,심한 욕설 및 언쟁" >허위신고 ,심한 욕설 및 언쟁</option>
+						  <option value="경고 3회 누적" >경고 3회 누적</option>
+						  <option value="정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배" >정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배</option>
+					</select>
+									</div>
+												
+					               <div class="mb-4">
+					    <label for="disposalContent" class="form-label">처분명</label>
+					    <input type="text" class="form-control text-center"
+					           id="disposalContent" name="disposalContent">
+					</div>
+					
+					<!-- 처분시작날짜를 date 타입으로 변경 -->
+					<div class="mb-4">
+					    <label for="disposalStartYmd" class="form-label">처분시작날짜</label>
+					    <input type="text" class="form-control text-center"
+					           id="disposalStartYmd" name="disposalStartYmd"
+					           	placeholder="처분시작날짜를 입력하세요" >
+					</div>
+					
+					<!-- 처분종료날짜도 date 타입으로 변경 -->
+					<div class="mb-4">
+					    <label for="disposalEndYmd" class="form-label">처분종료날짜</label>
+					    <input type="text" class="form-control text-center"
+					           id="disposalEndYmd" name="disposalEndYmd"
+					    
+					           th:readonly="*{disposalEndYmd == null || disposalEndYmd == ''}">
+					</div>
+					
+					<div class="mb-4">
+					    <label class="form-label">처분담당자</label>
+					    <input type="text" class="form-control text-center" 
+					           name="adminId" id="adminId"
+					           th:value="id01">
+					</div>
+						         
+						         
+						                          
+                         
+                     
+                        <!-- table-responsive //end -->
+                   
+                             
+                        </div>
+                    </div>
+                 
+                </div>
+                   
+                
+            </div>
+            
+    </form>
+            
+            
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    	
+    	document.getElementById('disposalCriteria').addEventListener('change', function() {
+    	    const selectedValue = this.value;
+    	    const disposalContent = document.getElementById('disposalContent');
+    	    const disposalEndYmd = document.getElementById('disposalEndYmd');
+    	    const disposalStartYmd = document.getElementById('disposalStartYmd');
+
+    	    if (selectedValue === '허위신고 ,심한 욕설 및 언쟁') {
+    	        // 경고
+    	        disposalContent.value = '경고';
+    	        disposalEndYmd.value = '';
+    	        disposalEndYmd.readOnly = true;
+    	    }
+    	    else if (selectedValue === '경고 3회 누적') {
+    	        // 7일 정지
+    	        disposalContent.value = '7일정지';
+    	        
+    	        // 시작날짜가 입력되어 있을 때만 종료날짜 계산
+    	        if (disposalStartYmd.value) {
+    	            const startDate = new Date(disposalStartYmd.value);
+    	            const endDate = new Date(startDate);
+    	            endDate.setDate(startDate.getDate() + 7);
+    	            
+    	            // YYYY-MM-DD 형식으로 변환
+    	            const formattedDate = endDate.toISOString().split('T')[0];
+    	            disposalEndYmd.value = formattedDate;
+    	        }
+    	        disposalEndYmd.readOnly = true;
+    	    }
+    	    else if (selectedValue === '정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배') {
+    	        // 영구정지
+    	        disposalContent.value = '영구정지';
+    	        disposalEndYmd.value = '2999-12-31';
+    	        disposalEndYmd.readOnly = true;
+    	    }
+    	});
+
+    	// 시작날짜가 변경될 때 7일정지인 경우 종료날짜 자동 계산
+    	document.getElementById('disposalStartYmd').addEventListener('change', function() {
+    	    const disposalCriteria = document.getElementById('disposalCriteria').value;
+    	    const disposalEndYmd = document.getElementById('disposalEndYmd');
+
+    	    if (disposalCriteria === '경고 3회 누적') {
+    	        const startDate = new Date(this.value);
+    	        const endDate = new Date(startDate);
+    	        endDate.setDate(startDate.getDate() + 7);
+    	        
+    	        // YYYY-MM-DD 형식으로 변환
+    	        const formattedDate = endDate.toISOString().split('T')[0];
+    	        disposalEndYmd.value = formattedDate;
+    	    }
+    	});
+
+    	// 날짜 입력 필드를 date 타입으로 변경
+    	document.getElementById('disposalStartYmd').type = 'date';
+    	document.getElementById('disposalEndYmd').type = 'date';
+    	
+    	
+    	
+    	
+  	
+    	$('#submitBtn').click(function(){
+			let isSubmit = true;
+			const $formControl = $('#addDisposalForm').find('select, #disposalContent, #disposalStartYmd, #adminId');
+			$formControl.each((idx, elem) => {
+				const value = $(elem).val();
+				if(!value){
+					isSubmit = false;
+					alert('필수 입력 항목입니다.');
+					$(elem).focus();
+					return false;
+				}
+			});
+			
+			if(isSubmit) $('#addDisposalForm').submit();
+		}) 
+		
+		
+
+    	
+    	
+    	</script>
+    </th:block>
+</html>
