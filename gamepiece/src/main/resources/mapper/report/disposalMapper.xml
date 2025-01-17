@@ -40,6 +40,42 @@ report_no =#{reportNo}
 
 </select>
 
+
+<insert id="addDisposal" parameterType="Disposal">
+
+				INSERT INTO u_disposal(
+				disposal_cd, 
+				report_no, 
+				disposal_content, 
+				disposal_ymd, 
+				disposal_criteria,
+				disposal_start_ymd, 
+				disposal_end_ymd, 
+				admin_id, 
+				reg_ymd
+				)
+				VALUES(
+				CONCAT('dc_', LPAD((
+            SELECT next_num FROM (
+                SELECT MAX(CAST(SUBSTRING_INDEX(disposal_cd, 'dc_', -1) AS UNSIGNED)) + 1 AS next_num 
+                FROM u_disposal
+            ) AS temp
+        ), 2, '0')),
+				#{reportNo}, 
+				#{disposalContent}, 
+				CURDATE(),
+				#{disposalCriteria}, 
+				CURDATE(), 
+				CURDATE(),
+				#{adminId}, 
+				CURDATE()
+				)
+
+
+
+
+</insert>
+
 </mapper>
 
 

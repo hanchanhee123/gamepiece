@@ -134,9 +134,15 @@ body {
     justify-content: center;
     margin-bottom : 40px;
 }
+.game-info a{
+	text-decoration : none;
+	color : black;
+	text-align : center;
+}
 
 .game-info p {
     margin: 0;
+    
 }
 
 .game-info img {
@@ -145,9 +151,11 @@ body {
     height : 150px;
 }
 
+
 .game-price {
     text-align: right;
     font-weight: bold;
+    margin-top : auto;
 }
 
 .game-platform {

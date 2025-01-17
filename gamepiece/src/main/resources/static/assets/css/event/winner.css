@@ -97,30 +97,3 @@ button:active {
     font-weight: bold; /* 선택 상태를 더 분명히 하기 위한 추가 스타일 */
 }
 
-/* .bi-search{
-    border: 1px solid #007AFF;
-    background-color: white;
-    font-size: 20px;
-    width: 30px;
-    height: 30px;
-    border-radius: 3px;
-    text-align: center;
-}
-
-.search{
-    display: flex;
-}
-
-.item-search{
-    margin-right: 3px;
-}
-
-.bi-search{
-    margin-right: 823px;
-}
-
-.item-search {
-    border-radius: 3px;
-    border: 1px solid #007AFF;
-    height: 30px;
-} */

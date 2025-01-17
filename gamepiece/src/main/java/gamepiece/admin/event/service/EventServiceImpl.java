@@ -41,9 +41,9 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void addEvent(Event event) {
+		
 		event.setAdminId("id01");
 		eventMapper.addEvent(event);
-		
 	}
 
 	@Override
@@ -60,6 +60,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public String getEventsWithStatus(String evCd) {
+		
 		return eventMapper.getEventListWithStatus(evCd);
 	}
 
@@ -94,20 +95,13 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public PageInfo<Event> getEventWinnerList(Pageable pageable) {
 	
-		int rowCnt = eventMapper.getCntEventList();
+		int rowCnt = eventMapper.getCntWinnerList();
 		List<Event> eventList = eventMapper.getEventWinnerList(pageable); 
 		return new PageInfo<>(eventList, pageable, rowCnt);
 	}
 
-	/*
-	 * @Override public void addEventWinnerList(String evCd, Event event) {
-	 * 
-	 * event.setAdminId("id01"); eventMapper.addEventWinnerList(evCd, event); }
-	 */
-
 	@Override
 	public List<Event> getEventsList() {
-		
 		
 		return eventMapper.getEventsList();
 	}
@@ -170,6 +164,22 @@ public class EventServiceImpl implements EventService {
 		resultMap.put("evWinnersNum", evWinnersNum);		
 		
 		return eventMapper.countWinner(resultMap);
+	}
+
+	@Override
+	public PageInfo<Event> searchWinnerList(String searchValue, String searchCate, Pageable pageable) {
+		
+		searchCate = "ew_nm";
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchCate", searchCate);
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("pageable", pageable);
+		int rowCnt = eventMapper.getSearchCntWinnerList(searchMap);
+		List<Event> eventList = eventMapper.getSearchWinnerList(searchMap);
+		
+		return new PageInfo<>(eventList, pageable, rowCnt);
+		
 	}
 
 

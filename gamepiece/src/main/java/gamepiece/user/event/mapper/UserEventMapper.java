@@ -31,5 +31,17 @@ public interface UserEventMapper {
 
 	void insertParticipant(Event event);
 
+	List<Event> getEventWinnerList(Pageable pageable);
+
+	int getSearchCntEventList(Map<String, Object> searchMap);
+
+	List<Event> getSearchList(Map<String, Object> searchMap);
+
+	int getSearchCntWinnerList(Map<String, Object> searchMap);
+
+	List<Event> getSearchWinnerList(Map<String, Object> searchMap);
+
+	int getCntWinnerList();
+
 
 }

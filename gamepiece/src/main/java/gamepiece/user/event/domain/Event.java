@@ -24,6 +24,9 @@ public class Event {
 	private String evWinnerYn;
 	private String evStatus;
 	private String userNn;
+	private String ewCd;
+	private String ewNm;
+	private String ewRegYmd;
 
 }
 

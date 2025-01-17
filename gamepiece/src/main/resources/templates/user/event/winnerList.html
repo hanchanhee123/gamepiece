@@ -2,127 +2,171 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{user/layout/default}">
-<head>
-	<link th:href="@{/assets/css/event/winner.css}" rel="stylesheet" type="text/css">
-</head>
+	<head>
+		<link th:href="@{/assets/css/event/winner.css}" rel="stylesheet" type="text/css">
+	</head>
 
-<th:block layout:fragment="contents-header">  
-	<div class="main-div">
-	    <div class="detail-cate">
-	        <a th:href="@{/event/progressEvent}" class="item-active">진행중 이벤트</a>
-            <a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
-            <a th:href="@{/event/winnerList}" class="item-active active">당첨자 발표</a>
-    	</div>
-    </div>
-    </th:block>
-    <th:block layout:fragment="contents-body"> 
-    <div class="main-div"> 
-        <div class="detail-board">
-            <table class="table">
-	            <thead>
-	                <tr class="header">
-	                    <th>번호</th>
-	                    <th width="80%">제목</th>
-	                    <th>작성자</th>
-	                </tr>
-	            </thead>
-	            <tbody>
-		      		<th:block th:if="${eventList != null}">
-			      		<tr th:if="${event.evStatus == '종료'}"
-							th:each="event, iter :${eventList}">
-						<td th:text="${eventList.size() - iter.index}"></td>
-		      			<td th:text="${event.evNm}" 
-						    th:data-event-cd="${event.evCd}" 
-						    class="event-title"
-						    data-bs-toggle="modal" data-bs-target="#winnerModal"></td>
-		      			<td th:text="${event.adminId}"></td> 			
-		      			</tr>
-		      			
-		      		</th:block>
-		      		
-	      		</tbody>	    
-            </table>
-       <div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="winnerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="winnerModalLabel">당첨자 발표</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="winner-table">
-                    <table class="table winner">
-                        <thead>
-                            <tr>
-                                <th scope="col">당첨자</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- 당첨자 목록이 있는 경우 -->
-                            <th:block th:if="${getEventWinner != null}" th:each="winner : ${getEventWinner}">
-                                <tr>
-                                    <td th:text="${winner}"></td>
-                                </tr>
-                            </th:block>
-                            <!-- 당첨자 목록이 없는 경우 -->
-                            <th:block th:if="${getEventWinner == null || #lists.isEmpty(getEventWinner)}">
-                                <tr>
-                                    <td colspan="1">당첨자가 없습니다</td>
-                                </tr>
-                            </th:block>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
-        </div>
-    </div>
-    <div class="pagination-area mt-30 mb-50">
-            <nav>
-                <ul class="pagination justify-content-center">
-                	<li class="page-item">
-                		<a class="page-link " 
-                			th:href="@{/event/winnerList}">
-                			<i class="material-icons md-first_page">
-                			</i>
-                		</a>
-                	</li>
-                	<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
-                		<a class="page-link " 
-                			th:href="@{/event/winnerList(currentPage=${currentPage - 1})}">
-                			<i class="material-icons md-chevron_left">
-                			</i>
-                		</a>
-                	</li>
-                	<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
-                    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-                    		<a class="page-link" th:href="@{/event/winnerList(currentPage=${num})}" th:text="${num}"></a>
-                    	</li>
-                    </th:block>
-                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
-                        <a class="page-link" 
-                        	th:href="@{/event/winnerList(currentPage=${currentPage + 1})}">
-                        	<i class="material-icons md-chevron_right"></i>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                		<a class="page-link " 
-                			th:href="@{/event/winnerList(currentPage=${lastPage})}">
-                			<i class="material-icons md-last_page">
-                			</i>
-                		</a>
-                	</li>
-                </ul>
-           </nav>
- 	 </div>
-</th:block>
-<!--/* 사용자 추가 js script */-->
-    <th:block layout:fragment="customJs">
+	<th:block layout:fragment="contents-header">  
+		<div class="main-div">
+		    <div class="detail-cate">
+				<a th:href="@{/event/progressEvent}" class="item-active">진행중 이벤트</a>
+				<a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
+				<a th:href="@{/event/winnerList}" class="item-active active">당첨자 발표</a>
+		   	</div>
+		   	<div class="search">
+	            <input type="text" class="item-search" id="searchValue" 
+					   name="searchValue" th:value="${searchValue}" placeholder="Search">
+					<button class="btn btn-light bg" id="searchBtn" type="button">
+					<i class="material-icons md-search"></i>
+					</button>
+	        </div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="contents-body"> 
+ 		<div class="main-div"> 
+     		<div class="detail-board">
+				<table class="table">
+					<thead>
+						<tr class="header">
+							<th>번호</th>
+							<th width="80%">제목</th>
+							<th>작성자</th>
+							<th>작성일자</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block th:if="${eventList != null}">
+							<tr th:each="event, iter :${eventList}">
+								<td th:text="${eventList.size() - iter.index}"></td>
+								<td th:text="${event.ewNm}" 
+								    th:data-event-cd="${event.evCd}" 
+								    class="event-title"
+								    data-bs-toggle="modal" data-bs-target="#winnerModal"></td>
+								<td th:text="${event.adminId}"></td> 			
+								<td th:text="${event.ewRegYmd}"></td> 			
+							</tr>
+						</th:block>
+					</tbody>	    
+				</table>
+				<div class="modal fade" id="winnerModal" tabindex="-1" aria-labelledby="winnerModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+							    <h5 class="modal-title" id="winnerModalLabel">당첨자 발표</h5>
+							    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+							    <div class="winner-table">
+									<table class="table winner">
+										<thead>
+										    <tr>
+										        <th scope="col">당첨자</th>
+										    </tr>
+										</thead>
+										<tbody>
+											<!-- 당첨자 목록이 있는 경우 -->
+											<th:block th:if="${getEventWinner != null}" th:each="winner : ${getEventWinner}">
+												<tr>
+												    <td th:text="${winner}"></td>
+												</tr>
+											</th:block>
+											<!-- 당첨자 목록이 없는 경우 -->
+											<th:block th:if="${getEventWinner == null || #lists.isEmpty(getEventWinner)}">
+												<tr>
+												    <td colspan="1">당첨자가 없습니다</td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+							     </div>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	    <div class="pagination-area mt-30 mb-50" th:if="${search == null}">
+			<nav>
+				<ul class="pagination justify-content-center">
+					<li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/winnerList}">
+							<i class="material-icons md-first_page">
+							</i>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+						<a class="page-link " 
+							th:href="@{/event/winnerList(currentPage=${currentPage - 1})}">
+							<i class="material-icons md-chevron_left">
+							</i>
+						</a>
+					</li>
+					<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				    		<a class="page-link" th:href="@{/event/winnerList(currentPage=${num})}" th:text="${num}"></a>
+				    	</li>
+				    </th:block>
+				    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+				        <a class="page-link" 
+				        	th:href="@{/event/winnerList(currentPage=${currentPage + 1})}">
+				        	<i class="material-icons md-chevron_right"></i>
+				        </a>
+				    </li>
+				    <li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/winnerList(currentPage=${lastPage})}">
+							<i class="material-icons md-last_page">
+							</i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+	 	</div>
+	 	<div class="pagination-area mt-30 mb-50" th:unless="${search == null}">
+			<nav>
+				<ul class="pagination justify-content-center">
+					<li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/searchWinnerList(searchValue=${searchValue})}">
+							<i class="material-icons md-first_page">
+							</i>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+						<a class="page-link " 
+							th:href="@{/event/searchWinnerList(currentPage=${currentPage - 1}, searchValue=${searchValue})}">
+							<i class="material-icons md-chevron_left">
+							</i>
+						</a>
+					</li>
+					<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				    		<a class="page-link" th:href="@{/event/searchWinnerList(currentPage=${num}, searchValue=${searchValue})}" th:text="${num}"></a>
+				    	</li>
+				    </th:block>
+				    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+				        <a class="page-link" 
+				        	th:href="@{/event/searchWinnerList(currentPage=${currentPage + 1}, searchValue=${searchValue})}">
+				        	<i class="material-icons md-chevron_right"></i>
+				        </a>
+				    </li>
+				    <li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/searchWinnerList(currentPage=${lastPage}, searchValue=${searchValue})}">
+							<i class="material-icons md-last_page">
+							</i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+	 	</div>
+	</th:block>
+	<!--/* 사용자 추가 js script */-->
+	<th:block layout:fragment="customJs">
 		<script th:inline="javascript">
 			$('.event-title').click(function(){
 				const eventCd = $(this).data('eventCd');
@@ -151,7 +195,16 @@
 					$tbody.append($tr);
 				});
 			});
+			
+			$('#searchBtn').click(function(){
+				const searchValue = $('#searchValue').val();
+				const $form = $('<form />', { 'action' : '/event/searchWinnerList', 'method':'post'});
+				const $searchValue = $('<input />', {'type':'hidden', 'name' :'searchValue'}).val(searchValue);
+				
+				$form.append($searchValue);
+				$('body').append($form);
+				$form.submit();
+			})
 		</script>
-	    </th:block>
-
+	</th:block>
 </html>

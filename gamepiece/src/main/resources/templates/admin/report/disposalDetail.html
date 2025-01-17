@@ -26,7 +26,7 @@
 						<select name="disposalCriteria" id="disposalCriteria" class="form-control text-center">
 						  <option value="">처분기준을 선택하세요</option>
 						  <option value="허위신고 ,심한 욕설 및 언쟁" th:selected="${disposalInfo.disposalCriteria.equals('허위신고 ,심한 욕설 및 언쟁')}">허위신고 ,심한 욕설 및 언쟁</option>
-						  <option value="경고 3회" th:selected="${disposalInfo.disposalCriteria.equals('경고 3회')}">경고 3회</option>
+						  <option value="경고 3회 누적" th:selected="${disposalInfo.disposalCriteria.equals('경고 3회 누적')}">경고 3회 누적</option>
 						  <option value="정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배" th:selected="${disposalInfo.disposalCriteria.equals('정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배')}">정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배</option>
 					</select>
 									</div>

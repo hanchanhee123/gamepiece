@@ -8,6 +8,14 @@
           <div>
               <h2 class="content-title card-title" th:text="${title}"></h2>
           </div>
+		          
+		          <div class="d-flex gap-3">
+		    <form id="reviewForm" th:action="@{/admin/report/reportReview}" method="post">
+		        <input type="hidden" name="reportNumbers" id="selectedReports">
+		        <button type="button" class="btn btn-primary btn-sm rounded" onclick="submitReview()">검토</button>
+		    </form>
+		   
+		</div>
           
       </div>
    	</th:block>
@@ -29,7 +37,7 @@
                                     <table class="table table-hover">
                                         <thead style="text-align: center;">
                                             <tr>
-                                                
+                                            	<th><input type="checkbox" id="selectAll"></th>
                                                 <th>신고번호</th>
                                                 <th>신고인</th>
                                                 <th>피신고인</th>
@@ -42,26 +50,40 @@
                                         <tbody style="text-align: center;">
                                     	   <th:block th:if="${reportList}">
                                <tr th:each="l : ${reportList}">
-                                        
+                                         <td><input type="checkbox" class="report-checkbox" th:value="${l.reportNo}"></td>
                                        <td th:text="${l.reportNo}"></td>
                                      <td th:text="${l.reportUser}"></td>
                                      <td th:text="${l.reportedUser}"></td>
                                        <td th:text="${l.reportContent}"></td>
                                        <td th:switch="${l.reportProgress}">
-									    <span th:case="'처리 완료'" class="badge rounded-pill alert-success">처리 완료</span>
-									    <span th:case="'검토 중'" class="badge rounded-pill alert-warning">검토 중</span>
-									    <span th:case="'요청 접수'" class="badge rounded-pill alert-danger">요청 접수</span>
-									</td>
-									<td th:text="${l.reportYmd}"></td>
-                                     <td>
-                                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end" style="display: contents;">
-                                                <a th:href="@{/admin/report/detail(reportNo=${l.reportNo})}" 
-                                                class="btn btn-sm btn-light font-sm rounded" style="margin-right: 10px;"> <i class="material-icons md-edit"></i>상세</a>
-                                   
-                                            </div>
-                                 
-                                        </td>                                 
-                                    </tr>
+								    <!-- 상태가 처리 완료일 때 -->
+								    <span th:case="'처리 완료'" class="badge rounded-pill alert-success">처리 완료</span>
+								    <!-- 검토 중일 때 -->
+								    <span th:case="'검토 중'" 
+								          th:class="${l.disposalInfo != null and l.disposalInfo.disposalCode != null} ? 'badge rounded-pill alert-success' : 'badge rounded-pill alert-warning'"
+								          th:text="${l.disposalInfo != null and l.disposalInfo.disposalCode != null} ? '처리 완료' : '검토 중'">검토 중</span>
+								    <!-- 요청 접수일 때 -->
+								    <span th:case="'요청 접수'" class="badge rounded-pill alert-danger">요청 접수</span>
+								</td>
+								<td th:text="${l.reportYmd}"></td>
+								<td>
+								    <div class="col-lg-2 col-sm-2 col-4 col-action text-end" style="display: contents;">
+								        <!-- 처분정보가 있을 때만 상세 버튼 표시 -->
+								        <a th:if="${l.disposalInfo != null and l.disposalInfo.disposalCode != null}"
+								           th:href="@{/admin/report/detail(reportNo=${l.reportNo})}"
+								           class="btn btn-sm btn-light font-sm rounded"
+								           style="margin-right: 10px;">
+								            <i class="material-icons md-edit"></i>상세
+								        </a>
+								        <!-- 검토 중이고 처분정보가 없을 때만 처분작성 버튼 표시 -->
+								        <a th:if="${l.reportProgress == '검토 중' and (l.disposalInfo == null or l.disposalInfo.disposalCode == null)}"
+								           th:href="@{/admin/report/disposal/write(reportNo=${l.reportNo})}"
+								           class="btn btn-sm font-sm rounded btn-brand">
+								            처분작성
+								        </a>
+								    </div>
+								</td>                             
+								                                    </tr>
                                     </th:block>
                                     <th:block th:unless="${reportList}">
 								<tr>
@@ -120,8 +142,68 @@
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	 <script th:inline="javascript">
-  
-    	
-    	</script>
+    	// 전체 선택 체크박스와 개별 체크박스들을 가져옵니다
+    	 const selectAllCheckbox = document.getElementById('selectAll');
+    	 const reportCheckboxes = document.getElementsByClassName('report-checkbox');
+
+    	 // 전체 선택 체크박스 이벤트 리스너
+    	 selectAllCheckbox.addEventListener('change', function() {
+    	     for(let checkbox of reportCheckboxes) {
+    	         checkbox.checked = this.checked;
+    	     }
+    	 });
+
+    	 // 개별 체크박스들의 이벤트 리스너
+    	 for(let checkbox of reportCheckboxes) {
+    	     checkbox.addEventListener('change', function() {
+    	         // 모든 체크박스가 선택되었는지 확인
+    	         let allChecked = true;
+    	         for(let cb of reportCheckboxes) {
+    	             if(!cb.checked) {
+    	                 allChecked = false;
+    	                 break;
+    	             }
+    	         }
+    	         // 전체 선택 체크박스 상태 업데이트
+    	         selectAllCheckbox.checked = allChecked;
+    	     });
+    	 }
+    	 
+    	 // 폼 제출 함수 추가
+    	   function submitReview() {
+			    const selectedCheckboxes = document.querySelectorAll('.report-checkbox:checked');
+			    
+			    if(selectedCheckboxes.length === 0) {
+			        alert('검토할 신고를 선택해주세요.');
+			        return;
+			    }
+			
+			    // 선택된 체크박스들의 상태 확인
+			    let hasReviewing = false;
+			    selectedCheckboxes.forEach(checkbox => {
+			        // 체크박스의 부모 tr을 찾고, 그 안의 진행상황 td를 찾습니다
+			        const row = checkbox.closest('tr');
+			        const statusCell = row.querySelector('td:nth-child(6)').textContent.trim();
+			        
+			        if(statusCell === '검토 중') {
+			            hasReviewing = true;
+			        }
+			    });
+			
+			    if(hasReviewing) {
+			        alert('이미 검토 중입니다.');
+			        return;
+			    }
+			
+			    // 선택된 신고번호들을 배열로 수집하고 콤마로 구분된 문자열로 변환
+			    const selectedReports = Array.from(selectedCheckboxes).map(cb => cb.value).join(',');
+			    
+			    // hidden input에 선택된 신고번호들을 설정
+			    document.getElementById('selectedReports').value = selectedReports;
+			    
+			    // 폼 제출
+			    document.getElementById('reviewForm').submit();
+			}
+			    	</script>
     </th:block>
 </html>

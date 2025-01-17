@@ -55,5 +55,7 @@ public interface EventService {
 	void updateWinners(Event event);
 
 	int countWinner(String evCd, int evWinnersNum);
+
+	PageInfo<Event> searchWinnerList(String searchValue, String searchCate, Pageable pageable);
 	
 }

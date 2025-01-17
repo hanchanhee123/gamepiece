@@ -272,6 +272,22 @@ public class BoardServiceImpl implements BoardService{
 		
 		return reportMapper.addReport(report);
 	}
+
+
+
+	@Override
+	public int removeBoard(String boardUserId) {
+		// TODO Auto-generated method stub
+		return allBoardMapper.removeBoard(boardUserId);
+	}
+
+
+
+	@Override
+	public int modifyBoard(Board board) {
+		// TODO Auto-generated method stub
+		return allBoardMapper.modifyBoard(board);
+	}
 	
 	
 	
