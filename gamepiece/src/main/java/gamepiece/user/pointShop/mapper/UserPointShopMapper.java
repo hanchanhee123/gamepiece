@@ -1,6 +1,7 @@
 package gamepiece.user.pointShop.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,7 +20,7 @@ public interface UserPointShopMapper {
 	List<Point> findavatarframe(Pageable pageable);
 	List<Point> findetc(Pageable pageable);
 	List<Point> findbackground(Pageable pageable);
-	List<Point> findhistory(Pageable pageable);
+	List<Point> findhistory(Map historyMap);
 	
 	int addPointShopLog(PointShopLog pointShopLog);
 	
