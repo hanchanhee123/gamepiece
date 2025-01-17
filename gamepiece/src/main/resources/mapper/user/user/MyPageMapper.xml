@@ -33,7 +33,7 @@
 		<result column="ps_cate_cd" property="itemCate" />
 		<result column="cate_nm" 	property="cateName" />
 		<result column="ps_nm" 	property="itemName" />
-		<result column="img_url" 	property="itemImgurl" />
+		<result column="file_idx" 	property="fileIdx" />
 		<result column="ps_price" 		property="itemPrice" />
 		<result column="admin_id" 	property="adminId" />
 		<result column="reg_ymd" 	property="regYmd" />
@@ -45,7 +45,7 @@
 	    <result column="bbs_cate_cd" property="boardCategory" />
 	    <result column="bbs_title" property="boardTitle" />
 	    <result column="bbs_cn" property="boardContent" />
-	    <result column="id" property="boardUserid" />
+	    <result column="id" property="boardUserId" />
 	    <result column="bbs_like" property="boardLikeCnt" />
 	    <result column="bbs_dislike" property="boardDisLikeCnt" />
 	    <result column="bbs_view" property="boardViewCnt" />
@@ -108,7 +108,7 @@
 		SELECT
 			ps.ps_cd,
 			ps.ps_nm,
-			ps.img_url
+			ps.file_idx
 		FROM
 			point_shop ps INNER JOIN pointshop_logs pl
 			USING (ps_cd)
@@ -141,7 +141,7 @@
 		SELECT
 			ps.ps_cd,
 			ps.ps_nm,
-			ps.img_url
+			ps.file_idx
 		FROM
 			point_shop ps INNER JOIN pointshop_logs pl
 			USING (ps_cd)
@@ -174,7 +174,7 @@
 		SELECT
 			ps.ps_cd,
 			ps.ps_nm,
-			ps.img_url
+			ps.file_idx
 		FROM
 			point_shop ps INNER JOIN pointshop_logs pl
 			USING (ps_cd)

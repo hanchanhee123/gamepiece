@@ -13,6 +13,13 @@
 				<a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
 				<a th:href="@{/event/winnerList}" class="item-active active">당첨자 발표</a>
 		   	</div>
+		   	<div class="search">
+	            <input type="text" class="item-search" id="searchValue" 
+					   name="searchValue" th:value="${searchValue}" placeholder="Search">
+					<button class="btn btn-light bg" id="searchBtn" type="button">
+					<i class="material-icons md-search"></i>
+					</button>
+	        </div>
 		</div>
 	</th:block>
 	<th:block layout:fragment="contents-body"> 
@@ -36,7 +43,7 @@
 								    class="event-title"
 								    data-bs-toggle="modal" data-bs-target="#winnerModal"></td>
 								<td th:text="${event.adminId}"></td> 			
-								<td th:text="${event.regYmd}"></td> 			
+								<td th:text="${event.ewRegYmd}"></td> 			
 							</tr>
 						</th:block>
 					</tbody>	    
@@ -81,7 +88,7 @@
 				</div>
 			</div>
 		</div>
-	    <div class="pagination-area mt-30 mb-50">
+	    <div class="pagination-area mt-30 mb-50" th:if="${search == null}">
 			<nav>
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
@@ -112,6 +119,44 @@
 				    <li class="page-item">
 						<a class="page-link " 
 							th:href="@{/event/winnerList(currentPage=${lastPage})}">
+							<i class="material-icons md-last_page">
+							</i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+	 	</div>
+	 	<div class="pagination-area mt-30 mb-50" th:unless="${search == null}">
+			<nav>
+				<ul class="pagination justify-content-center">
+					<li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/searchWinnerList(searchValue=${searchValue})}">
+							<i class="material-icons md-first_page">
+							</i>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+						<a class="page-link " 
+							th:href="@{/event/searchWinnerList(currentPage=${currentPage - 1}, searchValue=${searchValue})}">
+							<i class="material-icons md-chevron_left">
+							</i>
+						</a>
+					</li>
+					<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				    		<a class="page-link" th:href="@{/event/searchWinnerList(currentPage=${num}, searchValue=${searchValue})}" th:text="${num}"></a>
+				    	</li>
+				    </th:block>
+				    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+				        <a class="page-link" 
+				        	th:href="@{/event/searchWinnerList(currentPage=${currentPage + 1}, searchValue=${searchValue})}">
+				        	<i class="material-icons md-chevron_right"></i>
+				        </a>
+				    </li>
+				    <li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/searchWinnerList(currentPage=${lastPage}, searchValue=${searchValue})}">
 							<i class="material-icons md-last_page">
 							</i>
 						</a>
@@ -150,6 +195,16 @@
 					$tbody.append($tr);
 				});
 			});
+			
+			$('#searchBtn').click(function(){
+				const searchValue = $('#searchValue').val();
+				const $form = $('<form />', { 'action' : '/event/searchWinnerList', 'method':'post'});
+				const $searchValue = $('<input />', {'type':'hidden', 'name' :'searchValue'}).val(searchValue);
+				
+				$form.append($searchValue);
+				$('body').append($form);
+				$form.submit();
+			})
 		</script>
 	</th:block>
 </html>

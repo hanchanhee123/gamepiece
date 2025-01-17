@@ -56,4 +56,10 @@ public interface EventMapper {
 	void updateWinners(Event event);
 	
 	int countWinner(Map<String, Object> resultMap);
+
+	int getSearchCntWinnerList(Map<String, Object> searchMap);
+
+	List<Event> getSearchWinnerList(Map<String, Object> searchMap);
+
+	int getCntWinnerList();
 }

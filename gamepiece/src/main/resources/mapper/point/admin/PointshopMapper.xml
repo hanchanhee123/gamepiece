@@ -7,7 +7,7 @@
 			<result column="ps_cate_cd" property="itemCate" />
 			<result column="cate_nm" property="cateName" />
 			<result column="ps_nm" 	property="itemName" />
-			<result column="img_url" 	property="itemImgurl" />
+			<result column="file_idx" 	property="fileIdx" />
 			<result column="ps_price" 		property="itemPrice" />
 			<result column="admin_id" 	property="adminId" />
 			<result column="reg_ymd" 	property="regYmd" />
@@ -29,7 +29,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			ps.file_idx,
 			pc.cate_nm,
 			ps.is_delete
 		FROM
@@ -54,7 +54,7 @@
 			ps_cd, 
 			ps_cate_cd, 
 			ps_nm, 
-			img_url,
+			file_idx,
 			ps_price,
 			admin_id,
 			reg_ymd
@@ -103,8 +103,8 @@
 			<if test="itemName != null and itemName != ''">
 				ps_nm=#{itemName},
 			</if>
-			<if test="itemImgurl != null and itemImgurl != ''">
-				img_url=#{itemImgurl},
+			<if test="fileIdx != null and fileIdx != ''">
+				file_idx=#{fileIdx},
 			</if>
 			<if test="itemPrice != null and itemPrice > 0">
 				ps_price=#{itemPrice},
@@ -126,19 +126,15 @@
         	ps_cd, 
 			ps_cate_cd, 
 			ps_nm, 
-			img_url,
+			file_idx,
 			ps_price, 
 			admin_id,
 			reg_ymd
 		) VALUES (
-			<![CDATA[(SELECT 
-				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,4)+1),0),
-				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))),'0')) ]]>
-			FROM 
-				point_shop ps),
+			#{itemCd},
 			#{itemCate},
 			#{itemName},
-			#{itemImgurl},
+			#{fileIdx},
 			#{itemPrice},
 			#{adminId},
 			CURDATE()

@@ -13,6 +13,12 @@ import gamepiece.util.Pageable;
 public interface AllBoardMapper {
 	
 	
+	//특정게시물삭제
+	int removeBoard(String boardUserId);
+	
+	//특정게시물수정
+	int modifyBoard(Board board);
+	
 	//특정게시물조회
 	Board getBoardInfo(String boardNum);
 	

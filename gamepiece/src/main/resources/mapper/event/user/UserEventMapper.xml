@@ -21,6 +21,7 @@
 		<result column="user_nn"				property="userNn"/>
 		<result column="ew_cd"					property="ewCd"/>
 		<result column="ew_nm"					property="ewNm"/>
+		<result column="ew_reg_ymd"				property="ewRegYmd"/>
 	</resultMap>
 
 	<!-- 이벤트 삭제 -->
@@ -33,11 +34,40 @@
 			ev_cd = #{evCd};
 	</update>
 	
+	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
+		SELECT
+		    e.ev_cd,
+		    e.ev_nm,
+		    e.ev_start_ymd,
+		    e.ev_end_ymd
+		FROM
+		    events e
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+	            e.ev_nm LIKE CONCAT('%', #{searchValue}, '%')
+	        </if>
+		</where>
+		ORDER BY ev_cd DESC
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
 	<select id="getCntEventList" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
 			events;
+	</select>
+	
+	<select id="getSearchCntEventList" parameterType="map" resultType="int">
+	    SELECT
+	        COUNT(*)
+	    FROM
+	        events e
+	    <where>
+	        <if test="searchValue != null and searchValue != ''">
+	            e.ev_nm LIKE CONCAT('%', #{searchValue}, '%')
+	        </if>
+	    </where>
 	</select>
 	
 	<select id="getProgressEvent" parameterType="pageable" resultMap="eventResultMap">
@@ -202,7 +232,7 @@
 		    CURDATE()
 		  );
 	</insert>
-	
+
 	<select id="getEventWinnerList" parameterType="pageable" resultMap="eventResultMap">
 		SELECT
 		*
@@ -213,4 +243,38 @@
 		ORDER BY ev_cd DESC
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
+	
+	<select id="getSearchWinnerList" parameterType="map" resultMap="eventResultMap">
+		SELECT
+		   *
+		FROM
+		    events_winners ew
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ew.ew_nm LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+		ORDER BY ew_nm DESC
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	<select id="getCntWinnerList" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events_winners;
+	</select>
+	
+	<select id="getSearchCntWinnerList" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events_winners ew
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ew.ew_nm LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+	</select>
+	
 </mapper>
