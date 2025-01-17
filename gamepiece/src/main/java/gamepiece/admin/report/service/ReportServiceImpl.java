@@ -39,6 +39,34 @@ public class ReportServiceImpl implements ReportService{
 
 			return disposalMapper.getDisposalInfo(reportNo);
 		}
+
+		@Override
+		public int modifyReportReview(List<String> reportNumbers) {
+	
+			return reportmapper.modifyReportReview(reportNumbers);
+		}
+
+		@Override
+		public int addDisposal(Disposal disposal) {
+		
+		    if (disposal.getReportNo() == null || disposal.getReportNo().isEmpty()) {
+		        throw new IllegalArgumentException("ReportNo cannot be null or empty");
+		    }
+
+		  
+		    System.out.println("Adding Disposal: " + disposal);
+
+		  
+		    return disposalMapper.addDisposal(disposal);
+		}
+
+		@Override
+		public int modifyReportClear(Report report) {
+
+			
+			return reportmapper.modifyReportClear(report);
+		}
+	
 		
 		
 		

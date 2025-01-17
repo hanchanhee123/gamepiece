@@ -35,6 +35,19 @@
 		<result column="inactive_days" property="inactiveDays"/>
     </association>
 
+    <association property="disposalInfo" javaType="gamepiece.admin.report.domain.Disposal">
+ 				  <id column="disposal_cd"  property="disposalCode" />
+    <result column="report_no" property="reportNo" />
+    <result column="disposal_content" property="disposalContent" />
+    <result column="disposal_ymd" property="disposalYmd" />
+    <result column="disposal_criteria" property="disposalCriteria" />
+    <result column="disposal_start_ymd" property="disposalStartYmd" />
+    <result column="disposal_end_ymd" property="disposalEndYmd" />
+    <result column="admin_id" property="adminId" />
+    <result column="reg_ymd" property="disposalRegdate" />
+    </association>
+
+
 	</resultMap>
 	
 	
@@ -57,15 +70,38 @@ SELECT
 	ur.reported_id, 
 	ur.report_content,
 	ur.diposal_situation, 
-	ur.report_ymd
-
-FROM 
-	u_report ur
+	ur.report_ymd,
+	ud.disposal_cd
+FROM   
+	u_report ur LEFT JOIN u_disposal ud 
+	ON ur.report_no = ud.report_no
+	
 	  ORDER BY
-        CAST(SUBSTRING_INDEX(report_no,'r_',-1) AS UNSIGNED)
+        CAST(SUBSTRING_INDEX(ur.report_no,'r_',-1) AS UNSIGNED)
      LIMIT #{rowPerPage} OFFSET #{offset}
 
 </select>
+
+
+<update id="modifyReportReview">
+    UPDATE u_report 
+    SET diposal_situation = '검토 중'
+    WHERE report_no IN
+    <foreach collection="list" item="reportNumber" open="(" separator="," close=")">
+        #{reportNumber}   
+    </foreach>
+</update>
+
+<update id="modifyReportClear" parameterType="Report">
+
+UPDATE
+	 u_report
+SET
+	diposal_situation='처리 완료'	
+WHERE 
+		report_no=#{reportNo};	
+		
+</update>
 
 
 </mapper>
