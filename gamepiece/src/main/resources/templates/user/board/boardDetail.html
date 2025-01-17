@@ -20,36 +20,51 @@
 
 
 <th:block layout:fragment="contents-body">
-    <input type="hidden" id="boardNum" th:value="${boardInfo.boardNum}">
+			
+    <input type="hidden" id="boardNum" name="boardNum" th:value="${boardInfo.boardNum}">
+    			
   
 				            <div class="titleDiv">
 				    <div class="title-details">
 				        <div id="titleStyle">
 				            <span class="titleFont" th:text="${boardInfo.boardTitle}">제목</span>
 				        </div>
-				        <div class="user-info-row d-flex align-items-center">
-				            <div class="d-flex align-items-center flex-grow-1 gap-3">
-				              <img src="data:image/png;base64,..." class="rounded-circle" style="width: 30px; height: 30px;">
-				                <span class="username fw-semibold" th:text="${boardInfo.userInfo.userNn}">회원</span>
-				                <span class="text-muted small" th:text="${boardInfo.boardYmd}">2012-11-11</span>
-				            </div>
-				            <!-- 로그인 상태일 때 -->
-							<span class="report-text ms-auto" 
-							      data-bs-toggle="modal" 
-							      data-bs-target="#reportModal"
-							      th:if="${session.SID != null}">
-							    <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>
-							    신고
-							</span>
-							
-							<!-- 비로그인 상태일 때 -->
-							<span class="report-text ms-auto" 
-							      th:unless="${session.SID != null}"
-							      onclick="checkLogin()">
-							    <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>
-							    신고
-							</span>
-				        </div> 
+									 <div class="user-info-row d-flex align-items-center">
+					    <div class="d-flex align-items-center flex-grow-1 gap-3">
+					        <img src="data:image/png;base64,..." class="rounded-circle" style="width: 30px; height: 30px;">
+					        <span class="username fw-semibold" th:text="${boardInfo.userInfo.userNn}">회원</span>
+					        <span class="text-muted small" th:text="${boardInfo.boardYmd}">2012-11-11</span>
+					    </div>
+					    
+					    <!-- 비로그인 상태 -->
+					    <span class="report-text ms-auto" 
+					          th:if="${session.SID eq null}"
+					          onclick="checkLogin()">
+					        <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>
+					        신고
+					    </span>
+					    
+					    <!-- 로그인 상태 -->
+					    <div class="ms-auto" th:if="${session.SID != null}">
+					        <!-- 자신의 게시물일 경우 -->
+					        <div th:if="${session.SID eq boardInfo.userInfo.id}" class="d-flex gap-3">
+					            <button class="btn btn-sm btn-outline-primary" 
+					                    th:onclick="|location.href='@{/board/modify(boardNum=${boardInfo.boardNum})}'|">수정</button>
+					           <button class="btn btn-sm btn-outline-danger" id="removeBtn" style="margin-right: 10px;">삭제</button>
+					        </div>
+					        
+					        <!-- 타인의 게시물일 경우 -->
+					        <span th:unless="${session.SID eq boardInfo.userInfo.id}" 
+					              class="report-text"
+					              data-bs-toggle="modal" 
+					              data-bs-target="#reportModal">
+					            <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>
+					            신고
+					        </span>
+					    </div>
+					    
+					    
+					</div>
 
 			                    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
 			    <div class="modal-dialog modal-dialog-centered">
@@ -525,6 +540,31 @@ function submitComment() {
    
     $('#addCommentForm').submit();
 }
+     
+     
+     
+     
+
+$('#removeBtn').click(function(e) {
+    e.preventDefault();
+
+    if (confirm('삭제하시겠습니까?')) {
+        const boardNum = $('#boardNum').val();
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/board/remove';
+
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'boardUserId';
+        input.value = boardNum;
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
+});
 
         
     </script>
