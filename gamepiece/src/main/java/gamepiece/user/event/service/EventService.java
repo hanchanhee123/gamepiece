@@ -27,5 +27,9 @@ public interface EventService {
 	void insertParticipant(Event event);
 
 	PageInfo<Event> getEventWinnerList(Pageable pageable);
+	
+	PageInfo<Event> searchList(String searchValue, Pageable pageable);
+
+	PageInfo<Event> searchWinnerList(String searchValue, Pageable pageable);
 
 }
