@@ -21,7 +21,7 @@
     <result column="bbs_cate_cd" property="boardCategory" />
     <result column="bbs_title" property="boardTitle" />
     <result column="bbs_cn" property="boardContent" />
-    <result column="id" property="boardUserid" />
+    <result column="id" property="boardUserId" />
     <result column="bbs_like" property="boardLikeCnt" />
     <result column="bbs_dislike" property="boardDisLikeCnt" />
     <result column="bbs_view" property="boardViewCnt" />

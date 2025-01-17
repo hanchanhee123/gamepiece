@@ -14,6 +14,13 @@ public interface BoardService {
 	
 	
 	
+
+	//특정게시물삭제
+	int removeBoard(String boardUserId);
+	
+	//특정게시물수정
+	int modifyBoard(Board board);
+	
 	//신고하기
 	int addReport(Report report);
 	

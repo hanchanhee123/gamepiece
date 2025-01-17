@@ -14,6 +14,13 @@ import gamepiece.user.board.domain.BoardComment;
 @Repository("userBoardCommentMapper")
 public interface BoardCommentMapper {
 	
+
+	
+	//댓글삭제
+	int removeBoard(String commentNum);
+	
+	//댓글수정
+	int modifyComment(BoardComment boardComment);
 	
 	//게시물 작성
 	int addComment(BoardComment boardComment);

@@ -48,6 +48,69 @@ public class BoardController {
 	 * */
 	
 	
+	
+	@PostMapping("/remove")
+	public String removeBoard(@RequestParam(name="boardUserId") String boardUserId,RedirectAttributes rttr) {
+		
+		int result = boardService.removeBoard(boardUserId);
+		
+		
+		  if(result > 0) {
+		        rttr.addFlashAttribute("message", "게시글이 삭제되었습니다.");
+			 
+		    } else {
+		        rttr.addFlashAttribute("error", "게시글 삭제에 실패했습니다.");
+		       
+		    }
+		
+		  	System.out.println(boardUserId);
+		  
+			return "redirect:/board";
+		
+		
+	}
+	
+	
+	
+	
+	@PostMapping("/modify")
+	public String modifyBoard(Board board, RedirectAttributes rttr) {
+		int result = boardService.modifyBoard(board);
+		
+		  if(result > 0) {
+		        rttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
+			 
+		    } else {
+		        rttr.addFlashAttribute("error", "게시글 수정에 실패했습니다.");
+		       
+		    }
+		  
+		  System.out.println("boardNum : " + board.getBoardNum());
+			
+			return "redirect:/board";
+		  
+	}
+	
+	
+	
+	@GetMapping("/modify")
+	public String modifyBoardView(@RequestParam(name="boardNum") String boardNum ,Model model) {
+		
+			Board boardInfo = boardService.getBoardInfo(boardNum);
+			
+	
+			
+			
+			model.addAttribute("boardInfo", boardInfo);
+	
+		
+		 return "user/board/modifyBoard";
+	}
+		
+		  
+		  	
+	
+	
 
 	
 	@PostMapping("/report")
@@ -161,7 +224,7 @@ public class BoardController {
 
 		String loginId = (String) session.getAttribute("SID");
 
-		board.setBoardUserid(loginId);
+		board.setBoardUserId(loginId);
 	
 	
 		
