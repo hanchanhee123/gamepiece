@@ -13,11 +13,11 @@
 			        <div class="detail-info">
 			            <div class="detail1">
 			                <div class="video">
-			                    <img src="https://cdn-icons-png.flaticon.com/512/1159/1159798.png">
+			                    <video th:src="${gameDetail.videoSrc}" autoplay>
 			                </div>
 			                <div class="game-price-detail">
-			                    <span>Elden Ring</span>
-			                    <span>₩64,800</span>
+			                    <span th:text=${gameDetail.title}></span>
+			                    <span th:text=${gameDetail.finalPrice}></span>
 			                </div>
 			                <div class="wishlist">
 			                    <div class="button-area">
@@ -50,22 +50,22 @@
 			            </div>
 			            <div class="detail2">
 			                <div class="more-info">
-			                    <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/379430/header.jpg?t=1726645188">
+			                    <img th:src="${gameDetail.imgSrc}">
 			                    <div class="more-info-area">
 			                        <div>
-			                            <span class="gm-summation">크레토스와 아트레우스가 종말의 위협 속에서 아홉 영역을 탐험하며, 신화적 전투와 감동적인 이야기를 담은 갓 오브 워 라그나로크를 경험하세요.</span>
+			                            <span class="gm-summation" th:text="${gameDetail.lightInfo}">크레토스와 아트레우스가 종말의 위협 속에서 아홉 영역을 탐험하며, 신화적 전투와 감동적인 이야기를 담은 갓 오브 워 라그나로크를 경험하세요.</span>
 			                        </div>
 			                        <div>
 			                            <span class="gm-info">출시일자</span>
-			                            <span class="gm-value">2024.10.17</span>
+			                            <span class="gm-value" th:text="${gameDetail.date}"></span>
 			                        </div>
 			                        <div>
 			                            <span class="gm-info">장르</span>
-			                            <span class="gm-value">액션</span>
+			                            <span class="gm-value" th:text=${gameDetail.genre}></span>
 			                        </div>
 			                        <div>
 			                            <span class="gm-info">개발사</span>
-			                            <span class="gm-value">라이엇</span>
+			                            <span class="gm-value" th:text=${gameDetail.developer}></span>
 			                        </div>
 			                        <div>
 			                            <span class="gm-info">플랫폼</span>
