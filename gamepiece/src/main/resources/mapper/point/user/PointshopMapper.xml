@@ -7,7 +7,7 @@
 			<result column="ps_cate_cd" property="itemCate" />
 			<result column="cate_nm" 	property="cateName" />
 			<result column="ps_nm" 		property="itemName" />
-			<result column="img_url" 	property="itemImgurl" />
+			<result column="file_idx" 	property="fileIdx" />
 			<result column="ps_price" 	property="itemPrice" />
 			<result column="admin_id" 	property="adminId" />
 			<result column="reg_ymd" 	property="regYmd" />
@@ -46,7 +46,7 @@
 			ps_cd, 
 			ps_cate_cd, 
 			ps_nm, 
-			img_url,
+			file_idx,
 			ps_price,
 			admin_id,
 			reg_ymd
@@ -61,7 +61,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			ps.file_idx,
 			pc.cate_nm
 		FROM
 			point_shop ps INNER JOIN pointshop_categories pc
@@ -76,7 +76,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			ps.file_idx,
 			pc.cate_nm
 		FROM
 			point_shop ps INNER JOIN pointshop_categories pc
@@ -93,7 +93,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			ps.file_idx,
 			pc.cate_nm
 		FROM
 			point_shop ps INNER JOIN pointshop_categories pc
@@ -110,7 +110,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			ps.file_idx,
 			pc.cate_nm
 		FROM
 			point_shop ps INNER JOIN pointshop_categories pc
@@ -127,7 +127,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			ps.file_idx,
 			pc.cate_nm
 		FROM
 			point_shop ps INNER JOIN pointshop_categories pc
@@ -144,7 +144,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			ps.file_idx,
 			pc.cate_nm
 		FROM
 			point_shop ps INNER JOIN pointshop_categories pc
@@ -180,7 +180,7 @@
 			pl.psl_used_point,
 			ps.ps_nm,
 			pc.cate_nm,
-			ps.img_url
+			ps.file_idx
 		FROM 
 			pointshop_logs pl INNER JOIN point_shop ps
 			ON pl.ps_cd = ps.ps_cd INNER JOIN pointshop_categories pc
@@ -281,8 +281,8 @@
 			<if test="itemName != null and itemName != ''">
 				ps_nm=#{itemName},
 			</if>
-			<if test="itemImgurl != null and itemImgurl != ''">
-				img_url=#{itemImgurl},
+			<if test="fileIdx != null and fileIdx != ''">
+				file_idx=#{fileIdx},
 			</if>
 			<if test="itemPrice != null and itemPrice > 0">
 				ps_price=#{itemPrice},
