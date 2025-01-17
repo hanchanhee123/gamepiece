@@ -190,6 +190,80 @@ public class UserGameServiceImpl implements UserGameService {
 	    
 	    return resultMap;
 	}
+	@Override
+	public Map<String, Object> getGameDetailApi(String gameCode, String title) {
+		Map<String, Object> game = new HashMap<String,Object>();
+		try {
+			String url = "https://store.steampowered.com/app/" + gameCode + "/" + title + "/";
+			
+			Connection conn = Jsoup.connect(url);
+			
+			Document html = conn.get();
+			
+			
+			
+			
+			Elements element = html.select("#tabletGrid");
+			// System.out.println(element);
+			Elements titleEle = html.select("#appHubAppName");
+			title = titleEle.text();
+			// System.out.println(title);
+			
+			Elements info = element.select(".rightcol");
+			//System.out.println(info);
+			Elements ImgCtn = info.select("#gameHeaderImageCtn");
+			//System.out.println(ImgCtn);
+			String imgSrc = ImgCtn.select(".game_header_image_full").attr("src");
+			// System.out.println(imgSrc);
+			
+			String lightInfo = info.select(".game_description_snippet").text();
+			//System.out.println(lightInfo);
+			
+			String date = info.select(".glance_ctn_responsive_left").select(".release_date").select(".date").text();
+			// System.out.println(date);
+			if(!"출시예정".equals(date)) { 
+        		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
+        		LocalDate dateTime = LocalDate.parse(date, formatter);
+        		
+        		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN);
+        	    String formattedDate = dateTime.format(outputFormatter);	
+        		date = formattedDate.toString();
+        	}
+			// System.out.println(date);
+			String developer = info.select(".glance_ctn_responsive_left").select("#developers_list").select("a").text();
+			// System.out.println(developer);
+			
+			Elements genreEle = info.select("#glanceCtnResponsiveRight").select("a");
+			// System.out.println(genreEle);
+			String genre = genreEle.first().text();
+			Elements videoEle = element.select(".leftcol");
+			// System.out.println(videoEle);
+			String videoSrc = videoEle.select(".highlight_movie").attr("data-webm-source");;
+			//System.out.println(videoSrc);
+			Elements priceEle = element.select("#game_area_purchase");
+			//System.out.println(priceEle);
+			String finalPrice = priceEle.select(".game_purchase_price").attr("data-price-final");
+			if(!("무료".equals(finalPrice) || finalPrice.length() < 6)) {
+				finalPrice = finalPrice.substring(0, finalPrice.length() - 2);
+			} else {
+				finalPrice = priceEle.select(".game_purchase_price").text();
+			}
+			// System.out.println(finalPrice);
+			Elements deepInfo = element.select("#game_area_description");
+			
+			game.put("title", title);
+			game.put("imgSrc", imgSrc);
+			game.put("lightInfo", lightInfo);
+			game.put("date", date);
+			game.put("developer", developer);
+			game.put("genre", genre);
+			game.put("videoSrc", videoSrc);
+			game.put("finalPrice", finalPrice);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return game;
+	}
 
 	
 }
