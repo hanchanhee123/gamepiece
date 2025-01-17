@@ -50,7 +50,7 @@
 									th:each="add :${eventWinnerList}">
 									<td th:text="${add.ewCd}"></td>
 									<td th:text="${add.ewNm}"></td>
-									<td th:text="${add.regYmd}"></td>     			
+									<td th:text="${add.ewRegYmd}"></td>     			
 									<td><a th:href="@{/admin/event/eventWinnerListDetail(evCd=${add.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
 									<td><a th:href="@{/admin/event/modifyEventWinnerList(evCd=${add.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
 									<td><a th:href="@{/admin/event/removeEventWinnerList(evCd=${add.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td>
@@ -104,10 +104,8 @@
 	<th:block layout:fragment="customJs">
 		<script>
 		$('#searchBtn').click(function(){
-		  			const searchCate = $('#searchCate').val();
 		  			const searchValue = $('#searchValue').val();
-		  			const $form = $('<form />', { 'action' : '/admin/event/searchList', 'method':'post'});
-		  			const $searchCate = $('<input />', {'type':'hidden', 'name' :'searchCate'}).val(searchCate);
+		  			const $form = $('<form />', { 'action' : '/admin/event/searchWinnerList', 'method':'post'});
 		  			const $searchValue = $('<input />', {'type':'hidden', 'name' :'searchValue'}).val(searchValue);
 		  			$form.append($searchCate, $searchValue);
 		  			$('body').append($form);

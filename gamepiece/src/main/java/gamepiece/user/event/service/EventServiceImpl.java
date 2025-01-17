@@ -1,5 +1,6 @@
 package gamepiece.user.event.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +48,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public PageInfo<Event> getWinnerList(Pageable pageable, String evCd) {
 
-		int rowCnt = userEventMapper.getCntEventList();
+		int rowCnt = userEventMapper.getCntWinnerList();
 		List<Event> eventList = userEventMapper.getWinnerList(pageable, evCd); 
 		return new PageInfo<>(eventList, pageable, rowCnt);
 	}
@@ -87,8 +88,32 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public PageInfo<Event> getEventWinnerList(Pageable pageable) {
-		int rowCnt = userEventMapper.getCntEventList();
+		int rowCnt = userEventMapper.getCntWinnerList();
 		List<Event> eventList = userEventMapper.getEventWinnerList(pageable); 
+		return new PageInfo<>(eventList, pageable, rowCnt);
+	}
+
+	@Override
+	public PageInfo<Event> searchList(String searchValue, Pageable pageable) {
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("pageable", pageable);
+		int rowCnt = userEventMapper.getSearchCntEventList(searchMap);
+		List<Event> eventList = userEventMapper.getSearchList(searchMap);
+		
+		return new PageInfo<>(eventList, pageable, rowCnt);
+	}
+
+	@Override
+	public PageInfo<Event> searchWinnerList(String searchValue, Pageable pageable) {
+
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("pageable", pageable);
+		int rowCnt = userEventMapper.getSearchCntWinnerList(searchMap);
+		List<Event> eventList = userEventMapper.getSearchWinnerList(searchMap);
+		
 		return new PageInfo<>(eventList, pageable, rowCnt);
 	}
 }

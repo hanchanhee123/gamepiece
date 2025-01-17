@@ -61,16 +61,38 @@ public class EventController {
 		
 		List<Event> eventWinnerList = pageInfo.getContents();
 		
-		eventWinnerList.forEach(list -> {
-			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
-		});
-		
 		int currentPage = pageInfo.getCurrentPage();
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
 		int lastPage = pageInfo.getLastPage();
 		
 		model.addAttribute("title", "이벤트목록");
+		model.addAttribute("eventWinnerList", eventWinnerList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		
+		return "admin/event/eventWinnerList";
+	}
+	
+	@PostMapping("/searchWinnerList")
+	public String searchWinnerListView(@RequestParam(value="searchValue") String searchValue,
+								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
+								 Model model,
+								 Pageable pageable) {
+		
+		PageInfo<Event> pageInfo = eventService.searchWinnerList(searchValue, searchCate, pageable);
+		
+		List<Event> eventWinnerList = pageInfo.getContents();
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("searchCate", searchCate);
 		model.addAttribute("eventWinnerList", eventWinnerList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
@@ -240,11 +262,13 @@ public class EventController {
 		return "redirect:/admin/event/eventWinnerList";
 	}
 	
-	@PostMapping("/searchList")
-	public String searchListView(@RequestParam(value="searchValue") String searchValue,
-								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
-								 Model model,
-								 Pageable pageable) {
+	@GetMapping("/searchList")
+	public String getSearchListView(@RequestParam(value="searchValue") String searchValue,
+			@RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
+			Model model,
+			Pageable pageable) {
+		
+		log.info("searchValue {}",searchValue);
 		PageInfo<Event> pageInfo = eventService.searchList(searchValue, searchCate, pageable);
 		
 		List<Event> eventList = pageInfo.getContents();
@@ -260,6 +284,38 @@ public class EventController {
 		model.addAttribute("searchValue", searchValue);
 		model.addAttribute("searchCate", searchCate);
 		model.addAttribute("eventList", eventList);
+		model.addAttribute("search", "searching");
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		
+		return "admin/event/eventList";
+	}
+	
+	@PostMapping("/searchList")
+	public String searchListView(@RequestParam(value="searchValue") String searchValue,
+								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
+								 Model model,
+								 Pageable pageable) {
+		
+		log.info("searchValue {}",searchValue);
+		PageInfo<Event> pageInfo = eventService.searchList(searchValue, searchCate, pageable);
+		
+		List<Event> eventList = pageInfo.getContents();
+		eventList.forEach(list -> {
+			list.setEvStatus(eventService.getEventsWithStatus(list.getEvCd()));
+		});
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("searchCate", searchCate);
+		model.addAttribute("eventList", eventList);
+		model.addAttribute("search", "searching");
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
