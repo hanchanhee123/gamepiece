@@ -27,6 +27,7 @@ public class Event {
 	private String userNn;
 	private String ewCd;
 	private String ewNm;
+	private String ewRegYmd;
 	
 }
 

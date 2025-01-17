@@ -95,7 +95,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public PageInfo<Event> getEventWinnerList(Pageable pageable) {
 	
-		int rowCnt = eventMapper.getCntEventList();
+		int rowCnt = eventMapper.getCntWinnerList();
 		List<Event> eventList = eventMapper.getEventWinnerList(pageable); 
 		return new PageInfo<>(eventList, pageable, rowCnt);
 	}
@@ -164,6 +164,22 @@ public class EventServiceImpl implements EventService {
 		resultMap.put("evWinnersNum", evWinnersNum);		
 		
 		return eventMapper.countWinner(resultMap);
+	}
+
+	@Override
+	public PageInfo<Event> searchWinnerList(String searchValue, String searchCate, Pageable pageable) {
+		
+		searchCate = "ew_nm";
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("searchCate", searchCate);
+		searchMap.put("searchValue", searchValue);
+		searchMap.put("pageable", pageable);
+		int rowCnt = eventMapper.getSearchCntWinnerList(searchMap);
+		List<Event> eventList = eventMapper.getSearchWinnerList(searchMap);
+		
+		return new PageInfo<>(eventList, pageable, rowCnt);
+		
 	}
 
 

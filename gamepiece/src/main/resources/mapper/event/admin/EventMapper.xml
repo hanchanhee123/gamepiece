@@ -21,6 +21,7 @@
 		<result column="user_nn"				property="userNn"/>
 		<result column="ew_cd"					property="ewCd"/>
 		<result column="ew_nm"					property="ewNm"/>
+		<result column="ew_reg_ymd"				property="ewRegYmd"/>
 	</resultMap>
 	
 	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
@@ -38,6 +39,25 @@
 		</where>
 		ORDER BY ev_cd DESC
 		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	<select id="getCntEventList" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events;
+	</select>
+	
+	<select id="getSearchCntEventList" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events e
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
 	</select>
 	
 	<!-- 이벤트당첨자리스트 삭제 -->
@@ -59,25 +79,6 @@
 		WHERE
 			ev_cd = #{evCd};
 	</update>
-	
-	<select id="getCntEventList" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			events;
-	</select>
-	
-	<select id="getSearchCntEventList" parameterType="map" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			events e
-		<where>
-		    <if test="searchValue != null and searchValue != ''">
-		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
-		    </if>
-		</where>
-	</select>
 	
 	<select id="getEventList" parameterType="pageable" resultMap="eventResultMap">
 		SELECT
@@ -108,6 +109,41 @@
 			is_delete='active'
 		ORDER BY ev_cd DESC
 		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<select id="getSearchWinnerList" parameterType="map" resultMap="eventResultMap">
+		SELECT
+		    ew_cd,
+		    ew_nm,
+		  	ew_reg_ymd
+		FROM
+		    events_winners
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+		ORDER BY ew_cd DESC
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	<select id="getCntWinnerList" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events_winners;
+	</select>
+	
+	<select id="getSearchCntWinnerList" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events_winners ew
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
 	</select>
 	
 	<select id="getEventParticipant" parameterType="string" resultMap="eventResultMap">
@@ -149,7 +185,7 @@
 	
 	<insert id="addEventWinnerList" parameterType="gamepiece.admin.event.domain.Event">
 		INSERT INTO events_winners
-		  (ew_cd, ev_cd, ew_nm, admin_id, reg_ymd)
+		  (ew_cd, ev_cd, ew_nm, admin_id, ew_reg_ymd)
 		VALUES 
 		  (	
 		    <![CDATA[(SELECT CONCAT('ew_', LPAD(IFNULL(MAX(SUBSTRING(ew.ew_cd, 4) + 1), 0), 
