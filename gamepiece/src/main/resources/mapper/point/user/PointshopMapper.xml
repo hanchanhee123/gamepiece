@@ -174,7 +174,7 @@
 			id=#{id};
 	</select>
 	
-	<select id="findhistory" resultMap="pointshopResultMap" parameterType="Pageable">
+	<select id="findhistory" resultMap="pointshopResultMap" parameterType="Map">
 		SELECT
 			ps.ps_cd,
 			pl.psl_used_point,
@@ -185,7 +185,8 @@
 			pointshop_logs pl INNER JOIN point_shop ps
 			ON pl.ps_cd = ps.ps_cd INNER JOIN pointshop_categories pc
 			ON ps.ps_cate_cd = pc.cate_cd
-		LIMIT #{rowPerPage} OFFSET #{offset};
+		WHERE pl.id = #{id}
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
 	
 	<select id="getavatarCount" resultType="int">

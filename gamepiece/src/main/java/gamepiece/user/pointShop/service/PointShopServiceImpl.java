@@ -1,6 +1,8 @@
 package gamepiece.user.pointShop.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,10 @@ public class PointShopServiceImpl implements PointShopService{
 	@Override
 	public PageInfo<Point> findhistory(Pageable pageable, String id) {
 		int rowCnt = userpointshopMapper.gethistoryCount(id);
-		List<Point> historyList = userpointshopMapper.findhistory(pageable);
+		Map<String, Object> historyMap = new HashMap<>();
+		historyMap.put("id", id);
+		historyMap.put("pageable", pageable);
+		List<Point> historyList = userpointshopMapper.findhistory(historyMap);
 		return new PageInfo<>(historyList, pageable, rowCnt);
 	}
 	

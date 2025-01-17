@@ -213,17 +213,18 @@ body {
     padding-top: 20px;
 } */
 
-/* .write-review {
-    width : 700px;
+.write-review {
+    width : 1240px;
     height : 300px;
     border-radius: 10px;
     margin-top: 20px;
     padding : 20px;
+    margin-bottom: 10px;
     display : flex;
     background-color: #0B2A4B;
     color: white;
     border: 1px solid #007AFF;
-} */
+}
 .user img {
     width : 40px;
     height : 40px;
@@ -233,7 +234,7 @@ body {
     margin-left: 10px;
 }
 .reviewbox textarea {
-    width : 500px;
+    width : 1050px;
     height : 260px;
     resize: none;
 }
