@@ -76,6 +76,33 @@ public class EventController {
 		return "admin/event/eventWinnerList";
 	}
 	
+	@GetMapping("/searchWinnerList")
+	public String getSearchWinnerListView(@RequestParam(value="searchValue") String searchValue,
+								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
+								 Model model,
+								 Pageable pageable) {
+		
+		PageInfo<Event> pageInfo = eventService.searchWinnerList(searchValue, searchCate, pageable);
+		
+		List<Event> eventWinnerList = pageInfo.getContents();
+		
+		int currentPage = pageInfo.getCurrentPage();
+		int startPageNum = pageInfo.getStartPageNum();
+		int endPageNum = pageInfo.getEndPageNum();
+		int lastPage = pageInfo.getLastPage();
+		
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("searchCate", searchCate);
+		model.addAttribute("eventWinnerList", eventWinnerList);
+		model.addAttribute("search", "searching");
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		
+		return "admin/event/eventWinnerList";
+	}
+	
 	@PostMapping("/searchWinnerList")
 	public String searchWinnerListView(@RequestParam(value="searchValue") String searchValue,
 								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
@@ -94,6 +121,7 @@ public class EventController {
 		model.addAttribute("searchValue", searchValue);
 		model.addAttribute("searchCate", searchCate);
 		model.addAttribute("eventWinnerList", eventWinnerList);
+		model.addAttribute("search", "searching");
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);

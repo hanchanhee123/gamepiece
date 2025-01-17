@@ -185,7 +185,7 @@
 	
 	<insert id="addEventWinnerList" parameterType="gamepiece.admin.event.domain.Event">
 		INSERT INTO events_winners
-		  (ew_cd, ev_cd, ew_nm, admin_id, reg_ymd)
+		  (ew_cd, ev_cd, ew_nm, admin_id, ew_reg_ymd)
 		VALUES 
 		  (	
 		    <![CDATA[(SELECT CONCAT('ew_', LPAD(IFNULL(MAX(SUBSTRING(ew.ew_cd, 4) + 1), 0), 
