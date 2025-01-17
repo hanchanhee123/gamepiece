@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.file.mapper.FileMapper">
+
+	<resultMap type="gamepiece.file.dto.FileDto" id="fileResultMap">
+		<result property="fileIdx" 			column="file_idx"/>
+		<result property="fileNewName" 		column="file_new_name"/>
+		<result property="fileOriginalName" column="file_original_name"/>
+		<result property="filePath" 		column="file_path"/>
+		<result property="fileSize" 		column="file_size"/>
+	</resultMap>
+
+	<delete id="deleteFileByIdx" parameterType="String">
+		DELETE
+		FROM 
+			files
+		WHERE
+			file_idx = #{fileIdx}
+	</delete>
+
+	<select id="getFileInfoByIdx" parameterType="string" resultMap="fileResultMap">
+		SELECT
+			 file_idx,
+			 file_new_name,
+			 file_original_name,
+			 file_path,file_size
+		FROM
+			files
+		WHERE
+			file_idx = #{fileIdx}
+	</select>
+	
+	<select id="getFileList" resultMap="fileResultMap">
+		SELECT
+			 file_idx,
+			 file_new_name,
+			 file_original_name,
+			 file_path,
+			 file_size
+		FROM
+			files
+	</select>
+
+	<insert id="addfile" parameterType="gamepiece.file.dto.FileDto">
+		INSERT INTO files
+		(
+			 file_idx,
+			 file_new_name,
+			 file_original_name,
+			 file_path,
+			 file_size,
+			 file_reg_date
+		)VALUES( 
+			 #{fileIdx},
+			 #{fileNewName},
+			 #{fileOriginalName},
+			 #{filePath},
+			 #{fileSize},
+			 CURDATE()
+		)
+	</insert>
+
+	<insert id="addfiles" parameterType="gamepiece.file.dto.FileDto">
+		INSERT INTO files
+		(
+			 file_idx,
+			 file_new_name,
+			 file_original_name,
+			 file_path,
+			 file_size,
+			 file_reg_date
+		)VALUES
+		<foreach collection="list" item="file" separator=",">
+		( 
+			 #{file.fileIdx},
+			 #{file.fileNewName},
+			 #{file.fileOriginalName},
+			 #{file.filePath},
+			 #{file.fileSize},
+			 CURDATE()
+		)
+		</foreach>
+	</insert>
+</mapper>
+
+
+
+
+
+
+

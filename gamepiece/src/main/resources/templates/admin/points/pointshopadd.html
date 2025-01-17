@@ -11,7 +11,7 @@
           </div>
    	</th:block>
    	<th:block layout:fragment="contents-body">
-   	<form id="addItemForm" th:action="@{/admin/point/add}" method="post">
+   	<form id="addItemForm" th:action="@{/admin/point/add}" method="post" enctype="multipart/form-data">
 	   	<div class="row">
                 <div class="col-lg-6">
                     <div class="card mb-4">
@@ -64,7 +64,7 @@
                                     <div class="mb-4">
                                         <label class="form-label">이미지</label>
                                         <input class="form-control" type="file"
-                                        	   id="itemImgurl" name="itemImgurl">
+                                        	   id="files" name="files" />
                                     </div>
                                 </div> <!-- col.// -->
                                 <div>

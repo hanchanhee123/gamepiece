@@ -32,7 +32,6 @@
 		<result column="avatar_yn" property="avatarYn"/>
 		<result column="reg_ymd" property="regYmd"/>
 		<result column="ps_nm" property="psNm"/>
-		<result column="img_url" property="imgUrl"/>
 	</resultMap>
 	
 	<resultMap type="gamepiece.user.user.domain.AvatarFrame" id="avatarFrameMap">
@@ -42,7 +41,6 @@
 		<result column="avatarframe_yn" property="avatarframeYn"/>
 		<result column="reg_ymd" property="regYmd"/>
 		<result column="ps_nm" property="psNm"/>
-		<result column="img_url" property="imgUrl"/>
 	</resultMap>
 	
 	<!-- 전체 회원정보 조회 -->
@@ -233,7 +231,7 @@
 	<!-- 아바타 -->
 	<select id="getUserAvatar" resultType="string">
 		SELECT 
-			p.img_url
+			p.file_idx
 		FROM 
 			avatar a JOIN point_shop p
 		ON a.ps_cd = p.ps_cd
@@ -248,7 +246,7 @@
 	<!-- 아바타액자 -->
 	<select id="getUserAvatarFrame" resultType="string">
 		SELECT 
-			p.img_url
+			p.file_idx
 		FROM 
 			avatar_frame af JOIN point_shop p
 		ON af.ps_cd = p.ps_cd
