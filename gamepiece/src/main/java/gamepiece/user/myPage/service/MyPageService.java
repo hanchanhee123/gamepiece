@@ -21,13 +21,13 @@ public interface MyPageService {
 
 	// 아바타 저장
 	void saveAvatar(String id, String selectAvatar);
+
+	// 배경프로필 조회
+	List<Point> getBackground(String id);
+
+	// 배경프로필 저장
+	void saveBackground(String id, String selectBackground);
 	
-	// 아바타액자 조회
-	List<Point> getAvatarFrame(String id);
-
-	// 아바타액자 저장
-	void saveAvatarFrame(String id, String selectAvatarFrame);
-
 	// 마이페이지 - 보유 이모티콘
 	List<Point> myPageEmoticon(String id);
 
@@ -39,7 +39,7 @@ public interface MyPageService {
 	
 	// 마이페이지 - 참여한 이벤트
 	List<Event> myPageEvent(String id);
-	
+
 	// 마이페이지 - 내 게시글에 대한 댓글 수
 //	int myPageBoardComments(String id);
 

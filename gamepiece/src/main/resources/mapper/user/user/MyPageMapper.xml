@@ -29,15 +29,15 @@
 	</resultMap>
 	
 	<resultMap type="gamepiece.user.pointShop.domain.Point" id="pointshopResultMap">
-		<id column="ps_cd" 			property="itemCd"/>
+		<id column="ps_cd" property="itemCd"/>
 		<result column="ps_cate_cd" property="itemCate" />
-		<result column="cate_nm" 	property="cateName" />
-		<result column="ps_nm" 	property="itemName" />
-		<result column="file_idx" 	property="fileIdx" />
-		<result column="ps_price" 		property="itemPrice" />
-		<result column="admin_id" 	property="adminId" />
-		<result column="reg_ymd" 	property="regYmd" />
-		<result column="is_delete"  property="isDelete" />
+		<result column="cate_nm" property="cateName" />
+		<result column="ps_nm" property="itemName" />
+		<result column="file_path" property="filePath" />
+		<result column="ps_price" property="itemPrice" />
+		<result column="admin_id" property="adminId" />
+		<result column="reg_ymd" property="regYmd" />
+		<result column="is_delete" property="isDelete" />
 	</resultMap>
 	
 	<resultMap type="gamepiece.user.board.domain.Board" id="BoardResultMap">
@@ -108,9 +108,11 @@
 		SELECT
 			ps.ps_cd,
 			ps.ps_nm,
-			ps.file_idx
+			f.file_path
 		FROM
-			point_shop ps INNER JOIN pointshop_logs pl
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_logs pl
 			USING (ps_cd)
 		WHERE
 			id = #{id}
@@ -136,48 +138,52 @@
    			#{avatarNo}, #{id}, #{selectAvatar}, CURDATE());
 	</insert>
 	
-	<!-- 아바타액자 조회 -->
-	<select id="getAvatarFrame" resultMap="pointshopResultMap">
-		SELECT
-			ps.ps_cd,
-			ps.ps_nm,
-			ps.file_idx
-		FROM
-			point_shop ps INNER JOIN pointshop_logs pl
-			USING (ps_cd)
-		WHERE
-			id = #{id}
-			AND
-			ps.ps_cate_cd = 'cate_03';
-	</select>
-	
-	<!-- 기존 아바타액자 -->
-	<update id="updateAvatarFrame" parameterType="gamepiece.user.user.domain.Avatar">
+	<!-- 기존 배경프로필 -->
+	<update id="updateBackground" parameterType="gamepiece.user.user.domain.Background">
 	    UPDATE
-	    	avatar_frame
+	    	background
 	    SET
-	    	avatarframe_yn = '미선택'
+	    	background_yn = '미선택'
 	    WHERE
 	    	id = #{id};
 	</update>
 	
-	<!-- 새로운 아바타액자 -->
-	<insert id="insertAvatarFrame" parameterType="gamepiece.user.user.domain.AvatarFrame">
-	    INSERT INTO avatar_frame (
-	    	avatarframe_no, id, ps_cd, reg_ymd
+	<!-- 새로운 배경프로필 -->
+	<insert id="insertBackground" parameterType="gamepiece.user.user.domain.Background">
+	    INSERT INTO background (
+	    	background_no, id, ps_cd, reg_ymd
    		) VALUES (
-   			#{avatarFrameNo}, #{id}, #{selectAvatarFrame}, CURDATE());
+   			#{backgroundNo}, #{id}, #{selectBackground}, CURDATE());
 	</insert>
+	
+	<!-- 배경프로필 조회 -->
+	<select id="getBackground" resultMap="pointshopResultMap">
+		SELECT
+			ps.ps_cd,
+			ps.ps_nm,
+			f.file_path
+		FROM
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+		WHERE
+			id = #{id}
+			AND
+			ps.ps_cate_cd = 'cate_05';
+	</select>
 	
 	<!-- 마이페이지 - 보유 이모티콘 -->
 	<select id="myPageEmoticon" resultMap="pointshopResultMap">
 		SELECT
 			ps.ps_cd,
 			ps.ps_nm,
-			ps.file_idx
+			f.file_path
 		FROM
 			point_shop ps INNER JOIN pointshop_logs pl
 			USING (ps_cd)
+			INNER JOIN files f
+			ON ps.file_idx = f.file_idx
 		WHERE
 			id = #{id}
 			AND

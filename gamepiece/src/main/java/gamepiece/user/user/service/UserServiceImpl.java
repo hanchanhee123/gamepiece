@@ -123,11 +123,11 @@ public class UserServiceImpl implements UserService {
 		return userMapper.getUserAvatar(id);
 	}
 	
-	// 아바타액자
+	// 배경프로필
 	@Override
-	public String getUserAvatarFrame(String id) {
-
-		return userMapper.getUserAvatarFrame(id);
+	public String getUserBackground(String id) {
+		
+		return userMapper.getUserBackground(id);
 	}
-
+	
 }
