@@ -7,7 +7,7 @@
 			<result column="ps_cate_cd" property="itemCate" />
 			<result column="cate_nm" 	property="cateName" />
 			<result column="ps_nm" 		property="itemName" />
-			<result column="file_idx" 	property="fileIdx" />
+			<result column="file_path" 	property="filePath" />
 			<result column="ps_price" 	property="itemPrice" />
 			<result column="admin_id" 	property="adminId" />
 			<result column="reg_ymd" 	property="regYmd" />
@@ -61,13 +61,15 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.file_idx,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
-			ps_cd=#{itemCd};
+			ps.ps_cd = #{itemCd};	
 	</select>
 	
 	<select id="findimoticon" resultMap="pointshopResultMap" parameterType="Pageable">
@@ -76,11 +78,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.file_idx,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='이모티콘'
 			AND
@@ -93,11 +97,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.file_idx,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='프로필이미지'
 			AND
@@ -110,11 +116,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.file_idx,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='아바타 액자'
 			AND
@@ -127,11 +135,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.file_idx,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='기타'
 			AND
@@ -144,11 +154,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.file_idx,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='배경프로필'
 			AND
@@ -180,11 +192,12 @@
 			pl.psl_used_point,
 			ps.ps_nm,
 			pc.cate_nm,
-			ps.file_idx
+			f.file_path
 		FROM 
 			pointshop_logs pl INNER JOIN point_shop ps
 			ON pl.ps_cd = ps.ps_cd INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			ON ps.ps_cate_cd = pc.cate_cd INNER JOIN files f
+			ON ps.file_idx = f.file_idx
 		WHERE pl.id = #{id}
 		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
