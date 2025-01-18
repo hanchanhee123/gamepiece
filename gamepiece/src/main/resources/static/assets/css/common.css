@@ -114,7 +114,7 @@ main {
 
 .mypage-category {
 	width: 209.33px;
-    height: 500px;
+    height: 460px;
     background-color: white;
     border-radius: 10px;
     position: sticky;
@@ -148,6 +148,7 @@ main {
     list-style: "- ";
     margin: 5px;
     font-size: 15px;
+    cursor: pointer;
 }
 
 /* 회원정보 */

@@ -25,7 +25,7 @@
 	                    <span>Point</span>
 	                </div>
 	            </div>
-	            <div class="mypage-coupon" data-bs-toggle="modal" data-bs-target="#couponModal">
+	            <!-- <div class="mypage-coupon" data-bs-toggle="modal" data-bs-target="#couponModal">
 	                <div>
 	                    <span>보유 쿠폰</span>
 	                </div>
@@ -33,7 +33,7 @@
 	                    <span class="mycoupon">0</span>
 	                    <span>장</span>
 	                </div>
-	            </div>
+	            </div> -->
 	        </div>
 	    </div>
 	    
@@ -128,7 +128,7 @@
 	        <div class="common-card-section">
 	        <th:block th:if="${myPageEmoticon != null}" th:each="myPageEmoticon : ${myPageEmoticon}">
 	            <div class="card-section">
-	                <img th:src="@{|${myPageEmoticon.itemImgurl}|}" alt="이미지" />
+	                <img th:src="@{|${myPageEmoticon.filePath}|}" alt="이미지" />
 	                <p class="game-name" th:text="${myPageEmoticon.itemName}"></p>
 	            </div>
 	        </th:block>

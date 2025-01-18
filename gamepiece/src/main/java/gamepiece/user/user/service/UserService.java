@@ -39,7 +39,7 @@ public interface UserService {
 	// 아바타
 	String getUserAvatar(String id);
 
-	// 아바타액자
-	String getUserAvatarFrame(String id);
-	
+	// 배경프로필
+	String getUserBackground(String id);
+
 }

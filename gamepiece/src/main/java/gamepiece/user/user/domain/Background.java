@@ -3,14 +3,13 @@ package gamepiece.user.user.domain;
 import lombok.Data;
 
 @Data
-public class AvatarFrame {
-	
-	private String avatarframeNo;
+public class Background {
+
+	private String background_no;
 	private String id;
 	private String psCd;
-	private String avatarframeYn;
+	private String background_yn;
 	private String regYmd;
 	private String psNm;
-	private String imgUrl;
-
+	
 }

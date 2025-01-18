@@ -59,24 +59,25 @@ public class MyPageServiceImpl implements MyPageService {
 		myPageMapper.insertAvatar(avatarNo, id, selectAvatar);
 	}
 	
-	// 아바타액자 조회
+	// 배경프로필 조회
 	@Override
-	public List<Point> getAvatarFrame(String id) {
+	public List<Point> getBackground(String id) {
 
-		return myPageMapper.getAvatarFrame(id);
+		return myPageMapper.getBackground(id);
 	}
-
+	
+	// 배경프로필 저장
 	@Override
-	public void saveAvatarFrame(String id, String selectAvatarFrame) {
+	public void saveBackground(String id, String selectBackground) {
 		
-		String avatarFrameNo = commonMapper.getPrimaryKey("af_", "avatar_frame", "avatarframe_no");
-		System.out.println("avatar_frame 생성된 기본키 : " + avatarFrameNo);
+		String backgroundNo = commonMapper.getPrimaryKey("b_", "background", "background_no");
+		System.out.println("background 생성된 기본키 : " + backgroundNo);
 		
-		// 기존 아바타 액자
-		myPageMapper.updateAvatarFrame(id);
+		// 기존 배경프로필
+		myPageMapper.updateBackground(id);
 
-		// 새로운 아바타 액자
-		myPageMapper.insertAvatarFrame(avatarFrameNo, id, selectAvatarFrame);
+		// 새로운 배경프로필
+		myPageMapper.insertBackground(backgroundNo, id, selectBackground);
 	}
 	
 	// 마이페이지 - 보유 이모티콘

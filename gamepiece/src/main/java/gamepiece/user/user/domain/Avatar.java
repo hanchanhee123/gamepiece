@@ -11,6 +11,5 @@ public class Avatar {
 	private String avatarYn;
 	private String regYmd;
 	private String psNm;
-	private String imgUrl;
 	
 }
