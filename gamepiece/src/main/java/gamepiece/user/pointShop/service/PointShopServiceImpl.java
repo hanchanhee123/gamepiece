@@ -6,8 +6,9 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import gamepiece.common.mapper.CommonMapper;
+import gamepiece.file.mapper.FileMapper;
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.domain.PointCategories;
 import gamepiece.user.pointShop.domain.PointLog;
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PointShopServiceImpl implements PointShopService{
 	private final UserPointShopMapper userpointshopMapper;
+	private final FileMapper fileMapper;
 	
 	@Override
 	public List<PointShopLog> purchaseList(String id) {

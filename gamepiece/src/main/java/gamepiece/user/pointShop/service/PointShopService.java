@@ -2,6 +2,8 @@ package gamepiece.user.pointShop.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import gamepiece.user.pointShop.domain.Point;
 import gamepiece.user.pointShop.domain.PointCategories;
 import gamepiece.user.pointShop.domain.PointLog;
