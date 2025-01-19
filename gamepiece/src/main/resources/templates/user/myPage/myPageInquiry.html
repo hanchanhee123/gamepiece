@@ -129,7 +129,7 @@
 			    <th:block th:if="${myPageInquiry != null}" th:each="myPageInquiry : ${myPageInquiry}">
 			        <div class="card-section">
 			            <p class="mypage-inquiry-title" th:text="${myPageInquiry.inquiryTitle}"></p>
-			            <p class="mypage-inquiry-content" th:text="${myPageInquiry.inquiryContent}"></p>
+			            <p class="mypage-inquiry-content" th:utext="${myPageInquiry.inquiryContent}"></p>
 			            <p class="mypage-inquiry-ymd" th:text="${myPageInquiry.inquiryYmd}"></p>
 			            <div class="mypage-inquiry-response">
 			                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
