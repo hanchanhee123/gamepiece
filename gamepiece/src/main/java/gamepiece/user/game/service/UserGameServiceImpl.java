@@ -17,17 +17,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gamepiece.user.game.domain.UserGame;
+import gamepiece.user.game.domain.UserReview;
 import gamepiece.user.game.mapper.UserGameMapper;
+import gamepiece.user.game.mapper.UserReviewMapper;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service("userUserGameService")
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserGameServiceImpl implements UserGameService {
 
 	private final UserGameMapper userGameMapper;
+	private final UserReviewMapper userReviewMapper;
 	@Override
 	public PageInfo<UserGame> getGameList(Pageable pageable) {
 		
@@ -190,9 +195,11 @@ public class UserGameServiceImpl implements UserGameService {
 	    
 	    return resultMap;
 	}
+	// 게임 상세 페이지 크롤링
 	@Override
 	public Map<String, Object> getGameDetailApi(String gameCode, String title) {
 		Map<String, Object> game = new HashMap<String,Object>();
+		boolean isDetail = false;
 		try {
 			String url = "https://store.steampowered.com/app/" + gameCode + "/" + title + "/";
 			
@@ -204,66 +211,103 @@ public class UserGameServiceImpl implements UserGameService {
 			
 			
 			Elements element = html.select("#tabletGrid");
-			// System.out.println(element);
-			Elements titleEle = html.select("#appHubAppName");
-			title = titleEle.text();
-			// System.out.println(title);
-			
-			Elements info = element.select(".rightcol");
-			//System.out.println(info);
-			Elements ImgCtn = info.select("#gameHeaderImageCtn");
-			//System.out.println(ImgCtn);
-			String imgSrc = ImgCtn.select(".game_header_image_full").attr("src");
-			// System.out.println(imgSrc);
-			
-			String lightInfo = info.select(".game_description_snippet").text();
-			//System.out.println(lightInfo);
-			
-			String date = info.select(".glance_ctn_responsive_left").select(".release_date").select(".date").text();
-			// System.out.println(date);
-			if(!"출시예정".equals(date)) { 
-        		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
-        		LocalDate dateTime = LocalDate.parse(date, formatter);
-        		
-        		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN);
-        	    String formattedDate = dateTime.format(outputFormatter);	
-        		date = formattedDate.toString();
-        	}
-			// System.out.println(date);
-			String developer = info.select(".glance_ctn_responsive_left").select("#developers_list").select("a").text();
-			// System.out.println(developer);
-			
-			Elements genreEle = info.select("#glanceCtnResponsiveRight").select("a");
-			// System.out.println(genreEle);
-			String genre = genreEle.first().text();
-			Elements videoEle = element.select(".leftcol");
-			// System.out.println(videoEle);
-			String videoSrc = videoEle.select(".highlight_movie").attr("data-webm-source");;
-			//System.out.println(videoSrc);
-			Elements priceEle = element.select("#game_area_purchase");
-			//System.out.println(priceEle);
-			String finalPrice = priceEle.select(".game_purchase_price").attr("data-price-final");
-			if(!("무료".equals(finalPrice) || finalPrice.length() < 6)) {
-				finalPrice = finalPrice.substring(0, finalPrice.length() - 2);
-			} else {
-				finalPrice = priceEle.select(".game_purchase_price").text();
+			if(!element.isEmpty()) {
+				isDetail = true;
+				Elements titleEle = html.select("#appHubAppName");
+				title = titleEle.text();
+				// System.out.println(title);
+				
+				Elements info = element.select(".rightcol");
+				//System.out.println(info);
+				Elements ImgCtn = info.select("#gameHeaderImageCtn");
+				//System.out.println(ImgCtn);
+				String imgSrc = ImgCtn.select(".game_header_image_full").attr("src");
+				// System.out.println(imgSrc);
+				
+				String lightInfo = info.select(".game_description_snippet").text();
+				//System.out.println(lightInfo);
+				
+				String date = info.select(".glance_ctn_responsive_left").select(".release_date").select(".date").text();
+				// System.out.println(date);
+				if(!"출시예정".equals(date)) { 
+	        		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
+	        		LocalDate dateTime = LocalDate.parse(date, formatter);
+	        		
+	        		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일", Locale.KOREAN);
+	        	    String formattedDate = dateTime.format(outputFormatter);	
+	        		date = formattedDate.toString();
+	        	}
+				// System.out.println(date);
+				String developer = info.select(".glance_ctn_responsive_left").select("#developers_list").select("a").text();
+				// System.out.println(developer);
+				
+				Elements genreEle = info.select("#glanceCtnResponsiveRight").select("a");
+				// System.out.println(genreEle);
+				String genre = genreEle.first().text();
+				Elements videoEle = element.select(".leftcol");
+				// System.out.println(videoEle);
+				String imgSrcSec = "";
+				String videoSrc = videoEle.select(".highlight_movie").attr("data-webm-source");
+				if("".equals(videoSrc)) {
+					
+					Elements aEle = videoEle.select("a");
+					imgSrcSec = aEle.attr("href");
+					//System.out.println(imgSrcSec);
+				}
+				
+				//System.out.println(videoSrc);
+				
+				Elements priceEle = element.select("#game_area_purchase");
+				//System.out.println(priceEle);
+				String finalPrice = priceEle.select(".game_purchase_price").attr("data-price-final");
+				if(!("무료".equals(finalPrice) || finalPrice.length() < 6)) {
+					finalPrice = finalPrice.substring(0, finalPrice.length() - 2);
+				} else {
+					finalPrice = priceEle.select(".game_purchase_price").text();
+				}
+				// System.out.println(finalPrice);
+				Elements deepInfo = element.select("#game_area_description");
+				String deepInfoText = deepInfo.text();
+				
+				game.put("gameCode", gameCode);
+				game.put("title", title);
+				game.put("imgSrc", imgSrc);
+				game.put("lightInfo", lightInfo);
+				game.put("date", date);
+				game.put("developer", developer);
+				game.put("genre", genre);
+				game.put("videoSrc", videoSrc);
+				game.put("finalPrice", finalPrice);
+				game.put("imgSrcSec", imgSrcSec);
+				game.put("deepInfoText", deepInfoText);
+				
 			}
-			// System.out.println(finalPrice);
-			Elements deepInfo = element.select("#game_area_description");
+			game.put("isDetail", isDetail);
+			// System.out.println(element);
 			
-			game.put("title", title);
-			game.put("imgSrc", imgSrc);
-			game.put("lightInfo", lightInfo);
-			game.put("date", date);
-			game.put("developer", developer);
-			game.put("genre", genre);
-			game.put("videoSrc", videoSrc);
-			game.put("finalPrice", finalPrice);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		return game;
 	}
+	// 해당 게임의 리뷰 목록 조회
+	@Override
+	public List<UserReview> getUserReview(String gameCode) {
+		
+		List<UserReview> userReview = userReviewMapper.getUserReview(gameCode);
+		
+		return userReview;
+	}
 
+	@Override
+	public String getLastReviewNo() {
+		String lastReviewNo = userReviewMapper.getLastReviewNum();
+		return lastReviewNo;
+	}
 	
+	@Override
+	public void writeUserReview(UserReview userReview) {
+		int result = userReviewMapper.writeUserReview(userReview);
+		
+	}
 }
