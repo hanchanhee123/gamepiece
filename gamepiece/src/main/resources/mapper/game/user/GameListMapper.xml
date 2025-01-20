@@ -130,6 +130,12 @@
 		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
 	
+	<insert id="putGameInCart" parameterType="gamepiece.user.game.domain.UserGame">
+		INSERT INTO game_cart_list
+		(gcl_cd, gm_cd, gm_nm, price, admin_ID, enrollment_date)
+		VALUES 
+		('', '', '', 0, '', NOW());
+	</insert>
 	
 	
 	

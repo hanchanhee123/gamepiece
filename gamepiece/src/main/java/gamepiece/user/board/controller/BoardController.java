@@ -6,17 +6,24 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gamepiece.file.dto.FileDto;
+import gamepiece.file.service.FileService;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.Inquiry;
@@ -41,11 +48,237 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final UserService userService;
+	private final FileService fileService;
 
 	/*  
 	 * 
 	 * 			
 	 * */
+	
+	
+	@PostMapping("/noticeList")
+	public String noticeBoardSearch(@RequestParam(value="searchValue") String searchValue,
+			Pageable pageable,
+			Model model) {
+		
+		PageInfo<Notice> pageInfo =  boardService.getNoticeSearchList(searchValue, pageable);
+		
+		
+		model.addAttribute("noticeList", pageInfo.getContents());
+		model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		model.addAttribute("lastPage", pageInfo.getLastPage());
+		model.addAttribute("searchValue", searchValue);
+		
+		
+		
+		return "user/board/noticeList";  
+	}
+	
+	
+	@GetMapping("/noticeList")
+	public String noticeSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
+			Pageable pageable, Model model) {
+		
+		PageInfo<Notice> pageInfo = boardService.getNoticeSearchList(searchValue, pageable);
+		
+		model.addAttribute("noticeList", pageInfo.getContents());
+		model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		model.addAttribute("lastPage", pageInfo.getLastPage());
+		model.addAttribute("searchValue", searchValue);
+		
+		return "user/board/noticeList";
+	}
+	
+	
+	
+	
+	
+	
+	
+	@PostMapping("/inquiryList")
+	public String inquirySearch(@RequestParam(value="searchValue") String searchValue,
+			Pageable pageable,
+			Model model) {
+		
+		PageInfo<Inquiry> pageInfo =  boardService.getInquirySearchList(searchValue, pageable);
+		
+		
+		model.addAttribute("inquiryList", pageInfo.getContents());
+		model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		model.addAttribute("lastPage", pageInfo.getLastPage());
+		model.addAttribute("searchValue", searchValue);
+		
+		
+		
+		return "user/board/inquiryList";  
+	}
+	
+	
+	@GetMapping("/inquiryList")
+	public String inquirySearchList(@RequestParam(value="searchValue", required = false) String searchValue,
+			Pageable pageable, Model model) {
+		
+		PageInfo<Inquiry> pageInfo = boardService.getInquirySearchList(searchValue, pageable);
+		
+		model.addAttribute("inquiryList", pageInfo.getContents());
+		model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		model.addAttribute("lastPage", pageInfo.getLastPage());
+		
+		
+		
+		model.addAttribute("searchValue", searchValue);
+		
+		return "user/board/inquiryList";
+	}
+	
+	
+	
+	@PostMapping("/infosearchList")
+	public String infoBoardSearch(@RequestParam(value="searchValue") String searchValue,
+			Pageable pageable,
+			Model model) {
+		
+		PageInfo<Board> pageInfo = boardService.getInfoSearchList(searchValue, pageable);
+		
+		
+		model.addAttribute("infoBoardList", pageInfo.getContents());
+		model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		model.addAttribute("lastPage", pageInfo.getLastPage());
+		model.addAttribute("searchValue", searchValue);
+		
+		
+		
+		return "user/board/InfoboardList";  
+	}
+	
+	
+	@GetMapping("/infosearchList")
+	public String infoBoardSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
+			Pageable pageable, Model model) {
+		
+		PageInfo<Board> pageInfo = boardService.getInfoSearchList(searchValue, pageable);
+		
+		model.addAttribute("infoBoardList", pageInfo.getContents());
+		model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		model.addAttribute("lastPage", pageInfo.getLastPage());
+		
+		
+		
+		model.addAttribute("searchValue", searchValue);
+		
+		return "user/board/InfoboardList";
+	}
+	
+	
+	
+	
+	
+	/* 정보게시글 */
+	
+	@PostMapping("/freesearchList")
+	public String freeBoardSearch(@RequestParam(value="searchValue") String searchValue,
+		    							Pageable pageable,
+		    										Model model) {
+
+		    PageInfo<Board> pageInfo = boardService.getFreeSearchList(searchValue, pageable);
+		    
+	
+		    model.addAttribute("freeBoardList", pageInfo.getContents());
+		    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		    model.addAttribute("lastPage", pageInfo.getLastPage());
+		    model.addAttribute("searchValue", searchValue);
+
+
+
+		    return "user/board/FreeboardList";  
+		}
+	
+	
+	@GetMapping("/freesearchList")
+	public String freeBoardSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
+											Pageable pageable, Model model) {
+		
+	    PageInfo<Board> pageInfo = boardService.getFreeSearchList(searchValue, pageable);
+
+	    model.addAttribute("freeBoardList", pageInfo.getContents());
+	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	    model.addAttribute("lastPage", pageInfo.getLastPage());
+	    
+	
+
+	    model.addAttribute("searchValue", searchValue);
+	    
+		return "user/board/FreeboardList";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	@PostMapping("/attacksearchList")
+	public String attackBoardSearch(@RequestParam(value="searchValue") String searchValue,
+		    							Pageable pageable,
+		    										Model model) {
+
+		    PageInfo<Board> pageInfo = boardService.getAttackSearchList(searchValue, pageable);
+		    
+	
+		    model.addAttribute("attackBoardList", pageInfo.getContents());
+		    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		    model.addAttribute("lastPage", pageInfo.getLastPage());
+		    model.addAttribute("searchValue", searchValue);
+
+
+
+		    return "user/board/AttackboardList";  
+		}
+	
+	
+	@GetMapping("/attacksearchList")
+	public String attackBoardSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
+											Pageable pageable, Model model) {
+		
+	    PageInfo<Board> pageInfo = boardService.getAttackSearchList(searchValue, pageable);
+	
+
+	    model.addAttribute("attackBoardList", pageInfo.getContents());
+	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	    model.addAttribute("lastPage", pageInfo.getLastPage());
+	    
+	
+
+	    model.addAttribute("searchValue", searchValue);
+	    
+		return "user/board/AttackboardList";
+	}
+	
+	
+
+
+	
 	
 	@PostMapping("/allsearchList")
 	public String boardsearchList(

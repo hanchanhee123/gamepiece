@@ -7,12 +7,17 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import gamepiece.user.game.domain.UserGame;
+import gamepiece.user.game.domain.UserReview;
 import gamepiece.user.game.service.UserGameService;
+import gamepiece.user.user.service.UserService;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserGameController {
 
 	private final UserGameService userGameService;
+	private final UserService userService;
+	
 	
 	// 사용자 게임 목록 조회
 	// 사용자 스팀 게임 목록 조회
@@ -97,11 +104,57 @@ public class UserGameController {
 	@GetMapping("/steamDetail")
 	public String getUserGameDetailApi(@RequestParam(value="gameCode") String gameCode,
 									   @RequestParam(value="title", required=false, defaultValue = "" )String title,
-									   Model model) {
+									   Model model,
+									   HttpSession session) {
+		String id = (String) session.getAttribute("SID");
+		
+		model.addAttribute("id", id);
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
+		List<UserReview> userReview = userGameService.getUserReview(gameCode);
+		String nextReviewNum = userGameService.getLastReviewNo();
+		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ; 
+		
+		
+		
+		model.addAttribute("nextReviewNumInt", nextReviewNumInt);
 		model.addAttribute("gameDetail", gameDetail);
+		model.addAttribute("userReview", userReview);
 		return "user/game/steamDetail";
 	}
+	
+	@PostMapping("/writeReview")
+	public String writeGameReview(UserReview userReview,
+								  Model model) {
+		
+		userGameService.writeUserReview(userReview);
+		
+		
+		
+		return "user/game/steamDetail";
+	}
+	
+	@PostMapping("/gameCart")
+	public String putGameInCart(@RequestParam(value="gameCode") String gameCode,
+									  @RequestParam(value="title", required = false, defaultValue = "") String title,
+									  @RequestParam(value="finalPrice") String finalPrice,
+									  @RequestParam(value="isDetail") String isDetail,
+									  Model model) {
+		
+		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
+		List<UserReview> userReview = userGameService.getUserReview(gameCode);
+		String nextReviewNum = userGameService.getLastReviewNo();
+		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ;
+		
+		model.addAttribute("nextReviewNumInt", nextReviewNumInt);
+		model.addAttribute("gameDetail", gameDetail);
+		model.addAttribute("userReview", userReview);
+		return "user/game/steamDetail";
+	}
+	
+	
 	
 	
 	

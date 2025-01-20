@@ -32,7 +32,7 @@ public interface UserGameMapper {
 	// 플랫폼 클릭 시 해당 게임 목록 조회
 	List<UserGame> getGameListWithPlatform(Map<String, Object> paramMap);
 	
-	
-	
+	// 장바구니에 담기 버튼 클릭시 장바구니 테이블에 데이터 삽입
+	int putGameInCart(UserGame userGame);
 }
 

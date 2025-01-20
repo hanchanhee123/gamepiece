@@ -242,14 +242,19 @@ body {
     margin-left: 10px;
 }
 .reviewbox textarea {
-    width : 1050px;
+    width : 1020px;
     height : 260px;
     resize: none;
 }
 .reviewbutton {
     display: grid;
+    align-content : space-between;
     align-items: end;
-    margin-left: 34px;
+    text-align: center;
+    margin-left : 20px;
+}
+.reviewbutton select {
+	border : 1px solid #007AFF;
 }
 .reviewbutton button {
     width : 64px;
@@ -264,7 +269,7 @@ body {
     padding-left : 20px;
 }
 .more-info {
-    height : 500px;
+    height : auto;
     border-radius: 10px;
     background-color: #0B2A4B;
     color: white;
@@ -342,7 +347,7 @@ body {
     color: white;
 }
 .review-area {
-    display : flex;
+	display : flex;
     justify-content: space-between;
 }
 .review {

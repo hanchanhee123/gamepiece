@@ -1,6 +1,7 @@
 package gamepiece.user.board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,13 @@ import gamepiece.util.Pageable;
 @Repository("userNoticeMapper")
 public interface NoticeMapper {
 	
+	
+	
+	//공지 검색행 세기
+	int getCntSearchNotice(Map<String, Object> searchMap);
+		
+	//공지 검색조회
+	List<Notice> getNoticeSearchList(Map<String, Object> searchMap);
 	
 	//공지글 상세
 	Notice getNoticeInfo(int noticeNum);
