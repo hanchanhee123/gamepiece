@@ -33,35 +33,38 @@
 
 
 </resultMap>
-	<!-- 
-				<select id="getNoticeSearchList" parameterType="map" resultMap="NoticeResultMap">
-				   SELECT 
-				   ntc_no, 
-					ntc_title, 
-					ntc_cn, 
-					ntc_img, 
-					ntc_view, 
-					admin_id, 
-					reg_ymd
-				FROM 
-				       ntc_mttr 
-				   WHERE 1=1
-				   <if test="searchValue != null and searchValue != ''">
-				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
-				   </if>
-			
-				   LIMIT #{rowPerPage} OFFSET #{offset}
-				</select>
-				
-				<select id="getCntSearchNotice" parameterType="map" resultType="int">
-				   SELECT COUNT(*)
-				   FROM  ntc_mttr
-				   WHERE 1=1
-				   <if test="searchValue != null and searchValue != ''">
-				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
-				   </if>
-				</select>
- -->
+	
+							<select id="getNoticeSearchList" parameterType="map" resultMap="NoticeResultMap">
+							   SELECT 
+							   ntc_no, 
+								ntc_title, 
+								ntc_cn, 
+								ntc_img, 
+								ntc_view, 
+								admin_id, 
+								reg_ymd
+							FROM 
+							       ntc_mttr 
+							   WHERE 1=1
+							   <if test="searchValue != null and searchValue != ''">
+							       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
+							   </if>
+									AND is_delete = 'active'
+							   LIMIT #{rowPerPage} OFFSET #{offset}
+							</select>
+							
+							<select id="getCntSearchNotice" parameterType="map" resultType="int">
+							   SELECT 
+							   		COUNT(*)
+							   FROM  
+							   			ntc_mttr
+							   WHERE 1=1
+							   <if test="searchValue != null and searchValue != ''">
+							       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
+							   </if>
+							   AND is_delete = 'active'
+							</select>
+
 
 <select id="getCntNotice" resultType="int">
 		SELECT

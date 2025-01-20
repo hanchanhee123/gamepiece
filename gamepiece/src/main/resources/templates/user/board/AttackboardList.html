@@ -20,9 +20,10 @@
     </div>
         <div class="content">
             <div class = searchAndWrite>
-                <div class="search">
-                    <input type="text" class="item-search"/>
-                    <i class="bi bi-search"></i>
+                 <div class="search">
+                    <input type="text" class="item-search" id="searchValue" 
+                    	name="searchValue" th:value="${searchValue}"/>
+                    <i class="bi bi-search" id="searchBtn" type="button"></i>
                 </div>
               <div class="board-make">
    <button class="button" th:if="${session.SID != null}" onclick="location.href='/board/write';">게시물 작성</button>
@@ -43,7 +44,7 @@
                 </tr>
             </thead>
             <tbody style="text-align: center;">
-                                <th:block th:if="${attackBoardList}">
+                                 <th:block th:if="${not #lists.isEmpty(attackBoardList)}">
                                <tr th:each="l : ${attackBoardList}">
                                         
                                        <td th:text="${l.boardNum}"></td>
@@ -61,7 +62,7 @@
                                    
                                     </tr>
                                     </th:block>
-                                    <th:block th:unless="${not #lists.isEmpty(attackBoardList)}">
+                                     <th:block th:if="${#lists.isEmpty(attackBoardList)}">
 								<tr>
 									<td colspan="7">등록된 게시물이 없습니다.</td>
 								</tr>
@@ -139,52 +140,19 @@
  
  
     
+
+	$('#searchBtn').click(function(){
+		
+		const searchValue = $('#searchValue').val();
+		const $form = $('<form />', { 'action' : '/board/attacksearchList', 'method': 'post'});
+	
+		const $searchValue = 
+				$('<input />', {'type':'hidden', 'name' : 'searchValue'}).val(searchValue);
+		$form.append($searchValue);
+		$('body').append($form);
+		$form.submit();
+	});  
     
-window.addEventListener('load', function() {
-    const memberMenu = document.getElementById('memberMenu');
-    const members = document.querySelectorAll('.member');
-    const post = document.getElementById('lookpost');
-
-
-    // 회원 클릭 이벤트
-    members.forEach(member => {
-        member.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            const rect = this.getBoundingClientRect();
-            memberMenu.style.left = rect.left + window.scrollX + 'px';
-            memberMenu.style.top = (rect.top + rect.height - 20 + window.scrollY) + 'px';
-            
-            memberMenu.style.display = memberMenu.style.display === "none" ? "block" : "none";
-        });
-    });
-
-    // 메뉴 버튼 클릭 이벤트
-    post.addEventListener('click', function() {
-        alert('작성글확인');
-    });
-
-
-
-
-    // 문서 클릭 시 메뉴 닫기
-    document.addEventListener('click', function() {
-        memberMenu.style.display = 'none';
-    });
-
-    // 메뉴 클릭 시 이벤트 버블링 방지
-    memberMenu.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-
-
-
-
-
-
-
-});
-
 
 
 </script>

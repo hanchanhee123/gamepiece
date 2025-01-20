@@ -46,7 +46,7 @@
 		</resultMap>
 		
 		
-					<!-- <select id="getInquirySearchList" parameterType="map" resultMap="InquiryResultMap">
+					<select id="getInquirySearchList" parameterType="map" resultMap="InquiryResultMap">
 					   SELECT 
 					      	i.inquiry_id,
 							ir.response_id,
@@ -63,6 +63,7 @@
 					   <if test="searchValue != null and searchValue != ''">
 					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
 					   </if>
+					       AND i.is_delete = 'active'
 					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED)
 					   LIMIT #{rowPerPage} OFFSET #{offset}
 					</select>
@@ -76,8 +77,9 @@
 					   <if test="searchValue != null and searchValue != ''">
 					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
 					   </if>
+					   			AND i.is_delete = 'active'
 					</select>
-		 -->
+		
 		
 		
 	

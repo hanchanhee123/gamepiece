@@ -40,79 +40,56 @@
   
 </resultMap>
 
-					<!-- 	
-						<select id="getBoardSearchList" parameterType="map" resultMap="BoardResultMap">
-						    SELECT 
-						        b.bbs_no, 
-						        b.bbs_cate_cd, 
-						        b.bbs_title, 
-						        b.bbs_view, 
-						        b.bbs_like, 
-						        b.bbs_dislike, 
-						        u.user_nn, 
-						        b.bbs_ymd
-						    FROM 
-						    	boards b 
-						    INNER JOIN 
-						    	boards_categories bc ON b.bbs_cate_cd = bc.bbs_cate_cd
-						    	INNER JOIN user u 
-						    	ON b.id = u.id
-						    WHERE 1=1
-						<if test="searchCate != null and searchCate != 'all'">
-						        AND b.bbs_cate_cd = 
-						        <choose>
-						            <when test="searchCate == 'free'">
-						                'bbs_cate_01'
-						            </when>
-						            <when test="searchCate == 'attack'">
-						                'bbs_cate_02'
-						            </when>
-						            <when test="searchCate == 'info'">
-						                'bbs_cate_03'
-						            </when>
-						        </choose>
-						    </if>
-						    <if test="searchValue != null and searchValue != ''">
-						        AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%')
-						    </if>
-						    ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED)
-						    LIMIT #{rowPerPage} OFFSET #{offset}
-						</select>
-
-
 					
-					<select id="getCntSearchBoard" parameterType="map" resultType="int">
-							   SELECT 
-							   	COUNT(*)
-							   FROM
-							   	 boards b
-							   INNER JOIN 
-							   				boards_categories bc
-							   			ON b.bbs_cate_cd = bc.bbs_cate_cd
-							   INNER JOIN user u 
-							   ON b.id = u.id
-							   WHERE 1=1
-							   <if test="searchCate != null and searchCate != 'all'">
-							       AND b.bbs_cate_cd = 
-							       <choose>
-							           <when test="searchCate == 'free'">
-							               'bbs_cate_01'
-							           </when>
-							           <when test="searchCate == 'attack'">
-							               'bbs_cate_02'
-							           </when>
-							           <when test="searchCate == 'info'">
-							               'bbs_cate_03'
-							           </when>
-							       </choose>
-							   </if>
-							   <if test="searchValue != null and searchValue != ''">
-							       AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%')
-							   </if>
-							</select>
-
- -->
-	
+								<select id="getAttackBoardSearchList" parameterType="map" resultMap="BoardResultMap"> 
+								SELECT 
+									b.bbs_no, 
+									b.bbs_cate_cd,
+									 b.bbs_title,
+									  b.bbs_view,
+									   b.bbs_like, 
+									   b.bbs_dislike, 
+										u.user_nn,
+										 b.bbs_ymd
+							  FROM
+							  	 boards b INNER JOIN  user u 
+							  	 ON b.id = u.id 
+							  	 	WHERE 1=1 
+							  	 		
+							<if test="searchValue != null and searchValue != ''"> 
+							AND b.bbs_title 
+							LIKE CONCAT('%', #{searchValue}, '%') 
+							</if> 
+							AND 
+							b.is_delete = 'active'
+							AND 
+							b.bbs_cate_cd = 'bbs_cate_02'
+							
+							ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED)
+							 LIMIT #{rowPerPage} 
+							 OFFSET #{offset} </select> 
+							
+							<select id="getCntSearchAttackBoard" parameterType="map" resultType="int"> 
+								SELECT 
+									COUNT(*) 
+								  FROM
+							  	 boards b INNER JOIN  user u 
+							  	 ON b.id = u.id 
+									WHERE 
+										1=1 
+									  <if test="searchValue != null and searchValue != ''"> 
+									  AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%') 
+									  </if> 
+									  		AND 
+										b.is_delete = 'active'
+													AND 
+											b.bbs_cate_cd = 'bbs_cate_02'
+							
+									  </select> 
+								
+								
+								
+						
 	<select id="getCntBoard" resultType="int">
 			SELECT
 				COUNT(*)

@@ -13,6 +13,21 @@ import gamepiece.util.Pageable;
 public interface BoardService {
 	
 	
+	//공지 검색조회
+	PageInfo<Notice> getNoticeSearchList(String searchValue, Pageable pageable);
+	
+	//문의 검색조회
+	PageInfo<Inquiry> getInquirySearchList(String searchValue, Pageable pageable);
+	
+	
+	//정보게시물 검색조회
+	PageInfo<Board> getInfoSearchList(String searchValue, Pageable pageable);
+	
+	//자유게시물 검색조회
+	PageInfo<Board> getFreeSearchList(String searchValue, Pageable pageable);
+	
+	//공략게시물 검색조회
+	PageInfo<Board> getAttackSearchList(String searchValue, Pageable pageable);
 	
 	//게시물 검색조회
 	PageInfo<Board> getSearchList(String searchValue, Pageable pageable);
