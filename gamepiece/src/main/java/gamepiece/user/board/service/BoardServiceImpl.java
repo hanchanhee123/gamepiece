@@ -2,6 +2,7 @@ package gamepiece.user.board.service;
 
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -211,21 +212,19 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public PageInfo<BoardComment> getBoardCommentInfo(String boardNum, Pageable pageable) {
-	    // 페이징을 위한 파라미터 Map
 	    Map<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("boardNum", boardNum);
 	    paramMap.put("offset", pageable.getOffset());
 	    paramMap.put("rowPerPage", pageable.getRowPerPage());
 
-	    // 댓글 목록 조회
-	    List<BoardComment> commentList = boardCommentMapper.getBoardCommentInfo(paramMap);
-
-	    // 댓글 수 조회를 위한 Map
-	    Map<String, Object> searchMap = new HashMap<>();
-	    searchMap.put("boardNum", boardNum);
-	    int rowCnt = boardCommentMapper.getCntBoardComment(searchMap);
-
-	    return new PageInfo<>(commentList, pageable, rowCnt);
+	    try {
+	        List<BoardComment> commentList = boardCommentMapper.getBoardCommentInfo(paramMap);
+	        int rowCnt = boardCommentMapper.getCntBoardComment(paramMap);
+	        return new PageInfo<>(commentList, pageable, rowCnt);
+	    } catch(Exception e) {
+	        // 에러가 발생하면 빈 결과 반환
+	        return new PageInfo<>(new ArrayList<>(), pageable, 0);
+	    }
 	}
 
 
@@ -274,19 +273,63 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 
-
 	@Override
-	public int removeBoard(String boardUserId) {
-		// TODO Auto-generated method stub
-		return allBoardMapper.removeBoard(boardUserId);
+	public int removeBoard(String boardNum) {
+	    // 숫자만 들어온 경우 'bbs_' 접두사 추가
+	    if (!boardNum.startsWith("bbs_")) {
+	        boardNum = "bbs_" + boardNum;
+	    }
+	    return allBoardMapper.removeBoard(boardNum);
 	}
-
 
 
 	@Override
 	public int modifyBoard(Board board) {
 		// TODO Auto-generated method stub
 		return allBoardMapper.modifyBoard(board);
+	}
+
+
+
+	@Override
+	public PageInfo<Board> getSearchList(String searchValue, Pageable pageable) {
+	    Map<String, Object> searchMap = new HashMap<String, Object>();
+	    
+	    searchMap.put("searchValue", searchValue);
+	    searchMap.put("offset", pageable.getOffset());
+	    searchMap.put("rowPerPage", pageable.getRowPerPage());
+
+	    int rowCnt = allBoardMapper.getCntSearchBoard(searchMap);
+	   
+	    
+	    List<Board> allboardList = allBoardMapper.getBoardSearchList(searchMap);
+	
+	    allboardList.forEach(allboardInfo -> {
+		    String BoardNum = allboardInfo.getBoardNum();
+
+		    String numberOnly = BoardNum.substring(BoardNum.indexOf("_") + 1);
+		 
+		    int allBoardNum = Integer.parseInt(numberOnly);
+		  
+		    allboardInfo.setBoardNum(String.valueOf(allBoardNum));
+		});
+
+	    allboardList.forEach(allboardInfo -> {
+	        String CategoryCode = allboardInfo.getBoardCategory();
+	        switch (CategoryCode) {
+	            case "bbs_cate_01":
+	                allboardInfo.setBoardCategory("자유게시판");
+	                break;
+	            case "bbs_cate_02":
+	                allboardInfo.setBoardCategory("공략게시판");
+	                break;
+	            case "bbs_cate_03":
+	                allboardInfo.setBoardCategory("정보게시판");
+	                break;
+	        }
+	    });
+
+	    return new PageInfo<>(allboardList, pageable, rowCnt);
 	}
 	
 	

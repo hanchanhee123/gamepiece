@@ -15,6 +15,58 @@
     
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <style>
+    
+ 
+    
+      /* 에디터 내용 정렬 스타일 */
+    .editor-content p[style*="text-align: center"] {
+        text-align: center !important;
+        display: block;
+    }
+    .editor-content p[style*="text-align: right"] {
+        text-align: right !important;
+        display: block;
+    }
+    .editor-content p[style*="text-align: left"] {
+        text-align: left !important;
+        display: block;
+    }
+    
+    /* align 속성에 대한 스타일도 추가 */
+    .editor-content p[align="center"] {
+        text-align: center !important;
+        display: block;
+    }
+    .editor-content p[align="right"] {
+        text-align: right !important;
+        display: block;
+    }
+    .editor-content p[align="left"] {
+        text-align: left !important;
+        display: block;
+    }
+    
+    
+        /* 게시물 내용의 정렬 스타일 */
+    .board-content p[style*="text-align: center"], 
+    .board-content p[align="center"] { 
+        text-align: center !important; 
+    }
+    .board-content p[style*="text-align: right"], 
+    .board-content p[align="right"] { 
+        text-align: right !important; 
+    }
+    .board-content p[style*="text-align: left"], 
+    .board-content p[align="left"] { 
+        text-align: left !important; 
+    }
+    
+    </style>
+    
+    
+    
 </head>
 
 
@@ -50,7 +102,9 @@
 					        <div th:if="${session.SID eq boardInfo.userInfo.id}" class="d-flex gap-3">
 					            <button class="btn btn-sm btn-outline-primary" 
 					                    th:onclick="|location.href='@{/board/modify(boardNum=${boardInfo.boardNum})}'|">수정</button>
-					           <button class="btn btn-sm btn-outline-danger" id="removeBtn" style="margin-right: 10px;">삭제</button>
+								          <button class="btn btn-sm btn-outline-danger" id="removeBtn"
+			        th:onclick="|if(confirm('삭제하시겠습니까?')) location.href='@{/board/remove(boardNum=${boardInfo.boardNum})}'|"
+			        style="margin-right: 10px;">삭제</button>
 					        </div>
 					        
 					        <!-- 타인의 게시물일 경우 -->
@@ -150,21 +204,21 @@
                 </div>
             </div>
 
-							            <div class="boards-content">
-			    <div class="content-details">
-			        <!-- 네이버 에디터 컨텐츠 (모든 스타일 유지) -->
+							<div class="boards-content">
+							     <div class="content-details">
+			        <!-- 에디터 컨텐츠 출력 -->
 			        <div th:if="${boardInfo.boardContent.contains('<p>') or boardInfo.boardContent.contains('<div>')}" 
 			             class="editor-content"
-			             th:utext="${boardInfo.boardContent}">
+			             th:utext="${boardInfo.boardContent}">  <!-- th:text 대신 th:utext 사용 -->
 			        </div>
 			        
-			        <!-- mapper의 일반 텍스트 (기본 스타일 적용) -->
+			        <!-- 일반 텍스트 출력 -->
 			        <div th:unless="${boardInfo.boardContent.contains('<p>') or boardInfo.boardContent.contains('<div>')}" 
 			             class="plain-text"
-			             th:text="${boardInfo.boardContent}">
+			             th:utext="${boardInfo.boardContent}">
 			        </div>
 			    </div>
-			</div>
+				</div>
 			               
                 <div class="likeAndDis">
                     <div class="like-button" id="likeButton">
@@ -319,75 +373,75 @@
                 
                 </div>
                 
-                 <div class="pagination-area mt-15" th:if="${commentList != null and not #lists.isEmpty(commentList)}">
-				    <nav>
-    <ul class="pagination justify-content-center">
-        <li class="page-item">
-            <a class="page-link" th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=1)}">
-                <i class="material-icons md-first_page"></i>
-            </a>
-        </li>
-
-        <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
-            <a class="page-link"
-                th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${currentPage -1})}">
-                <i class="material-icons md-chevron_left"></i>
-            </a>
-        </li>
-
-        <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
-            <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-                <a class="page-link" 
-                    th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${num})}" 
-                    th:text="${num}">
-                </a>
-            </li>
-        </th:block>
-
-        <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
-            <a class="page-link"
-                th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${currentPage+1})}">
-                <i class="material-icons md-chevron_right"></i>
-            </a>
-        </li>
-
-        <li class="page-item">
-            <a class="page-link"
-                th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${lastPage})}">
-                <i class="material-icons md-last_page"></i>
-            </a>
-        </li>
-    </ul>
-</nav>
-				</div>
+				                 <div class="pagination-area mt-15" th:if="${commentList != null and not #lists.isEmpty(commentList)}">
+								    <nav>
+				    <ul class="pagination justify-content-center">
+				        <li class="page-item">
+				            <a class="page-link" th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=1)}">
+				                <i class="material-icons md-first_page"></i>
+				            </a>
+				        </li>
+				
+				        <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+				            <a class="page-link"
+				                th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${currentPage -1})}">
+				                <i class="material-icons md-chevron_left"></i>
+				            </a>
+				        </li>
+				
+				        <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				            <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				                <a class="page-link" 
+				                    th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${num})}" 
+				                    th:text="${num}">
+				                </a>
+				            </li>
+				        </th:block>
+				
+				        <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
+				            <a class="page-link"
+				                th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${currentPage+1})}">
+				                <i class="material-icons md-chevron_right"></i>
+				            </a>
+				        </li>
+				
+				        <li class="page-item">
+				            <a class="page-link"
+				                th:href="@{/board/detail(boardNum=${boardInfo.boardNum},currentPage=${lastPage})}">
+				                <i class="material-icons md-last_page"></i>
+				            </a>
+				        </li>
+				    </ul>
+				</nav>
+								</div>
 				
 				
                 
                 
-      <form id="addCommentForm" method="post" th:action="@{/board/addComment}">
-   <div class="CommentInput-div card w-100">
-       <input type="hidden" name="boardNum" th:value="${boardNum}">
-       <div class="inputComment">
-           <textarea id="commentDetail" 
-                     name="commentDetail"
-                     class="form-control mb-2 commentInsert"
-                     placeholder="덧글내용을 입력해주세요"
-                     rows="3"
-                     style="resize: none;"></textarea>
-       </div>
-      <div class="d-flex justify-content-end">
-    <!-- 로그인 상태일 때 -->
-    <button type="button" class="btn btn-primary commentSubmitBtn" 
-            th:if="${session.SID != null}" 
-            onclick="submitComment(); return false;">등록</button>
-    <!-- 비로그인 상태일 때 -->
-    <button type="button" class="btn btn-primary" 
-            th:unless="${session.SID != null}" 
-            onclick="checkLogin();">등록</button>
-</div>
-   </div>
-</form>
-</th:block>
+								      <form id="addCommentForm" method="post" th:action="@{/board/addComment}">
+								   <div class="CommentInput-div card w-100">
+								       <input type="hidden" name="boardNum" th:value="${boardNum}">
+								       <div class="inputComment">
+								           <textarea id="commentDetail" 
+								                     name="commentDetail"
+								                     class="form-control mb-2 commentInsert"
+								                     placeholder="덧글내용을 입력해주세요"
+								                     rows="3"
+								                     style="resize: none;"></textarea>
+								       </div>
+								      <div class="d-flex justify-content-end">
+								    <!-- 로그인 상태일 때 -->
+								    <button type="button" class="btn btn-primary commentSubmitBtn" 
+								            th:if="${session.SID != null}" 
+								            onclick="submitComment(); return false;">등록</button>
+								    <!-- 비로그인 상태일 때 -->
+								    <button type="button" class="btn btn-primary" 
+								            th:unless="${session.SID != null}" 
+								            onclick="checkLogin();">등록</button>
+								</div>
+								   </div>
+								</form>
+								</th:block>
 
 <!--/* 사용자 추가 js file */-->
 <th:block layout:fragment="customJsResource">
@@ -545,28 +599,7 @@ function submitComment() {
      
      
 
-$('#removeBtn').click(function(e) {
-    e.preventDefault();
 
-    if (confirm('삭제하시겠습니까?')) {
-        const boardNum = $('#boardNum').val();
-
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/board/remove';
-
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'boardUserId';
-        input.value = boardNum;
-
-        form.appendChild(input);
-        document.body.appendChild(form);
-        form.submit();
-    }
-});
-
-        
     </script>
 </th:block>
 </html>

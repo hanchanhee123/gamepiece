@@ -14,9 +14,12 @@ public interface BoardService {
 	
 	
 	
+	//게시물 검색조회
+	PageInfo<Board> getSearchList(String searchValue, Pageable pageable);
+	
 
 	//특정게시물삭제
-	int removeBoard(String boardUserId);
+	int removeBoard(String boardNum);
 	
 	//특정게시물수정
 	int modifyBoard(Board board);
