@@ -44,6 +44,7 @@
 	VALUES 
 	(#{nextReviewNum}, #{gameCode}, #{id}, #{grade}, #{review}, 0, 0, NOW());
 	</insert>
+	
 
 	
 	
