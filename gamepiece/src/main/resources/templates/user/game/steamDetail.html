@@ -197,6 +197,7 @@
 				
 				const nextReviewNumInt = /*[[${nextReviewNumInt}]]*/"nextReviewNumInt";
 				const nextReviewNum = 'rv_' + nextReviewNumInt;
+				const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
 				console.log(nextReviewNum);
 				const id = /*[[${id}]]*/"id";
 				if(!review) {
@@ -221,10 +222,12 @@
 				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
 				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
 				const $nextReviewNum = $('<input />', {'type' : 'hidden', 'name' : 'nextReviewNum'}).val(nextReviewNum);
+
+				const $isDetail = $('<input />', {'type' : 'hidden', 'name' : 'isDetail'});
 				
-				console.log($nextReviewNum);
 				
-				$form.append($review, $grade, $gameCode, $id, $nextReviewNum);
+				
+				$form.append($review, $grade, $gameCode, $id, $nextReviewNum, $isDetail);
 				$('body').append($form);
 				$form.submit();
 				
@@ -246,15 +249,19 @@
 			$('#cart').click(function() {
 				alert("장바구니에 추가하시겠습니까?");
 				const title = /*[[${gameDetail.title}]]*/"gameDetail";
-				const finalPrice = /*[[${gameDetail.finalPrice}]]*/"finalPrice";
-				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameCode";
+				const finalPrice = /*[[${gameDetail.finalPrice}]]*/"gameDetail";
+				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
+				const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
 				
 				
-				const $form = $('<form />', {'action' : '/game/cartGame', 'method' : 'post'});
-				const $title = $('<input />', {'type' : 'hidden', 'name' : 'title'});
-				const $finalPrice = $('<input />', {'type' : 'hidden', 'name' : 'finalPrice'});
-				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'});
-				$form.append($title, $finalPrice, $gameCode);
+				
+				const $form = $('<form />', {'action' : '/game/gameCart', 'method' : 'post'});
+				const $title = $('<input />', {'type' : 'hidden', 'name' : 'title'}).val(title);
+				const $finalPrice = $('<input />', {'type' : 'hidden', 'name' : 'finalPrice'}).val(finalPrice);
+				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
+				
+				const $isDetail = $('<input />', {'type' : 'hidden', 'name' : 'isDetail'}).val(isDetail);
+				$form.append($title, $finalPrice, $gameCode, $isDetail);
 				$('body').append($form);
 				$form.submit();
 			})

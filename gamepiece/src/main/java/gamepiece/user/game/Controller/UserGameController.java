@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 import gamepiece.user.game.domain.UserGame;
 import gamepiece.user.game.domain.UserReview;
@@ -113,7 +114,6 @@ public class UserGameController {
 		
 		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
 		List<UserReview> userReview = userGameService.getUserReview(gameCode);
-		log.info("gameDetail : {}", gameDetail);
 		String nextReviewNum = userGameService.getLastReviewNo();
 		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ; 
 		
@@ -136,7 +136,23 @@ public class UserGameController {
 		return "user/game/steamDetail";
 	}
 	
-	
+	@PostMapping("/gameCart")
+	public String putGameInCart(@RequestParam(value="gameCode") String gameCode,
+									  @RequestParam(value="title", required = false, defaultValue = "") String title,
+									  @RequestParam(value="finalPrice") String finalPrice,
+									  @RequestParam(value="isDetail") String isDetail,
+									  Model model) {
+		
+		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
+		List<UserReview> userReview = userGameService.getUserReview(gameCode);
+		String nextReviewNum = userGameService.getLastReviewNo();
+		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ;
+		
+		model.addAttribute("nextReviewNumInt", nextReviewNumInt);
+		model.addAttribute("gameDetail", gameDetail);
+		model.addAttribute("userReview", userReview);
+		return "user/game/steamDetail";
+	}
 	
 	
 	
