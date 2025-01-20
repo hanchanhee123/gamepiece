@@ -331,10 +331,161 @@ public class BoardServiceImpl implements BoardService{
 
 	    return new PageInfo<>(allboardList, pageable, rowCnt);
 	}
+
+
+
+	@Override
+	public PageInfo<Board> getAttackSearchList(String searchValue, Pageable pageable) {
+	    Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		searchMap.put("searchValue", searchValue);
+	    searchMap.put("offset", pageable.getOffset());
+	    searchMap.put("rowPerPage", pageable.getRowPerPage());
+
+	    int rowCnt = attackBoardMapper.getCntSearchAttackBoard(searchMap);
+	   
+	    
+	    List<Board> attackBoardList = attackBoardMapper.getAttackBoardSearchList(searchMap);
+	
+	    attackBoardList.forEach(attackBoardInfo -> {
+		    String BoardNum = attackBoardInfo.getBoardNum();
+
+		    String numberOnly = BoardNum.substring(BoardNum.indexOf("_") + 1);
+		 
+		    int attackBoardNum = Integer.parseInt(numberOnly);
+		  
+		    attackBoardInfo.setBoardNum(String.valueOf(attackBoardNum));
+		});
+
+
+
+	    return new PageInfo<>(attackBoardList, pageable, rowCnt);
+
+	
+	}
+
+
+
+	@Override
+	public PageInfo<Board> getFreeSearchList(String searchValue, Pageable pageable) {
+		
+		  Map<String, Object> searchMap = new HashMap<String, Object>();
+			
+			searchMap.put("searchValue", searchValue);
+		    searchMap.put("offset", pageable.getOffset());
+		    searchMap.put("rowPerPage", pageable.getRowPerPage());
+
+		    int rowCnt = freeBoardMapper.getCntSearchFreeBoard(searchMap);
+		   
+		    
+		    List<Board> freeBoardList = freeBoardMapper.getFreeBoardSearchList(searchMap);
+		
+		    freeBoardList.forEach(freeBoardInfo -> {
+			    String BoardNum = freeBoardInfo.getBoardNum();
+
+			    String numberOnly = BoardNum.substring(BoardNum.indexOf("_") + 1);
+			 
+			    int freeBoardNum = Integer.parseInt(numberOnly);
+			  
+			    freeBoardInfo.setBoardNum(String.valueOf(freeBoardNum));
+			});
+
+
+
+		    return new PageInfo<>(freeBoardList, pageable, rowCnt);
+	}
+
+
+
+	@Override
+	public PageInfo<Board> getInfoSearchList(String searchValue, Pageable pageable) {
+	
+		  Map<String, Object> searchMap = new HashMap<String, Object>();
+			
+			searchMap.put("searchValue", searchValue);
+		    searchMap.put("offset", pageable.getOffset());
+		    searchMap.put("rowPerPage", pageable.getRowPerPage());
+
+		    int rowCnt = infoBoardMapper.getCntSearchInfoBoard(searchMap);
+		   
+		    
+		    List<Board> infoBoardList = infoBoardMapper.getInfoBoardSearchList(searchMap);
+		
+		    infoBoardList.forEach(infoBoardInfo -> {
+			    String BoardNum = infoBoardInfo.getBoardNum();
+
+			    String numberOnly = BoardNum.substring(BoardNum.indexOf("_") + 1);
+			 
+			    int infoBoardNum = Integer.parseInt(numberOnly);
+			  
+			    infoBoardInfo.setBoardNum(String.valueOf(infoBoardNum));
+			});
+
+
+
+		    return new PageInfo<>(infoBoardList, pageable, rowCnt);
+			
+		
+	}
+
+
+
+	@Override
+	public PageInfo<Inquiry> getInquirySearchList(String searchValue, Pageable pageable) {
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		searchMap.put("searchValue", searchValue);
+	    searchMap.put("offset", pageable.getOffset());
+	    searchMap.put("rowPerPage", pageable.getRowPerPage());
+
+	    int rowCnt = inquiryMapper.getCntSearchInquiry(searchMap);
+	   
+	    
+	    List<Inquiry> inquiryList = inquiryMapper.getInquirySearchList(searchMap);
+	
+		inquiryList.forEach(inquiryInfo -> {
+		    String inquiryNum = inquiryInfo.getInquiryNum();
+
+		    String numberOnly = inquiryNum.substring(inquiryNum.indexOf("_") + 1);
+		 
+		    int inquiryNumCount = Integer.parseInt(numberOnly);
+		  
+		    inquiryInfo.setInquiryNum(String.valueOf(inquiryNumCount));
+		});
+
+	    
+		return new PageInfo<>(inquiryList, pageable, rowCnt);
+		
+	
+			
+	}
+
+
+
+	@Override
+	public PageInfo<Notice> getNoticeSearchList(String searchValue, Pageable pageable) {
+		
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		
+		searchMap.put("searchValue", searchValue);
+	    searchMap.put("offset", pageable.getOffset());
+	    searchMap.put("rowPerPage", pageable.getRowPerPage());
+
+	    int rowCnt = noticeMapper.getCntSearchNotice(searchMap);
+	    
+	    List<Notice> noticeList = noticeMapper.getNoticeSearchList(searchMap);
+		
+		
+	    return new PageInfo<>(noticeList, pageable, rowCnt);
+		
+		
+	}
 	
 	
 	
 
+	
+	
 	
 
 	}

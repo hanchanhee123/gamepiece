@@ -20,8 +20,9 @@
         <div class="content">
             <div class = searchAndWrite>
                 <div class="search">
-                    <input type="text" class="item-search"/>
-                    <i class="bi bi-search"></i>
+                    <input type="text" class="item-search" id="searchValue" 
+                    	name="searchValue" th:value="${searchValue}"/>
+                    <i class="bi bi-search" id="searchBtn" type="button"></i>
                 </div>
            
             </div>
@@ -37,7 +38,7 @@
                 </tr>
             </thead>
             <tbody style="text-align: center;">
-                                <th:block th:if="${noticeList}">
+             <th:block th:if="${not #lists.isEmpty(noticeList)}">  
                                <tr th:each="l : ${noticeList}">
                                         
                                        <td th:text="${l.noticeNum}"></td>
@@ -53,7 +54,7 @@
                                    
                                     </tr>
                                     </th:block>
-                                    <th:block th:unless="${not #lists.isEmpty(noticeList)}">
+                                         <th:block th:if="${#lists.isEmpty(noticeList)}">
 								<tr>
 									<td colspan="5">등록된 게시물이 없습니다.</td>
 								</tr>
@@ -126,50 +127,20 @@
 <th:block layout:fragment="customJs">
     <script>
 
-window.addEventListener('load', function() {
-    const memberMenu = document.getElementById('memberMenu');
-    const members = document.querySelectorAll('.member');
-    const post = document.getElementById('lookpost');
 
 
-    // 회원 클릭 이벤트
-    members.forEach(member => {
-        member.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            const rect = this.getBoundingClientRect();
-            memberMenu.style.left = rect.left + window.scrollX + 'px';
-            memberMenu.style.top = (rect.top + rect.height - 20 + window.scrollY) + 'px';
-            
-            memberMenu.style.display = memberMenu.style.display === "none" ? "block" : "none";
-        });
-    });
-
-    // 메뉴 버튼 클릭 이벤트
-    post.addEventListener('click', function() {
-        alert('작성글확인');
-    });
-
-
-
-
-    // 문서 클릭 시 메뉴 닫기
-    document.addEventListener('click', function() {
-        memberMenu.style.display = 'none';
-    });
-
-    // 메뉴 클릭 시 이벤트 버블링 방지
-    memberMenu.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-
-
-
-
-
-
-
-});
+	$('#searchBtn').click(function(){
+		
+		const searchValue = $('#searchValue').val();
+		const $form = $('<form />', { 'action' : '/board/noticeList', 'method': 'post'});
+	
+		const $searchValue = 
+				$('<input />', {'type':'hidden', 'name' : 'searchValue'}).val(searchValue);
+		$form.append($searchValue);
+		$('body').append($form);
+		$form.submit();
+	});  
+    
 
 
 
