@@ -87,6 +87,13 @@ public class MyPageServiceImpl implements MyPageService {
 		return myPageMapper.myPageEmoticon(id);
 	}
 	
+	// 마이페이지 - 내 리뷰
+	@Override
+	public List<Board> myPageReview(String id) {
+
+		return myPageMapper.myPageReview(id);
+	}
+	
 	// 마이페이지 - 내 게시글
 	@Override
 	public List<Board> myPageBoard(String id) {

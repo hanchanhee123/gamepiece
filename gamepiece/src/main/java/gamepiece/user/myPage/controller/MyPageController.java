@@ -125,6 +125,10 @@ public class MyPageController {
 		model.addAttribute("myPagePointLog", myPagePointLog);
 		log.info("myPagePointLog : {}", myPagePointLog);
 		
+//		List<Board> myPageReview = myPageService.myPageReview(id);
+//		model.addAttribute("myPageReview", myPageReview);
+//		log.info("myPageReview : {}", myPageReview);
+		
 		return "user/myPage/myPageReview";
 	}
 	
