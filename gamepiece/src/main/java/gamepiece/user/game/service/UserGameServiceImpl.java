@@ -260,7 +260,7 @@ public class UserGameServiceImpl implements UserGameService {
 				Elements priceEle = element.select("#game_area_purchase");
 				//System.out.println(priceEle);
 				String finalPrice = priceEle.select(".game_purchase_price").attr("data-price-final");
-				if(!("무료".equals(finalPrice) || finalPrice.length() < 6)) {
+				if(!("무료 플레이".equals(finalPrice) || finalPrice.length() < 6)) {
 					finalPrice = finalPrice.substring(0, finalPrice.length() - 2);
 				} else {
 					finalPrice = priceEle.select(".game_purchase_price").text();
