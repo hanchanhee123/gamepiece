@@ -42,5 +42,8 @@ public class UserGame {
 	private int endPageNum;
 	
 	private String searchValue;
+	private String imgSrcSec;
+	private String deepInfoText;
 	
+	private boolean isDetail;
 }

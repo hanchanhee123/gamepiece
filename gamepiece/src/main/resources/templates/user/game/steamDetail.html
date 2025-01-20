@@ -8,211 +8,254 @@
 <th:block layout:fragment="contents-body">
 	<main>
         <div class="main">
-            <div class="main-contents">
-                <div class="main_div">
-			        <div class="detail-info">
-			            <div class="detail1">
-			                <div class="video">
-			                    <video th:src="${gameDetail.videoSrc}" autoplay>
-			                </div>
-			                <div class="game-price-detail">
-			                    <span th:text=${gameDetail.title}></span>
-			                    <span th:text=${gameDetail.finalPrice}></span>
-			                </div>
-			                <div class="wishlist">
-			                    <div class="button-area">
-			                        <button type="button" class="btn btn-primary">위시리스트에 넣기</button>
-			                        <button type="button" class="btn btn-primary">장바구니에 넣기</button>
-			                    </div>
-			                </div>
-			                <div class="game-script">
-			                    
-			                    <div>
-			                        <span>
-			    북유럽 여정은 계속됩니다
-			    Santa Monica Studio와 Jetpack Interactive는 집착과 수용 사이에서 갈등하는 크레토스와 아트레우스의 극적이고 진심어린 여정을 담은, 갓 오브 워 라그나로크를 소개합니다.
-			
-			    많은 호평을 받은 God of War(2018)의 후속작인 갓 오브 워 라그나로크에서는, 핌불의 겨울이 점점 다가오고 있습니다. 크레토스와 아트레우스는 답을 찾기 위해 아홉 영역을 탐험하고, 오딘의 군세는 세상을 종말로 이끌 것이라 예언된 전쟁에 대비해 아스가르드에 집결합니다.
-			
-			    여정 중 크레토스와 아트레우스는 아름다운 신화 속 환경을 탐험하고, 북유럽 신과 괴물 모습을 한 위협적인 적과 조우합니다. 라그나로크의 위협이 점점 다가오며, 크레토스와 아트레우스는 자신과 가족들의 안녕, 그리고 영역들의 안녕 사이에서 선택을 강요받습니다.
-			
-			    정해지지 않은 미래
-			    아트레우스는 “로키”에 대한 예언을 이해하고, 라그나로크에서 자신의 역할을 찾기 위한 지식을 갈구합니다. 크레토스는 과거의 실수를 반복하는 것에 대한 두려움에 속박될 것인지, 아니면 과거를 벗어 던지고 아트레우스에게 필요한 아버지가 될 것인지 결정해야 합니다.
-			
-			    부드럽고 극적인 전투
-			    크레토스, 그리고 아트레우스를 위한 다양한 신규 능력과 함께 리바이어던 도끼, 혼돈의 블레이드, 수호자 방패가 다시 등장합니다. 크레토스는 가족을 지키기 위해 아홉 영역에서 신과 괴물을 상대로 싸우며, 그의 치명적인 스파르탄 능력은 또 한 번 시험대에 오릅니다.
-			
-			    광대한 영역을 탐험하세요
-			    크레토스, 그리고 아트레우스와 함께 아름답지만 위험한 지역을 탐험하며, 답을 찾기 위한 모험을 시작하세요
-			                        </span>
-			                    </div>
-			                </div>
-			            </div>
-			            <div class="detail2">
-			                <div class="more-info">
-			                    <img th:src="${gameDetail.imgSrc}">
-			                    <div class="more-info-area">
-			                        <div>
-			                            <span class="gm-summation" th:text="${gameDetail.lightInfo}">크레토스와 아트레우스가 종말의 위협 속에서 아홉 영역을 탐험하며, 신화적 전투와 감동적인 이야기를 담은 갓 오브 워 라그나로크를 경험하세요.</span>
-			                        </div>
-			                        <div>
-			                            <span class="gm-info">출시일자</span>
-			                            <span class="gm-value" th:text="${gameDetail.date}"></span>
-			                        </div>
-			                        <div>
-			                            <span class="gm-info">장르</span>
-			                            <span class="gm-value" th:text=${gameDetail.genre}></span>
-			                        </div>
-			                        <div>
-			                            <span class="gm-info">개발사</span>
-			                            <span class="gm-value" th:text=${gameDetail.developer}></span>
-			                        </div>
-			                        <div>
-			                            <span class="gm-info">플랫폼</span>
-			                            <span class="gm-value">steam</span>
-			                        </div>
-			                    </div>
-			                </div>
-			                <div class="other-game">
-			                    <div class="more-game">
-			                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
-			                        <span>DARK SOULⅢ</span>
-			                    </div>
-			                    <div class="more-game">
-			                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
-			                        <span>DARK SOULⅢ</span>
-			                    </div>
-			                    <div class="more-game">
-			                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
-			                        <span>DARK SOULⅢ</span>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="review-list">
-			             <div class = "write-review">
-			                <div class = "user">
-			                    <img src = "https://cdn-icons-png.flaticon.com/512/159/159833.png">
-			                </div>
-			                <div class = "reviewbox">
-			                    <textarea cols = "50" rows = "10" placeholder="리뷰를 500자 이내로 작성해주세요" ></textarea>
-			                </div>
-			                <div class = "reviewbutton">
-			                    <button type = "button">게시</button>
-			                </div>
-			            </div> 
-			            <div class="review-info">
-			                <li>전체 리뷰</li>
-			                <li>리뷰 개수 : 3000개</li>
-			            </div>
-			            <div class="review-cate">
-			                <li><a href="#">최근작성</a></li>
-			                <li style="margin-left: 15px;"><a href="#">추천</a></li>
-			                <li style="margin-left: 15px;"><a href="#">비추천</a></li>
-			            </div>
-			            <div class="reviewList">
-			                <div class="review-area">
-			                    <div class="review">
-			                        <div class="user">
-			                            <img src="https://cdn-icons-png.flaticon.com/512/159/159833.png">
-			                        </div>
-			                        <div class="review-content">
-			                            <div class="likeDislike">
-			                                <div>
-			                                    <span>★★★★★</span>
-			                                </div>
-			                                <div>
-			                                    <span><a href="#" class="report">신고</a></span>
-			                                </div>
-			                            </div>
-			                            <div class="content">
-			                                <span>어렵긴 한데 너무 재밌어요! 어려운거 좋아하는 사람에게 강추!</span>
-			                            </div>
-			                            <div class="comment">
-			                                <div class="like-dislike">
-			                                    <span><i class="fa-solid fa-thumbs-up" aria-hidden="true"></i> 3</span>
-			                                    <span><i class="fa-solid fa-thumbs-down" aria-hidden="true"></i> 0</span>
-			                                    <span><i class="bi bi-chat-left-text-fill"></i> 0</span>
-			                                </div>
-			                                <div>
-			                                    <span>게시날짜 : 2024-10-20</span>
-			                                </div>
-			                            </div>
-			                        </div>
-			                    </div>
-			                    <div class="review">
-			                        <div class="user">
-			                            <img src="https://cdn-icons-png.flaticon.com/512/159/159833.png">
-			                        </div>
-			                        <div class="review-content">
-			                            <div class="likeDislike">
-			                                <div>
-			                                    <span>★★☆☆☆</span>
-			                                </div>
-			                                <div>
-			                                    <span><a href="#" class="report">신고</a></span>
-			                                </div>
-			                            </div>
-			                            <div class="content">
-			                                <span>너무 어려워요....첫번째 보스에서 너무 많이 죽어서 화나요..</span>
-			                                
-			                            </div>
-			                            <div class="comment">
-			                                <div class="like-dislike">
-			                                    <span><i class="fa-solid fa-thumbs-up" aria-hidden="true"></i> 0</span>
-			                                    <span><i class="fa-solid fa-thumbs-down" aria-hidden="true"></i> 0</span>
-			                                    <span><i class="bi bi-chat-left-text-fill"></i> 0</span>
-			                                </div>
-			                                <div>
-			                                    <span>게시날짜 : 2024-10-22</span>
-			                                </div>
-			                            </div>
-			                        </div>
-			                    </div>
-			                </div>
-			                <div class="more-look">
-			                    <button type="button" class="btn btn-primary">더보기</button>
-			                </div>
-			            </div>
-			        </div>
-    			</div>	
-			        
-            </div>
+        	<th:block th:unless="${gameDetail.isDetail}">
+        		<div class="main-contents" style = "margin-top : 20px; text-align : center; color : white;">
+        			<h1>해당 페이지는 추후 업데이트 예정입니다.</h1>
+        			<a th:href="@{/game/steam}" style = "text-decoration : none; color : white;">게임목록으로 돌아가기</a>
+        		</div>
+        	</th:block>
+        	<th:block th:if="${gameDetail.isDetail}">
+        		<div class="main-contents">
+	                <div class="main_div">
+				        <div class="detail-info">
+				            <div class="detail1">
+				                <div class="video">
+				                	<th:block th:if="${!#strings.isEmpty(gameDetail['videoSrc'])}">
+				                		<video th:src="${gameDetail.videoSrc}" autoplay />	
+				                	</th:block>
+				                	<th:block th:unless="${!#strings.isEmpty(gameDetail['videoSrc'])}">
+				                		<img th:src="${gameDetail.imgSrcSec}" />	
+				                	</th:block>
+				                    
+				                </div>
+				                <div class="game-price-detail">
+				                    <span th:text=${gameDetail.title}></span>
+				                    <span th:text=${gameDetail.finalPrice}></span>
+				                </div>
+				                <div class="wishlist">
+				                    <div class="button-area">
+				                        <button type="button" class="btn btn-primary">위시리스트에 넣기</button>
+				                        <button type="button" class="btn btn-primary">장바구니에 넣기</button>
+				                    </div>
+				                </div>
+				                <div class="game-script">
+				                    
+				                    <div>
+				                        <span th:text="${gameDetail.deepInfoText}">
+				    북유럽 여정은 계속됩니다
+				    Santa Monica Studio와 Jetpack Interactive는 집착과 수용 사이에서 갈등하는 크레토스와 아트레우스의 극적이고 진심어린 여정을 담은, 갓 오브 워 라그나로크를 소개합니다.
+				
+				    많은 호평을 받은 God of War(2018)의 후속작인 갓 오브 워 라그나로크에서는, 핌불의 겨울이 점점 다가오고 있습니다. 크레토스와 아트레우스는 답을 찾기 위해 아홉 영역을 탐험하고, 오딘의 군세는 세상을 종말로 이끌 것이라 예언된 전쟁에 대비해 아스가르드에 집결합니다.
+				
+				    여정 중 크레토스와 아트레우스는 아름다운 신화 속 환경을 탐험하고, 북유럽 신과 괴물 모습을 한 위협적인 적과 조우합니다. 라그나로크의 위협이 점점 다가오며, 크레토스와 아트레우스는 자신과 가족들의 안녕, 그리고 영역들의 안녕 사이에서 선택을 강요받습니다.
+				
+				    정해지지 않은 미래
+				    아트레우스는 “로키”에 대한 예언을 이해하고, 라그나로크에서 자신의 역할을 찾기 위한 지식을 갈구합니다. 크레토스는 과거의 실수를 반복하는 것에 대한 두려움에 속박될 것인지, 아니면 과거를 벗어 던지고 아트레우스에게 필요한 아버지가 될 것인지 결정해야 합니다.
+				
+				    부드럽고 극적인 전투
+				    크레토스, 그리고 아트레우스를 위한 다양한 신규 능력과 함께 리바이어던 도끼, 혼돈의 블레이드, 수호자 방패가 다시 등장합니다. 크레토스는 가족을 지키기 위해 아홉 영역에서 신과 괴물을 상대로 싸우며, 그의 치명적인 스파르탄 능력은 또 한 번 시험대에 오릅니다.
+				
+				    광대한 영역을 탐험하세요
+				    크레토스, 그리고 아트레우스와 함께 아름답지만 위험한 지역을 탐험하며, 답을 찾기 위한 모험을 시작하세요
+				                        </span>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="detail2">
+				                <div class="more-info">
+				                    <img th:src="${gameDetail.imgSrc}">
+				                    <div class="more-info-area">
+				                        <div>
+				                            <span class="gm-summation" th:text="${gameDetail.lightInfo}">크레토스와 아트레우스가 종말의 위협 속에서 아홉 영역을 탐험하며, 신화적 전투와 감동적인 이야기를 담은 갓 오브 워 라그나로크를 경험하세요.</span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">출시일자</span>
+				                            <span class="gm-value" th:text="${gameDetail.date}"></span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">장르</span>
+				                            <span class="gm-value" th:text=${gameDetail.genre}></span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">개발사</span>
+				                            <span class="gm-value" th:text=${gameDetail.developer}></span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">플랫폼</span>
+				                            <span class="gm-value">steam</span>
+				                        </div>
+				                    </div>
+				                </div>
+				                <!-- <div class="other-game">
+				                    <div class="more-game">
+				                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
+				                        <span>DARK SOULⅢ</span>
+				                    </div>
+				                    <div class="more-game">
+				                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
+				                        <span>DARK SOULⅢ</span>
+				                    </div>
+				                    <div class="more-game">
+				                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
+				                        <span>DARK SOULⅢ</span>
+				                    </div>
+				                </div> -->
+				            </div>
+				        </div>
+				        <div class="review-list">
+				             <div class = "write-review">
+				                <div class = "user">
+				                    <img src = "https://cdn-icons-png.flaticon.com/512/159/159833.png">
+				                </div>
+				                <div class = "reviewbox">
+				                    <textarea class="writeBox" cols = "50" rows = "10" placeholder="리뷰를 500자 이내로 작성해주세요" ></textarea>
+				                </div>
+				                <div class = "reviewbutton">
+				                	<select name="grade" id="reviewGrade">
+				                		<option value="0">선택</option>
+				                		<option value="1">★☆☆☆☆</option>
+				                		<option value="2">★★☆☆☆</option>
+				                		<option value="3">★★★☆☆</option>
+				                		<option value="4">★★★★☆</option>
+				                		<option value="5">★★★★★</option>
+				                	</select>
+				                    <button type = "button" class="writeButton">게시</button>
+				                </div>
+				            </div> 
+				            <div class="review-info">
+				                <li>전체 리뷰</li>
+				                <li>리뷰 개수 : 3000개</li>
+				            </div>
+				            <div class="review-cate">
+				                <li><a href="#">최근작성</a></li>
+				                <li style="margin-left: 15px;"><a href="#">추천</a></li>
+				                <li style="margin-left: 15px;"><a href="#">비추천</a></li>
+				            </div>
+				            <div class="reviewList">
+				                <div class="review-area">
+				                	<th:block th:if="${!#lists.isEmpty(userReview)}">
+					                    <div class="review" th:each="l : ${userReview}">
+					                        <!-- <div >
+					                            <img th:src="#">
+					                        </div> -->
+						                        <div class="review-content">
+						                            <div class="likeDislike">
+						                            	<th:block th:switch="${l.grade}">
+						                            		<div th:case="1">
+						                                    	<span>★☆☆☆☆</span>
+						                                	</div>	
+						                            		<div th:case="2">
+						                                    	<span>★★☆☆☆</span>
+						                                	</div>	
+						                            		<div th:case="3">
+						                                    	<span>★★★☆☆</span>
+						                                	</div>	
+						                            		<div th:case="4">
+						                                    	<span>★★★★☆</span>
+						                                	</div>	
+						                            		<div th:case="5">
+						                                    	<span>★★★★★</span>
+						                                	</div>	
+						                            	</th:block>
+						                                <div>
+						                                    <span><a href="#" class="report">신고</a></span>
+						                                </div>
+						                            </div>
+						                            <div class="content">
+						                                <span th:text="${l.reviewContents}"></span>
+						                            </div>
+						                            <div class="comment">
+						                                <div class="like-dislike">
+						                                    <span><i class="fa-solid fa-thumbs-up" aria-hidden="true">0</i></span>
+						                                    <span><i class="fa-solid fa-thumbs-down" aria-hidden="true">0</i></span>
+						                                    <span><i class="bi bi-chat-left-text-fill"></i></span>
+						                                </div>
+						                                <div>
+						                                    <span>게시날짜 : 2024-10-20</span>
+						                                </div>
+						                            </div>
+						                        </div>
+						                    </div>
+					                    <div class="more-look" >
+				                    		<button type="button" class="btn btn-primary">더보기</button>
+				                		</div>
+				                	</th:block>
+				                	<th:block th:unless="${!#lists.isEmpty(userReview)}">
+				                		<div class="text-center">
+				                			<span style = "color : white; display : block;">아직 작성된 리뷰가 없습니다.</span>
+				                		</div>
+				                		
+				                	</th:block>
+				                </div>	                
+				                
+				            </div>
+				        </div>
+	    			</div>	
+				        
+	            </div>
+        	</th:block>
+            
         </div>
     </main>
 </th:block>
 <!--/* 사용자 추가 js file */-->
 <th:block layout:fragment="customJsResource">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 	<script th:src="@{/assets/js/home/homeJs.js}"></script>
 </th:block>
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
-		$('.search-button').click(function() {
-			const searchValue = $('#searchValue').val();
-			console.log(searchValue)
-			const $form = $('<form />', {'action' : '/game/steam', 'method' : 'get'});
-			const $searchValue = $('<input />', {'type' : 'hidden', 'name' : 'searchValue'}).val(searchValue);
-			$form.append($searchValue);
-			$('body').append($form);
-			$form.submit();
-		})
+		const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
+		if(isDetail) {
+			$('.writeButton').click(function() {
+				const review = $('.writeBox').val();
+				const grade = $('#reviewGrade').val();
+				console.log(grade);
+				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
+				
+				const nextReviewNumInt = /*[[${nextReviewNumInt}]]*/"nextReviewNumInt";
+				const nextReviewNum = 'rv_' + nextReviewNumInt;
+				console.log(nextReviewNum);
+				const id = /*[[${id}]]*/"id";
+				if(!review) {
+					alert("리뷰를 작성해주세요");
+					review.focus();
+					return false;
+				};
+				if(!grade) {
+					alert("별점을 선택해주세요");
+					grade.focus();
+					return false;
+				}
+				if(!id) {
+					alert("로그인 이후 작성해주세요");
+					return false;
+				}
+				console.log(grade);
+				
+				const $form = $('<form />', {'action' : '/game/writeReview', 'method' : 'post'});
+				const $review = $('<input />', {'type' : 'hidden', 'name' : 'review'}).val(review);
+				const $grade = $('<input />', {'type' : 'hidden', 'name' : 'grade'}).val(grade);
+				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
+				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+				const $nextReviewNum = $('<input />', {'type' : 'hidden', 'name' : 'nextReviewNum'}).val(nextReviewNum);
+				
+				console.log($nextReviewNum);
+				
+				$form.append($review, $grade, $gameCode, $id, $nextReviewNum);
+				$('body').append($form);
+				$form.submit();
+				
+			})	
+		} else {
+			return false;
+		}
 		
-		$('.page-link').click(function(event) {
-			event.preventDefault();
-			const url = new URL(location.href);
-			//console.log(url.search);
-			const gameList = /*[[${gameList}]]*/"gameList";
-			const searchValue = $('#searchValue').val();
-			const currentPage = gameList.currentPage;
 			
-			const searchParams = new URLSearchParams();
-			if(searchValue) searchParams.set('searchValue', searchValue);
-			if(currentPage) searchParams.set('currentPage', this.dataset.pageNum);
-			location.href= '?' + searchParams.toString();
+		
 			
-		})
+	
+		
 		
 		
 			

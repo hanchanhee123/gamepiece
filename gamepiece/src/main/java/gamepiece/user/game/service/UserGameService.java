@@ -1,13 +1,17 @@
 package gamepiece.user.game.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import gamepiece.user.game.domain.UserGame;
+import gamepiece.user.game.domain.UserReview;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface UserGameService {
+	
+	
 	
 	// 게임 목록 조회
 	PageInfo<UserGame> getGameList(Pageable pageable);
@@ -25,6 +29,11 @@ public interface UserGameService {
 	
 	Map<String, Object> getGameDetailApi(String gameCode, String title);
 	
+	List<UserReview> getUserReview(String gameCode);
+	
+	String getLastReviewNo();
+	
+	void writeUserReview(UserReview userReview);
 	
 	
 }
