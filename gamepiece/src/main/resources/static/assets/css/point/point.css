@@ -213,6 +213,11 @@ body.modal-open {
 }
 .modal-img{
     margin-bottom: 30px;
+    justify-content: center;
+}
+#item-img{
+	width : 500px;
+	height : 511px;
 }
 
 .modal-content{

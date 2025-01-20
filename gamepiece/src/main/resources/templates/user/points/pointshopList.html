@@ -160,7 +160,7 @@
                 <p id="modal-cate"></p>
             </div>
             <div class="modal-body">
-                <div class="modal-img">
+                <div class="modal-img d-flex justify-content">
                     <img id="item-img" alt="아이템 이미지" class="img-fluid">
                 </div>
                 <p id="modal-requiredpoint"></p>
@@ -215,44 +215,48 @@
 				});
 			});
 	    	$('.point-order-Btn').click(function(){
-	    		const itemCd= this.dataset.psCd;
-	    		const itemPrice= this.dataset.itemPrice;
-	    		const purchaseitem = /*[[${purchaseList}]]*/"${purchaseList.psCd}"
-	    		const psCd = [];
-	    		var stop = false;
-				console.log(purchaseitem)
-				purchaseitem.forEach(element => {
-					psCd.push(element.psCd);
-				})
-				psCd.forEach(element=> {
-					if(itemCd == element) stop = true;
-				})
-				if(stop){
-					alert("이미 구매한 상품입니다");
-					$('.modal-close-btn').click();
-					return;
-				}
-				const myPointValue = /*[[${userPoint}]]*/"userPoint";
-		    	if(Number(itemPrice) >= Number(myPointValue)){
-		    		alert('포인트가 부족합니다.');
-		    		$('.modal-close-btn').click();
-		    		return ;
-		    	}
-				const $form = $('<form />',{action :'/point/addlog', method :'GET'});
-				const log={
-					'itemCd' 	: itemCd,
-					'userId' 	: /*[[${userId}]]*/"userId",
-					'itemPrice' : itemPrice
-				}
-				for(const key in log){
-					const $input = $('<input/>',{name:key, type : 'hidden'});
-					$input.val(log[key]);
-					$form.append($input)
-				}
-				$('body').append($form)
-				$form.submit();
-				
-			});
+	    		if(confirm("구매하시겠습니까?")){
+	    			const itemCd= this.dataset.psCd;
+		    		const itemPrice= this.dataset.itemPrice;
+		    		const purchaseitem = /*[[${purchaseList}]]*/"${purchaseList.psCd}"
+		    		const psCd = [];
+		    		var stop = false;
+					console.log(purchaseitem)
+					purchaseitem.forEach(element => {
+						psCd.push(element.psCd);
+					})
+					psCd.forEach(element=> {
+						if(itemCd == element) stop = true;
+					})
+					if(stop){
+						alert("이미 구매한 상품입니다");
+						$('.modal-close-btn').click();
+						return;
+					}
+					const myPointValue = /*[[${userPoint}]]*/"userPoint";
+			    	if(Number(itemPrice) >= Number(myPointValue)){
+			    		alert('포인트가 부족합니다.');
+			    		$('.modal-close-btn').click();
+			    		return ;
+			    	}
+					const $form = $('<form />',{action :'/point/addlog', method :'GET'});
+					const log={
+						'itemCd' 	: itemCd,
+						'userId' 	: /*[[${userId}]]*/"userId",
+						'itemPrice' : itemPrice
+					}
+					for(const key in log){
+						const $input = $('<input/>',{name:key, type : 'hidden'});
+						$input.val(log[key]);
+						$form.append($input)
+					}
+					$('body').append($form)
+					$form.submit();		
+				alert("구매가 완료되었습니다")
+	    		}else {
+	    			
+	    		}
+	    	});
 			$('#exampleModalToggle').on('hide.bs.modal', function () {
               //모달이 꺼질때 모든 버튼 인풋 셀렉트 텍스트 에어리어의 포커스를 날린다.
                 $('button, input, select, textarea').each(function () {
