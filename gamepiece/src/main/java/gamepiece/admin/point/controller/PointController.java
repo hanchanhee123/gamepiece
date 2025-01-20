@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.point.domain.Point;
@@ -29,7 +31,7 @@ public class PointController {
 		this.pointService = pointService;
 	}
 
-	@PostMapping("/searchList")
+	@GetMapping("/searchList")
 	public String searchListView(
 			@RequestParam(value = "searchCate", required = false, defaultValue = "id") String searchCate,
 			@RequestParam(value = "searchValue") String searchValue, Pageable pageable, Model model) {
@@ -133,10 +135,11 @@ public class PointController {
 	}
 
 	@PostMapping("/add")
-	public String addItem(Point point) {
-
-		pointService.addItem(point);
-
+	public String addItem(Point point,
+						  @RequestPart(name="files", required = false) MultipartFile files) {
+		log.info("MultipartFile {}", files);
+		pointService.addItem(point,files);
+		
 		return "redirect:/admin/point/list";
 	}
 

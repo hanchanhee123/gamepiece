@@ -29,17 +29,17 @@ public interface MyPageMapper {
 	// 새로운 아바타
 	void insertAvatar(String avatarNo, String id, String selectAvatar);
 
+	// 배경프로필 조회
+	List<Point> getBackground(String id);
+
+	// 기존 배경프로필
+	void updateBackground(String id);
+	
+	// 새로운 배경프로필
+	void insertBackground(String backgroundNo, String id, String selectBackground);
+
 	// 마이페이지 - 아바타URL
 	Avatar getUserAvatar(String id);
-
-	// 아바타액자 조회
-	List<Point> getAvatarFrame(String id);
-
-	// 기존 아바타액자
-	void updateAvatarFrame(String id);
-
-	// 새로운 아바타액자
-	void insertAvatarFrame(String avatarFrameNo, String id, String selectAvatarFrame);
 
 	// 마이페이지 - 보유 이모티콘
 	List<Point> myPageEmoticon(String id);

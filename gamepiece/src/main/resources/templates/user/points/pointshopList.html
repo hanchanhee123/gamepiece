@@ -40,7 +40,7 @@
 		                    <div class="swiper-wrapper" style="height: 300px;">
 		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${imoticonList}">
 		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-		                                <img th:src="${l.itemImgurl}">
+		                                <img th:src="${l.filePath}">
 		                                <div th:text="${l.itemName}" class="itemName"></div>
 		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
 		                            </div> 
@@ -64,7 +64,7 @@
 		                    <div class="swiper-wrapper" style="height: 300px;">
 		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${avatarList}">
 		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-		                                <img th:src="${l.itemImgurl}">
+		                                <img th:src="${l.filePath}">
 		                                <div th:text="${l.itemName}" class="itemName"></div>
 		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
 		                            </div> 
@@ -87,7 +87,7 @@
 		                    <div class="swiper-wrapper" style="height: 300px;">
 		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${backList}">
 		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-		                                <img th:src="${l.itemImgurl}">
+		                                <img th:src="${l.filePath}">
 		                                <div th:text="${l.itemName}" class="itemName"></div>
 		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
 		                            </div> 
@@ -110,7 +110,7 @@
 		                    <div class="swiper-wrapper" style="height: 300px;">
 		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${frameList}">
 		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-		                                <img th:src="${l.itemImgurl}">
+		                                <img th:src="${l.filePath}">
 		                                <div th:text="${l.itemName}" class="itemName"></div>
 		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
 		                            </div> 
@@ -132,7 +132,7 @@
 		                    <div class="swiper-wrapper" style="height: 300px;">
 		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${etcList}">
 		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-		                                <img th:src="${l.itemImgurl}">
+		                                <img th:src="${l.filePath}">
 		                                <div th:text="${l.itemName}" class="itemName"></div>
 		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
 		                            </div> 
@@ -202,7 +202,7 @@
 				request.done( data => {
 					console.log(data)
 					$('#modal-name').text(data.itemName);
-			    	$('#item-img').attr('src', data.itemImgurl);
+			    	$('#item-img').attr('src', data.filePath);
 			    	$('#modal-cate').text(data.cateName);
 			    	$('.modal-footer').find('.point-order-Btn').attr('data-ps-cd', data.itemCd)
 			    											   .attr('data-item-price', data.itemPrice);

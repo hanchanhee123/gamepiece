@@ -32,17 +32,6 @@
 		<result column="avatar_yn" property="avatarYn"/>
 		<result column="reg_ymd" property="regYmd"/>
 		<result column="ps_nm" property="psNm"/>
-		<result column="img_url" property="imgUrl"/>
-	</resultMap>
-	
-	<resultMap type="gamepiece.user.user.domain.AvatarFrame" id="avatarFrameMap">
-		<id column="avatarframe_no" property="avatarframeNo" />
-		<result column="id" property="id"/>
-		<result column="ps_cd" property="psCd"/>
-		<result column="avatarframe_yn" property="avatarframeYn"/>
-		<result column="reg_ymd" property="regYmd"/>
-		<result column="ps_nm" property="psNm"/>
-		<result column="img_url" property="imgUrl"/>
 	</resultMap>
 	
 	<!-- 전체 회원정보 조회 -->
@@ -233,31 +222,35 @@
 	<!-- 아바타 -->
 	<select id="getUserAvatar" resultType="string">
 		SELECT 
-			p.img_url
+			f.file_path
 		FROM 
-			avatar a JOIN point_shop p
-		ON a.ps_cd = p.ps_cd
+			avatar a JOIN point_shop ps
+			ON a.ps_cd = ps.ps_cd
+			INNER JOIN files f
+			ON ps.file_idx = f.file_idx
 		WHERE
 			a.id = #{id}
 			AND
 			a.avatar_yn = '선택'
 			AND
-			p.ps_cate_cd = 'cate_02';
+			ps.ps_cate_cd = 'cate_02';
 	</select>
 	
-	<!-- 아바타액자 -->
-	<select id="getUserAvatarFrame" resultType="string">
+	<!-- 배경프로필 -->
+	<select id="getUserBackground" resultType="string">
 		SELECT 
-			p.img_url
+			f.file_path
 		FROM 
-			avatar_frame af JOIN point_shop p
-		ON af.ps_cd = p.ps_cd
+			background b JOIN point_shop ps
+			ON b.ps_cd = ps.ps_cd
+			INNER JOIN files f
+			ON ps.file_idx = f.file_idx
 		WHERE
-			af.id = #{id}
+			b.id = #{id}
 			AND
-			af.avatarframe_yn = '선택'
+			b.background_yn = '선택'
 			AND
-			p.ps_cate_cd = 'cate_03';
+			ps.ps_cate_cd = 'cate_05';
 	</select>
 	
 </mapper>

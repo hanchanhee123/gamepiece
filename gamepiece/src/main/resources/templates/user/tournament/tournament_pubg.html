@@ -12,7 +12,7 @@
 		           <li><a th:href="@{/tournament/list}" class="button-list">LoL</a></li>
 		           <li><a th:href="@{/tournament/list/valorant}" class="button-list">Valorant</a></li>
 		           <li><a th:href="@{/tournament/list/pubg}" class="button-list active">PUBG</a></li>
-		           <li><a th:href="@{/tournament/matchPrediction}" class="button-list">승부예측</a></li>
+		           <li th:if="${gameName == null}"><a th:href="@{/tournament/matchPrediction}" class="button-list">승부예측</a></li>
 		       </ul>
 			</div>
 		</th:block>

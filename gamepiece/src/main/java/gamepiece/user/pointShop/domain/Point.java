@@ -25,7 +25,7 @@ public class Point {
 	private String itemCate;
 	private String cateName;
 	private String itemName;
-	private String itemImgurl;
+	private String filePath;
 	private int itemPrice;
 	private String adminId;
 	private String regYmd;

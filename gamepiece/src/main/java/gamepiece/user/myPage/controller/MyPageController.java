@@ -43,13 +43,13 @@ public class MyPageController {
 		String avatar = userService.getUserAvatar(id);
 		model.addAttribute("avatar", avatar);
 		
-		String avatarFrame = userService.getUserAvatarFrame(id);
-		model.addAttribute("avatarFrame", avatarFrame);
+		String background = userService.getUserBackground(id);
+		model.addAttribute("background", background);
 		
 		return "user/myPage/myPageUser";
 	}
 	
-	// 아바타조회
+	// 아바타 조회
 	@GetMapping("/avatar")
 	@ResponseBody
 	public List<Point> getAvatar(Model model, HttpSession session) {
@@ -78,75 +78,33 @@ public class MyPageController {
 		return "아바타 저장 성공";
 	}
 	
-	// 아바타액자조회
-	@GetMapping("/avatarFrame")
+	// 배경프로필 조회
+	@GetMapping("/background")
 	@ResponseBody
-	public List<Point> getAvatarFrame(Model model, HttpSession session) {
+	public List<Point> getBackground(Model model, HttpSession session) {
 		
 		String id = (String) session.getAttribute("SID");
 		
-		return myPageService.getAvatarFrame(id);
+		return myPageService.getBackground(id);
 	}
 	
-	// 아바타액자 저장
-	@PostMapping("/saveAvatarFrame")
+	// 배경프로필 저장
+	@PostMapping("/saveBackground")
 	@ResponseBody
-	public String saveAvatarFrame(@RequestBody Map<String, String> request, HttpSession session) {
+	public String saveBackground(@RequestBody Map<String, String> request, HttpSession session) {
 
 		String id = (String) session.getAttribute("SID");
-		String selectAvatarFrame = request.get("selectAvatarFrame");
+		String selectBackground = request.get("selectBackground");
 		
-		log.info("selectAvatarFrame : {}", selectAvatarFrame);
+		log.info("selectBackground : {}", selectBackground);
 		
-		if (id == null || selectAvatarFrame == null) {
+		if (id == null || selectBackground == null) {
 	        return "잘못된 요청";
 	    }
 
-		myPageService.saveAvatarFrame(id, selectAvatarFrame);
+		myPageService.saveBackground(id, selectBackground);
 
 		return "아바타 저장 성공";
-	}
-	
-	@GetMapping("/myPageGame")
-	public String myPageGame(Model model, HttpSession session) {
-		
-		String id = (String) session.getAttribute("SID");
-		
-		String avatar = userService.getUserAvatar(id);
-		model.addAttribute("avatar", avatar);
-		
-		MyPage myPageUser = myPageService.myPageUser(id);
-		model.addAttribute("myPageUserName", myPageUser.getUserNm());
-		
-		var userPoint = pointshopService.getPointsHeld(id);
-		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
-		
-		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
-		model.addAttribute("myPagePointLog", myPagePointLog);
-		log.info("myPagePointLog : {}", myPagePointLog);
-		
-		return "user/myPage/myPageGame";
-	}
-	
-	@GetMapping("/myPageWishlist")
-	public String myPageWishlist(Model model, HttpSession session) {
-		
-		String id = (String) session.getAttribute("SID");
-		
-		String avatar = userService.getUserAvatar(id);
-		model.addAttribute("avatar", avatar);
-		
-		MyPage myPageUser = myPageService.myPageUser(id);
-		model.addAttribute("myPageUserName", myPageUser.getUserNm());
-		
-		var userPoint = pointshopService.getPointsHeld(id);
-		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
-		
-		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
-		model.addAttribute("myPagePointLog", myPagePointLog);
-		log.info("myPagePointLog : {}", myPagePointLog);
-		
-		return "user/myPage/myPageWishlist";
 	}
 	
 	@GetMapping("/myPageReview")
@@ -190,28 +148,7 @@ public class MyPageController {
 		
 		return "user/myPage/myPageRefundPayment";
 	}
-	
-	@GetMapping("/myPageCommunity")
-	public String myPageCommunity(Model model, HttpSession session) {
-		
-		String id = (String) session.getAttribute("SID");
-		
-		String avatar = userService.getUserAvatar(id);
-		model.addAttribute("avatar", avatar);
-		
-		MyPage myPageUser = myPageService.myPageUser(id);
-		model.addAttribute("myPageUserName", myPageUser.getUserNm());
-		
-		var userPoint = pointshopService.getPointsHeld(id);
-		model.addAttribute("myPageUserPoint", userPoint.getTotalPoint());
-		
-		List<MyPage> myPagePointLog = myPageService.myPagePointLog(id);
-		model.addAttribute("myPagePointLog", myPagePointLog);
-		log.info("myPagePointLog : {}", myPagePointLog);
-		
-		return "user/myPage/myPageCommunity";
-	}
-	
+
 	@GetMapping("/myPageEmoticon")
 	public String myPageEmoticon(Model model, HttpSession session, Pageable pageable) {
 		
@@ -260,7 +197,6 @@ public class MyPageController {
 		log.info("myPageBoard : {}", myPageBoard);
 //		int myPageBoardComments = myPageService.myPageBoardComments(id);
 //		model.addAttribute("myPageBoardComments", myPageBoardComments);
-		
 		
 		return "user/myPage/myPageBoard";
 	}
