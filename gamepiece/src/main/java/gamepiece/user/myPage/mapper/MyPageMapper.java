@@ -44,6 +44,9 @@ public interface MyPageMapper {
 	// 마이페이지 - 보유 이모티콘
 	List<Point> myPageEmoticon(String id);
 
+	// 마이페이지 - 내 리뷰
+	List<Board> myPageReview(String id);
+	
 	// 마이페이지 - 내 게시글
 	List<Board> myPageBoard(String id);
 
