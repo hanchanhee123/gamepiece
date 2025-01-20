@@ -1,9 +1,68 @@
 @charset "UTF-8";
 
+ .editor-content .text-center {
+        text-align: center !important;
+        display: block;
+    }
+    .editor-content .text-right {
+        text-align: right !important;
+        display: block;
+    }
+    .editor-content .text-left {
+        text-align: left !important;
+        display: block;
+    }
 
 
 
 
+
+ /* 게시물 내용의 정렬 스타일 */
+    .editor-content p[style*="text-align: center"],
+    .editor-content p[align="center"] { 
+        text-align: center !important; 
+    }
+    
+    .editor-content p[style*="text-align: right"],
+    .editor-content p[align="right"] { 
+        text-align: right !important; 
+    }
+    
+    .editor-content p[style*="text-align: left"],
+    .editor-content p[align="left"] { 
+        text-align: left !important; 
+    }
+    
+    /* div 태그에 대한 정렬도 추가 */
+    .editor-content div[style*="text-align: center"] { 
+        text-align: center !important; 
+    }
+    
+    .editor-content div[style*="text-align: right"] { 
+        text-align: right !important; 
+    }
+    
+    .editor-content div[style*="text-align: left"] { 
+        text-align: left !important; 
+    }
+
+
+   /* 에디터 컨텐츠 정렬 스타일 */
+    .editor-content p[style*="text-align: center"],
+    .editor-content p[align="center"] {
+        text-align: center !important;
+        display: block;
+    }
+    .editor-content p[style*="text-align: right"], 
+    .editor-content p[align="right"] {
+        text-align: right !important;
+        display: block;
+    }
+    .editor-content p[style*="text-align: left"],
+    .editor-content p[align="left"] {
+        text-align: left !important;
+        display: block;
+    }
 
 
 #header-img {

@@ -47,31 +47,65 @@ public class BoardController {
 	 * 			
 	 * */
 	
+	@PostMapping("/allsearchList")
+	public String boardsearchList(
+		    @RequestParam(value="searchValue") String searchValue,
+		    Pageable pageable,
+		    Model model) {
+
+		    PageInfo<Board> pageInfo = boardService.getSearchList(searchValue, pageable);
+		    
+	
+		    model.addAttribute("allBoardList", pageInfo.getContents());
+		    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+		    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+		    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+		    model.addAttribute("lastPage", pageInfo.getLastPage());
+		    model.addAttribute("searchValue", searchValue);
+
+
+
+		    return "user/board/allBoardList";  // 이 경로가 맞는지 확인
+		}
 	
 	
-	@PostMapping("/remove")
-	public String removeBoard(@RequestParam(name="boardUserId") String boardUserId,RedirectAttributes rttr) {
-		
-		int result = boardService.removeBoard(boardUserId);
-		
-		
-		  if(result > 0) {
-		        rttr.addFlashAttribute("message", "게시글이 삭제되었습니다.");
-			 
-		    } else {
-		        rttr.addFlashAttribute("error", "게시글 삭제에 실패했습니다.");
-		       
-		    }
-		
-		  	System.out.println(boardUserId);
-		  
-			return "redirect:/board";
-		
-		
+	@GetMapping("/allsearchList")
+	public String boardSearchList(
+					
+							        @RequestParam(value="searchValue", required = false) String searchValue,
+							        Pageable pageable,
+							        Model model) {
+	        
+	    PageInfo<Board> pageInfo = boardService.getSearchList(searchValue, pageable);
+	
+
+	    model.addAttribute("allboardList", pageInfo.getContents());
+	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	    model.addAttribute("lastPage", pageInfo.getLastPage());
+	    
+	
+
+	    model.addAttribute("searchValue", searchValue);
+	    
+		return "user/board/allBoardList";
 	}
 	
 	
 	
+	@GetMapping("/remove")  // POST를 GET으로 변경
+	public String removeBoard(@RequestParam(name="boardNum") String boardNum, RedirectAttributes rttr) {
+	    int result = boardService.removeBoard(boardNum);
+	    
+	    if(result > 0) {
+	        rttr.addFlashAttribute("message", "게시글이 삭제되었습니다.");
+	    } else {
+	        rttr.addFlashAttribute("error", "게시글 삭제에 실패했습니다.");
+	    }
+	    
+	    return "redirect:/board";
+	}
 	
 	@PostMapping("/modify")
 	public String modifyBoard(Board board, RedirectAttributes rttr) {
@@ -168,28 +202,30 @@ public class BoardController {
 		
 	}
 
-	 @GetMapping("/detail")
-	   public String detailBoardView(@RequestParam(name="boardNum") String boardNum,
-	                                Pageable pageable,
-	                                Model model) {
-	      
-		  Board boardInfo = boardService.getBoardInfo(boardNum);
-	        
-	        // 댓글 정보 조회 (페이징 처리)
-	        PageInfo<BoardComment> pageInfo = boardService.getBoardCommentInfo(boardNum, pageable);
-	        
-	        // 모델에 데이터 추가
-	        model.addAttribute("title", "게시글상세");
-	        model.addAttribute("boardInfo", boardInfo);
-	        model.addAttribute("commentList", pageInfo.getContents());
-	        model.addAttribute("currentPage", pageInfo.getCurrentPage());
-	        model.addAttribute("startPageNum", pageInfo.getStartPageNum());
-	        model.addAttribute("endPageNum", pageInfo.getEndPageNum());
-	        model.addAttribute("lastPage", pageInfo.getLastPage());
-	        model.addAttribute("boardNum", boardNum);
-	        
-	        return "user/board/boardDetail";
-	   }
+	@GetMapping("/detail")
+	public String detailBoardView(@RequestParam(name="boardNum") String boardNum,
+	                          Pageable pageable,
+	                          Model model) {
+	    Board boardInfo = boardService.getBoardInfo(boardNum);
+	    
+
+	
+
+	    // 댓글 정보 조회 (페이징 처리)
+	    PageInfo<BoardComment> pageInfo = boardService.getBoardCommentInfo(boardNum, pageable);
+	    
+	    // 모델에 데이터 추가
+	    model.addAttribute("title", "게시글상세");
+	    model.addAttribute("boardInfo", boardInfo);
+	    model.addAttribute("commentList", pageInfo.getContents());
+	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	    model.addAttribute("lastPage", pageInfo.getLastPage());
+	    model.addAttribute("boardNum", boardNum);
+	    
+	    return "user/board/boardDetail";
+	}
 	
 
 

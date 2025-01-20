@@ -1,6 +1,7 @@
 package gamepiece.user.board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -13,8 +14,16 @@ import gamepiece.util.Pageable;
 public interface AllBoardMapper {
 	
 	
+
+	//게시판 검색행 세기
+	int getCntSearchBoard(Map<String, Object> searchMap);
+
+	//게시판 검색조회
+	List<Board> getBoardSearchList(Map<String, Object> searchMap);
+	
+	
 	//특정게시물삭제
-	int removeBoard(String boardUserId);
+	int removeBoard(String boardNum);
 	
 	//특정게시물수정
 	int modifyBoard(Board board);

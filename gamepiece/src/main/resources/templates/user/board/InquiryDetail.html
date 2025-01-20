@@ -60,7 +60,7 @@
 			        <!-- mapper의 일반 텍스트 (기본 스타일 적용) -->
 			        <div th:unless="${inquiryInfo.inquiryContent.contains('<p>') or inquiryInfo.inquiryContent.contains('<div>')}" 
 			             class="plain-text"
-			             th:text="${inquiryInfo.inquiryContent}">
+			             th:utext="${inquiryInfo.inquiryContent}">
 			        </div>
 			    </div>
 			</div>

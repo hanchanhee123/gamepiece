@@ -40,14 +40,21 @@
                                     id="boardTitle" name="boardTitle" th:value="*{boardTitle}">
                             </div>
                            
-                          <div class="mb-4">
+                         <div class="mb-4">
 						    <label for="boardContent" class="form-label">게시내용</label>
-						    <textarea class="form-control" rows="7" 
-						        style="height: 300px; resize: none;" 
-						        id="boardContent" 
-						        name="boardContent" 
-						        th:text="*{boardContent}"></textarea>
+						    <div class="form-control editor-content" 
+						         style="height: 300px; overflow-y: auto;"
+						         th:utext="*{boardContent}">
+						    </div>
+						    <!-- 실제 폼 전송을 위한 hidden input -->
+						    <input type="hidden" 
+						           id="boardContent" 
+						           name="boardContent" 
+						           th:value="*{boardContent}"/>
 						</div>
+						         
+						         
+						         
 						         
 						         <hr class="mb-6 mt-0">
 						         <div class="row">

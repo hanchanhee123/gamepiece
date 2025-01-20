@@ -28,11 +28,14 @@
                        <input type="text" class="form-control" th:value="${inquiryInfo.inquiryTitle}" readonly>
                    </div>
                    <div class="mb-4">
-                       <label class="form-label">문의내용</label>
-                       <textarea class="form-control" rows="7" style="resize: none;" 
-                               th:text="${inquiryInfo.inquiryContent}" readonly></textarea>
-                   </div>
-               </div>
+					    <label class="form-label">문의내용</label>
+					    <div class="form-control editor-content" 
+					         style="height: 200px; overflow-y: auto;"
+					         th:utext="${inquiryInfo.inquiryContent}">
+					    </div>
+				
+					</div>
+					               </div>
            </div>
 
        
