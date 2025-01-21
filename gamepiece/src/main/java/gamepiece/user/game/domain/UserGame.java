@@ -46,4 +46,7 @@ public class UserGame {
 	private String deepInfoText;
 	
 	private boolean isDetail;
+	private String id;
+	
+	private boolean isCart;
 }

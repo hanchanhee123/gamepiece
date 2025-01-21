@@ -36,6 +36,7 @@
 				                    <div class="button-area">
 				                        <button type="button" class="btn btn-primary" id="wishList">위시리스트에 넣기</button>
 				                        <button type="button" class="btn btn-primary" id="cart">장바구니에 넣기</button>
+				                        <button type="button" class="btn btn-primary" id="cartView" onclick="location.href='/game/gameCartList'">장바구니로 이동</button>
 				                    </div>
 				                </div>
 				                <div class="game-script">
@@ -252,16 +253,36 @@
 				const finalPrice = /*[[${gameDetail.finalPrice}]]*/"gameDetail";
 				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
 				const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
+				const id = /*[[${id}]]*/"id";
 				
-				
+				if(id == null) {
+					alert("로그인 이후 이용해주세요");
+					return false;
+				}
 				
 				const $form = $('<form />', {'action' : '/game/gameCart', 'method' : 'post'});
 				const $title = $('<input />', {'type' : 'hidden', 'name' : 'title'}).val(title);
 				const $finalPrice = $('<input />', {'type' : 'hidden', 'name' : 'finalPrice'}).val(finalPrice);
 				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
+				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
 				
 				const $isDetail = $('<input />', {'type' : 'hidden', 'name' : 'isDetail'}).val(isDetail);
-				$form.append($title, $finalPrice, $gameCode, $isDetail);
+				$form.append($title, $finalPrice, $gameCode, $isDetail, $id);
+				$('body').append($form);
+				$form.submit();
+			})
+			$('#cartView').click(function() {
+				const id = /*[[${id}]]*/"id";
+				console.log(id);
+				
+				if(id == null) {
+					alert("로그인 이후 이용가능합니다.");
+					return false;
+				}
+				
+				const $form = $('<form />', {'action' : '/game/gameCartView', 'method' : 'get'});
+				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+				$form.append($id);
 				$('body').append($form);
 				$form.submit();
 			})

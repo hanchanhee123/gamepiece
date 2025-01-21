@@ -51,7 +51,7 @@
 			 file_original_name,
 			 file_path,
 			 file_size,
-			 file_reg_date
+			 file_reg_ymd
 		)VALUES( 
 			 #{fileIdx},
 			 #{fileNewName},
@@ -70,7 +70,7 @@
 			 file_original_name,
 			 file_path,
 			 file_size,
-			 file_reg_date
+			 file_reg_ymd
 		)VALUES
 		<foreach collection="list" item="file" separator=",">
 		( 
