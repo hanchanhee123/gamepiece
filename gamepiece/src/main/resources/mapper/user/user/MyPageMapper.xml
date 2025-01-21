@@ -190,6 +190,19 @@
 			ps.ps_cate_cd = 'cate_01';
 	</select>
 	
+	<!-- 마이페이지 - 내 리뷰 -->
+	<!-- <select id="myPageReview" resultMap="BoardResultMap">
+		SELECT
+			*
+		FROM
+			boards_categories bc INNER JOIN boards b
+			USING (bbs_cate_cd)
+		WHERE
+			id = #{id}
+			AND
+			b.is_delete = 'active';
+	</select> -->
+	
 	<!-- 마이페이지 - 내 게시글 -->
 	<select id="myPageBoard" resultMap="BoardResultMap">
 		SELECT
