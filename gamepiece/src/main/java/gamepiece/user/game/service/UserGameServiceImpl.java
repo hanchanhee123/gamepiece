@@ -310,4 +310,35 @@ public class UserGameServiceImpl implements UserGameService {
 		int result = userReviewMapper.writeUserReview(userReview);
 		
 	}
+	
+	@Override
+	public void putGameInCart(UserGame userGame) {
+		int result = userGameMapper.putGameInCart(userGame);
+		
+	}
+	
+	@Override
+	public List<UserGame> getUserCartList(String id) {
+		
+		boolean isCart = false;
+		
+		List<UserGame> cartList = userGameMapper.getUserCartList(id);
+		if(!cartList.isEmpty()) {
+			isCart = true;
+			for(UserGame userGame : cartList) {
+				userGame.setCart(isCart);
+			}
+		}
+		
+		return cartList;
+	}
+	@Override
+	public Integer cartTotalPrice() {
+		Integer totalPrice = userGameMapper.cartTotalPrice();
+		if(totalPrice == null) {
+			totalPrice = 0;
+		}
+		
+		return totalPrice;
+	}
 }

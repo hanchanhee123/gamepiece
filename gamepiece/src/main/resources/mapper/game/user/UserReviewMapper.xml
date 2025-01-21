@@ -38,12 +38,14 @@
 	</select>
 	
 	<insert id="writeUserReview" parameterType="gamepiece.user.game.domain.UserReview">
-	/* 리뷰 작성 */
-	INSERT INTO reviews
-	(rv_no, gm_cd, id, rv_grade, rv_contents, rv_empathy, rv_disempathy, rv_log_ymd)
-	VALUES 
-	(#{nextReviewNum}, #{gameCode}, #{id}, #{grade}, #{review}, 0, 0, NOW());
+		/* 리뷰 작성 */
+		INSERT INTO reviews
+		(rv_no, gm_cd, id, rv_grade, rv_contents, rv_empathy, rv_disempathy, rv_log_ymd)
+		VALUES 
+		(#{nextReviewNum}, #{gameCode}, #{id}, #{grade}, #{review}, 0, 0, NOW());
 	</insert>
+	
+	
 	
 
 	
