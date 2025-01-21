@@ -3,6 +3,7 @@
 <mapper namespace="gamepiece.user.game.mapper.UserGameMapper">
 	<resultMap type="gamepiece.user.game.domain.UserGame" id="gameList">
 		<id 	column="gm_cd" property="gameCode"></id>
+		<id 	column="payment_method_cd" property="paymentMethodCode"></id>
 		<result column="gm_nm" property="gameName"></result>
 		<result column="p_cd" property="platformCode"></result>
 		<result column="p_nm" property="platformName"></result>
@@ -22,6 +23,8 @@
 		<result column="admin_id" property="adminId"></result>
 		<result column="reg_ymd" property="regYmd"></result>
 		<result column="isDelete" property="isDelete"></result> 
+		<result column="payment_method" property="paymentMethod"></result> 
+		
 	</resultMap>
 	<select id="getGameList" parameterType="Pageable" resultMap="gameList">
 		/* 사용자 게임 화면 조회 */
@@ -156,10 +159,20 @@
 	</select>
 	
 	<select id="cartTotalPrice" resultType="Integer">
+		/* 장바구니 게임 가격의 총합 조회 */
 		SELECT 
 			SUM(CAST(price AS UNSIGNED))
 		FROM 
 			game_cart_list;
+	</select>
+	
+	<select id="getPaymentList" resultMap="gameList">
+		/* 결제 방법 리스트 조회 */
+		SELECT
+			payment_method_cd,
+			payment_method
+		FROM
+			payment_method;
 	</select>
 	
 	

@@ -42,5 +42,8 @@ public interface UserGameMapper {
 	
 	// 장바구니 안 가격 총합
 	Integer cartTotalPrice();
+	
+	// 결제 방법 목록 조회
+	List<UserGame> getPaymentList();
 }
 

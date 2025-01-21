@@ -41,5 +41,7 @@ public interface UserGameService {
 	
 	Integer cartTotalPrice();
 	
+	List<UserGame> getPaymentList();
+	
 	
 }

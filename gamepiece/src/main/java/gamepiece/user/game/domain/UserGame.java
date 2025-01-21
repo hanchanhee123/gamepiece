@@ -49,4 +49,7 @@ public class UserGame {
 	private String id;
 	
 	private boolean isCart;
+	
+	private String paymentMethodCode;
+	private String paymentMethod;
 }

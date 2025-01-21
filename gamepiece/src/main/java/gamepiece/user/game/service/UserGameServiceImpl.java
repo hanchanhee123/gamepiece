@@ -341,4 +341,10 @@ public class UserGameServiceImpl implements UserGameService {
 		
 		return totalPrice;
 	}
+	
+	@Override
+	public List<UserGame> getPaymentList() {
+		List<UserGame> paymentList = userGameMapper.getPaymentList();
+		return paymentList;
+	}
 }
