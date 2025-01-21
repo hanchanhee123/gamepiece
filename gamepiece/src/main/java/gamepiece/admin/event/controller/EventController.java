@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.service.EventService;
+import gamepiece.admin.point.domain.Point;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.extern.slf4j.Slf4j;
@@ -138,6 +141,16 @@ public class EventController {
 		return "admin/event/addEvent";
 	}
 	
+	@PostMapping("/addEvent")
+	public String addEvent(Event event,
+			@RequestPart(name="files", required = false) MultipartFile files) {
+		
+		eventService.addEvent(event,files);
+		
+		return "redirect:/admin/event/eventList";
+		
+	}
+	
 	@GetMapping("/addEventWinnerList")
 	public String addEventWinnerList(Model model) {
 		
@@ -218,15 +231,6 @@ public class EventController {
 		eventService.addEventWinnerList(event);
 		
 		return "redirect:/admin/event/eventWinnerList";
-		
-	}
-	
-	@PostMapping("/write")
-	public String addEvent(Event event) {
-		
-		eventService.addEvent(event);
-		
-		return "redirect:/admin/event/eventList";
 		
 	}
 	

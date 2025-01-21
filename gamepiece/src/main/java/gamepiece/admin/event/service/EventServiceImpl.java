@@ -7,9 +7,14 @@ import java.util.Map;
 import org.apache.catalina.util.ParameterMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.mapper.EventMapper;
+import gamepiece.common.mapper.CommonMapper;
+import gamepiece.file.dto.FileDto;
+import gamepiece.file.mapper.FileMapper;
+import gamepiece.file.util.FilesUtils;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +26,9 @@ public class EventServiceImpl implements EventService {
 
 	
 	private final EventMapper eventMapper;
+	private final FileMapper fileMapper;
+	private final CommonMapper commonMapper;
+	private final FilesUtils fileUtils;
 	
 	@Override
 	public PageInfo<Event> getEventList(Pageable pageable){
@@ -37,13 +45,6 @@ public class EventServiceImpl implements EventService {
 	
 	public List<Event> getEventDetail(String evCd){
 		return eventMapper.getEventDetail(evCd);
-	}
-
-	@Override
-	public void addEvent(Event event) {
-		
-		event.setAdminId("id01");
-		eventMapper.addEvent(event);
 	}
 
 	@Override
@@ -182,5 +183,18 @@ public class EventServiceImpl implements EventService {
 		
 	}
 
-
+	@Override
+	public void addEvent(Event event, MultipartFile files) {
+		FileDto fileInfo = fileUtils.uploadFile(files);
+        if(fileInfo != null) {
+            String fileIdx = commonMapper.getPrimaryKey("file_", "files", "file_idx");
+            fileInfo.setFileIdx(fileIdx);
+            fileMapper.addfile(fileInfo);
+            String eventCd = commonMapper.getPrimaryKey("ev_", "events", "ev_cd");
+            event.setAdminId("id01");
+            event.setEvCd(eventCd);
+            event.setFileIdx(fileIdx);
+            eventMapper.addEvent(event);
+        }		
+	}
 }

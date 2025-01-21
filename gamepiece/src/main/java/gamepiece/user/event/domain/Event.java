@@ -27,6 +27,8 @@ public class Event {
 	private String ewCd;
 	private String ewNm;
 	private String ewRegYmd;
+	private String fileIdx;
+	private String filePath;
 
 }
 
