@@ -20,7 +20,7 @@
 			<div class="main-div">
 				<div class="event-detail">
 					<div class="img">
-						<img th:src="@{|/assets/imgs/event/${ed.evImg}|}">
+						<img th:src="${ed.filePath}">
 					</div>
 					<div class="name">
 						<span th:text="${ed.evNm}"></span>

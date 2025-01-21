@@ -8,6 +8,7 @@ import org.apache.catalina.util.ParameterMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import gamepiece.file.mapper.FileMapper;
 import gamepiece.user.event.domain.Event;
 import gamepiece.user.event.mapper.UserEventMapper;
 import gamepiece.util.PageInfo;
@@ -22,7 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class EventServiceImpl implements EventService {
 
 	private final UserEventMapper userEventMapper;
-
+	private final FileMapper fileMapper;
+	
 	@Override
 	public PageInfo<Event> getProgressEvent(Pageable pageable) {
 
