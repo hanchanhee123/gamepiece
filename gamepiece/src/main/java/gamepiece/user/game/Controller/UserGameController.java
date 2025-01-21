@@ -161,18 +161,43 @@ public class UserGameController {
 	
 	@GetMapping("/gameCartView") 
 	public String userGameCartList(@RequestParam(value="id") String id,
-								   Model model) {
+								   Model model, HttpSession session) {
 		
 		List<UserGame> cartList = userGameService.getUserCartList(id);
 		// log.info("cartList : {}", cartList);
 		
 		int totalPrice = userGameService.cartTotalPrice();
+		id = (String) session.getAttribute("SID");
+		
+		model.addAttribute("id", id);
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
 		
 		
 		model.addAttribute("cartList", cartList);
 		model.addAttribute("totalPrice", totalPrice);
 		
 		return "user/game/gameCartList";
+	}
+	
+	@GetMapping("/paymentView") 
+	public String paymentView(@RequestParam(value="id") String id,
+			Model model) {
+		
+		List<UserGame> cartList = userGameService.getUserCartList(id);
+		log.info("cartList : {}", cartList);
+		
+		int totalPrice = userGameService.cartTotalPrice();
+		
+		List<UserGame> paymentList = userGameService.getPaymentList();
+		
+		
+		
+		model.addAttribute("cartList", cartList);
+		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("paymentList", paymentList);
+		
+		return "user/game/paymentView";
 	}
 	
 	
