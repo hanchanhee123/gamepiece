@@ -141,6 +141,8 @@ public class UserGameController {
 									  @RequestParam(value="title", required = false, defaultValue = "") String title,
 									  @RequestParam(value="finalPrice") String finalPrice,
 									  @RequestParam(value="isDetail") String isDetail,
+									  @RequestParam(value="id") String id,
+									  UserGame userGame,
 									  Model model) {
 		
 		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
@@ -148,12 +150,30 @@ public class UserGameController {
 		String nextReviewNum = userGameService.getLastReviewNo();
 		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ;
 		
+		userGameService.putGameInCart(userGame);
+		
+		model.addAttribute("id", id);
 		model.addAttribute("nextReviewNumInt", nextReviewNumInt);
 		model.addAttribute("gameDetail", gameDetail);
 		model.addAttribute("userReview", userReview);
 		return "user/game/steamDetail";
 	}
 	
+	@GetMapping("/gameCartView") 
+	public String userGameCartList(@RequestParam(value="id") String id,
+								   Model model) {
+		
+		List<UserGame> cartList = userGameService.getUserCartList(id);
+		// log.info("cartList : {}", cartList);
+		
+		int totalPrice = userGameService.cartTotalPrice();
+		
+		
+		model.addAttribute("cartList", cartList);
+		model.addAttribute("totalPrice", totalPrice);
+		
+		return "user/game/gameCartList";
+	}
 	
 	
 	
