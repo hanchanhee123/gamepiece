@@ -218,7 +218,12 @@
 			bbs_no=#{boardNum}
 	</update>
 
-
+<update id="addViewCount" parameterType="String">
+    UPDATE boards
+    SET bbs_view = bbs_view + 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
 
 
 </mapper>

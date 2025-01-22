@@ -496,6 +496,22 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		return boardCommentMapper.modifyComment(boardComment);
 	}
+
+
+
+	@Override
+	public int addViewCount(String boardNum) {
+		// TODO Auto-generated method stub
+		return allBoardMapper.addViewCount(boardNum);
+	}
+
+
+
+	@Override
+	public int addNoticeViewCount(int noticeNum) {
+		// TODO Auto-generated method stub
+		return noticeMapper.addViewCount(noticeNum);
+	}
 	
 	
 	

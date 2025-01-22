@@ -14,7 +14,10 @@ import gamepiece.util.Pageable;
 public interface AllBoardMapper {
 	
 	
-
+	
+	//게시판 조회수 증가
+	int addViewCount(String boardNum);
+	
 	//게시판 검색행 세기
 	int getCntSearchBoard(Map<String, Object> searchMap);
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import gamepiece.admin.boardCategory.domain.BoardCategory;
+
 import gamepiece.admin.boardComment.domain.BoardComment;
 import gamepiece.admin.boardComment.service.BoardCommentService;
 import gamepiece.util.Pageable;
