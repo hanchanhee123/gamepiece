@@ -480,10 +480,22 @@ public class BoardServiceImpl implements BoardService{
 		
 		
 	}
-	
-	
-	
 
+
+
+	@Override
+	public int removeComment(String commentNum) {
+		// TODO Auto-generated method stub
+		return boardCommentMapper.removeComment(commentNum);
+	}
+
+
+
+	@Override
+	public int modifyComment(BoardComment boardComment) {
+		// TODO Auto-generated method stub
+		return boardCommentMapper.modifyComment(boardComment);
+	}
 	
 	
 	

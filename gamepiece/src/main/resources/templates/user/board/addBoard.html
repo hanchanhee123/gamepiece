@@ -96,6 +96,14 @@
 
 <th:block layout:fragment="customJs">
     <script th:inline="javascript">
+    
+    
+    window.insertImageCallback = function(sFileUrl, sFileName) {
+        var sHTML = '<img src="' + sFileUrl + '" alt="' + sFileName + '">';
+        oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
+    };
+    
+    
  // 스마트 에디터 초기화 설정
     let oEditors = [];
 
@@ -114,6 +122,18 @@
                bUseModeChanger: true,           // 모드 탭(Editor | HTML | TEXT) 사용 여부
                I18N_LOCALE: 'ko_KR',            // 한글 언어 설정
                fOnBeforeUnload: function() {},   // 페이지 이동/새로고침 시 알림 메시지 제거
+               
+               // 이미지 업로드 설정 추가
+               SE2M_SamplePlugin: {
+                   bUsePlugin: true
+               },
+               
+               // 이미지 업로드 설정
+               SE2M_AttachPhoto: {
+                   sUploadURL: '/board/uploadImage',   // 이미지 업로드 URL
+                   sPopupURL: '/smarteditor/photo_uploader/photo_uploader.html'  // 팝업 URL (경로 수정)
+               },
+
                
                // 기본 글꼴 목록에 추가할 글꼴 목록
                // 글꼴 설정
@@ -157,6 +177,8 @@
            
            
        });
+       
+       
 
        // 파일 업로드 버튼 클릭시 숨겨진 input file 클릭
        $("#uploadButton").click(function() {
@@ -207,6 +229,8 @@
           $("#addBoardForm").submit();
        }
     }
+    
+    
     	
     </script>
 </th:block>

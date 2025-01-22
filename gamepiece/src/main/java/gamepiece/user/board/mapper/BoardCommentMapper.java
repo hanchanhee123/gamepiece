@@ -17,7 +17,7 @@ public interface BoardCommentMapper {
 
 	
 	//댓글삭제
-	int removeBoard(String commentNum);
+	int removeComment(String commentNum);
 	
 	//댓글수정
 	int modifyComment(BoardComment boardComment);

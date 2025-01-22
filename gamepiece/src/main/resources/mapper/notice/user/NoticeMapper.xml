@@ -50,6 +50,7 @@
 							       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
 							   </if>
 									AND is_delete = 'active'
+							ORDER BY ntc_no DESC
 							   LIMIT #{rowPerPage} OFFSET #{offset}
 							</select>
 							
@@ -92,6 +93,7 @@ FROM
 	 ntc_mttr
 WHERE
 	is_delete = 'active'
+	ORDER BY ntc_no DESC
  LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
