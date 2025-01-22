@@ -66,7 +66,7 @@
 		b.is_delete = 'active'
 		
 		
-		ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED)
+		ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
 		 LIMIT #{rowPerPage} 
 		 OFFSET #{offset} </select> 
 		
@@ -120,7 +120,7 @@
 		ON b.id = u.id
 		WHERE
 		b.is_delete = 'active'
-
+			ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 
@@ -218,7 +218,12 @@
 			bbs_no=#{boardNum}
 	</update>
 
-
+<update id="addViewCount" parameterType="String">
+    UPDATE boards
+    SET bbs_view = bbs_view + 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
 
 
 </mapper>

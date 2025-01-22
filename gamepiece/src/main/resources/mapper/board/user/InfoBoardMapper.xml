@@ -62,7 +62,7 @@
 							AND 
 							b.bbs_cate_cd = 'bbs_cate_03'
 							
-							ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED)
+							ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
 							 LIMIT #{rowPerPage} 
 							 OFFSET #{offset} </select> 
 							
@@ -122,6 +122,7 @@ WHERE
 		b.is_delete = 'active'
 		AND 
 		b.bbs_cate_cd = 'bbs_cate_03'
+				ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
  LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
@@ -130,64 +131,6 @@ WHERE
 
 
 
-
-<!-- 
-
-
-
-	<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">	
-	
-	
-	SELECT
-		b.bbs_no,
-		b.bbs_cate_cd,
-		bc.bbs_cate_nm,
-		b.bbs_title,
-		b.bbs_cn,
-		b.bbs_view,
-		b.bbs_like,
-		b.bbs_dislike,
-		b.bbs_ymd
-		
-	FROM
-	    boards b LEFT JOIN boards_categories bc
-	    ON b.bbs_cate_cd = bc.bbs_cate_cd
-	  
-	 WHERE
-	bbs_no = #{boardNum};
-		
-	
-	</select>
-
-<update id="modifyBoard" parameterType="Board">
-    UPDATE boards
-    <set>
-        <if test="boardCategory != null and boardCategory != ''">
-            bbs_cate_cd = #{boardCategory}
-        </if>
-        <if test="boardTitle != null and boardTitle != ''">
-            ,bbs_title = #{boardTitle}
-        </if>
-        <if test="boardContent != null and boardContent != ''">
-            ,bbs_cn = #{boardContent}
-        </if>
-    </set>
-    WHERE 
-    	bbs_no = #{boardNum}
-</update>
-
-
-<update id="removeBoard" parameterType="string">
-
-		UPDATE 
-			boards
-		SET
-			is_delete = 'delete'
-		WHERE 
-			bbs_no=#{boardNum};
-
-</update>
- -->
 
 
 

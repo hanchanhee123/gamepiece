@@ -1,18 +1,18 @@
-	//변수 선언 및 초기화
-	var nImageInfoCnt = 0;
-	var htImageInfo = [];		//image file정보 저장
-	var aResult = [];
-	
-	var rFilter = /^(image\/bmp|image\/gif|image\/jpg|image\/jpeg|image\/png)$/i;  
-	var rFilter2 = /^(bmp|gif|jpg|jpeg|png)$/i; 
-	var nTotalSize = 0;
-	var nMaxImageSize = 10*1024*1024;
-	var nMaxTotalImageSize = 50*1024*1024;
-	var nMaxImageCount = 10;
-	var nImageFileCount = 0;
-	var bSupportDragAndDropAPI = false;
-	var oFileUploader;
-	var bAttachEvent = false;
+// 변수 선언 및 초기화
+var nImageInfoCnt = 0;          // 업로드된 이미지 파일 개수 카운터
+var htImageInfo = [];           // 업로드된 이미지 파일 정보를 저장하는 배열
+var aResult = [];               // 업로드 결과를 저장하는 배열
+
+var rFilter = /^(image\/bmp|image\/gif|image\/jpg|image\/jpeg|image\/png)$/i;    // 허용되는 이미지 MIME 타입을 검사하는 정규식
+var rFilter2 = /^(bmp|gif|jpg|jpeg|png)$/i;                                      // 허용되는 이미지 확장자를 검사하는 정규식
+var nTotalSize = 0;                    // 업로드된 파일들의 총 크기
+var nMaxImageSize = 200*1024*1024;      // 개별 이미지의 최대 허용 크기 (200MB)
+var nMaxTotalImageSize = 215*1024*1024; // 전체 이미지의 최대 허용 크기 (215MB)
+var nMaxImageCount = 10;               // 최대 업로드 가능한 이미지 개수
+var nImageFileCount = 0;               // 현재 업로드된 이미지 파일 개수
+var bSupportDragAndDropAPI = false;    // 드래그 앤 드롭 API 지원 여부 플래그
+var oFileUploader;                     // 파일 업로더 객체
+var bAttachEvent = false;              // 이벤트 리스너 부착 여부 플래그
 
 	//마크업에 따른 할당
 	var elContent= $("pop_content");  
@@ -330,25 +330,33 @@
      * HTML5 DragAndDrop으로 사진을 추가하고, 확인버튼을 누른 경우에 동작한다.
      * @return
      */
-    function html5Upload() {	
-    	var tempFile,
-    		sUploadURL;
-    	
-    	/*sUploadURL= 'file_uploader_html5.php'; 	//upload URL*/
-		sUploadURL= "/smarteditorMultiImageUpload"
-    	
-    	//파일을 하나씩 보내고, 결과를 받음.
-    	for(var j=0, k=0; j < nImageInfoCnt; j++) {
-    		tempFile = htImageInfo['img'+j];
-    		try{
-	    		if(!!tempFile){
-	    			//Ajax통신하는 부분. 파일과 업로더할 url을 전달한다.
-	    			callAjaxForHTML5(tempFile,sUploadURL);
-	    			k += 1;
-	    		}
-	    	}catch(e){}
-    		tempFile = null;
-    	}
+	function html5Upload() {
+	    var formData = new FormData();
+	    
+	    // 모든 이미지 파일을 formData에 추가
+	    for (var j = 0; j < nImageInfoCnt; j++) {
+	        if (!!htImageInfo['img'+j]) {
+	            formData.append('Filedata[]', htImageInfo['img'+j]); // 파일 배열로 전송
+	        }
+	    }
+
+	    // AJAX로 전송
+	    var xhr = new XMLHttpRequest();
+	    xhr.open('POST', '/smarteditorMultiImageUpload');
+	    
+	    xhr.onload = function() {
+	        if (xhr.status === 200) {
+	            try {
+	                var sResString = xhr.responseText;
+	                makeArrayFromString(sResString);
+	            } catch(e) {
+	                alert("업로드에 실패했습니다.");
+	                console.error(e);
+	            }
+	        }
+	    };
+	    
+	    xhr.send(formData);
 	}
     
     function callAjaxForHTML5 (tempFile, sUploadURL){
@@ -520,60 +528,27 @@
  	/**
  	 * jindo에 파일 업로드 사용.(iframe에 Form을 Submit하여 리프레시없이 파일을 업로드하는 컴포넌트)
  	 */
- 	function callFileUploader (){
- 		oFileUploader = new jindo.FileUploader(jindo.$("uploadInputBox"),{
- 			sUrl  : location.href.replace(/\/[^\/]*$/, '') + '/file_uploader.php',	//샘플 URL입니다.
- 	        sCallback : location.href.replace(/\/[^\/]*$/, '') + '/callback.html',	//업로드 이후에 iframe이 redirect될 콜백페이지의 주소
- 	    	sFiletype : "*.jpg;*.png;*.bmp;*.gif",						//허용할 파일의 형식. ex) "*", "*.*", "*.jpg", 구분자(;)	
- 	    	sMsgNotAllowedExt : 'JPG, GIF, PNG, BMP 확장자만 가능합니다',	//허용할 파일의 형식이 아닌경우에 띄워주는 경고창의 문구
- 	    	bAutoUpload : false,									 	//파일이 선택됨과 동시에 자동으로 업로드를 수행할지 여부 (upload 메소드 수행)
- 	    	bAutoReset : true 											// 업로드한 직후에 파일폼을 리셋 시킬지 여부 (reset 메소드 수행)
- 	    }).attach({
- 	    	select : function(oCustomEvent) {
- 	    		//파일 선택이 완료되었을 때 발생
-// 		    	 oCustomEvent (이벤트 객체) = {
-// 	    			sValue (String) 선택된 File Input의 값
-// 	    			bAllowed (Boolean) 선택된 파일의 형식이 허용되는 형식인지 여부
-// 	    			sMsgNotAllowedExt (String) 허용되지 않는 파일 형식인 경우 띄워줄 경고메세지
-// 	    		}
-//  				선택된 파일의 형식이 허용되는 경우만 처리 
- 	    		if(oCustomEvent.bAllowed === true){
- 		    		goStartMode();
- 		    	}else{
- 		    		goReadyMode();
- 		    		oFileUploader.reset();
- 		    	}
-// 	    		bAllowed 값이 false인 경우 경고문구와 함께 alert 수행 
-// 	    		oCustomEvent.stop(); 수행시 bAllowed 가 false이더라도 alert이 수행되지 않음
- 	    	},
- 	    	success : function(oCustomEvent) {
- 	    		// alert("success");
- 	    		// 업로드가 성공적으로 완료되었을 때 발생
- 	    		// oCustomEvent(이벤트 객체) = {
- 	    		//	htResult (Object) 서버에서 전달해주는 결과 객체 (서버 설정에 따라 유동적으로 선택가능)
- 	    		// }
- 	    		var aResult = []; 
- 	    		aResult[0] = oCustomEvent.htResult;
- 	    		setPhotoToEditor(aResult); 
- 	    		//버튼 비활성화
- 	    		goReadyMode();
- 	    		oFileUploader.reset();
- 	    		window.close();
- 	    	},
- 	    	error : function(oCustomEvent) {
- 	    		//업로드가 실패했을 때 발생
- 	    		//oCustomEvent(이벤트 객체) = {
- 	    		//	htResult : { (Object) 서버에서 전달해주는 결과 객체. 에러발생시 errstr 프로퍼티를 반드시 포함하도록 서버 응답을 설정하여야한다.
- 	    		//		errstr : (String) 에러메시지
- 	    		// 	}
- 	    		//}
- 	    		//var wel = jindo.$Element("info");
- 	    		//wel.html(oCustomEvent.htResult.errstr);
- 	    		alert(oCustomEvent.htResult.errstr);
- 	    	}
- 	    });
- 	}
-	
+	function callFileUploader() {
+	    oFileUploader = new jindo.FileUploader(jindo.$("uploadInputBox"), {
+	        sUrl: location.href.replace(/\/[^\/]*$/, '') + '/file_uploader.php',
+	        sCallback: location.href.replace(/\/[^\/]*$/, '') + '/callback.html',
+	        sFiletype: "*.jpg;*.png;*.bmp;*.gif",
+	        sMsgNotAllowedExt: 'JPG, GIF, PNG, BMP 확장자만 가능합니다',
+	        bAutoUpload: false,         // 자동 업로드 비활성화
+	        bAutoReset: false,          // 자동 리셋 비활성화
+	        multiple: true              // 멀티파일 선택 활성화
+	    }).attach({
+	        select: function(oCustomEvent) {
+	            if (oCustomEvent.bAllowed) {
+	                goStartMode();
+	            } else {
+	                alert(oCustomEvent.sMsgNotAllowedExt);
+	                goReadyMode();
+	                oFileUploader.reset();
+	            }
+	        }
+	    });
+	}
     /**
      * 페이지 닫기 버튼 클릭
      */

@@ -776,7 +776,14 @@
 	</div>
 </div>
 <!-- SE2 Markup End -->
+<script>
+window.insertImageCallback = function(sFileURL, sFileName) {
+    var sHTML = '<img src="' + sFileURL + '" alt="' + sFileName + '">';
+    oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
+};
 
+
+</script>
 
 </body>
 </html>

@@ -123,23 +123,22 @@
 
 
 
-<!--
+
 <select id="getCommentInfo" parameterType="string" resultMap="BoardCommentResultMap">
 	SELECT
-		bco.bc_no,
-		b.bbs_title,
-		bco.bc_cn,
-		bco.bc_like,
-		bco.bc_dislike,
+		bc.bc_no,
+		bc.bbs_no,
+		bc.bc_cn,
+		bc.bc_like,
+		bc.bc_dislike,
 		u.user_nn,
-		bco.bc_ymd
+		u.id,
+		bc.bc_ymd
 	FROM
-		board_comments bco INNER JOIN boards b
-		USING (bbs_no)
-		INNER JOIN user u
-		ON bco.bc_id = u.id
+		board_comments bc INNER JOIN user u
+		ON bc.bc_id = u.id
 WHERE
-   bc_no = #{commentNum}
+   bc.bc_no = #{commentNum}
 
 
 </select>
@@ -165,6 +164,6 @@ WHERE
 
 
 </update>
- -->
+
 
 </mapper>
