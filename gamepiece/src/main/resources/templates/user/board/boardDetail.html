@@ -72,7 +72,10 @@
 
 
 <th:block layout:fragment="contents-body">
-			
+			<div th:if="${commentDel}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${commentDel}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <input type="hidden" id="boardNum" name="boardNum" th:value="${boardInfo.boardNum}">
     			
   
@@ -235,59 +238,76 @@
 
 
 		   
-               <div class="board-commentBar" th:each="l : ${commentList}">
-                        
+          <div class="board-commentBar" th:each="l : ${commentList}">
     <!-- 댓글 목록 시작 -->
-    <div  class="card mb-3 commentBox">
-
-        <div class="card-body">
-            <!-- 댓글 헤더 -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="d-flex align-items-center">
-                    <img src="data:image/png;base64,..." class="rounded-circle me-3" style="width: 40px; height: 40px;">
-                   <div class="d-flex align-items-center gap-2">
-		            <h6 class="mb-0" th:text="${l.userInfo.userNn}">닉네임</h6>
-		            <span class="text-muted small" th:text="| (${l.commentYmd})|">게시날짜</span>
-        </div>
-                </div>
-				              <button class="btn btn-outline-danger btn-sm" 
-				        data-bs-toggle="modal" 
-				        data-bs-target="#commentReportModal"
-				        th:attr="data-board-num=${l.boardNum}"
-				        th:if="${session.SID != null}">
-				    <i class="bi bi-exclamation-circle-fill"></i>
-				    <span class="ms-1">신고</span>
-				</button>
-								
-				<!-- 비로그인 상태일 때 -->
-				<button class="btn btn-outline-danger btn-sm"
-				        onclick="checkLogin()"
-				        th:unless="${session.SID != null}">
-				    <i class="bi bi-exclamation-circle-fill"></i>
-				    <span class="ms-1">신고</span>
-				</button>
-            </div>
-
-            <!-- 댓글 내용 -->
-            <p class="card-text" th:text="${l.commentDetail}">댓글 내용</p>
-
-           <div class="d-flex gap-3 justify-content-end">
-    <button class="btn btn-light btn-sm comment-like-btn" id="likeButton2">
-        <i class="bi bi-hand-thumbs-up-fill text-primary fs-5"></i>
-        <span class="ms-1 likeCnt2" th:text="${l.commentLikeCnt}">0</span>
-    </button>
-    <button class="btn btn-light btn-sm comment-dislike-btn" id="dislikeButton2">
-    	
-        <i class="bi bi-hand-thumbs-down-fill text-danger fs-5"></i>
-        <span class="ms-1 dislikeCnt2" th:text="${l.commentDisLikeCnt}">0</span>
-    </button>
-</div>
-        </div>
-        
-        
-        
+   <div class="card mb-3 commentBox">
+       <div class="card-body">
+    <!-- 댓글 헤더 -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="d-flex align-items-center">
+    <img src="data:image/png;base64,..." class="rounded-circle me-3" style="width: 40px; height: 40px;">
+    <div class="d-flex align-items-center gap-2">
+      <h6 class="mb-0" th:text="${l.userInfo.userNn}">닉네임</h6>
+      <span class="text-muted small" th:text="| (${l.commentYmd})|">게시날짜</span>
     </div>
-   
+  </div>
+
+  <div class="ms-auto">
+    <th:block th:if="${session.SID != null}">
+      <th:block th:if="${session.SID == l.commentUserId}">
+        <div class="btn-group gap-3" th:id="'comment-buttons-' + ${l.commentNum}">
+          <button class="btn btn-sm btn-outline-primary" th:data-comment-num="${l.commentNum}" onclick="startEdit(this.getAttribute('data-comment-num'))">수정</button>
+          <button class="btn btn-sm btn-outline-danger removeBtn" th:data-comment-num="${l.commentNum}" onclick="confirmDelete(this.getAttribute('data-comment-num'))">삭제</button>
+        </div>
+        <div class="btn-group gap-3" th:id="'edit-buttons-' + ${l.commentNum}" style="display: none;">
+          <button class="btn btn-sm btn-primary px-4" th:data-comment-num="${l.commentNum}" onclick="saveEdit(this.getAttribute('data-comment-num'))">확인</button>
+          <button class="btn btn-sm btn-secondary px-4" th:data-comment-num="${l.commentNum}" onclick="cancelEdit(this.getAttribute('data-comment-num'))">취소</button>
+        </div>
+      </th:block>
+      <th:block th:unless="${session.SID == l.commentUserId}">
+        <span class="report-text" data-bs-toggle="modal" data-bs-target="#commentReportModal">
+          <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>신고
+        </span>
+      </th:block>
+    </th:block>
+    <th:block th:unless="${session.SID != null}">
+      <span class="report-text" onclick="checkLogin()">
+        <i class="bi bi-exclamation-circle-fill text-danger me-1"></i>신고
+      </span>
+    </th:block>
+  </div>
+</div>
+
+    <!-- 댓글 내용 -->
+    <div class="comment-content-container">
+        <!-- 일반 모드 -->
+        <div class="view-mode" th:id="'view-mode-' + ${l.commentNum}">
+            <p class="card-text content-text" th:text="${l.commentDetail}">댓글 내용</p>
+            
+            <!-- 좋아요/싫어요 버튼 -->
+            <div class="d-flex gap-3 justify-content-end">
+                <button class="btn btn-light btn-sm comment-like-btn" id="likeButton2">
+                    <i class="bi bi-hand-thumbs-up-fill text-primary fs-5"></i>
+                    <span class="ms-1 likeCnt2" th:text="${l.commentLikeCnt}">0</span>
+                </button>
+                <button class="btn btn-light btn-sm comment-dislike-btn" id="dislikeButton2">
+                    <i class="bi bi-hand-thumbs-down-fill text-danger fs-5"></i>
+                    <span class="ms-1 dislikeCnt2" th:text="${l.commentDisLikeCnt}">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 수정 모드 (기본적으로 숨김) -->
+        <div class="edit-area" th:id="'edit-area-' + ${l.commentNum}" style="display: none;">
+            <textarea class="form-control mb-2"
+                    th:id="'edit-textarea-' + ${l.commentNum}"
+                    rows="3"
+                    style="resize: none;"
+                    th:text="${l.commentDetail}"></textarea>
+          
+        </div>
+    </div>
+</div>
 				         
                 
                 
@@ -372,7 +392,7 @@
                 
                 
                 </div>
-                
+                  </div>
 				                 <div class="pagination-area mt-15" th:if="${commentList != null and not #lists.isEmpty(commentList)}">
 								    <nav>
 				    <ul class="pagination justify-content-center">
@@ -416,7 +436,7 @@
 								</div>
 				
 				
-                
+              
                 
 								      <form id="addCommentForm" method="post" th:action="@{/board/addComment}">
 								   <div class="CommentInput-div card w-100">
@@ -595,8 +615,63 @@ function submitComment() {
     $('#addCommentForm').submit();
 }
      
-     
-     
+function startEdit(commentNum) {
+    // 일반 모드 숨기기
+    document.getElementById('view-mode-' + commentNum).style.display = 'none';
+    // 수정 모드 보이기
+    document.getElementById('edit-area-' + commentNum).style.display = 'block';
+    // 수정/삭제 버튼 숨기기
+    document.getElementById('comment-buttons-' + commentNum).style.display = 'none';
+    // 확인/취소 버튼 보이기
+    document.getElementById('edit-buttons-' + commentNum).style.display = 'flex';
+}
+
+function cancelEdit(commentNum) {
+    // 수정 모드 숨기기
+    document.getElementById('edit-area-' + commentNum).style.display = 'none';
+    // 일반 모드 보이기
+    document.getElementById('view-mode-' + commentNum).style.display = 'block';
+    // 확인/취소 버튼 숨기기
+    document.getElementById('edit-buttons-' + commentNum).style.display = 'none';
+    // 수정/삭제 버튼 보이기
+    document.getElementById('comment-buttons-' + commentNum).style.display = 'flex';
+}
+
+function saveEdit(commentNum) {
+    const textarea = document.getElementById('edit-textarea-' + commentNum);
+    const newContent = textarea.value.trim();
+    const boardNum = document.getElementById('boardNum').value;
+    
+    if (!newContent) {
+        alert('댓글 내용을 입력해주세요.');
+        textarea.focus();
+        return;
+    }
+    
+    $.ajax({
+        url: '/board/modifycomment',
+        type: 'POST',
+        data: {
+            commentNum: commentNum,
+            commentDetail: newContent,
+            boardNum: boardNum
+        },
+        success: function(response) {
+            // 수정 후 댓글 목록을 다시 불러오기 위해 페이지 리로드
+            location.reload();
+        },
+        error: function() {
+            alert('댓글 수정 중 오류가 발생했습니다.');
+        }
+    });
+}
+
+function confirmDelete(commentNum) {
+    if(confirm('정말 삭제하시겠습니까?')) {
+        const boardNum = document.getElementById('boardNum').value;
+        location.href = '/board/removecomment?commentNum=' + commentNum + '&boardNum=' + boardNum;
+    }
+}
      
 
 

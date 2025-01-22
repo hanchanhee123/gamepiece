@@ -88,6 +88,13 @@
 
 <th:block layout:fragment="customJs">
     <script th:inline="javascript">
+    
+    window.insertImageCallback = function(sFileUrl, sFileName) {
+        var sHTML = '<img src="' + sFileUrl + '" alt="' + sFileName + '">';
+        oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
+    };
+    
+    
         let oEditors = [];
 
         // 스마트 에디터 초기화

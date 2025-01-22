@@ -13,6 +13,15 @@ import gamepiece.util.Pageable;
 public interface BoardService {
 	
 	
+	
+	
+	//댓글삭제
+		int removeComment(String commentNum);
+		
+		//댓글수정
+		int modifyComment(BoardComment boardComment);
+	
+	
 	//공지 검색조회
 	PageInfo<Notice> getNoticeSearchList(String searchValue, Pageable pageable);
 	

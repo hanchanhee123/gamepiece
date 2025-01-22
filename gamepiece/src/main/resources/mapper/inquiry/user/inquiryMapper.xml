@@ -64,7 +64,7 @@
 					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
 					   </if>
 					       AND i.is_delete = 'active'
-					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED)
+					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED)  DESC
 					   LIMIT #{rowPerPage} OFFSET #{offset}
 					</select>
 					
@@ -112,6 +112,7 @@ SELECT
 	   USING (inquiry_id)
 	WHERE
 	  	i.is_delete = 'active'
+	   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED)  DESC
  LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 
