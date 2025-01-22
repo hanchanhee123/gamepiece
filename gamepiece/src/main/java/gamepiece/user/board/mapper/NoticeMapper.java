@@ -15,6 +15,11 @@ public interface NoticeMapper {
 	
 	
 	
+	
+	//공지 조회수 증가
+	int addViewCount(int noticeNum);
+	
+	
 	//공지 검색행 세기
 	int getCntSearchNotice(Map<String, Object> searchMap);
 		

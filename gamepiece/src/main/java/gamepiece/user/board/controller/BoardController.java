@@ -62,13 +62,14 @@ public class BoardController {
 	
 	private final BoardService boardService;
 	private final UserService userService;
+	
 	private final FileService fileService;
 
 	
 	
 
 	
-	
+
 	
 	
 	
@@ -487,8 +488,12 @@ public class BoardController {
 	@GetMapping("/notice/detail")
 	public String noticeView(@RequestParam(name="noticeNum") int noticeNum, Model model) {
 		
+		
+		 int updateResult = boardService.addNoticeViewCount(noticeNum);
+		
 			Notice noticeInfo = boardService.getNoticeInfo(noticeNum);
 		
+			
 		
 		model.addAttribute("noticeInfo", noticeInfo);
 		
@@ -501,6 +506,7 @@ public class BoardController {
 	public String addComment(BoardComment boardComment, HttpSession session, RedirectAttributes rttr) {
 		
 		String loginId = (String) session.getAttribute("SID");
+
 		boardComment.setCommentUserId(loginId);
 		
 		
@@ -517,6 +523,10 @@ public class BoardController {
 	public String detailBoardView(@RequestParam(name="boardNum") String boardNum,
 	                          Pageable pageable,
 	                          Model model) {
+		
+		  int updateResult = boardService.addViewCount(boardNum);
+		    log.info("조회수 증가 결과: {}", updateResult);  // 로그로 확인
+		
 	    Board boardInfo = boardService.getBoardInfo(boardNum);
 	    
 

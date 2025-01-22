@@ -14,6 +14,11 @@ public interface BoardService {
 	
 	
 	
+	//공지 조회수 증가
+	int addNoticeViewCount(int noticeNum);
+	
+	//게시판 조회수 증가
+	int addViewCount(String boardNum);
 	
 	//댓글삭제
 		int removeComment(String commentNum);
