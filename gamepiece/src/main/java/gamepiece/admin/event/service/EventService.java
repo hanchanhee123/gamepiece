@@ -2,6 +2,8 @@ package gamepiece.admin.event.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import gamepiece.admin.event.domain.Event;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -15,8 +17,6 @@ public interface EventService {
 	List<Event> getEventParticipant(String evCd);
 
 	List<Event> getEventDetail(String evCd);
-
-	void addEvent(Event event);
 	
 	/* void addEventWinnerList(String evCd, Event event); */
 
@@ -57,5 +57,7 @@ public interface EventService {
 	int countWinner(String evCd, int evWinnersNum);
 
 	PageInfo<Event> searchWinnerList(String searchValue, String searchCate, Pageable pageable);
+
+	void addEvent(Event event, MultipartFile files);
 	
 }

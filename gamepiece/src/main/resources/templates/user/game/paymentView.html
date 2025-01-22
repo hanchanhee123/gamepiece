@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link rel="stylesheet" th:href="@{/assets/css/game/gamelist.css}" />
+</head>
+<th:block layout:fragment="contents-body">
+	<main>
+        <div class="main">
+            <div class="main-contents">
+                <div class="main_div">
+			        <div class="progress-area">
+			            <div class="progress-list" th:each="l : ${cartList}">
+			                <div class="progress-price">
+			                    <li th:text="${l.gameName}"></li>
+			                    <li th:text="${l.Price}"></li>
+			                </div>
+			            </div>
+			        </div>
+			        <div class="payment-area">
+			            <div class="payment-total">
+			                <span th:text="${'합계 : ₩' + totalPrice}"></span>
+			            </div>
+			            <div class="payment-method">
+			                <label>결제 수단 : </label>
+			                <select name="method" style="width : 200px; border : 1px solid #007AFF; border-radius: 5px;">
+			                	<option value="0">선택</option>
+			                	<th:block th:each="l : ${paymentList}">			                	
+				                    <option th:value="${l.paymentMethodCode}" th:text="${l.paymentMethod}">결제수단 선택</option>
+			                	</th:block>
+			                </select>
+			            </div>
+			            <div class="payment-button">
+			                <button type="button" id="payment">결제</button>
+			            </div>
+			        </div>
+			    </div>
+			        
+			    </div>
+            </div>
+    </main>
+</th:block>
+<!--/* 사용자 추가 js file */-->
+<th:block layout:fragment="customJsResource">
+	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+</th:block>
+<!--/* 사용자 추가 js script */-->
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+		
+	
+		
+		
+		
+		
+
+		
+		
+		
+		
+		
+	</script>
+</th:block>
+</html>

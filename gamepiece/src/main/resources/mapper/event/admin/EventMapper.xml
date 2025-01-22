@@ -12,7 +12,6 @@
 		<result column="ev_winners_num" 		property="evWinnersNum" />
 		<result column="admin_id"	 			property="adminId" />
 		<result column="reg_ymd" 				property="regYmd" />
-		<result column="ev_img" 				property="evImg" />
 		<result column="evp_no" 				property="evpNo" />
 		<result column="id" 					property="id" />
 		<result column="ev_participate_ymd" 	property="evParticipateYmd" />
@@ -22,6 +21,7 @@
 		<result column="ew_cd"					property="ewCd"/>
 		<result column="ew_nm"					property="ewNm"/>
 		<result column="ew_reg_ymd"				property="ewRegYmd"/>
+		<result column="file_idx" 				property="fileIdx" />
 	</resultMap>
 	
 	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
@@ -166,12 +166,13 @@
 	
 	<insert id="addEvent" parameterType="gamepiece.admin.event.domain.Event">
 		INSERT INTO events
-		  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
+		  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, file_idx)
 		VALUES 
 		  (
-		    <![CDATA[(SELECT CONCAT('ev_', LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd, 4) + 1), 0), 
+		    <!-- <![CDATA[(SELECT CONCAT('ev_', LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd, 4) + 1), 0), 
 		                          IF(LENGTH(MAX(SUBSTRING(e.ev_cd, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(e.ev_cd, 4) + 1))), '0')) ]]>
-		     FROM events e),
+		     FROM events e), -->		     
+		    #{evCd}, 
 		    #{evNm}, 
 		    #{evContents}, 
 		    #{evStartYmd}, 
@@ -179,7 +180,7 @@
 		    #{evWinnersNum}, 
 		    #{adminId}, 
 		    CURDATE(), 
-		    #{evImg}
+		    #{fileIdx}
 		  );
 	</insert>
 	

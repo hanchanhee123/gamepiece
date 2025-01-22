@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{user/layout/default}">
+<head>
+<link rel="stylesheet" th:href="@{/assets/css/game/gamelist.css}" />
+</head>
+<th:block layout:fragment="contents-body">
+	<main>
+		<div class="main">
+			<div class="main-contents">
+				<div class="main_div">
+					<div class="cart">
+						<div class="cart-title">
+							<h2 style="color: white;">장바구니</h2>
+						</div>
+						<div class="cart-list">
+							<th:block th:unless="${#lists.isEmpty(cartList)}">							
+								<div class="cart-info" th:each="l : ${cartList}">
+									<div class="cart-price">
+										<li th:text="${l.gameName}"></li>
+										<li th:text="${l.price}"></li>
+									</div>
+								</div>
+							</th:block>
+							<th:block th:if="${#lists.isEmpty(cartList)}">
+								<div class="cart-info" style="color : white; justify-content: center;">
+									<h2>장바구니에 상품이 없습니다.</h2>
+								</div>
+							</th:block>
+						</div>
+						<div class="cart-total">
+							<th:block th:if="${totalPrice != null}">
+								<li th:text="${'예상금액 : ₩' + totalPrice}">예상금액 : ₩199,400</li>
+							</th:block>
+							<th:block th:unless="${totalPrice != null}">
+								<li>예상금액 : ₩0</li>
+							</th:block>
+							
+							<li>모든 제품 제거</li>
+						</div>
+					</div>
+					<div class="cart-continue">
+						<button type="button" class="shopping"
+							onclick="location.href='/game/steam'">쇼핑계속하기</button>
+						<button type="button" class="payment-start" onclick="location.href='/game/paymentView'">결제진행하기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+</th:block>
+<!--/* 사용자 추가 js file */-->
+<th:block layout:fragment="customJsResource">
+	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+</th:block>
+<!--/* 사용자 추가 js script */-->
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+		$('.payment-start').click(function() {
+			const id = /*[[${id}]]*/"id";
+			
+			const $form = $('<form />', {'action' : '/game/paymentView', 'method' : 'get'});
+			const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+			$form.append($id);
+			$('body').append($form);
+			$form.submit();
+		})
+	</script>
+</th:block>
+</html>

@@ -34,5 +34,16 @@ public interface UserGameMapper {
 	
 	
 	
+	// 장바구니에 담기 버튼 클릭시 장바구니 테이블에 데이터 삽입
+	int putGameInCart(UserGame userGame);
+	
+	// 장바구니 테이블 데이터 조회
+	List<UserGame> getUserCartList(String id);
+	
+	// 장바구니 안 가격 총합
+	Integer cartTotalPrice();
+	
+	// 결제 방법 목록 조회
+	List<UserGame> getPaymentList();
 }
 

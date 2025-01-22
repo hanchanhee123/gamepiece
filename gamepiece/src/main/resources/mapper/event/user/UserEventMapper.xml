@@ -22,6 +22,8 @@
 		<result column="ew_cd"					property="ewCd"/>
 		<result column="ew_nm"					property="ewNm"/>
 		<result column="ew_reg_ymd"				property="ewRegYmd"/>
+		<result column="file_idx" 				property="fileIdx" />
+		<result column="file_path" 				property="filePath" />
 	</resultMap>
 
 	<!-- 이벤트 삭제 -->
@@ -74,7 +76,8 @@
 		SELECT
 			*
 		FROM
-			events
+			events e INNER JOIN files f
+			ON e.file_idx = f.file_idx
 		WHERE
 			is_delete='active'
 		ORDER BY ev_cd DESC
@@ -94,7 +97,8 @@
 		SELECT
 			*
 		FROM
-			events
+			events e INNER JOIN files f
+			ON e.file_idx = f.file_idx
 		WHERE
 			ev_cd=#{evCd};
 	</select>
@@ -199,9 +203,10 @@
 			ev_start_ymd,
 			ev_end_ymd,
 			ev_winners_num,
-			ev_img
+			f.file_path
 		FROM
-			events
+			events e INNER JOIN files f
+			ON e.file_idx = f.file_idx
 		WHERE
 			ev_cd=#{evCd};
 	</select>
@@ -237,7 +242,8 @@
 		SELECT
 		*
 		FROM
-			events_winners
+			events_winners ew <!-- INNER JOIN files f
+			ON ew.file_idx = f.file_idx -->
 		WHERE
 			is_delete='active'
 		ORDER BY ev_cd DESC

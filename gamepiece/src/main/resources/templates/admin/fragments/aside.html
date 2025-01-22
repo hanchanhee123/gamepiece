@@ -3,7 +3,7 @@
 <aside class="navbar-aside" id="offcanvas_aside" th:fragment="asideFragment">
 	<div class="aside-top">
 		<a href="index.html" class="brand-wrap"> 
-			<img th:src="@{/manager/assets/imgs/theme/GamePeace_logo.png}" class="logo" alt="Nest Dashboard" />
+			<img th:src="@{/manager/assets/imgs/theme/GamePeace_logo.png}" class="logo" alt="GamePiece" style = "color: #007bff" />
 		</a>
 		<div>
 			<button class="btn btn-icon btn-aside-minimize">
@@ -14,7 +14,7 @@
 	<nav>
 		<ul class="menu-aside">
 			<li class="menu-item active">
-				<a class="menu-link" href="index.html"> 
+				<a class="menu-link" th:href="@{/admin}"> 
 					<i class="icon material-icons md-home"></i> 
 					<span class="text">대시보드</span>
 				</a>
@@ -31,7 +31,7 @@
 					<a th:href="@{/admin/user/userLoginlog}">회원 로그인 기록 조회</a>
 				</div>
 			</li>
-			<li class="menu-item has-submenu">
+			<!-- <li class="menu-item has-submenu">
 				<a class="menu-link" href="#">
 						<i class="icon material-icons md-play_circle_outline"></i> 
 						<span class="text">게임 관리</span>
@@ -39,7 +39,7 @@
 				<div class="submenu">
 					<a th:href="@{/admin/game/gameList}">게임 목록</a> 
 				</div>
-			</li>
+			</li> -->
 			<li class="menu-item has-submenu">
 				<a class="menu-link" href="#">
 					<i class="icon material-icons md-shopping_cart"></i> 
@@ -72,7 +72,7 @@
 					<a th:href="@{/admin/event/eventWinnerList}">이벤트 당첨자리스트 목록</a>
 				</div>
 			</li>
-			<li class="menu-item has-submenu">
+			<!-- <li class="menu-item has-submenu">
 				<a class="menu-link" href="#">
 					<i class="icon material-icons md-post_add"></i> 
 					<span class="text">대회일정 관리</span>
@@ -80,8 +80,8 @@
 				<div class="submenu">
 					<a href="page-tournament-list.html">대회일정 목록</a>
 				</div>
-			</li>
-			<li class="menu-item has-submenu">
+			</li> -->
+			<!-- <li class="menu-item has-submenu">
 				<a class="menu-link" href="#">
 					<i class="icon material-icons md-monetization_on"></i> 
 					<span class="text">거래</span>
@@ -90,8 +90,8 @@
 					<a href="page-transactions-1.html">거래 목록</a> 
 					<a href="page-transactions-2.html">거래 상세</a>
 				</div>
-			</li>
-			<li class="menu-item has-submenu">
+			</li> -->
+			<!-- <li class="menu-item has-submenu">
 				<a class="menu-link" href="#">
 					<i class="icon material-icons md-person"></i> 
 					<span class="text">계정</span>
@@ -101,25 +101,25 @@
 					<a href="page-account-register.html">사용자 등록</a> 
 					<a href="page-error-404.html">Error 404</a>
 				</div>
-			</li>
+			</li> -->
 			<li class="menu-item">
 				<a class="menu-link" href="page-reviews.html"> 
 					<i class="icon material-icons md-comment"></i> 
 					<span class="text">리뷰</span>
 				</a>
 			</li>
-			<li class="menu-item">
+			<!-- <li class="menu-item">
 				<a class="menu-link" href="page-brands.html"> 
 					<i class="icon material-icons md-stars"></i>
 					<span class="text">계약 관리</span>
 				</a>
-			</li>
-			<li class="menu-item">
+			</li> -->
+			<!-- <li class="menu-item">
 				<a class="menu-link" disabled href="#">
 					<i class="icon material-icons md-pie_chart"></i> 
 					<span class="text">통계</span>
 				</a>
-			</li>
+			</li> -->
 		</ul>
 		<hr />
 		<ul class="menu-aside">
@@ -128,15 +128,15 @@
 					<i class="icon material-icons md-settings"></i> 
 					<span class="text">설정</span>
 				</a>
-				<div class="submenu">
+				<!-- <div class="submenu">
 					<a href="page-settings-1.html">설정 sample 1</a> 
 					<a href="page-settings-2.html">설정 sample 2</a>
-				</div>
+				</div> -->
 			</li>
 			<li class="menu-item">
-				<a class="menu-link" href="page-blank.html"> 
+				<a class="menu-link" th:href="@{/}"> 
 					<i class="icon material-icons md-local_offer"></i> 
-					<span class="text">Starter page </span>
+					<span class="text">사용자 화면으로 이동 </span>
 				</a>
 			</li>
 		</ul>

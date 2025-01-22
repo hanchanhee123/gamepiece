@@ -17,8 +17,6 @@ public interface EventMapper {
 	
 	List<Event> getEventDetail(String evCd);
 	
-	int addEvent(Event event);
-	
 	int modifyEvent(Event event);
 	
 	Event getEventInfoById(String evCd);
@@ -62,4 +60,6 @@ public interface EventMapper {
 	List<Event> getSearchWinnerList(Map<String, Object> searchMap);
 
 	int getCntWinnerList();
+
+	int addEvent(Event event);
 }

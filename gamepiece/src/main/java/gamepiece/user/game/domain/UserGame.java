@@ -42,5 +42,14 @@ public class UserGame {
 	private int endPageNum;
 	
 	private String searchValue;
+	private String imgSrcSec;
+	private String deepInfoText;
 	
+	private boolean isDetail;
+	private String id;
+	
+	private boolean isCart;
+	
+	private String paymentMethodCode;
+	private String paymentMethod;
 }
