@@ -18,9 +18,14 @@
 			                <li class="gamelist-cate"><a th:href="@{/game/riot}">라이엇게임즈</a></li> 
 			            </ul>
 			        </div>
-			        <div class="search">
-			            <input type="text" class="item-search" id="searchValue" name="searchValue" th:value=${gameList.searchValue} placeholder="게임 이름을 입력하세요">
-			            <button type="button" class="search-button"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></button>
+			        <div class="search" style="justify-content: space-between;">
+			        	<div>			        	
+				            <input type="text" class="item-search" id="searchValue" name="searchValue" th:value=${gameList.searchValue} placeholder="게임 이름을 입력하세요">
+				            <button type="button" class="search-button"><i class="bi bi-search"></i></button>
+			        	</div>
+			        	<div>
+			        		<button type="button" class="btn btn-primary" id="cartView" onclick="location.href='/game/gameCartView'">장바구니로 이동</button>
+			        	</div>
 			        </div>
 			        <div class="card-body">
 			        	
@@ -127,6 +132,21 @@
 			$form.submit();
 		})
 		
+		$('#cartView').click(function() {
+			const id = /*[[${id}]]*/"id";
+			console.log(id);
+			
+			if(id == null) {
+				alert("로그인 이후 이용가능합니다.");
+				return false;
+			}
+			
+			const $form = $('<form />', {'action' : '/game/gameCartView', 'method' : 'get'});
+			const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+			$form.append($id);
+			$('body').append($form);
+			$form.submit();
+		})
 		
 		
 
