@@ -110,6 +110,9 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public void addEventWinnerList(Event event) {
 	
+		String ewCd = commonMapper.getPrimaryKey("ew_", "events_winners", "ew_cd");
+		
+		event.setEwCd(ewCd);
 		event.setAdminId("id01");
 		eventMapper.addEventWinnerList(event);
 		
