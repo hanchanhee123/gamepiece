@@ -6,9 +6,9 @@
 			<id column="ps_cd" 			property="itemCd"/>
 			<result column="ps_cate_cd" property="itemCate" />
 			<result column="cate_nm" 	property="cateName" />
-			<result column="ps_nm" 	property="itemName" />
-			<result column="img_url" 	property="itemImgurl" />
-			<result column="ps_price" 		property="itemPrice" />
+			<result column="ps_nm" 		property="itemName" />
+			<result column="file_path" 	property="filePath" />
+			<result column="ps_price" 	property="itemPrice" />
 			<result column="admin_id" 	property="adminId" />
 			<result column="reg_ymd" 	property="regYmd" />
 			<result column="is_delete"  property="isDelete" />
@@ -22,15 +22,55 @@
 	</resultMap>
 	
 	<resultMap type="gamepiece.user.pointShop.domain.PointLog" id="pointLog">
-		<id column="point_no" property="pointNo" />
-		<result column="id" property="id"/>
-		<result column="point_receive_ymd" property="pry"/>
-		<result column="point_receive_content" property="prc"/>
-		<result column="point_receive" property="pointReceive"/>
-		<result column="point_division" property="pointDivision"/>
+		<id column="point_no" 					property="pointNo" />
+		<result column="id" 					property="id"/>
+		<result column="point_receive_ymd" 		property="pry"/>
+		<result column="point_receive_content"  property="prc"/>
+		<result column="point_receive" 			property="pointReceive"/>
+		<result column="point_division" 		property="pointDivision"/>
+		<result column="remaining_point" 		property="totalPoint"/>
+	</resultMap>
+	
+	<resultMap type="gamepiece.user.pointShop.domain.PointShopLog" id="pointShopLog">
+		<id column="psl_no" property="pslNo" />
+		<result column="id" property="id" />
+		<result column="ps_cd" property="psCd" />
+		<result column="psl_used_point" property="usedPoint" />
+		<result column="psl_log_ymd" property="logYmd" />
 	</resultMap>
 	
 	<!-- <select id="getItemInfoByName" parameterType="string" resultMap=""></select> -->
+	<select id="findAll" resultMap="pointshopResultMap" parameterType="String">
+		/* 포인트샵 아이템 목록 조회 */
+		SELECT 
+			ps_cd, 
+			ps_cate_cd, 
+			ps_nm, 
+			file_idx,
+			ps_price,
+			admin_id,
+			reg_ymd
+		FROM 
+			point_shop;
+	</select>
+	
+	<select id="pointInfo" resultMap="pointshopResultMap" parameterType="String">
+		/* 포인트 코드를 받아서 해당 이이템 정보 조회*/
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			f.file_path,
+			pc.cate_nm
+		FROM
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
+		WHERE
+			ps.ps_cd = #{itemCd};	
+	</select>
 	
 	<select id="findimoticon" resultMap="pointshopResultMap" parameterType="Pageable">
 		SELECT
@@ -38,11 +78,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='이모티콘'
 			AND
@@ -55,11 +97,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='프로필이미지'
 			AND
@@ -72,11 +116,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='아바타 액자'
 			AND
@@ -89,11 +135,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='기타'
 			AND
@@ -106,11 +154,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.img_url,
+			f.file_path,
 			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			pc.cate_nm='배경프로필'
 			AND
@@ -118,12 +168,99 @@
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
-	<select id="getItemCount" resultType="int">
+	<select id="gethistoryCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			pointshop_logs pl 
+		WHERE
+			id=#{id};
+	</select>
+	
+	<select id="purchaseList" resultMap="pointShopLog">
+		SELECT 
+			ps_cd
+		FROM 
+			pointshop_logs
+		WHERE
+			id=#{id};
+	</select>
+	
+	<select id="findhistory" resultMap="pointshopResultMap" parameterType="Map">
+		SELECT
+			ps.ps_cd,
+			pl.psl_used_point,
+			ps.ps_nm,
+			pc.cate_nm,
+			f.file_path
+		FROM 
+			pointshop_logs pl INNER JOIN point_shop ps
+			ON pl.ps_cd = ps.ps_cd INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+		WHERE pl.id = #{id}
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	<select id="getavatarCount" resultType="int">
 		/* 아이템 갯수 총 행의 갯수*/
 		SELECT
 			COUNT(*)
 		FROM
-			point_shop;
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='프로필이미지'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getbackCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='배경프로필'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getetcCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='기타'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getframeCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='아바타 액자'
+			AND
+			ps.is_delete='active';
+	</select>
+	<select id="getimoticonCount" resultType="int">
+		/* 아이템 갯수 총 행의 갯수*/
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop ps INNER JOIN pointshop_categories pc
+			ON ps.ps_cate_cd = pc.cate_cd
+		WHERE
+			pc.cate_nm='이모티콘'
+			AND
+			ps.is_delete='active';
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">
@@ -157,8 +294,8 @@
 			<if test="itemName != null and itemName != ''">
 				ps_nm=#{itemName},
 			</if>
-			<if test="itemImgurl != null and itemImgurl != ''">
-				img_url=#{itemImgurl},
+			<if test="fileIdx != null and fileIdx != ''">
+				file_idx=#{fileIdx},
 			</if>
 			<if test="itemPrice != null and itemPrice > 0">
 				ps_price=#{itemPrice},
@@ -174,26 +311,59 @@
 			ps_cd = #{itemCd};
 	</update>
 	
-	<insert id="addItem" parameterType="gamepiece.user.pointShop.domain.Point">
-        INSERT INTO point_shop (
-        	ps_cd, 
-			ps_cate_cd, 
-			ps_nm, 
-			img_url,
-			ps_price, 
-			admin_id,
-			reg_ymd
-		) VALUES (
-			<![CDATA[(SELECT 
-				CONCAT('ps_',LPAD(IFNULL(MAX(SUBSTRING(ps.ps_cd,4)+1),0),
-				IF(LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))<=2,2,LENGTH(MAX(SUBSTRING(ps.ps_cd,4)+1))),'0')) ]]>
+	<insert id="addPointLog" parameterType="gamepiece.user.pointShop.domain.PointLog">
+		<selectKey keyProperty="pointNo" resultType="string" order="BEFORE">
+			SELECT 
+				(CASE
+				 WHEN COUNT(*) = 0 THEN CONCAT('pn_', LPAD(1, 2, 0))
+				 WHEN MAX(CAST(SUBSTRING_INDEX(pl.point_no, 'pn_', -1) AS UNSIGNED)) > 98 
+				 THEN CONCAT('pn_', MAX(CAST(SUBSTRING_INDEX(pl.point_no, 'pn_', -1) AS UNSIGNED))+1)
+				 ELSE
+					 CONCAT('pn_', LPAD(MAX(CAST(SUBSTRING_INDEX(pl.point_no, 'pn_', -1) AS UNSIGNED))+1, 2, 0))
+				 END) AS pointNo
 			FROM 
-				point_shop ps),
-			#{itemCate},
-			#{itemName},
-			#{itemImgurl},
-			#{itemPrice},
-			#{adminId},
+				point_log pl;
+		</selectKey>
+        INSERT INTO point_log (
+        	point_no, 
+			id, 
+			point_receive_ymd, 
+			point_receive_content,
+			point_receive,
+			point_division
+		) VALUES (
+			#{pointNo},
+			#{id},
+			CURDATE(),
+			#{prc},
+			#{pointReceive},
+			'사용'
+		);
+    </insert>
+	<insert id="addPointShopLog" parameterType="gamepiece.user.pointShop.domain.PointShopLog">
+		<selectKey keyProperty="pslNo" resultType="string" order="BEFORE">
+			SELECT 
+				(CASE
+				 WHEN COUNT(*) = 0 THEN CONCAT('psl_', LPAD(1, 2, 0))
+				 WHEN MAX(CAST(SUBSTRING_INDEX(pl.psl_no, 'psl_', -1) AS UNSIGNED)) > 98 
+				 THEN CONCAT('psl_', MAX(CAST(SUBSTRING_INDEX(pl.psl_no, 'psl_', -1) AS UNSIGNED))+1)
+				 ELSE
+					 CONCAT('psl_', LPAD(MAX(CAST(SUBSTRING_INDEX(pl.psl_no, 'psl_', -1) AS UNSIGNED))+1, 2, 0))
+				 END) AS pslNo
+			FROM 
+				pointshop_logs pl;
+		</selectKey>
+        INSERT INTO pointshop_logs (
+        	psl_no, 
+			id, 
+			ps_cd, 
+			psl_used_point,
+			psl_log_ymd
+		) VALUES (
+			#{pslNo},
+			#{id},
+			#{psCd},
+			#{usedPoint},
 			CURDATE()
 		);
     </insert>
@@ -223,8 +393,8 @@
 		    point_log pl
 		WHERE
 		    pl.point_division = '적립'
-		GROUP BY
-		    pl.id;
+		    AND
+		    pl.id=#{id};
     </select>
 
 </mapper>

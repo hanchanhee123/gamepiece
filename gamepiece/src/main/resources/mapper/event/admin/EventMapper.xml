@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="gamepiece.admin.event.mapper.EventMapper">
+
 	<resultMap type="gamepiece.admin.event.domain.Event" id="eventResultMap">
 		<id 	column="ev_cd" 					property="evCd"/>
 		<result column="ev_nm" 					property="evNm" />
@@ -9,15 +11,65 @@
 		<result column="ev_end_ymd"				property="evEndYmd" />
 		<result column="ev_winners_num" 		property="evWinnersNum" />
 		<result column="admin_id"	 			property="adminId" />
-		<result column="reg-ymd" 				property="regYmd" />
-		<result column="ev_img" 				property="evImg" />
+		<result column="reg_ymd" 				property="regYmd" />
 		<result column="evp_no" 				property="evpNo" />
 		<result column="id" 					property="id" />
 		<result column="ev_participate_ymd" 	property="evParticipateYmd" />
 		<result column="ev_winner_yn" 			property="evWinnerYn" />
 		<result column="ev_status" 				property="evStatus" />
+		<result column="user_nn"				property="userNn"/>
+		<result column="ew_cd"					property="ewCd"/>
+		<result column="ew_nm"					property="ewNm"/>
+		<result column="ew_reg_ymd"				property="ewRegYmd"/>
+		<result column="file_idx" 				property="fileIdx" />
 	</resultMap>
-
+	
+	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
+		SELECT
+		    e.ev_cd,
+		    e.ev_nm,
+		    e.ev_start_ymd,
+		    e.ev_end_ymd
+		FROM
+		    events e
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+		ORDER BY ev_cd DESC
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	<select id="getCntEventList" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events;
+	</select>
+	
+	<select id="getSearchCntEventList" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events e
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+	</select>
+	
+	<!-- 이벤트당첨자리스트 삭제 -->
+	<update id="removeEventWinnerList" parameterType="gamepiece.admin.event.mapper.EventMapper">
+		UPDATE
+			events_winners
+		SET
+			is_delete = 'delete'
+		WHERE
+			ev_cd = #{evCd};
+	</update>
+	
 	<!-- 이벤트 삭제 -->
 	<update id="removeEvent" parameterType="gamepiece.admin.event.mapper.EventMapper">
 		UPDATE
@@ -28,21 +80,70 @@
 			ev_cd = #{evCd};
 	</update>
 	
-	<select id="getCntEventList" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			events;
-	</select>
-	
 	<select id="getEventList" parameterType="pageable" resultMap="eventResultMap">
 		SELECT
-			*
+		*
 		FROM
 			events
 		WHERE
 			is_delete='active'
-		LiMIT #{rowPerPage} OFFSET #{offset};
+		ORDER BY ev_cd DESC
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<select id="getEventsList" parameterType="string" resultMap="eventResultMap">
+		SELECT
+			ev_nm, ev_cd, ev_winners_num
+		FROM
+			events
+		WHERE
+			is_delete='active';
+	</select>
+	
+	<select id="getEventWinnerList" parameterType="pageable" resultMap="eventResultMap">
+		SELECT
+		*
+		FROM
+			events_winners
+		WHERE
+			is_delete='active'
+		ORDER BY ev_cd DESC
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+	
+	<select id="getSearchWinnerList" parameterType="map" resultMap="eventResultMap">
+		SELECT
+		    ew_cd,
+		    ew_nm,
+		  	ew_reg_ymd
+		FROM
+		    events_winners
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+		ORDER BY ew_cd DESC
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
+	</select>
+	
+	<select id="getCntWinnerList" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events_winners;
+	</select>
+	
+	<select id="getSearchCntWinnerList" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events_winners ew
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
 	</select>
 	
 	<select id="getEventParticipant" parameterType="string" resultMap="eventResultMap">
@@ -65,12 +166,13 @@
 	
 	<insert id="addEvent" parameterType="gamepiece.admin.event.domain.Event">
 		INSERT INTO events
-		  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
+		  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, file_idx)
 		VALUES 
 		  (
-		    <![CDATA[(SELECT CONCAT('ev_', LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd, 4) + 1), 0), 
+		    <!-- <![CDATA[(SELECT CONCAT('ev_', LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd, 4) + 1), 0), 
 		                          IF(LENGTH(MAX(SUBSTRING(e.ev_cd, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(e.ev_cd, 4) + 1))), '0')) ]]>
-		     FROM events e),
+		     FROM events e), -->		     
+		    #{evCd}, 
 		    #{evNm}, 
 		    #{evContents}, 
 		    #{evStartYmd}, 
@@ -78,7 +180,20 @@
 		    #{evWinnersNum}, 
 		    #{adminId}, 
 		    CURDATE(), 
-		    #{evImg}
+		    #{fileIdx}
+		  );
+	</insert>
+	
+	<insert id="addEventWinnerList" parameterType="gamepiece.admin.event.domain.Event">
+		INSERT INTO events_winners
+		  (ew_cd, ev_cd, ew_nm, admin_id, ew_reg_ymd)
+		VALUES 
+		  (
+		  	#{ewCd},
+		    #{evCd},
+		    #{ewNm}, 
+		    #{adminId}, 
+		    CURDATE()
 		  );
 	</insert>
 	
@@ -131,12 +246,96 @@
 	
 	<select id="getEventWinner" parameterType="string" resultMap="eventResultMap">
 		SELECT
-			*
+			user_nn
 		FROM
-			event_participations
+			event_participations inner JOIN user
+		USING
+			(id)
 		WHERE
 			ev_cd=#{evCd}
 			AND
-			ev_winner_yn='Y';	
+			ev_winner_yn='Y';		
+	</select>
+	
+	<select id="getWinnerListInfo" resultType="string">
+		SELECT
+			user_nn
+		FROM
+			event_participations inner JOIN user
+		USING
+			(id)
+		WHERE
+			ev_cd=#{evCd}
+			AND
+			ev_winner_yn='Y';		
+	</select>
+	
+	<select id="selectEventWinners" parameterType="gamepiece.user.event.domain.Event" resultMap="eventResultMap">
+	    SELECT
+		    ep.id
+		FROM
+		    event_participations ep
+		INNER JOIN events e
+		    ON ep.ev_cd = e.ev_cd
+		WHERE
+		    e.ev_cd = #{evCd}
+		ORDER BY
+		    RAND()
+	    LIMIT #{evWinnersNum};
+	</select>
+	
+	<update id="updateWinners" parameterType="gamepiece.user.event.domain.Event">
+	    UPDATE 
+	    	event_participations
+	    SET 
+	    	ev_winner_yn = 'Y'
+	    <where> 
+	    	ev_winner_yn = 'N'
+	      <if test="id != null">
+	          AND ev_cd=#{evCd}
+	          AND id = #{id}
+      	  </if>
+      	</where>
+	</update>
+	
+	<select id="EventWinnerListDetail" parameterType="string" resultMap="eventResultMap">
+		SELECT
+			*
+		FROM
+			events_winners
+		WHERE
+			ev_cd=#{evCd};
+	</select>
+	
+	<select id="getEventWinnerListInfoInfoById" parameterType="String" resultMap="eventResultMap">
+		SELECT
+			*
+		FROM
+			events_winners
+		WHERE
+			ev_cd=#{evCd};
+	</select>
+	
+	<update id="modifyEventWinnerList" parameterType="gamepiece.admin.event.domain.Event">
+		UPDATE events_winners
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="ewNm != null and ewNm != ''">
+				ew_nm=#{ewNm},
+			</if>
+		</trim>
+		WHERE 
+			ev_cd=#{evCd};
+	</update>
+	
+	<select id="countWinner" parameterType="Map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			event_participations
+		WHERE
+			ev_cd = #{evCd}
+		AND
+			ev_winner_yn = 'Y'
+	    LIMIT #{evWinnersNum};
 	</select>
 </mapper>

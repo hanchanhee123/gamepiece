@@ -2,79 +2,149 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{user/layout/default}">
+	<head>
+		<link th:href="@{/assets/css/event/event.css}" rel="stylesheet" type="text/css">
+	</head>
 
-<th:block layout:fragment="contents-header">  
-	<div class="main-div">
-	    <div class="detail-cate">
-	        <a href="javascript: void(0);" onclick="location.href='events.html'" class="item-active active">진행중 이벤트</a>
-	            <a href="javascript: void(0);" onclick="location.href='endevents.html'"class="item-active">종료된 이벤트</a>
-	            <a href="javascript: void(0);" onclick="location.href='winner.html'"class="item-active">당첨자 발표</a>
-    	</div>
-    </div>
-    </th:block>
-    <th:block layout:fragment="contents-body"> 
-    <div class="main-div"> 
-    <div class="list-event">
-        <ul>
-            <li class="event" onclick="location.href='https://lostark.game.onstove.com/Event/Collaboration/240925'">
-                <div class="list-thumb">
-                    <img src="/assets/imgs/event/73cbabf0177d4bb4b2a560a96c1d6e2e.jpg">
-                </div>
-                <div class="list-contents">
-                    <div class="list-con">
-                        <div class="list-subject" aria-label="제목">
-                            <span class="list-title">이벤트 제목</span>
-                        </div>
-                        <div class="list-term">
-                            <strong>이벤트 기간</strong>
-                            : 20xx.xx.xx - 20xx.xx.xx
-                        </div>
-                    </div>
-                    <div class="list-status">
-                        <span class="list-status-ongoing">진행</span>
-                    </div>
-                </div>
-            </li>
-            <li class="event">
-                <div class="list-thumb">
-                    <img src="/assets/imgs/event/3f48c61e02034d6cab70281c2bdc6cca.jpg">
-                </div>
-                <div class="list-contents">
-                    <div class="list-con">
-                        <div class="list-subject" aria-label="제목">
-                            <span class="list-title">이벤트 제목</span>
-                        </div>
-                        <div class="list-term">
-                            <strong>이벤트 기간</strong>
-                            : 20xx.xx.xx - 20xx.xx.xx
-                        </div>
-                    </div>
-                    <div class="list-status">
-                        <span class="list-status-ongoing">진행</span>
-                    </div>
-                </div>
-            </li>
-            <li class="event">
-                <div class="list-thumb">
-                    <img src="/assets/imgs/event/e7df7b358d304a188d818c55d777acfe.jpg">
-                </div>
-                <div class="list-contents">
-                    <div class="list-con">
-                        <div class="list-subject" aria-label="제목">
-                            <span class="list-title">이벤트 제목</span>
-                        </div>
-                        <div class="list-term">
-                            <strong>이벤트 기간</strong>
-                            : 20xx.xx.xx - 20xx.xx.xx
-                        </div>
-                    </div>
-                    <div class="list-status">
-                        <span class="list-status-ongoing">진행</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-    </div>
-</th:block>
+	<th:block layout:fragment="contents-header">  
+		<div class="main-div">
+			<div class="detail-cate">
+				<a th:href="@{/event/progressEvent}" class="item-active active">진행중 이벤트</a>
+				<a th:href="@{/event/endEvent}" class="item-active">종료된 이벤트</a>
+				<a th:href="@{/event/winnerList}" class="item-active">당첨자 발표</a>
+			</div>
+			<div class="search">
+	            <input type="text" class="item-search" id="searchValue" 
+					   name="searchValue" th:value="${searchValue}" placeholder="Search">
+					<button class="btn btn-light bg" id="searchBtn" type="button" style = "height: 31px">
+					<i class="material-icons md-search"></i>
+					</button>
+	        </div>
+		</div>
+	</th:block>
+	<th:block layout:fragment="contents-body"> 
+		<div class="main-div"> 
+			<div class="list-event">
+				<ul>
+				<!-- 이벤트 목록이 null이 아닌 경우 반복 -->
+				<th:block th:if="${eventList != null}">
+					<th:block th:each="event : ${eventList}">
+						<!-- 진행 중인 이벤트만 표시 -->
+						<li class="event" th:if="${event.evStatus == '진행중'}">
+							<div class="list-thumb">
+							    <img th:onclick="|location.href='@{/event/eventDetail(evCd=${event.evCd},evStatus=${event.evStatus})}'|" th:src="${event.filePath}" alt="Event Thumbnail">
+							</div>
+							<div class="list-contents">
+							    <div class="list-con">
+							        <div class="list-subject" aria-label="제목">
+							            <span class="list-title" th:text="${event.evNm}"></span>
+							        </div>
+							        <div class="list-term">
+							            <strong>이벤트 기간</strong>
+								            <span th:text="${event.evStartYmd}"></span>
+								            <span>~</span>
+								            <span th:text="${event.evEndYmd}"></span>
+							        </div>
+							    </div>
+							    <div class="list-status">
+									<span class="list-status-ongoing" th:text="${event.evStatus}"></span>
+							    </div>
+							</div>
+						</li>
+					</th:block>
+				</th:block>
+				</ul>
+			</div>
+		</div>
+		<div class="pagination-area mt-30 mb-50" th:if="${search == null}">
+			<nav>
+				<ul class="pagination justify-content-center">
+					<li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/progressEvent}">
+							<i class="material-icons md-first_page">
+							</i>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+						<a class="page-link " 
+							th:href="@{/event/progressEvent(currentPage=${currentPage - 1})}">
+							<i class="material-icons md-chevron_left">
+							</i>
+						</a>
+					</li>
+					<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				    		<a class="page-link" th:href="@{/event/progressEvent(currentPage=${num})}" th:text="${num}"></a>
+				    	</li>
+				    </th:block>
+				    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+				        <a class="page-link" 
+				        	th:href="@{/event/progressEvent(currentPage=${currentPage + 1})}">
+				        	<i class="material-icons md-chevron_right"></i>
+				        </a>
+				    </li>
+				    <li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/progressEvent(currentPage=${lastPage})}">
+							<i class="material-icons md-last_page">
+							</i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		<div class="pagination-area mt-30 mb-50" th:unless="${search == null}">
+			<nav>
+				<ul class="pagination justify-content-center">
+					<li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/searchList(searchValue=${searchValue})}">
+							<i class="material-icons md-first_page">
+							</i>
+						</a>
+					</li>
+					<li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+						<a class="page-link " 
+							th:href="@{/event/searchList(currentPage=${currentPage - 1}, (searchValue=${searchValue}))}">
+							<i class="material-icons md-chevron_left">
+							</i>
+						</a>
+					</li>
+					<th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				    	<li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				    		<a class="page-link" th:href="@{/event/searchList(currentPage=${num}, (searchValue=${searchValue}))}" th:text="${num}"></a>
+				    	</li>
+				    </th:block>
+				    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+				        <a class="page-link" 
+				        	th:href="@{/event/searchList(currentPage=${currentPage + 1}, (searchValue=${searchValue}))}">
+				        	<i class="material-icons md-chevron_right"></i>
+				        </a>
+				    </li>
+				    <li class="page-item">
+						<a class="page-link " 
+							th:href="@{/event/searchList(currentPage=${lastPage}, (searchValue=${searchValue}))}">
+							<i class="material-icons md-last_page">
+							</i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</th:block>
+	<!--/* 사용자 추가 js script */-->
+	<th:block layout:fragment="customJs">
+		<script th:inline="javascript">
+		$('#searchBtn').click(function(){
+			const searchValue = $('#searchValue').val();
+			const $form = $('<form />', { 'action' : '/event/searchList', 'method':'post'});
+			const $searchValue = $('<input />', {'type':'hidden', 'name' :'searchValue'}).val(searchValue);
+			
+			$form.append($searchValue);
+			$('body').append($form);
+			$form.submit();
+		})
+		</script>
+	</th:block>
 </html>

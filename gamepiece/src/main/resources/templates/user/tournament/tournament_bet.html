@@ -1,44 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
 <head>
-    <meta charset='utf-8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel='stylesheet' type='text/css' media='screen' href='tournament_bet.css'>
-  </head>
+    <link rel='stylesheet' type='text/css' media='screen' th:href='@{/assets/css/tournament/tournament_bet.css}'>
 </head>
 <body>
-    <header>
-        <div class="header-div">
-            <div class="header-img">
-                <img id="header-img" src="GP_logo.png"/>
-            </div>
-            <div class="header-cate">
-                <ul>
-                    <li>게임</li>
-                    <li>대회</li>
-                    <li>커뮤니티</li>
-                    <li>포인트샵</li>
-                    <li>이벤트</li>
-                </ul>
-            </div>
-            <div>
-                <img id="profile-img" src="data:image/png;base64,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">
-            </div>
-        </div>
-    </header>
     <main>
-        <div class="main-div">
+        <th:block layout:fragment="contents-header">
             <div class = "tournament-menu">
                 <ul>
-                    <li><a href="tournament.html" class="button-list">LoL</a></li>
-                    <li><a href="tournament_val.html" class="button-list">Valorant</a></li>
-                    <li><a href="tournament_pubg.html" class="button-list">PUBG</a></li>
-                    <li><a href="tournament_bet.html" class="button-list active">승부예측</a></li>
+                    <li><a th:href="@{/tournament/list}" class="button-list">LoL</a></li>
+		           <li><a th:href="@{/tournament/list/valorant}" class="button-list">Valorant</a></li>
+		           <li><a th:href="@{/tournament/list/pubg}" class="button-list">PUBG</a></li>
+		           <li><a th:href="@{/tournament/matchPrediction}" class="button-list active">승부예측</a></li>
                 </ul>
             </div>
+        </th:block>
+        <th:block layout:fragment="contents-body">
             <div class="tournament-div">
                 <div class="bet-text">
                     <h3>승부예측</h3>
@@ -341,35 +320,35 @@
                     </div>
                 </div>
             </div>
-        </div>
+		    <script text="javascript">
+		        const $selectMonth = document.querySelector('.select-month');
+		
+		        $selectMonth.addEventListener('click', () => {
+		            const $selectMonthList = document.createElement('div');
+		            $selectMonthList.classList.add('select-month-list');
+		            
+		            for(i=1; i<=12; i+=1){
+		                const $p = document.createElement('p');
+		                const $div = document.createElement('div');
+		                $div.classList.add('month');
+		
+		                $p.textContent = i;
+		
+		                $div.appendChild($p);
+		                $selectMonthList.appendChild($div);
+		            }
+		
+		            const $addSelectMonthList = document.querySelector('.select-month-list')
+		            if($addSelectMonthList == null){
+		                $selectMonth.appendChild($selectMonthList);
+		            }else{
+		                $addSelectMonthList.remove();
+		            }
+		            
+		        });
+		    </script>
+         </th:block>
+       </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script text="javascript">
-        const $selectMonth = document.querySelector('.select-month');
-
-        $selectMonth.addEventListener('click', () => {
-            const $selectMonthList = document.createElement('div');
-            $selectMonthList.classList.add('select-month-list');
-            
-            for(i=1; i<=12; i+=1){
-                const $p = document.createElement('p');
-                const $div = document.createElement('div');
-                $div.classList.add('month');
-
-                $p.textContent = i;
-
-                $div.appendChild($p);
-                $selectMonthList.appendChild($div);
-            }
-
-            const $addSelectMonthList = document.querySelector('.select-month-list')
-            if($addSelectMonthList == null){
-                $selectMonth.appendChild($selectMonthList);
-            }else{
-                $addSelectMonthList.remove();
-            }
-            
-        });
-    </script>
 </body>
 </html>

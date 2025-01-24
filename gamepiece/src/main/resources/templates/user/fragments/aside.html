@@ -7,35 +7,31 @@
 	        <span>마이페이지</span>
 	    </div>
 	    <div class="mypage-cate">
-	        <span class="mypage-cate-text mypage-cate-user"
-	        		th:onclick="|location.href='@{/user/myPageUser}'|">사용자 정보</span>
+	        <span class="mypage-cate-text mypage-cate-user">사용자 정보</span>
 	        <ul>
-	            <li th:onclick="|location.href='@{/user/myPageUser}'|">정보 수정</li>
+	            <li th:onclick="|location.href='@{/myPageUser}'|">정보 수정</li>
 	        </ul>
 	    </div>
 	    <div class="mypage-cate">
-	        <span class="mypage-cate-text mypage-cate-game"
-	        		th:onclick="|location.href='@{/user/myPageGame}'|">게임</span>
+	        <span class="mypage-cate-text mypage-cate-game">게임</span>
 	        <ul>
-	            <li th:onclick="|location.href='@{/user/myPageWishlist}'|">위시리스트</li>
-	            <li th:onclick="|location.href='@{/user/myPageReview}'|">내 리뷰</li>
-	            <li th:onclick="|location.href='@{/user/myPageRefundPayment}'|">게임 결제/환불 내역 조회</li>
+	            <!-- <li th:onclick="|location.href='@{/myPageWishlist}'|">위시리스트</li> -->
+	            <li th:onclick="|location.href='@{/myPageReview}'|">내 리뷰</li>
+	            <li th:onclick="|location.href='@{/myPageRefundPayment}'|">게임 결제/환불 내역 조회</li>
 	        </ul>
 	    </div>
 	    <div class="mypage-cate">
-	        <span class="mypage-cate-text mypage-cate-commu"
-	        		th:onclick="|location.href='@{/user/myPageCommunity}'|">커뮤니티</span>
+	        <span class="mypage-cate-text mypage-cate-commu">커뮤니티</span>
 	        <ul>
-	            <li th:onclick="|location.href='@{/user/myPageEmoticon}'|">보유 이모티콘</li>
-	            <li th:onclick="|location.href='@{/user/myPageBoard}'|">내 게시글</li>
-	            <li th:onclick="|location.href='@{/user/myPageInquiry}'|">내 문의글</li>
+	            <li th:onclick="|location.href='@{/myPageEmoticon}'|">보유 이모티콘</li>
+	            <li th:onclick="|location.href='@{/myPageBoard}'|">내 게시글</li>
+	            <li th:onclick="|location.href='@{/myPageInquiry}'|">내 문의글</li>
 	        </ul>
 	    </div>
 	    <div class="mypage-cate">
-	        <span class="mypage-cate-text mypage-cate-event"
-	        		 th:onclick="|location.href='@{/user/myPageEvent}'|">이벤트</span>
+	        <span class="mypage-cate-text mypage-cate-event">이벤트</span>
 	        <ul>
-	            <li th:onclick="|location.href='@{/user/myPageEvent}'|">참여한 이벤트 보기</li>
+	            <li th:onclick="|location.href='@{/myPageEvent}'|">참여한 이벤트 보기</li>
 	        </ul>
 	    </div>
 	</div>

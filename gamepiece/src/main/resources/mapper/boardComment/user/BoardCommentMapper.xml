@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.board.mapper.BoardCommentMapper">
+
+
+
+	<resultMap type="gamepiece.user.board.domain.BoardComment" id="BoardCommentResultMap">
+	  <id column="bc_no"  property="commentNum" />
+	 <result column="bbs_no"  property="boardNum" />
+	 <result column="bc_id"  property="commentUserId" />
+    <result column="bc_cn" property="commentDetail" />
+    <result column="bc_like" property="commentLikeCnt" />
+    <result column="bc_dislike" property="commentDisLikeCnt" />
+    <result column="bc_ymd" property="commentYmd" />
+    
+    
+    <association property="userInfo" javaType="gamepiece.user.user.domain.User">
+ 			<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="authrt_nm" property="authrtNm"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+		<result column="login_no" property="loginNo"/>
+		<result column="lgn_dt" property="lgnDt"/>
+		<result column="inactive_days" property="inactiveDays"/>
+    </association>
+    
+
+	</resultMap>
+
+
+
+
+<!-- 
+
+
+
+
+ 
+
+<select id="getCntComment" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			board_comments 
+		where 
+			is_delete = 'active'
+	
+</select>
+
+-->
+<!-- 
+ -->
+ 
+ <insert id="addComment" parameterType="BoardComment">
+	INSERT INTO board_comments(
+	bc_no, 
+	bbs_no, 
+	bc_id, 
+	bc_cn, 
+	bc_like, 
+	bc_dislike, 
+	bc_ymd)
+	VALUES
+	(CONCAT('bc_', LPAD((
+            SELECT next_num FROM (
+                SELECT MAX(CAST(SUBSTRING_INDEX(bc_no,'bc_',-1) AS UNSIGNED)) + 1 AS next_num 
+                FROM board_comments
+            ) AS temp
+        ), 2, '0')),
+	#{boardNum}, 
+	#{commentUserId},
+	#{commentDetail}, 
+	#{commentLikeCnt}, 
+	#{commentDisLikeCnt}, 
+	CURDATE()
+	)
+</insert>
+ 
+ 
+ 
+ <select id="getCntBoardComment" parameterType="string" resultType="int">
+    SELECT
+        COUNT(*)
+    FROM
+        board_comments
+    WHERE
+    	is_delete = 'active'
+		AND 
+        bbs_no = #{boardNum}
+</select>
+ 
+ 
+<select id="getBoardCommentInfo" parameterType="map" resultMap="BoardCommentResultMap">
+    SELECT
+        bco.bc_no,
+        bco.bc_cn,
+        bco.bc_id,
+        bco.bc_like,
+        bco.bc_dislike,
+        u.user_nn,
+        bco.bc_ymd
+    FROM
+        board_comments bco INNER JOIN user u
+        ON bco.bc_id = u.id
+    WHERE  
+    	bco.is_delete = 'active'
+		AND 
+        bbs_no = #{boardNum}
+                
+    LIMIT #{rowPerPage} OFFSET #{offset}
+</select>
+
+
+
+
+
+<select id="getCommentInfo" parameterType="string" resultMap="BoardCommentResultMap">
+	SELECT
+		bc.bc_no,
+		bc.bbs_no,
+		bc.bc_cn,
+		bc.bc_like,
+		bc.bc_dislike,
+		u.user_nn,
+		u.id,
+		bc.bc_ymd
+	FROM
+		board_comments bc INNER JOIN user u
+		ON bc.bc_id = u.id
+WHERE
+   bc.bc_no = #{commentNum}
+
+
+</select>
+
+ <update id="modifyComment" parameterType="BoardComment">
+
+	UPDATE board_comments
+	SET
+		bc_cn=#{commentDetail}
+	WHERE 
+	bc_no = #{commentNum}
+
+</update>
+
+<update id="removeComment" parameterType="BoardComment">
+		UPDATE 
+			board_comments
+		SET
+			is_delete = 'delete'
+		WHERE 
+			bc_no = #{commentNum}
+
+
+
+</update>
+
+
+</mapper>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link rel="stylesheet" th:href="@{/assets/css/board/boardList.css}" />
+	   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<th:block layout:fragment="contents-body">
+<div th:if="${message}" class="alert alert-primary alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    	<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+	<main>
+         <div class="main_div">
+        <div class="boards-div">
+        <div class="board-bar">
+            <div class="board"><a th:href="@{/board/free}" class="boardWord">자유게시판</a></div>
+            <div class="board"><a th:href="@{/board/attack}" class="boardWord">공략게시판</a></div>
+            <div class="board"><a th:href="@{/board/info}" class="boardWord">정보게시판</a></div>
+            <div class="board"><a th:href="@{/board/notice}" class="boardWord">공지사항</a></div>
+            <div class="board"><a th:href="@{/board/inquiry}" class="boardWord">문의사항</a></div>
+
+        </div>
+    </div>
+        <div class="content">
+            <div class = searchAndWrite>
+               <div class="search">
+                    <input type="text" class="item-search" id="searchValue" 
+                    	name="searchValue" th:value="${searchValue}"/>
+                    <i class="bi bi-search" id="searchBtn" type="button"></i>
+                </div>
+                <div class="board-make">
+    <button class="button" th:if="${session.SID != null}" onclick="location.href='/board/inquiry/write';">게시물 작성</button>
+     <button class="button" th:unless="${session.SID != null}" onclick="checkLogin();">게시물 작성</button>
+</div>
+            </div>
+            
+              <table class="table table-hover">
+                <thead>
+                <tr class="header">
+                    <th class="num"><span>번호</span></th>
+                    <th class="title"><span>제목</span></th>
+                     <th><span>작성자</span></th>
+                     <th><span>작성일</span></th>
+                    <th><span>답변여부</span></th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+             <th:block th:if="${not #lists.isEmpty(inquiryList)}">        
+                               <tr th:each="l : ${inquiryList}">
+                                        
+                                       <td th:text="${l.inquiryNum}"></td>
+                                      <td id="inquiryTitle">
+                                      
+                              <a th:href="@{/board/inquiry/detail(inquiryNum=${'inq_' + #numbers.formatInteger(l.inquiryNum, 2)})}"
+									       th:text="${l.inquiryTitle}" 
+									       style="text-decoration: none; color: inherit; cursor: pointer;">
+									    </a>
+									</td>
+                                       <td th:text="${l.userInfo.userNn}"></td>
+                                       <td th:text="${l.inquiryYmd}"></td>
+                                       <td>
+   							 <span th:if="${l.responeInfo.responeNum != null}"
+     					 class="badge rounded-pill bg-primary-subtle text-primary-emphasis">답변완료</span>
+               							 </td>                                    
+                                   
+                                    </tr>
+                                    </th:block>
+                                          <th:block th:if="${#lists.isEmpty(inquiryList)}">
+                               
+								<tr>
+									<td colspan="5">등록된 게시물이 없습니다.</td>
+								</tr>
+							</th:block>
+                                 
+                                </tbody>
+            </table>
+        
+         
+            <div id="memberMenu">
+                <div class="memberMenuFont" id="lookpost" >작성글보기</div>
+             
+ 
+            </div>
+            
+            <div class="pagination-area mt-15 mb-50">
+			            <nav>
+			                <ul class="pagination justify-content-center">
+			                    <li class="page-item">
+			                        <a class="page-link" th:href="@{/board/inquiry}">
+			                        	<i class="material-icons md-first_page"></i>
+			                        </a>
+			                    </li>
+			                    <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/board/inquiry(currentPage=${currentPage - 1})}">
+			                        	<i class="material-icons md-chevron_left"></i>
+			                        </a>
+			                    </li>
+			                    <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				                    <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+				                    	<a class="page-link" th:href="@{/board/inquiry(currentPage=${num})}" 
+				                    	   th:text="${num}">
+				                    	</a>
+				                    </li>
+			                    </th:block>
+			                    <li class="page-item" th:classappend="${currentPage eq lastPage} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/board/inquiry(currentPage=${currentPage + 1})}">
+			                        	<i class="material-icons md-chevron_right"></i>
+			                        </a>
+			                    </li>
+			                    <li class="page-item">
+			                        <a class="page-link" th:href="@{/board/inquiry(currentPage=${lastPage})}">
+			                        	<i class="material-icons md-last_page"></i>
+			                        </a>
+			                    </li>
+			                </ul>
+			            </nav>
+			        </div>
+    
+            
+   
+        </div>
+    
+</div> 
+
+
+
+
+
+    </main>
+</th:block>
+<!--/* 사용자 추가 js file */-->
+<th:block layout:fragment="customJsResource">
+	
+	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+</th:block>
+<!--/* 사용자 추가 js script */-->
+<th:block layout:fragment="customJs">
+    <script>
+    
+    function checkLogin() {
+ 	   alert('로그인 후 작성 가능합니다');
+ 	   window.location.href = '/login';
+ 	}
+ 
+ 
+ 
+    
+
+
+	$('#searchBtn').click(function(){
+		
+		const searchValue = $('#searchValue').val();
+		const $form = $('<form />', { 'action' : '/board/inquiryList', 'method': 'post'});
+	
+		const $searchValue = 
+				$('<input />', {'type':'hidden', 'name' : 'searchValue'}).val(searchValue);
+		$form.append($searchValue);
+		$('body').append($form);
+		$form.submit();
+	});  
+    
+
+
+
+</script>
+
+</th:block>
+</html>

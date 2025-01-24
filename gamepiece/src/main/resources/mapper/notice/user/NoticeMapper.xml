@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.board.mapper.NoticeMapper">
+
+
+	<resultMap type="gamepiece.user.board.domain.Notice" id="NoticeResultMap">
+    <id column="ntc_no"  property="noticeNum" />
+    <result column="ntc_title" property="noticeTitle" />
+    <result column="ntc_cn" property="noticeContent" />
+    <result column="ntc_img" property="noticeImg" />
+    <result column="ntc_view" property="viewCount" />
+    <result column="admin_id" property="adminId" />
+    <result column="reg_ymd" property="noticeYmd" />
+
+
+	<association property="userInfo" javaType="gamepiece.user.user.domain.User">
+ 			<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+    </association>
+
+
+
+
+</resultMap>
+	
+							<select id="getNoticeSearchList" parameterType="map" resultMap="NoticeResultMap">
+							   SELECT 
+							   ntc_no, 
+								ntc_title, 
+								ntc_cn, 
+								ntc_img, 
+								ntc_view, 
+								admin_id, 
+								reg_ymd
+							FROM 
+							       ntc_mttr 
+							   WHERE 1=1
+							   <if test="searchValue != null and searchValue != ''">
+							       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
+							   </if>
+									AND is_delete = 'active'
+							ORDER BY ntc_no DESC
+							   LIMIT #{rowPerPage} OFFSET #{offset}
+							</select>
+							
+							<select id="getCntSearchNotice" parameterType="map" resultType="int">
+							   SELECT 
+							   		COUNT(*)
+							   FROM  
+							   			ntc_mttr
+							   WHERE 1=1
+							   <if test="searchValue != null and searchValue != ''">
+							       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
+							   </if>
+							   AND is_delete = 'active'
+							</select>
+
+
+<select id="getCntNotice" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			 ntc_mttr
+		WHERE
+			is_delete = 'active'
+	
+</select>
+
+
+
+<select id="getNoticeList" parameterType="gamepiece.util.Pageable" resultMap="NoticeResultMap">
+
+SELECT 
+	ntc_no, 
+	ntc_title, 
+	ntc_cn, 
+	ntc_img, 
+	ntc_view, 
+	admin_id, 
+	reg_ymd
+FROM
+	 ntc_mttr
+WHERE
+	is_delete = 'active'
+	ORDER BY ntc_no DESC
+ LIMIT #{rowPerPage} OFFSET #{offset};
+</select>
+
+
+	<select id="getNoticeInfo" parameterType="Notice" resultMap="NoticeResultMap">
+	
+	SELECT 
+		nm.ntc_no, 
+		nm.ntc_title, 
+		nm.ntc_cn, 
+		nm.ntc_img, 
+		nm.ntc_view, 
+		u.user_nn, 
+		nm.reg_ymd
+	FROM 
+		ntc_mttr nm INNER JOIN user u 
+		ON nm.admin_id = u.id
+	WHERE
+		nm.ntc_no=#{noticeNum};
+		
+	
+	</select>
+	
+<update id="addViewCount" parameterType="int">
+    UPDATE 
+    		ntc_mttr
+    SET ntc_view = ntc_view + 1
+    WHERE 
+    		ntc_no=#{noticeNum};
+</update>
+
+
+</mapper>

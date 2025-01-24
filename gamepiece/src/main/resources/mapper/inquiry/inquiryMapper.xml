@@ -30,35 +30,70 @@
 		<result column="inactive_days" property="inactiveDays"/>
 		</association>
 
-	</resultMap>
+	
+	
 
-<update id="removeInquiry" parameterType="string">
-
-	UPDATE
-		inquiry
-	SET
-		isdelete = 'delete'
-	WHERE
-		inquiry_id =#{inquiryNum};
-
-	</update>
-
-
+	<association property="responeInfo" javaType="gamepiece.admin.inquiry.domain.InquiryRespone">
+				<id column="response_id" property="responeNum" />
+		<result column="inquiry_id" property="inquiryNum"/>
+		<result column="response_content" property="responeContent"/>
+		<result column="admin_id" property="adminId"/>
+		<result column="response_ymd" property="responeYmd"/>
+		
+		</association>
+		</resultMap>
+		
+		
+					<select id="getInquirySearchList" parameterType="map" resultMap="InquiryResultMap">
+					   SELECT 
+					      	i.inquiry_id,
+							ir.response_id,
+							i.inquiry_title,
+							i.inquiry_content,
+							u.user_nn,
+							i.inquiry_ymd
+					   FROM 
+					       	inquiry i INNER JOIN user u
+							ON i.id = u.id
+							LEFT JOIN inquiry_response ir
+						   USING (inquiry_id)
+					   WHERE 1=1
+					   <if test="searchValue != null and searchValue != ''">
+					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
+					   </if>
+					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED)
+					   LIMIT #{rowPerPage} OFFSET #{offset}
+					</select>
+					
+					<select id="getCntSearchInquiry" parameterType="map" resultType="int">
+					   SELECT 
+					   		COUNT(*)
+					   FROM  
+					   		inquiry i
+					   WHERE 1=1
+					   <if test="searchValue != null and searchValue != ''">
+					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
+					   </if>
+					</select>
+		
+		
+		
+	
 
 <select id="getCntInquiry" resultType="int">
 	SELECT
 		COUNT(*)
 	FROM
 		inquiry
-	WHERE
-		isdelete = 'active'
+	
 	</select>
 
 
 <select id="getInquiryList" parameterType="gamepiece.util.Pageable" resultMap="InquiryResultMap">
 
-	SELECT
+SELECT
 		i.inquiry_id,
+		ir.response_id,
 		i.inquiry_title,
 		i.inquiry_content,
 		u.user_nn,
@@ -66,10 +101,11 @@
 	FROM
 		inquiry i INNER JOIN user u
 		ON i.id = u.id
-	WHERE
-		i.isdelete = 'active'
+		LEFT JOIN inquiry_response ir
+	   USING (inquiry_id)
 	ORDER BY
-		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED);
+		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED)
+	LIMIT #{rowPerPage} OFFSET #{offset}
 
 	</select>
 
@@ -86,9 +122,7 @@
 			CONCAT('inq_', LPAD(COALESCE((
 			SELECT next_num FROM (
 			SELECT MAX(CAST(SUBSTRING_INDEX(inquiry_id, 'inq_', -1) AS UNSIGNED)) + 1 AS
-			next_num
-		FROM 
-			inquiry
+			next_num FROM inquiry
 			) AS temp
 			), 1), 2, '0')),
 			CONCAT('id', LPAD(#{idN}+1,2,'0')),
@@ -99,31 +133,23 @@
 
 	</insert>
 
+
+
+
+
+
 	<select id="getInquiryInfo" parameterType="string" resultMap="InquiryResultMap">
 	SELECT
-		i.inquiry_id,
-		i.inquiry_title,
-		i.inquiry_content
+	i.inquiry_id,
+	i.inquiry_title,
+	i.inquiry_content
 	FROM
-		inquiry i
+		inquiry i 
 	WHERE
 		inquiry_id =#{inquiryNum};
 
 	</select>
 
-	<update id="modifyInquiry" parameterType="Inquiry">
-		UPDATE
-			 inquiry
-		<set>
-			<if test="inquiryTitle != null and inquiryTitle != ''">
-				inquiry_title = #{inquiryTitle},
-			</if>
-			<if test="inquiryContent != null and inquiryContent != ''">
-				inquiry_content = #{inquiryContent}
-			</if>
-		</set>
-	WHERE
-		inquiry_id=#{inquiryNum}
-	</update>
+
 
 </mapper>

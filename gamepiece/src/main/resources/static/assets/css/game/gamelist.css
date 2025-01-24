@@ -1,0 +1,551 @@
+@charset "UTF-8";
+header {
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0px;
+    margin: 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;;
+
+}
+
+.header_div{
+    width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-img {
+    width: 80px;
+    height: auto;
+}
+
+#profile-img {
+    width: 45px;
+    height: 45px;
+    margin: 20px;
+}
+
+.header-cate ul {
+    display: flex;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.header-cate li {
+    margin: 0px 40px;
+}
+body {
+    padding-top: 106px;
+    background-color: #051E38;
+    overflow-y: scroll;
+}
+
+.main_div{
+    width: 1280px;
+    margin: 0 auto;
+}
+
+.card-body a {
+	text-decoration: none;
+}
+.gamelist-cate  a{
+    color: white;
+    text-decoration: none;
+}
+.gamelist-cate.active a{
+	color:#007AFF;
+	font-weight: bold;
+}
+.gamelist-cateA  a{
+    color: white;
+    text-decoration: none;
+}
+.gamelist-cateA.active a{
+	color:#007AFF;
+	font-weight: bold;
+}
+
+.category-menu ul{
+    display : flex;
+    align-items: center;
+    margin : 30px;
+    padding : 0px;
+    justify-content: space-evenly;
+    
+}
+.category-menu li {
+    text-decoration : none;
+    list-style: none;
+    color : white;
+}
+
+.bi-search{
+    border: 1px solid #007AFF;
+    background-color: white;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    text-align: center;
+}
+.search{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom : 30px;
+    width: 1230px;
+}
+.item-search{
+    margin-left : 10px;
+    margin-right : 5px;
+    
+}
+.search-button {
+    border : 1px solid #007AFF;
+    background-color: white;
+    border-radius: 5px;
+}
+.item-search {
+    border-radius: 3px;
+    border: 1px solid #007AFF;
+    height: 30px;
+}
+
+
+
+.game-list-area {
+    padding : 30px 50px;
+    margin : 15px 10px;
+    display : flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    
+}
+.game-info {
+    background-color: white;
+    border-radius: 10px;
+    width : 200px;
+    height : 250px;
+    color : black;
+    display: grid;
+    justify-content: center;
+    margin-bottom : 40px;
+}
+.game-info a{
+	text-decoration : none;
+	color : black;
+	text-align : center;
+}
+
+.game-info p {
+    margin: 0;
+    
+}
+
+.game-info img {
+    padding: 10px 0px;
+    width : 180px;
+    height : 150px;
+}
+
+
+.game-price {
+    text-align: right;
+    font-weight: bold;
+    margin-top : auto;
+}
+
+.game-platform {
+    color: #6c757d;
+}
+
+.detail-info {
+    padding: 40px 20px 0px 10px;
+    border-bottom: 1px solid #007AFF;
+    display : flex;
+}
+.detail1 {
+    width : 70%;
+    margin-right: 2%;
+}
+.video img{
+    width : 100%;
+    height : 500px;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+.game-price-detail {
+    padding: 10px 30px;
+    margin-top: 20px;
+    border-radius: 10px;
+    color: white;
+    height: 80px;
+    font-size: 25px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    background-color: #0B2A4B;
+}
+
+.wishlist {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0px;
+}
+
+.wishlist > button {
+    margin-right: 10px;
+}
+
+/* .button-area {
+    margin-top: 20px;
+}
+.button-area button {
+    width : 150px;
+    height : 35px;
+    border-radius: 10px;
+    background-color: #007AFF;
+    color : white;
+} */
+
+.game-script {
+    color: white;
+    background-color: #051E38;
+}
+
+/* .move-wishlist {
+    display : flex;
+    padding-top: 20px;
+} */
+
+.write-review {
+    width : 1240px;
+    height : 300px;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding : 20px;
+    margin-bottom: 10px;
+    display : flex;
+    background-color: #0B2A4B;
+    color: white;
+    border: 1px solid #007AFF;
+}
+.user img {
+    width : 40px;
+    height : 40px;
+    background-color: lightgray;
+}
+.reviewbox {
+    margin-left: 10px;
+}
+.reviewbox textarea {
+    width : 1020px;
+    height : 260px;
+    resize: none;
+}
+.reviewbutton {
+    display: grid;
+    align-content : space-between;
+    align-items: end;
+    text-align: center;
+    margin-left : 20px;
+}
+.reviewbutton select {
+	border : 1px solid #007AFF;
+}
+.reviewbutton button {
+    width : 64px;
+    height : 30px;
+    background-color: #007AFF;
+    border-radius: 10px;
+    color : white;
+    /* margin-top: 150px; */
+}
+.detail2 {
+    width : 30%;
+    padding-left : 20px;
+}
+.more-info {
+    height : auto;
+    border-radius: 10px;
+    background-color: #0B2A4B;
+    color: white;
+}
+
+.more-info img {
+    width: 330px;
+    margin: 10px;
+    height: 200px;
+}
+
+.more-info-area {
+    margin: 10px;
+}
+
+.more-info-area > div {
+    display: flex;
+    margin: 10px 0px;
+}
+
+.gm-summation {
+    padding-bottom: 10px;
+}
+
+.gm-info {
+    width: 115px;
+    font-weight: bold;
+}
+
+.other-game {
+    border-radius: 10px;
+    margin-top: 20px;
+    color: white;
+}
+.more-game {
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    background-color: #0B2A4B;
+    margin: 20px 0px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+}
+.more-game img {
+    width : 120px;
+    height : 100px;
+    background-color: #ffffff;
+    border-radius: 10px 0px 0px 10px;
+}
+.review-list {
+    padding : 20px;
+}
+.review-info {
+    list-style: none;
+    color : white;
+    display : flex;
+    justify-content: space-between;
+}
+.review-cate {
+    list-style: none;
+    display : flex;
+    margin-top: 20px;
+}
+.review-cate li a{
+    text-decoration: none;
+    color : white;
+}
+.reviewList {
+    border-radius: 10px;
+    padding : 10px;
+    margin-top: 20px;
+    color: white;
+}
+.review-area {
+	display : flex;
+    justify-content: space-between;
+}
+.review {
+    width : 603px;
+    height : 300px;
+    border-radius: 10px;
+    padding : 20px;
+    display : flex;
+    background-color: #0B2A4B;
+}
+
+.review .user {
+    width: 10%;
+}
+
+.review-content {
+    width: 90%;
+    margin-left : 15px;
+}
+.content {
+    margin-top: 20px;
+    font-size: 16px;
+    height: 180px;
+}
+
+.likeDislike {
+    display: flex;
+    justify-content: space-between;
+}
+
+.report {
+    text-decoration-line: none;
+    color: red;
+}
+/* 
+.like-button {
+    margin-top: 20px;
+}
+.like-button button {
+    border : 1px solid #007AFF;
+    border-radius: 10px;
+    background-color: #007AFF;
+    color : white;
+} */
+ 
+.comment {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.more-look {
+    margin-top: 20px;
+    text-align: center;
+}
+/* .more-look button {
+    width : 100px;
+    height : 50px;
+    border: 1px solid #007AFF;
+    border-radius: 10px;
+    background-color: #007AFF;
+    color : white;
+} */
+.cart {
+    padding : 20px;
+}
+.cart-title {
+    border-bottom: 1px solid #007AFF;
+    margin-top: 20px;
+}
+.cart-list {
+    padding : 20px 40px;
+    border-bottom: 1px solid #007AFF;
+    
+    
+}
+.cart-info {
+    height : 150px;
+    border : 1px solid #007AFF;
+    border-radius: 10px;
+    background-color: #0B2A4B;
+    margin-top: 20px;
+    display : flex;
+    padding : 10px;
+    align-items: center;
+}
+.cart-img img{
+    width : 200px;
+    height : 130px;
+}
+.cart-price {
+    display : flex;
+    justify-content:space-between;
+    padding :20px;
+    width : 1280px;
+}
+.cart-price li{
+    list-style: none;
+    text-decoration: none;
+    color: white;
+    font-size: 30px;
+}
+.cart-total {
+    display : flex;
+    justify-content: space-between;
+    margin-top : 20px;
+}
+.cart-total li{
+    text-decoration: none;
+    list-style: none;
+    color : white;
+}
+.cart-continue {
+    display : flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.cart-continue button {
+    width :120px;
+    height : 50px;
+    border : 1px solid #007AFF;
+    border-radius: 10px;
+    background-color: #007AFF;
+    color: white;
+}
+.progress-area {
+    padding : 20px;
+    border-bottom: 1px solid #007AFF;
+}
+.progress-list {
+    margin-top : 20px;
+    height : 80px;
+    border : 1px solid #007AFF;
+    border-radius: 10px;
+    background-color: #0B2A4B;
+    padding : 10px;
+    display : flex;
+    
+}
+.progress-img img {
+    width : 150px;
+    height : 60px;
+}
+.progress-price {
+    display : flex;
+    justify-content: space-between;
+    align-items: center;
+    padding : 0px 30px;
+    width : 1280px;
+}
+.progress-price li {
+    list-style: none;
+    text-decoration: none;
+    color: white;
+}
+.payment-area {
+    padding : 20px;
+    display : flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.payment-total {
+    color : white;
+}
+.payment-method {
+    color : white;
+}
+.payment-button button {
+    border : 1px solid #007AFF;
+    background-color: #007AFF;
+    border-radius: 10px;
+    color : white;
+}
+.complete-area {
+    padding : 20px;
+    
+}
+.complete {
+    color : white;
+    margin : 50px 30px;
+}
+.complete div {
+    display : flex;
+    width : 420px;
+    justify-content: space-between;
+    margin-top : 10px;
+}
+.complete div li {
+    list-style: none;
+}
+.complete div li a{
+    text-decoration: none;
+    color : white;
+}
+
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    border: none;
+}

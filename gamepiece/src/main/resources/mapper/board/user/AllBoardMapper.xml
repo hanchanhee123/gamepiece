@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.board.mapper.AllBoardMapper">
+
+
+
+
+	<resultMap type="gamepiece.user.board.domain.Board"
+		id="BoardResultMap">
+		<id column="bbs_no" property="boardNum" />
+		<result column="bbs_cate_cd" property="boardCategory" />
+		<result column="bbs_title" property="boardTitle" />
+		<result column="bbs_cn" property="boardContent" />
+		<result column="id" property="boardUserId" />
+		<result column="bbs_like" property="boardLikeCnt" />
+		<result column="bbs_dislike" property="boardDisLikeCnt" />
+		<result column="bbs_view" property="boardViewCnt" />
+		<result column="bbs_ymd" property="boardYmd" />
+
+
+
+
+		<association property="userInfo"
+			javaType="gamepiece.user.user.domain.User">
+			<id column="id" property="id" />
+			<result column="authrt_cd" property="authrtCd" />
+			<result column="user_pw" property="userPswd" />
+			<result column="user_nm" property="userNm" />
+			<result column="user_gender" property="userGender" />
+			<result column="user_eml_addr" property="userEmlAddr" />
+			<result column="user_brdt" property="userBrdt" />
+			<result column="user_telno" property="userTelno" />
+			<result column="user_nn" property="userNn" />
+			<result column="join_ymd" property="joinYmd" />
+			<result column="whdwl_ymd" property="whdwlYmd" />
+		</association>
+
+
+
+
+	</resultMap>
+
+
+			<select id="getBoardSearchList" parameterType="map" resultMap="BoardResultMap"> 
+			SELECT 
+				b.bbs_no, 
+				b.bbs_cate_cd,
+				 b.bbs_title,
+				  b.bbs_view,
+				   b.bbs_like, 
+				   b.bbs_dislike, 
+					u.user_nn,
+					 b.bbs_ymd
+		  FROM
+		  	 boards b INNER JOIN  user u 
+		  	 ON b.id = u.id 
+		  	 	WHERE 1=1 
+		  	 		
+		<if test="searchValue != null and searchValue != ''"> 
+		AND b.bbs_title 
+		LIKE CONCAT('%', #{searchValue}, '%') 
+		</if> 
+		AND 
+		b.is_delete = 'active'
+		
+		
+		ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
+		 LIMIT #{rowPerPage} 
+		 OFFSET #{offset} </select> 
+		
+		<select id="getCntSearchBoard" parameterType="map" resultType="int"> 
+			SELECT 
+				COUNT(*) 
+			  FROM
+		  	 boards b INNER JOIN  user u 
+		  	 ON b.id = u.id 
+				WHERE 
+					1=1 
+				  <if test="searchValue != null and searchValue != ''"> 
+				  AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%') 
+				  </if> 
+				  		AND 
+					b.is_delete = 'active'
+		
+				  </select> 
+			
+
+
+
+	<select id="getCntBoard" resultType="int">
+		SELECT
+		COUNT(*)
+		FROM
+		boards b
+		WHERE
+		b.is_delete = 'active'
+
+
+	</select>
+
+
+
+
+
+	<select id="getAllBoardsList"
+		parameterType="gamepiece.util.Pageable" resultMap="BoardResultMap">
+		SELECT
+		b.bbs_no,
+		b.bbs_cate_cd,
+		b.bbs_title,
+		b.bbs_view,
+		b.bbs_like,
+		b.bbs_dislike,
+		u.user_nn,
+		b.bbs_ymd
+		FROM
+		boards b INNER JOIN user u
+		ON b.id = u.id
+		WHERE
+		b.is_delete = 'active'
+			ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
+		LIMIT #{rowPerPage} OFFSET #{offset};
+	</select>
+
+
+
+
+
+
+	<insert id="addBoard" parameterType="Board">
+		INSERT INTO boards(
+		bbs_no,
+		bbs_cate_cd,
+		id,
+		bbs_title,
+		bbs_cn,
+		bbs_like,
+		bbs_dislike,
+		bbs_view,
+		bbs_ymd
+		)VALUES(
+		CONCAT('bbs_', LPAD((
+		SELECT next_num FROM (
+		SELECT MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)) + 1 AS
+		next_num
+		FROM boards
+		) AS temp
+		), 2, '0')),
+		#{boardCategory},
+		#{boardUserId},
+		#{boardTitle},
+		#{boardContent},
+		#{boardLikeCnt},
+		#{boardDisLikeCnt},
+		#{boardViewCnt},
+		CURDATE()
+		);
+	</insert>
+
+
+
+	<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">
+
+
+		SELECT
+			b.bbs_no,
+			b.bbs_cate_cd,
+			b.bbs_title,
+			b.bbs_cn,
+			b.bbs_like,
+			b.bbs_dislike,
+			b.bbs_ymd,
+			u.user_nn,
+			u.id
+		FROM
+				boards b INNER JOIN user u
+				ON b.id = u.id
+
+		WHERE
+		b.bbs_no=#{boardNum}
+		AND 
+		b.is_delete = 'active'
+
+
+	</select>
+
+
+
+
+
+
+	<update id="modifyBoard" parameterType="Board">
+		UPDATE boards
+		<set>
+			<if test="boardCategory != null and boardCategory != ''">
+				bbs_cate_cd = #{boardCategory}
+			</if>
+			<if test="boardTitle != null and boardTitle != ''">
+				,bbs_title = #{boardTitle}
+			</if>
+			<if test="boardContent != null and boardContent != ''">
+				,bbs_cn = #{boardContent}
+			</if>
+		</set>
+		WHERE
+		bbs_no=#{boardNum}
+	</update>
+
+
+	<update id="removeBoard" parameterType="string">
+		UPDATE
+			boards
+		SET
+		is_delete = 'delete'
+		WHERE
+			bbs_no=#{boardNum}
+	</update>
+
+<update id="addViewCount" parameterType="String">
+    UPDATE boards
+    SET bbs_view = bbs_view + 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
+
+
+</mapper>

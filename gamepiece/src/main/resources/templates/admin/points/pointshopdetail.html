@@ -67,6 +67,9 @@
                                 </div> <!-- col.// -->
                                 <div>
 			                      <button type="submit" id="modifyMemberBtn" class="btn btn-md rounded font-sm hover-up">수정</button>
+                                  <a id="inactiveBtn" th:href="@{/admin/point/inactiveItem(ps_cd=${itemCd})}"
+                                        onclick="return confirm('판매를 중지하시겠습니까?');"
+                                        class="btn btn-sm btn-outline-danger font-sm rounded">판매 중지</a>
 			                  </div>
                             </div> <!-- .row end// -->
                         </div>

@@ -4,25 +4,25 @@
 	  layout:decorate="~{user/layout/default}">
 	<head>
 		<link rel="stylesheet" th:href="@{/assets/css/point/point.css}" type="text/css"/>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	</head>
 	<th:block layout:fragment="contents-header">
          <div class="">
               <div class="main-div">
             <ul>
-                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">이모티콘</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/avatar}">아바타</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/background}">배경프로필</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/frame}">아바타액자</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/etc}">기타</a></li>
-                <li class="pointshop-cate"><a th:href="@{/user/point/imoticon}">구매내역</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/imoticon}">이모티콘</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/avatar}">아바타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/background}">배경프로필</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/frame}">아바타액자</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/etc}">기타</a></li>
+                <li class="pointshop-cate"><a th:href="@{/point/history}" th:if="${userId != null}">구매내역</a></li>
             </ul>
-        <div class="pointshop-Hd">
+        <div class="pointshop-Hd" th:if="${userId != null}">
             <div class="pointshop-top">
-                <div class="search">
-                    <input type="text" class="item-search"/>
-                    <i class="bi bi-search"></i>
+                <div>
+                    
                 </div>
-                <div class = "myPoint">보유 포인트<div><span class="point">1050</span> Point</div></div>
+                <div class="myPoint">보유 포인트<div><span class="point" id="myPointValue" th:text="${userPoint}"></span> Point</div></div>
             </div>
         </div>
           </div>
@@ -31,127 +31,261 @@
    	<th:block layout:fragment="contents-body">
    	<div class="main_div">
    		<!-- 이모티콘  -->
-	   	 <div class="pointshop-cate-name">이모티콘</div>
+   	 	<div class="pointshop-cate-name">이모티콘</div>
         <div class="pointShopImg">
-            <div id="pointShopImg" class="slider carousel slide">
-                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
-                    <i class="bi bi-chevron-left"></i>
-                </div>
-                <div class="carousel-inner">
-                    <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${imoticonList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-                                <img th:src="${l.itemImgurl}">
-                                <div th:text="${l.itemName}"></div>
-                                <div th:text="${l.itemPrice}" class="itemName"></div>
-                            </div>    
-                        </div>
-                    </div>  
-                </div>
-                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
-        </div>
+           	<div class="container-fluid mt-5">
+		        <div class="row justify-content-center">
+		            <div class="col-11">
+		                <div class="swiper w-100 h-100">
+		                    <div class="swiper-wrapper" style="height: 300px;">
+		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${imoticonList}">
+		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
+		                                <img th:src="${l.filePath}">
+		                                <div th:text="${l.itemName}" class="itemName"></div>
+		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
+		                            </div> 
+		                        </div>
+		                    </div>                 
+					        <div class="swiper-button-next"></div>
+					        <div class="swiper-button-prev"></div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+	    </div>
+        
 		<!-- 프로필이미지 -->
         <div class="pointshop-cate-name">프로필이미지</div>
        <div class="pointShopImg">
-            <div id="pointShopImg" class="slider carousel slide">
-                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
-                    <i class="bi bi-chevron-left"></i>
-                </div>
-                <div class="carousel-inner">
-                    <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${avatarList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-                                <img th:src="${l.itemImgurl}">
-                                <div th:text="${l.itemName}"></div>
-                                <div th:text="${l.itemPrice}" class="itemName"></div>
-                            </div>    
-                        </div>
-                    </div>  
-                </div>
-                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
+            <div class="container-fluid mt-5">
+		        <div class="row justify-content-center">
+		            <div class="col-11">
+		                <div class="swiper w-100 h-100">
+		                    <div class="swiper-wrapper" style="height: 300px;">
+		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${avatarList}">
+		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
+		                                <img th:src="${l.filePath}">
+		                                <div th:text="${l.itemName}" class="itemName"></div>
+		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
+		                            </div> 
+		                        </div>
+		                    </div>                 
+					        <div class="swiper-button-next"></div>
+					        <div class="swiper-button-prev"></div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
         </div>
        
         <div class="pointshop-cate-name">배경프로필</div>
         <div class="pointShopImg">
-            <div id="pointShopImg" class="slider carousel slide">
-                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
-                    <i class="bi bi-chevron-left"></i>
-                </div>
-                <div class="carousel-inner">
-                    <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${backList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-                                <img th:src="${l.itemImgurl}">
-                                <div th:text="${l.itemName}"></div>
-                                <div th:text="${l.itemPrice}" class="itemName"></div>
-                            </div>    
-                        </div>
-                    </div>  
-                </div>
-                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
+            <div class="container-fluid mt-5">
+		        <div class="row justify-content-center">
+		            <div class="col-11">
+		                <div class="swiper w-100 h-100">
+		                    <div class="swiper-wrapper" style="height: 300px;">
+		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${backList}">
+		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
+		                                <img th:src="${l.filePath}">
+		                                <div th:text="${l.itemName}" class="itemName"></div>
+		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
+		                            </div> 
+		                        </div>
+		                    </div>                 
+					        <div class="swiper-button-next"></div>
+					        <div class="swiper-button-prev"></div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
         </div>
 
         <div class="pointshop-cate-name">아바타액자</div>
         <div class="pointShopImg">
-            <div id="pointShopImg" class="slider carousel slide">
-                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
-                    <i class="bi bi-chevron-left"></i>
-                </div>
-                <div class="carousel-inner">
-                    <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${frameList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-                                <img th:src="${l.itemImgurl}">
-                                <div th:text="${l.itemName}"></div>
-                                <div th:text="${l.itemPrice}" class="itemName"></div>
-                            </div>    
-                        </div>
-                    </div>  
-                </div>
-                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
-            </div>
+            <div class="container-fluid mt-5">
+		        <div class="row justify-content-center">
+		            <div class="col-11">
+		                <div class="swiper w-100 h-100">
+		                    <div class="swiper-wrapper" style="height: 300px;">
+		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${frameList}">
+		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
+		                                <img th:src="${l.filePath}">
+		                                <div th:text="${l.itemName}" class="itemName"></div>
+		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
+		                            </div> 
+		                        </div>
+		                    </div>                 
+					        <div class="swiper-button-next"></div>
+					        <div class="swiper-button-prev"></div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
         </div>
         <div class="pointshop-cate-name">기타</div>
         <div class="pointShopImg">
-            <div id="pointShopImg" class="slider carousel slide">
-                <div class="left-arrow carousel-control-prev" data-bs-target="#pointShopImg" data-bs-slide="prev">
-                    <i class="bi bi-chevron-left"></i>
+            <div class="container-fluid mt-5">
+		        <div class="row justify-content-center">
+		            <div class="col-11">
+		                <div class="swiper w-100 h-100">
+		                    <div class="swiper-wrapper" style="height: 300px;">
+		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${etcList}">
+		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
+		                                <img th:src="${l.filePath}">
+		                                <div th:text="${l.itemName}" class="itemName"></div>
+		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
+		                            </div> 
+		                        </div>
+		                    </div>                 
+					        <div class="swiper-button-next"></div>
+					        <div class="swiper-button-prev"></div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+        </div>
+        
+        
+    
+    
+    <div class="modal fade" id="exampleModalToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalToggleLabel" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            	<div class="modal-top">
+	                <h1 class="modal-title fs-5" id="modal-name">아이템 이름</h1>
+	                <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span> Point</p>
                 </div>
-                <div class="carousel-inner">
-                    <div class="sub-games carousel-item active">
-                        <div class="box-list" th:each="l : ${etcList}">
-                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
-                                <img th:src="${l.itemImgurl}">
-                                <div th:text="${l.itemName}"></div>
-                                <div th:text="${l.itemPrice}" class="itemName"></div>
-                            </div>    
-                        </div>
-                    </div>  
+                <p id="modal-cate"></p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-img d-flex justify-content">
+                    <img id="item-img" alt="아이템 이미지" class="img-fluid">
                 </div>
-                <div class="right-arrow carousel-control-next" data-bs-target="#pointShopImg" data-bs-slide="next">
-                    <i class="bi bi-chevron-right"></i>
-                </div>
+                <p id="modal-requiredpoint"></p>
+                <p>이 아이템은 환불할 수 없습니다.</p>
+            </div>
+            <div class="modal-footer">
+            	<th:block th:if="${userId != null}">
+                	<button class="btn btn-primary point-order-Btn">구매하기</button>
+                </th:block>
+            	<th:block th:unless="${userId != null}">
+                	<button class="btn btn-secondary point-order-Btn disabled">로그인 후 구매가 가능합니다.</button>
+                </th:block>
+                <button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
             </div>
         </div>
-         </div>
+    </div>
+</div>
+</div>
+
+ 
+         
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
-    <th:block layout:fragment="customJsResource"></th:block>
+    <th:block layout:fragment="customJsResource">
+		<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    </th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
+		<script th:inline="javascript">
+			$('.swiper-slide').click(function(){
+				const itemCd= $(this).find('.box').data('psCd');
+				if(!itemCd) return ;
+				const request = $.ajax({
+					url : '/point/modal',
+					method : 'get',
+					data : { 'itemCd' : itemCd },
+					dataType : 'json'
+				});
+				request.done( data => {
+					console.log(data)
+					$('#modal-name').text(data.itemName);
+			    	$('#item-img').attr('src', data.filePath);
+			    	$('#modal-cate').text(data.cateName);
+			    	$('.modal-footer').find('.point-order-Btn').attr('data-ps-cd', data.itemCd)
+			    											   .attr('data-item-price', data.itemPrice);
+			    	
+			    	
+			    	$('#exampleModalToggle').modal('show');
+				});
+				request.fail( (jqXHR, textStatus, error) => {
+					console.log(error)
+				});
+			});
+	    	$('.point-order-Btn').click(function(){
+	    		if(confirm("구매하시겠습니까?")){
+	    			const itemCd= this.dataset.psCd;
+		    		const itemPrice= this.dataset.itemPrice;
+		    		const purchaseitem = /*[[${purchaseList}]]*/"${purchaseList.psCd}"
+		    		const psCd = [];
+		    		var stop = false;
+					console.log(purchaseitem)
+					purchaseitem.forEach(element => {
+						psCd.push(element.psCd);
+					})
+					psCd.forEach(element=> {
+						if(itemCd == element) stop = true;
+					})
+					if(stop){
+						alert("이미 구매한 상품입니다");
+						$('.modal-close-btn').click();
+						return;
+					}
+					const myPointValue = /*[[${userPoint}]]*/"userPoint";
+			    	if(Number(itemPrice) >= Number(myPointValue)){
+			    		alert('포인트가 부족합니다.');
+			    		$('.modal-close-btn').click();
+			    		return ;
+			    	}
+					const $form = $('<form />',{action :'/point/addlog', method :'GET'});
+					const log={
+						'itemCd' 	: itemCd,
+						'userId' 	: /*[[${userId}]]*/"userId",
+						'itemPrice' : itemPrice
+					}
+					for(const key in log){
+						const $input = $('<input/>',{name:key, type : 'hidden'});
+						$input.val(log[key]);
+						$form.append($input)
+					}
+					$('body').append($form)
+					$form.submit();		
+				alert("구매가 완료되었습니다")
+	    		}else {
+	    			
+	    		}
+	    	});
+			$('#exampleModalToggle').on('hide.bs.modal', function () {
+              //모달이 꺼질때 모든 버튼 인풋 셀렉트 텍스트 에어리어의 포커스를 날린다.
+                $('button, input, select, textarea').each(function () {
+                    $(this).blur();
+                });
+            });
+			const swiper = new Swiper('.swiper', {
+	            slidesPerView: 4,
+	            direction: getDirection(),
+	            navigation: {
+	                nextEl: '.swiper-button-next',
+	                prevEl: '.swiper-button-prev',
+	            },
+	            on: {
+	                resize: function () {
+	                    swiper.changeDirection(getDirection());
+	                },
+	            },
+	        });
 
-    	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	        function getDirection() {
+	            const windowWidth = window.innerWidth;
+	            const direction = window.innerWidth <= 760 ? 'vertical' : 'horizontal';
 
+	            return direction;
+	        }
+			
+			
+		</script>
+		
     </th:block>
 </html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/assets/css/board/addboard.css}" />
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 스마트 에디터 스크립트 -->
+    <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+    
+    <!-- 웹폰트 추가 -->
+  <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css" rel="stylesheet">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-myeongjo.css" rel="stylesheet">
+    
+    <!-- 글꼴 스타일 추가 -->
+    <style>
+        /* 기본 글꼴 정의 */
+        .se2_l { font-family: '굴림', Gulim !important; }
+        .se2_d { font-family: '돋움', Dotum !important; }
+        .se2_b { font-family: '바탕', Batang !important; }
+        .se2_ng { font-family: '나눔고딕', 'NanumGothic', sans-serif !important; }
+        .se2_nm { font-family: '나눔명조', 'NanumMyeongjo', serif !important; }
+        
+        /* 에디터 내부 글꼴 적용 */
+        #smart_editor2 .se2_input_area {
+            font-family: '돋움', Dotum, sans-serif;
+        }
+        
+        /* 드롭다운 메뉴의 글꼴 미리보기 */
+        .se2_l_font_fam .se2_l { font-family: '굴림', Gulim !important; }
+        .se2_l_font_fam .se2_d { font-family: '돋움', Dotum !important; }
+        .se2_l_font_fam .se2_b { font-family: '바탕', Batang !important; }
+        .se2_l_font_fam .se2_ng { font-family: '나눔고딕', 'NanumGothic', sans-serif !important; }
+        .se2_l_font_fam .se2_nm { font-family: '나눔명조', 'NanumMyeongjo', serif !important; }
+    </style>
+</head>
+<th:block layout:fragment="contents-body">
+ <form id="addBoardForm" th:action="@{/board/write}" method="post">
+    <main>
+      <div class="main_div">
+        <div class="content">
+					      <div class="button-div">
+							   <select class="form-select form-select text-center" aria-label=".form-select-lg example" name="boardCategory" id="boardCategory" 
+							   style="border: 1px solid #007bff;
+							   border-radius: 10px;border-width: 2.9px;">
+		  					 <option value="">게시판을 선택하세요</option>
+							    <option value="bbs_cate_01">자유게시판</option>
+							    <option value="bbs_cate_02">공략게시판</option>
+							    <option value="bbs_cate_03">정보게시판</option>
+			</select>
+            </div>
+          <div>
+            <input type="text" class="title-bar" 
+            		id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요">
+          </div>
+
+
+
+			     <div id="smarteditor">
+			  <textarea name="boardContent" id="editorTxt" rows="20" cols="50"
+			       
+			          style="width: 100%; height: 400px; box-sizing: border-box; padding: 10px;"></textarea>
+			</div>
+			
+			
+			
+			
+			
+			          <div class="file">
+			            <div class="file-details">
+			              <div>
+			                <span class="file-font">첨부파일</span>
+			                <span id="fileName" class="file-name">선택된 파일이 없습니다.</span>
+			              </div>
+			              <div>
+			                <input type="file" id="fileInput" name="file" style="display: none;" />
+			                <button type="button" class="upload-button" id="uploadButton">
+			                  <span>업로드</span>
+			                </button>
+			              </div>
+			            </div>
+			          </div>
+
+          <div id="button">
+        
+             <button type="button" class="cancel" onclick="location.href='/board';">취소</button>
+            <button type="button" id="submitBtn" class="btn btn-md rounded font-sm hover-up submit" th:onclick="submitForm()">등록</button>
+          </div>
+        </div>
+      </div>
+    </main>
+ </form>  
+</th:block>
+
+<th:block layout:fragment="customJs">
+    <script th:inline="javascript">
+    
+    
+    window.insertImageCallback = function(sFileUrl, sFileName) {
+        var sHTML = '<img src="' + sFileUrl + '" alt="' + sFileName + '">';
+        oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
+    };
+    
+    
+ // 스마트 에디터 초기화 설정
+    let oEditors = [];
+
+    $(document).ready(function() {
+       // 버전 정보 숨기기
+       $(".se2_multy").hide();
+       
+       nhn.husky.EZCreator.createInIFrame({
+           oAppRef: oEditors,
+           elPlaceHolder: "editorTxt", // 에디터가 적용될 textarea ID
+           sSkinURI: "/smarteditor/SmartEditor2Skin.html", // 에디터 스킨 경로
+           fCreator: "createSEditor2",
+           htParams: {
+               bUseToolbar: true,                // 툴바 사용 여부
+               bUseVerticalResizer: false,       // 입력창 크기 조절바 사용 여부
+               bUseModeChanger: true,           // 모드 탭(Editor | HTML | TEXT) 사용 여부
+               I18N_LOCALE: 'ko_KR',            // 한글 언어 설정
+               fOnBeforeUnload: function() {},   // 페이지 이동/새로고침 시 알림 메시지 제거
+               
+               // 이미지 업로드 설정 추가
+               SE2M_SamplePlugin: {
+                   bUsePlugin: true
+               },
+               
+               // 이미지 업로드 설정
+               SE2M_AttachPhoto: {
+                   sUploadURL: '/board/uploadImage',   // 이미지 업로드 URL
+                   sPopupURL: '/smarteditor/photo_uploader/photo_uploader.html'  // 팝업 URL (경로 수정)
+               },
+
+               
+               // 기본 글꼴 목록에 추가할 글꼴 목록
+               // 글꼴 설정
+				 aAdditionalFontList: [
+       
+            // 나눔 글꼴
+            ['나눔고딕', '나눔고딕'],
+            ['나눔고딕Bold', '나눔고딕볼드체'],
+            ['나눔명조', '나눔명조'],
+            ['나눔바른고딕', '나눔바른고딕'],
+            ['나눔스퀘어', '나눔스퀘어'],
+            // 추가 글꼴
+            ['맑은 고딕', '맑은 고딕'],
+            ['함초롬바탕', '함초롬바탕'],
+            ['함초롬돋움', '함초롬돋움']
+        ],
+				               
+               // 에디터 툴바 버튼 설정
+               aToolBarSettings: [
+                   ['style', ['style']],                         // 스타일
+                   ['font', ['bold', 'underline', 'clear']],     // 글자 스타일
+                   ['fontname', ['fontname']],                   // 글꼴
+                   ['fontsize', ['fontsize']],                   // 크기
+                   ['color', ['color']],                         // 색상
+                   ['para', ['ul', 'ol', 'paragraph']],         // 문단/정렬
+                   ['table', ['table']],                        // 표
+                   ['insert', ['link', 'picture']],             // 링크, 사진
+                   ['view', ['fullscreen', 'codeview']]         // 전체화면, HTML 편집
+               ],
+               
+               // 여백 설정
+               Body_Padding: '10px',
+               
+               // 정렬 스타일 클래스 정의
+               classStyles: {
+                   'text-align-left': 'text-align: left',        // 왼쪽 정렬
+                   'text-align-center': 'text-align: center',    // 가운데 정렬
+                   'text-align-right': 'text-align: right'       // 오른쪽 정렬
+               }
+           },
+           
+           
+       });
+       
+       
+
+       // 파일 업로드 버튼 클릭시 숨겨진 input file 클릭
+       $("#uploadButton").click(function() {
+           $("#fileInput").click();
+       });
+
+       // 파일 선택 시 파일명 표시
+       $("#fileInput").change(function() {
+           const fileName = $(this).val().split("\\").pop();
+           $("#fileName").text(fileName || "선택된 파일이 없습니다.");
+       });
+    });
+
+    // 폼 제출 전 유효성 검사 함수
+    function submitForm() {
+       // 에디터 내용을 textarea에 적용
+       oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+
+       let isSubmit = true;
+       
+       // 게시판 카테고리 선택 확인
+       const category = $("#boardCategory").val();
+       if(category === "" || category === null) {
+           alert("게시판을 선택해주세요.");
+           $("#boardCategory").focus();
+           return false;
+       }
+       
+       // 제목 입력 확인
+       const title = $("#boardTitle").val();
+       if(!title) {
+           alert("제목을 입력해주세요.");
+           $("#boardTitle").focus();
+           return;
+       }
+
+       // 내용 입력 확인
+       const content = $("#editorTxt").val();
+       console.log(content);
+       if(!content || content === '<p>&nbsp;</p>' || content === '') {
+           alert("내용을 입력해주세요.");
+           oEditors.getById["editorTxt"].exec("FOCUS");
+           return;
+       }
+
+       // 모든 검증을 통과했을 때만 폼 제출
+       if(isSubmit) {
+          $("#addBoardForm").submit();
+       }
+    }
+    
+    
+    	
+    </script>
+</th:block>
+</html>

@@ -15,58 +15,140 @@
 	        </div>
 		</header>
 		
-		<div class="join-info-form">
+		<form id="addUserForm" class="join-info-form" th:action="@{/addUserPro}" method="post">
             <div class="user-form-text">
                 <h3>회원가입</h3>
             </div>
             <div class="user-form-group">
-                <input type="text" id="id" class="user-insert-form" placeholder="아이디를 입력해주세요">
+                <input type="text" id="id" name="id" class="user-insert-form" placeholder="아이디를 입력해주세요" required>
             </div>
-            <div>
-                <input type="hidden" id="authrt-cd" name="authrt-cd" value="회원">
+            <!-- <div>
+                <input type="hidden" id="authrtNm" name="authrtNm" value="회원">
+            </div> -->
+            <div class="user-form-group">
+                <input type="password" id="userPswd" name="userPswd" class="user-insert-form" placeholder="비밀번호를 입력해주세요" disabled="disabled">
             </div>
             <div class="user-form-group">
-                <input type="password" id="user-pswd" class="user-insert-form" placeholder="비밀번호를 입력해주세요">
+                <input type="password" id="userPswdCheck" class="user-insert-form" placeholder="비밀번호를 재입력해주세요" disabled="disabled">
             </div>
             <div class="user-form-group">
-                <input type="password" class="user-insert-form" placeholder="비밀번호를 재입력해주세요">
-            </div>
-            <div class="user-form-group">
-                <input type="text" id="user-nm" class="user-insert-form" placeholder="이름을 입력해주세요">
+                <input type="text" id="userNm" name="userNm" class="user-insert-form" placeholder="이름을 입력해주세요" disabled="disabled">
             </div>
             <div class="user-form-group-gender">
-                <input type="radio" class="btn-check" id="male" name="gender" value="M" autocomplete="off">
+                <input type="radio" class="btn-check" id="male" name="userGender" value="M" autocomplete="off" disabled="disabled">
                 <label class="btn btn-primary btn-lg" for="male">남성</label>
 
-                <input type="radio" class="btn-check" id="female" name="gender" value="F" autocomplete="off">
+                <input type="radio" class="btn-check" id="female" name="userGender" value="F" autocomplete="off" disabled="disabled">
                 <label class="btn btn-primary btn-lg" for="female">여성</label>
             </div>
-            
             <div class="user-form-group">
-                <input type="email" id="user-eml-addr" class="user-insert-form" placeholder="이메일을 입력해주세요">
+                <input type="email" id="userEmlAddr" name="userEmlAddr" class="user-insert-form" placeholder="이메일을 입력해주세요" disabled="disabled">
             </div>
             <div class="user-form-group-brdt">
-                <input type="text" id="user-brdt" class="user-insert-form" placeholder="생년월일을 입력해주세요">
+                <input type="date" id="userBrdt" name="userBrdt" class="user-insert-form" placeholder="생년월일을 입력해주세요" max="9999-12-31" disabled="disabled">
             </div>
             <div class="user-form-group">
-                <input type="tel" id="user-telno" class="user-insert-form" placeholder="전화번호를 입력해주세요">
+                <input type="tel" id="userTelno" name="userTelno" class="user-insert-form" placeholder="전화번호를 입력해주세요" disabled="disabled">
             </div>
             <div class="user-form-group">
-                <input type="text" id="user-nn" class="user-insert-form" placeholder="닉네임을 입력해주세요">
+                <input type="text" id="userNn" name="userNn" class="user-insert-form" placeholder="닉네임을 입력해주세요" disabled="disabled">
             </div>
             <div>
-                <button type="button" class="btn btn-primary common-btn-lg">회원가입</button>
+                <button type="button" id="addUserBtn" class="btn btn-primary common-btn-lg">회원가입</button>
             </div>
-        </div>
+        </form>
 		
 	</th:block>
 
 	<!--/* 사용자 추가 js file */-->
-    <th:block layout:fragment="customJsResource"></th:block>
+    <th:block layout:fragment="customJsResource">
+	</th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	<script>
-    		
+    	
+    	// 회원가입
+		$('#addUserBtn').click(function() {
+		    let isSubmit = true;
+		
+		    const $formControl = $('#addUserForm').find('input');
+		
+		    $formControl.each((idx, elem) => {
+		        const value = $(elem).val();
+		
+		        if ($(elem).attr('name') === 'userGender') {
+		            if (!$('input[name="userGender"]:checked').length) {
+		                isSubmit = false;
+		
+		                $('label[for="male"], label[for="female"]').addClass('focus');
+		                return false;
+		            } else {
+		                $('label[for="male"], label[for="female"]').removeClass('focus');
+		            }
+		        } else if (!value) {
+		            isSubmit = false;
+		            $(elem).focus();
+		            return false;
+		        }
+		    });
+		
+		    if (isSubmit) $('#addUserForm').submit();
+		});
+
+		// 중복 아이디 체크
+		$('#id').on({
+			'blur' : function() {
+				const checkId = $('#id').val().trim();
+				
+				if (!checkId) {
+		            alert('아이디를 입력해주세요.');
+		            return;
+		        }
+				
+				const request = $.ajax({
+					url : '/checkId',
+					method : 'POST',
+					data : { 'id' : checkId },
+					dataType : 'json'
+				});
+				request.done(function(data) {
+					const isDuplicate = data;
+					
+					if (isDuplicate) {
+		                alert('중복된 아이디입니다.');
+		            } else {
+		                alert('사용 가능한 아이디입니다.');
+		            }
+					
+					$('#addUserForm').find('input, label')
+					   .not('#id')
+					   .prop('disabled', isDuplicate);
+					
+					console.log(data);
+				});
+				request.fail(function(jQXHR, textStatus, error) {
+					console.log(error);
+				});
+			}
+		});
+		
+		$('#id').change(function() {
+			$('#addUserForm').find('input, label')
+							   .not('#id')
+							   .prop('disabled', true);
+		});
+		
+		// date 값 입력 시 color 변경
+		$(document).ready(function () {
+		    $('#userBrdt').on('input', function () {
+		        if ($(this).val()) {
+		            $(this).addClass('has-value');
+		        } else {
+		            $(this).removeClass('has-value');
+		        }
+		    });
+		});
+    	
     	</script>
     </th:block>
             

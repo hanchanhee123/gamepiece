@@ -16,9 +16,24 @@
 		<result column="user_telno" property="userTelno"/>
 		<result column="user_nn" property="userNn"/>
 		<result column="join_ymd" property="joinYmd"/>
-		<result column="whdwl_ymd" property="whdwlYmd"/>
+		<result column="is_delete" property="isDelete"/>
 	</resultMap>
-
+	
+	<resultMap type="gamepiece.user.user.domain.Login" id="loginMap">
+		<id column="login_no" property="loginNo" />
+		<result column="id" property="id"/>
+		<result column="lgn_dt" property="lgnDt"/>
+	</resultMap>
+	
+	<resultMap type="gamepiece.user.user.domain.Avatar" id="avatarMap">
+		<id column="avatar_no" property="avatarNo" />
+		<result column="id" property="id"/>
+		<result column="ps_cd" property="psCd"/>
+		<result column="avatar_yn" property="avatarYn"/>
+		<result column="reg_ymd" property="regYmd"/>
+		<result column="ps_nm" property="psNm"/>
+	</resultMap>
+	
 	<!-- 전체 회원정보 조회 -->
 	<select id="checkUser" resultMap="userResultMap">
 		SELECT
@@ -26,7 +41,216 @@
 		FROM
 			user
 		WHERE
+			id = #{id}
+			AND
+			is_delete = 'active';
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="addUser" parameterType="gamepiece.user.user.domain.User">
+		INSERT INTO user(
+			id,
+			user_pswd,
+			user_nm,
+			user_gender,
+			user_eml_addr,
+			user_brdt,
+			user_telno,
+			user_nn,
+			join_ymd
+		) VALUES (
+			#{id},
+			#{userPswd},
+			#{userNm},
+			#{userGender},
+			#{userEmlAddr},
+			#{userBrdt},
+			#{userTelno}, 
+			#{userNn},
+			CURDATE());
+	</insert>
+	
+	<!-- 회원가입 포인트 지급 -->
+	<insert id="addUserPointLog">
+		INSERT INTO point_log (
+			point_no,
+			id,
+			point_receive_ymd,
+			point_receive_content,
+			point_receive,
+			point_division
+			) VALUES (
+			#{pointNo},
+			#{id},
+			CURDATE(),
+			'회원가입',
+			1000,
+			'적립');
+	</insert>
+	
+	<!-- 중복 아이디 체크 -->
+	<select id="checkId" parameterType="string" resultType="boolean">
+		SELECT
+			COUNT(*)
+		FROM
+			user
+		WHERE
 			id = #{id};
+	</select>
+	
+    <!-- 사용자 로그 확인 (오늘 날짜) -->
+    <select id="findLoginLog" resultType="int">
+    	SELECT
+			COUNT(*)
+		FROM
+			user_login_log 
+		WHERE
+			id = #{id}
+			AND
+			DATE(lgn_dt) = DATE(NOW());
+    </select>
+    
+    <!-- 로그인 로그 삽입 -->
+	<insert id="addLoginLog" parameterType="gamepiece.user.user.domain.Login">
+        INSERT INTO user_login_log(
+        	login_no,
+        	id,
+        	lgn_dt
+       	) VALUES (
+       		#{loginNo},
+       		#{id},
+       		NOW());
+    </insert>
+    
+    <!-- 로그인 로그 업데이트 -->
+    <update id="modifyLoginLog" parameterType="gamepiece.user.user.domain.Login">
+    	UPDATE
+			user_login_log 
+		SET
+			lgn_dt = NOW()
+		WHERE
+			id = #{id} 
+			AND
+			DATE(lgn_dt) = DATE(NOW());
+    </update>
+    
+    <!-- 로그인 포인트 지급 -->
+	<insert id="addLoginPointLog">
+		INSERT INTO point_log (
+			point_no,
+			id,
+			point_receive_ymd,
+			point_receive_content,
+			point_receive,
+			point_division
+			) VALUES (
+			#{pointNo},
+			#{id},
+			CURDATE(),
+			'로그인',
+			50,
+			'적립');
+	</insert>
+    
+    <!-- 아이디 찾기 로직 -->
+    <select id="findUserIdPro" resultType="string">
+    	SELECT
+			id
+		FROM
+			user
+		WHERE
+			user_nm = #{userNm}
+			AND
+			user_eml_addr = #{userEmlAddr}
+			AND
+			user_telno = #{userTelno}
+			AND
+			is_delete = 'active';
+    </select>
+    
+    <!-- 비밀번호 찾기 로직 -->
+    <select id="findUserPswdPro" resultType="string">
+    	SELECT
+			user_pswd
+		FROM
+			user
+		WHERE
+			id = #{id}
+			AND
+			user_nm = #{userNm}
+			AND
+			user_eml_addr = #{userEmlAddr}
+			AND
+			user_telno = #{userTelno}
+			AND
+			is_delete = 'active';
+    </select>
+    
+    <!-- 개인 정보 수정 -->
+	<update id="modifyUser" parameterType="gamepiece.user.user.domain.User">
+		UPDATE user
+		<set>
+			<if test="userPswd != null and userPswd != ''">
+				user_pswd = #{userPswd},
+			</if>
+			<if test="userNm != null and userNm != ''">
+				user_nm = #{userNm},
+			</if>
+			<if test="userEmlAddr != null and userEmlAddr != ''">
+				user_eml_addr = #{userEmlAddr},
+			</if>
+			<if test="userTelno != null and userTelno != ''">
+				user_telno = #{userTelno},
+			</if>
+			<if test="userNn != null and userNn != ''">
+				user_nn = #{userNn}
+			</if>
+		</set>
+		WHERE
+			id = #{id};
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="removeUser" parameterType="gamepiece.user.user.domain.User">
+		UPDATE user
+		SET
+			is_delete = 'delete'
+		WHERE
+			id = #{id};
+	</update>
+	
+	<!-- 아바타 -->
+	<select id="getUserAvatar" resultType="string">
+		SELECT 
+			f.file_path
+		FROM 
+			avatar a JOIN point_shop ps
+			ON a.ps_cd = ps.ps_cd
+			INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+		WHERE
+			a.id = #{id}
+			AND
+			a.avatar_yn = '선택'
+			AND
+			ps.ps_cate_cd = 'cate_02';
+	</select>
+	
+	<!-- 배경프로필 -->
+	<select id="getUserBackground" resultType="string">
+		SELECT 
+			f.file_path
+		FROM 
+			background b JOIN point_shop ps
+			ON b.ps_cd = ps.ps_cd
+			INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+		WHERE
+			b.id = #{id}
+			AND
+			b.background_yn = '선택'
+			AND
+			ps.ps_cate_cd = 'cate_05';
 	</select>
 	
 </mapper>

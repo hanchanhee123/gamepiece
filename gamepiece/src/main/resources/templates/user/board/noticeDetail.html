@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{user/layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/assets/css/board/boardDetail.css}" />
+    <!-- jQuery 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 스마트 에디터 스크립트 -->
+    <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+    <!-- 웹폰트 추가 -->
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-gothic.css" rel="stylesheet">
+    <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-myeongjo.css" rel="stylesheet">
+    
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+</head>
+
+
+
+<th:block layout:fragment="contents-body">
+    <input type="hidden" id="boardNum" th:value="${noticeInfo.noticeNum}">
+  
+				            <div class="titleDiv">
+				    <div class="title-details">
+				        <div id="titleStyle">
+				            <span class="titleFont" th:text="${noticeInfo.noticeTitle}">제목</span>
+				        </div>
+				        <div class="user-info-row d-flex align-items-center">
+				            <div class="d-flex align-items-center flex-grow-1 gap-3">
+				              <img src="data:image/png;base64,..." class="rounded-circle" style="width: 30px; height: 30px;">
+				                <span class="username fw-semibold" th:text="${noticeInfo.userInfo.userNn}">회원</span>
+				                <span class="text-muted small" th:text="${noticeInfo.noticeYmd}">2012-11-11</span>
+				            </div>
+				     
+				        </div> 
+
+                   
+
+
+                    
+                </div>
+            </div>
+
+							            <div class="boards-content">
+			    <div class="content-details">
+			        <!-- 네이버 에디터 컨텐츠 (모든 스타일 유지) -->
+			        <div th:if="${noticeInfo.noticeContent.contains('<p>') or noticeInfo.noticeContent.contains('<div>')}" 
+			             class="editor-content"
+			             th:utext="${noticeInfo.noticeContent}">
+			        </div>
+			        
+			        <!-- mapper의 일반 텍스트 (기본 스타일 적용) -->
+			        <div th:unless="${noticeInfo.noticeContent.contains('<p>') or noticeInfo.noticeContent.contains('<div>')}" 
+			             class="plain-text"
+			             th:text="${noticeInfo.noticeContent}">
+			        </div>
+			    </div>
+			</div>
+			               
+             
+             
+                
+               
+                
+                
+ 
+</th:block>
+
+<!--/* 사용자 추가 js file */-->
+<th:block layout:fragment="customJsResource">
+	
+	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+</th:block>
+<!--/* 사용자 추가 js script */-->
+<th:block layout:fragment="customJs">
+    <script th:inline="javascript">
+    
+        
+     
+        
+        
+       
+        
+		
+        
+        
+    </script>
+</th:block>
+</html>

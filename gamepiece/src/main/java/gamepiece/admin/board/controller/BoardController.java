@@ -1,5 +1,7 @@
 package gamepiece.admin.board.controller;
 
+
+
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -9,20 +11,83 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import gamepiece.util.Pageable;
+
 import gamepiece.admin.board.domain.Board;
 import gamepiece.admin.board.service.BoardService;
 import gamepiece.admin.boardCategory.domain.BoardCategory;
 import gamepiece.admin.boardCategory.service.BoardCategoryService;
+import gamepiece.admin.boardComment.domain.BoardComment;
+import gamepiece.admin.boardComment.service.BoardCommentService;
+import gamepiece.util.PageInfo;
+import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/admin/board")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardController {
 
 	private final BoardService boardService;
 	private final BoardCategoryService boardCategoryService;
+	private final BoardCommentService boardCommentService;
+	
+	
+	@PostMapping("/searchList")
+	public String boardsearchList(
+	        @RequestParam(value="searchCate", required = false, defaultValue = "all") String searchCate,
+	        @RequestParam(value="searchValue") String searchValue, 
+	        Pageable pageable, 
+	        Model model) {
+
+	
+		
+	    PageInfo<Board> pageInfo = boardService.getSearchList(searchCate, searchValue, pageable);
+	    
+	    
+	    
+
+	    model.addAttribute("title", "게시판 목록");
+	    model.addAttribute("boardList", pageInfo.getContents());
+	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	    model.addAttribute("lastPage", pageInfo.getLastPage());
+	    
+
+	    model.addAttribute("searchCate", searchCate);
+	    model.addAttribute("searchValue", searchValue);
+	
+	    return "admin/board/boardsList";
+	}
+	
+	
+	@GetMapping("/searchList")
+	public String boardSearchList(
+							        @RequestParam(value="searchCate", required = false, defaultValue = "all") String searchCate,
+							        @RequestParam(value="searchValue", required = false) String searchValue,
+							        Pageable pageable,
+							        Model model) {
+	        
+	    PageInfo<Board> pageInfo = boardService.getSearchList(searchCate, searchValue, pageable);
+	
+	    model.addAttribute("title", "게시판 목록");
+	    model.addAttribute("boardList", pageInfo.getContents());
+	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	    model.addAttribute("lastPage", pageInfo.getLastPage());
+	    
+	
+	    model.addAttribute("searchCate", searchCate);
+	    model.addAttribute("searchValue", searchValue);
+	    
+	    return "admin/board/boardsList";
+	}
+	
+	
+	
 	
 	@PostMapping("/remove")
 	public String removeBoard(@RequestParam("boardNum") String boardNum, RedirectAttributes rttr) {
@@ -35,56 +100,31 @@ public class BoardController {
 	}
 	
 	
-	@PostMapping("/modify")
-	public String modifyBoard(Board board, RedirectAttributes rttr) {
-	    int result = boardService.modifyBoard(board);
-	    
-	   
-	        rttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
-	      
-	  
-	    return "redirect:/admin/board/list";
-	}
-	
-	@GetMapping("/modify")
-	public String modifyBoardView(@RequestParam(name="boardNum") String boardNum, Pageable pageable, Model model) {
-		
+	@GetMapping("/detail")
+	public String detailBoardView(@RequestParam(name="boardNum") String boardNum,
+	                            Pageable pageable,
+	                            Model model) {
 
-		List<BoardCategory> categoryList = boardCategoryService.getBoardCategoryList();
-		Board boardInfo = boardService.getBoardInfo(boardNum);
-		
-		model.addAttribute("title","게시글수정");
-	
-		model.addAttribute("categoryList", categoryList);
-		model.addAttribute("boardInfo", boardInfo);
-		
-		
-		return "admin/board/modifyBoard";
-		
-	}
-	
-	
-	
-	@PostMapping("/write")
-	public String addBoard(Board board) {
-		
-		boardService.addBoard(board);
-		
-		return "redirect:/admin/board/list";
-	}
+	   Board boardInfo = boardService.getBoardInfo(boardNum);
+	   List<BoardCategory> categoryList = boardCategoryService.getBoardCategoryList();
 
-	
-	@GetMapping("/write")
-	public String addBoardView(Pageable pageable,Model model) {
-		
-		
-		List<BoardCategory> categoryList = boardCategoryService.getBoardCategoryList();
-		
-		model.addAttribute("title", "게시물작성");
+	   // 특정 게시물의 덧글 목록 조회 (페이징 처리)
+	   var pageInfo = boardCommentService.getBoardCommentInfo(boardNum, pageable);
 
-		model.addAttribute("categoryList", categoryList);
-		return "admin/board/addBoard";
+	   model.addAttribute("title", "게시글상세");
+	   model.addAttribute("boardInfo", boardInfo);
+	   model.addAttribute("categoryList", categoryList);
+	   model.addAttribute("commentList", pageInfo.getContents());
+	   model.addAttribute("currentPage", pageInfo.getCurrentPage());
+	   model.addAttribute("startPageNum", pageInfo.getStartPageNum());
+	   model.addAttribute("endPageNum", pageInfo.getEndPageNum());
+	   model.addAttribute("lastPage", pageInfo.getLastPage());
+	   model.addAttribute("boardNum", boardNum);  // 페이징 처리시 필요
+
+	   return "admin/board/boardDetail";
 	}
+	
+	
 	
 	
 	@GetMapping("/list")

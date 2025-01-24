@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link rel="stylesheet" th:href="@{/assets/css/game/gamelist.css}" />
+</head>
+<th:block layout:fragment="contents-body">
+	<main>
+        <div class="main">
+            <div class="main-contents">
+                <div class="main_div">
+			        <div class="category-menu">
+			            <ul>
+			            	<li class="gamelist-cate active"><a th:href="@{/game/steam}">스팀</a></li>
+			                <li class="gamelist-cate"><a th:href="@{/game/epic}">에픽게임즈</a></li>
+			                <li class="gamelist-cate"><a th:href="@{/game/nintendo}">닌텐도</a></li>
+			                <li class="gamelist-cate"><a th:href="@{/game/riot}">라이엇게임즈</a></li> 
+			            </ul>
+			        </div>
+			        <div class="search" style="justify-content: space-between;">
+			        	<div>			        	
+				            <input type="text" class="item-search" id="searchValue" name="searchValue" th:value=${gameList.searchValue} placeholder="게임 이름을 입력하세요">
+				            <button type="button" class="search-button"><i class="bi bi-search"></i></button>
+			        	</div>
+			        	<div>
+			        		<button type="button" class="btn btn-primary" id="cartView" onclick="location.href='/game/gameCartView'">장바구니로 이동</button>
+			        	</div>
+			        </div>
+			        <div class="card-body">
+			        	
+				        	<div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+						       <th:block th:each="l : ${gameList.games}">
+							        <div class="col">
+							        	<div class="game-info">
+							        		<a th:href="@{/game/steamDetail}">
+								                <img th:src="${l.urlSrc}">
+								                <p class="game-name" th:text="${l.title}"></p>
+								                <p class="game-price" th:text="${l.finalPrice}"></p>
+								                <input type="hidden" class="gameCode" name="gameCode" th:value="${l.gameCode}" readonly/>
+							                </a>
+							            </div>
+							        </div>
+						        </th:block>
+				        	</div>
+			        </div>
+			        	
+			        </div>
+			        <div class="pagination-area mt-15 mb-50">
+			            <nav>
+			                <ul class="pagination justify-content-center">
+			                    <li class="page-item">
+			                        <a class="page-link" th:href="@{/game/steam}" th:data-page-num="1">
+			                        	<i class="material-icons md-first_page"></i>
+			                        </a>
+			                    </li>
+			                    <li class="page-item" th:classappend="${gameList.currentPage < 2} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/game/gameList(currentPage=${gameList.currentPage - 1})}"
+			                            th:data-page-num="${gameList.currentPage - 1}">
+			                        	<i class="material-icons md-chevron_left"></i>
+			                        </a>
+			                    </li>
+			                    <th:block th:each="num : ${#numbers.sequence(gameList.startPageNum, gameList.endPageNum)}">
+				                    <li class="page-item" th:classappend="${num == gameList.currentPage} ? 'active'">
+				                    	<a class="page-link" th:href="@{/game/steam(currentPage=${num})}" 
+				                    	   th:text="${num}"
+				                    	   th:data-page-num="${num}">
+				                    	</a>
+				                    </li>
+			                    </th:block>
+			                    <li class="page-item" th:classappend="${gameList.currentPage eq lastPage} ? 'disabled'">
+			                        <a class="page-link"
+			                           th:href="@{/game/gameList(currentPage=${gameList.currentPage + 1})}"
+			                           th:data-page-num="${gameList.currentPage + 1}">
+			                        	<i class="material-icons md-chevron_right"></i>
+			                        </a>
+			                    </li>
+			                    <li class="page-item">
+			                        <a class="page-link" th:href="@{/game/steam(currentPage=${gameList.lastPage})}" th:data-page-num="${gameList.lastPage}">
+			                        	<i class="material-icons md-last_page"></i>
+			                        </a>
+			                    </li>
+			                </ul>
+			            </nav>
+			        </div>
+			    </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+<!--/* 사용자 추가 js file */-->
+<th:block layout:fragment="customJsResource">
+	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+</th:block>
+<!--/* 사용자 추가 js script */-->
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+		
+	
+		$('.search-button').click(function() {
+			const searchValue = $('#searchValue').val();
+			console.log(searchValue)
+			const $form = $('<form />', {'action' : '/game/steam', 'method' : 'get'});
+			const $searchValue = $('<input />', {'type' : 'hidden', 'name' : 'searchValue'}).val(searchValue);
+			$form.append($searchValue);
+			$('body').append($form);
+			$form.submit();
+		})
+		
+		$('.page-link').click(function(event) {
+			event.preventDefault();
+			const url = new URL(location.href);
+			//console.log(url.search);
+			const gameList = /*[[${gameList}]]*/"gameList";
+			const searchValue = $('#searchValue').val();
+			const currentPage = gameList.currentPage;
+			
+			const searchParams = new URLSearchParams();
+			if(searchValue) searchParams.set('searchValue', searchValue);
+			if(currentPage) searchParams.set('currentPage', this.dataset.pageNum);
+			location.href= '?' + searchParams.toString();
+		})
+		
+		$('.game-info').click(function(event) {
+			event.preventDefault();
+			const gameCodeVal = $(this).find('.gameCode').val();
+			const $form = $('<form />', {'action' : '/game/steamDetail', 'method' : 'get'});
+			const $gameCodeVal = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCodeVal);
+			$form.append($gameCodeVal);
+			$('body').append($form);
+			$form.submit();
+		})
+		
+		$('#cartView').click(function() {
+			const id = /*[[${id}]]*/"id";
+			console.log(id);
+			
+			if(id == null) {
+				alert("로그인 이후 이용가능합니다.");
+				return false;
+			}
+			
+			const $form = $('<form />', {'action' : '/game/gameCartView', 'method' : 'get'});
+			const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+			$form.append($id);
+			$('body').append($form);
+			$form.submit();
+		})
+		
+		
+
+		
+		
+		
+		
+		
+	</script>
+</th:block>
+</html>

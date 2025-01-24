@@ -19,20 +19,22 @@
                     <header class="card-header">
                         <div class="row gx-3">
                             <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search..." class="form-control" />
+                                <div class="input-group">
+									<input type="text" class="form-control" id="searchValue" 
+										   name="searchValue" th:value="${searchValue}" placeholder="Search">
+									<button class="btn btn-light bg" id="searchBtn" type="button">
+										<i class="material-icons md-search"></i>
+									</button>
+								</div>
                             </div>
                             <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
-	                                    <option>전체 카테고리</option>
-	                                    <option th:text="${cateList.cateName}" th:each="cateList:${cateList}">이모티콘</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-2 col-6 col-md-3">
-                                <select class="form-select">
-                                    <option>전체</option>
-                                    <option>가장 최근에 추가된 항목</option>
-                                    <option>낮은 가격순</option>
-                                    <option>높은 가격순</option>
+                                <select class="form-select" name="searchCate" id="searchCate">
+	                                    <option value="all" th:selected="${'all' eq searchCate}">전체</option>
+	                                    <option value="imoticon" th:selected="${'imoticon' eq searchCate}">이모티콘</option>
+	                                    <option value="avatar" th:selected="${'avatar' eq searchCate}">프로필</option>
+	                                    <option value="frame" th:selected="${'frame' eq searchCate}">아바타 액자</option>
+	                                    <option value="background" th:selected="${'background' eq searchCate}">배경프로필</option>
+	                                    <option value="etc" th:selected="${'etc' eq searchCate}">기타</option>
                                 </select>
                             </div>
                         </div>
@@ -44,7 +46,7 @@
                                 <div class="card card-product-grid">
                                 	<input type="hidden" th:value="${l.itemCd}">
                                     <a href="#" class="img-wrap"> 
-                                    	<img src="assets/imgs/items/1.jpg" alt="Product" /> 
+                                    	<img th:src="@{/assets/imgs/logo/GP_logo.png}" alt="Product" /> 
                                     </a>
                                     <div class="info-wrap">
                                         <a href="#" class="title text-truncate" th:text="${l.itemName}">Haagen-Dazs Caramel Cone Ice</a>
@@ -65,7 +67,7 @@
                     <!-- card-body end// -->
                 </div>
                 <!-- card end// -->
-         <div class="pagination-area mt-30 mb-50" th:if="${not #lists.isEmpty(pointList)}">
+         <div class="pagination-area mt-30 mb-50" th:if="${not #lists.isEmpty(ItemList)}">
 	        <nav>
 	            <ul class="pagination justify-content-center">
 	            	<li class="page-item">
@@ -102,7 +104,21 @@
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	<script>
-    		
+	    	$('#searchBtn').click(function(){
+				const searchCate = $('#searchCate').val();
+				const searchValue = $('#searchValue').val();
+				const searchLink = $('.page-link');
+				console.log(searchLink);
+				
+				const $form = $('<form />', { 'action' : '/admin/point/searchList', 'method': 'post'});
+				const $searchCate = 
+						$('<input />', {'type':'hidden', 'name' : 'searchCate'}).val(searchCate);
+				const $searchValue = 
+						$('<input />', {'type':'hidden', 'name' : 'searchValue'}).val(searchValue);
+				$form.append($searchCate, $searchValue);
+				$('body').append($form);
+				$form.submit();
+			});
     	</script>
     </th:block>
 </html>

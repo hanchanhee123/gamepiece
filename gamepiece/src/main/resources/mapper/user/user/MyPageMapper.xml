@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.myPage.mapper.MyPageMapper">
+
+	<resultMap type="gamepiece.user.myPage.domain.MyPage" id="myPageResultMap">
+		<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="user_pswd" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+	</resultMap>
+	
+	<resultMap type="gamepiece.user.pointShop.domain.PointLog" id="pointLogMap">
+		<id column="point_no" property="pointNo" />
+		<result column="id" property="id"/>
+		<result column="point_receive_ymd" property="pry"/>
+		<result column="point_receive_content" property="prc"/>
+		<result column="point_receive" property="pointReceive"/>
+		<result column="point_division" property="pointDivision"/>
+		<result column="remaining_point" property="totalPoint"/>
+	</resultMap>
+	
+	<resultMap type="gamepiece.user.pointShop.domain.Point" id="pointshopResultMap">
+		<id column="ps_cd" property="itemCd"/>
+		<result column="ps_cate_cd" property="itemCate" />
+		<result column="cate_nm" property="cateName" />
+		<result column="ps_nm" property="itemName" />
+		<result column="file_path" property="filePath" />
+		<result column="ps_price" property="itemPrice" />
+		<result column="admin_id" property="adminId" />
+		<result column="reg_ymd" property="regYmd" />
+		<result column="is_delete" property="isDelete" />
+	</resultMap>
+	
+	<resultMap type="gamepiece.user.board.domain.Board" id="BoardResultMap">
+	    <id column="bbs_no"  property="boardNum" />
+	    <result column="bbs_cate_cd" property="boardCategory" />
+	    <result column="bbs_title" property="boardTitle" />
+	    <result column="bbs_cn" property="boardContent" />
+	    <result column="id" property="boardUserId" />
+	    <result column="bbs_like" property="boardLikeCnt" />
+	    <result column="bbs_dislike" property="boardDisLikeCnt" />
+	    <result column="bbs_view" property="boardViewCnt" />
+	    <result column="bbs_ymd" property="boardYmd" />
+    </resultMap>
+    
+	<resultMap type="gamepiece.user.board.domain.Inquiry" id="InquiryResultMap">
+		<id column="inquiry_id" property="inquiryNum" />
+		<result column="id" property="inquiryUserId" />
+		<result column="inquiry_title" property="inquiryTitle" />
+		<result column="inquiry_content" property="inquiryContent" />
+		<result column="inquiry_ymd" property="inquiryYmd" />
+	</resultMap>
+	
+    <resultMap type="gamepiece.user.event.domain.Event" id="EventResultMap">
+		<id column="ev_cd" 	property="evCd"/>
+		<result column="ev_nm" 	property="evNm" />
+		<result column="ev_contents" property="evContents" />
+		<result column="ev_start_ymd" property="evStartYmd" />
+		<result column="ev_end_ymd"	property="evEndYmd" />
+		<result column="ev_winners_num" property="evWinnersNum" />
+		<result column="admin_id" property="adminId" />
+		<result column="reg_ymd" property="regYmd" />
+		<result column="ev_img" property="evImg" />
+		<result column="evp_no" property="evpNo" />
+		<result column="id" property="id" />
+		<result column="ev_participate_ymd" property="evParticipateYmd" />
+		<result column="ev_winner_yn" property="evWinnerYn" />
+		<result column="ev_status" property="evStatus" />
+		<result column="user_nn" property="userNn"/>
+	</resultMap>
+	
+	<!-- 마이페이지 - 사용자정보조회 (정보수정) -->
+	<select id="myPageUser" resultMap="myPageResultMap">
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			id = #{id};
+	</select>
+	
+	<!-- 마이페이지 - 사용자정보조회 (포인트 내역) -->
+	<select id="myPagePointLog" resultMap="pointLogMap">
+		SELECT
+			point_no,
+			id,
+			point_receive_ymd,
+			point_receive_content,
+			point_receive,
+			point_division
+		FROM
+			point_log
+		WHERE
+			id = #{id};
+	</select>
+	
+	<!-- 아바타 조회 -->
+	<select id="getAvatar" resultMap="pointshopResultMap">
+		SELECT
+			ps.ps_cd,
+			ps.ps_nm,
+			f.file_path
+		FROM
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+		WHERE
+			id = #{id}
+			AND
+			ps.ps_cate_cd = 'cate_02';
+	</select>
+	
+	<!-- 기존 아바타 -->
+	<update id="updateAvatar" parameterType="gamepiece.user.user.domain.Avatar">
+	    UPDATE
+	    	avatar
+	    SET
+	    	avatar_yn = '미선택'
+	    WHERE
+	    	id = #{id};
+	</update>
+	
+	<!-- 새로운 아바타 -->
+	<insert id="insertAvatar" parameterType="gamepiece.user.user.domain.Avatar">
+	    INSERT INTO avatar (
+	    	avatar_no, id, ps_cd, reg_ymd
+   		) VALUES (
+   			#{avatarNo}, #{id}, #{selectAvatar}, CURDATE());
+	</insert>
+	
+	<!-- 기존 배경프로필 -->
+	<update id="updateBackground" parameterType="gamepiece.user.user.domain.Background">
+	    UPDATE
+	    	background
+	    SET
+	    	background_yn = '미선택'
+	    WHERE
+	    	id = #{id};
+	</update>
+	
+	<!-- 새로운 배경프로필 -->
+	<insert id="insertBackground" parameterType="gamepiece.user.user.domain.Background">
+	    INSERT INTO background (
+	    	background_no, id, ps_cd, reg_ymd
+   		) VALUES (
+   			#{backgroundNo}, #{id}, #{selectBackground}, CURDATE());
+	</insert>
+	
+	<!-- 배경프로필 조회 -->
+	<select id="getBackground" resultMap="pointshopResultMap">
+		SELECT
+			ps.ps_cd,
+			ps.ps_nm,
+			f.file_path
+		FROM
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+		WHERE
+			id = #{id}
+			AND
+			ps.ps_cate_cd = 'cate_05';
+	</select>
+	
+	<!-- 마이페이지 - 보유 이모티콘 -->
+	<select id="myPageEmoticon" resultMap="pointshopResultMap">
+		SELECT
+			ps.ps_cd,
+			ps.ps_nm,
+			f.file_path
+		FROM
+			point_shop ps INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+			INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+		WHERE
+			id = #{id}
+			AND
+			ps.ps_cate_cd = 'cate_01';
+	</select>
+	
+	<!-- 마이페이지 - 내 리뷰 -->
+	<!-- <select id="myPageReview" resultMap="BoardResultMap">
+		SELECT
+			*
+		FROM
+			boards_categories bc INNER JOIN boards b
+			USING (bbs_cate_cd)
+		WHERE
+			id = #{id}
+			AND
+			b.is_delete = 'active';
+	</select> -->
+	
+	<!-- 마이페이지 - 내 게시글 -->
+	<select id="myPageBoard" resultMap="BoardResultMap">
+		SELECT
+			*
+		FROM
+			boards_categories bc INNER JOIN boards b
+			USING (bbs_cate_cd)
+		WHERE
+			id = #{id}
+			AND
+			b.is_delete = 'active';
+	</select>
+	
+	<!-- 마이페이지 - 내 문의글 -->
+	<select id="myPageInquiry" resultMap="InquiryResultMap">
+		SELECT
+			*
+		FROM
+			inquiry
+		WHERE
+			id = #{id}
+			AND
+			is_delete = 'active';
+	</select>
+	
+	<!-- 마이페이지 - 참여한 이벤트 -->
+	<select id="myPageEvent" resultMap="EventResultMap">
+		SELECT
+			*
+		FROM
+			`events` e INNER JOIN event_participations ep
+			USING (ev_cd)
+		WHERE
+			id = #{id}
+			AND
+			ev_winner_yn = 'Y';
+	</select>
+	
+	<!-- <select id="myPageBoardComments" resultMap="BoardResultMap">
+		SELECT
+			COUNT(*)
+		FROM
+			boards b INNER JOIN board_comments
+			USING (bbs_no)
+		WHERE
+			id = #{id}
+			AND
+			b.is_delete = 'active';
+	</select> -->
+	
+</mapper>

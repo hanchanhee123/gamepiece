@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	 layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+	<div class="col-6">
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title" th:text="${title}"></h2>
+          </div>
+     
+      </div>
+     </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   	<form id="boardDetailForm" th:action="@{/admin/board/detail}" th:object="${boardInfo}">
+   	    <input type="hidden" name="boardNum" th:value="${boardInfo.boardNum}">
+   		    <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                       
+								<div class="mb-4">
+						    <label for="boardCategory" class="form-label">카테고리</label>
+						    <select name="boardCategory" id="boardCategory" class="form-control text-center">
+						        <option value="">게시판을 선택하세요</option>
+						        <option th:each="l : ${categoryList}"
+						                th:value="${l.categoryCode}"
+						                th:text="${l.categoryName}"
+						                th:selected="${l.categoryCode == boardInfo.boardCategory}">
+						        </option>
+						    </select>
+						</div>
+												
+                       
+                            <div class="mb-4">
+                                <label for="boardTitle" class="form-label">제목</label>
+                                <input type="text" class="form-control" 
+                                    id="boardTitle" name="boardTitle" th:value="*{boardTitle}">
+                            </div>
+                           
+                         <div class="mb-4">
+						    <label for="boardContent" class="form-label">게시내용</label>
+						    <div class="form-control editor-content" 
+						         style="height: 500px; overflow-y: auto;"
+						         th:utext="*{boardContent}">
+						    </div>
+						    <!-- 실제 폼 전송을 위한 hidden input -->
+						    <input type="hidden" 
+						           id="boardContent" 
+						           name="boardContent" 
+						           th:value="*{boardContent}"/>
+						</div>
+						         
+						         
+						         
+						         
+						         <hr class="mb-6 mt-0">
+						         <div class="row">
+                      <div class="col-md-2">
+                          <h5 style="margin-top: 5px;">좋아요</h5>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="mb-4">
+                              <div class="col-md-3">
+                              <div>
+                                 <input type="text"
+                                 class="form-control" name="boardLikeCnt" th:value="*{boardLikeCnt}">
+                                 </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-2">
+                          <h5 style="margin-top: 5px;">싫어요</h5>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="mb-4">
+                              <div class="col-md-3">
+                              <div>
+                                 <input type="text"
+                                 class="form-control" name="boardDisLikeCnt" th:value="*{boardDisLikeCnt}">
+                                 </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+               
+          </div>
+						         
+						         
+						         
+						         
+						                          
+                         
+                              <hr class="mb-6 mt-0">
+                            <table class="table table-hover">
+                                <thead style="text-align: center;">
+                                    <tr>
+                                        <th>댓글번호</th>
+                                         <th>댓글작성자</th>
+                                        <th>댓글내용</th>
+                                        <th>댓글좋아요</th>
+                                        <th>댓글싫어요</th>
+                                        <th>댓글작성일</th>
+                                     
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center;">
+                                <th:block th:if="${commentList}">
+                               <tr th:each="l : ${commentList}">
+                                        
+                                       <td th:text="${l.commentNum}"></td>
+                                        <td th:text="${l.userInfo.userNn}"></td>
+                                       <td th:text="${l.commentDetail}"></td>                                      
+                                       <td th:text="${l.commnetLikeCnt}" 
+										    th:data-comment-num="${l.commentNum}"
+										    th:onclick="showCommentLikeUsers(this, 'LIKE')" 
+										    style="cursor: pointer;">
+										</td>
+										<td th:text="${l.commentDisLikeCnt}" 
+										    th:data-comment-num="${l.commentNum}"
+										    th:onclick="showCommentLikeUsers(this, 'DISLIKE')" 
+										    style="cursor: pointer;">
+										</td>
+                                       <td th:text="${l.commentYmd}"></td>                                   
+                                      
+                               
+                                    </tr>
+                                    </th:block>
+                                    <th:block th:unless="${commentList}">
+								<tr>
+									<td colspan="7">등록된 게시물이 없습니다.</td>
+								</tr>
+							</th:block>
+                                 
+                                </tbody>
+                            </table>
+                     
+                        <!-- table-responsive //end -->
+                    <div class="pagination-area mt-15">
+				    <nav>
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/admin/board/detail(boardNum=${boardInfo.boardNum},currentPage=1)}">
+                <i class="material-icons md-first_page"></i>
+            </a>
+        </li>
+
+        <li class="page-item" th:classappend="${currentPage < 2} ? 'disabled'">
+            <a class="page-link"
+                th:href="@{/admin/board/detail(boardNum=${boardInfo.boardNum},currentPage=${currentPage -1})}">
+                <i class="material-icons md-chevron_left"></i>
+            </a>
+        </li>
+
+        <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+            <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
+                <a class="page-link" 
+                    th:href="@{/admin/board/detail(boardNum=${boardInfo.boardNum},currentPage=${num})}" 
+                    th:text="${num}">
+                </a>
+            </li>
+        </th:block>
+
+        <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
+            <a class="page-link"
+                th:href="@{/admin/board/detail(boardNum=${boardInfo.boardNum},currentPage=${currentPage+1})}">
+                <i class="material-icons md-chevron_right"></i>
+            </a>
+        </li>
+
+        <li class="page-item">
+            <a class="page-link"
+                th:href="@{/admin/board/detail(boardNum=${boardInfo.boardNum},currentPage=${lastPage})}">
+                <i class="material-icons md-last_page"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+				</div>
+                             
+                        </div>
+                    </div>
+                 
+                </div>
+                   
+                
+            </div>
+            
+ <div class="modal fade" id="commentLikeUsersModal" tabindex="-1" aria-labelledby="commentLikeUsersModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentLikeUsersModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
+                <ul id="commentUserList" class="list-group">
+                    <!-- 사용자 목록이 여기에 동적으로 추가됩니다 -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+            </form>
+            
+            
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    	function showCommentLikeUsers(element, type) {
+    	    const count = parseInt(element.textContent);
+    	    
+    	    if (count === 0) {
+    	        return;
+    	    }
+    	    
+    	    const likeAndDisLikeUsers = [];
+    	    
+    	    for (let i = 1; i <= count; i++) {
+    	    	likeAndDisLikeUsers.push({ userNn: `리${i}` });
+    	    }
+    	    
+    	    const userList = document.getElementById('commentUserList');
+    	    userList.innerHTML = ''; // 목록 초기화
+    	    
+    	    likeAndDisLikeUsers.forEach(user => {
+    	        const li = document.createElement('li');
+    	        li.className = 'list-group-item';
+    	        li.textContent = user.userNn;
+    	        userList.appendChild(li);
+    	    });
+    	    
+    	    const modalTitle = document.getElementById('commentLikeUsersModalLabel');
+    	    modalTitle.textContent = type === 'LIKE' ? '댓글 좋아요 유저목록' : '댓글 싫어요 유저목록';
+    	    
+    	    const modal = new bootstrap.Modal(document.getElementById('commentLikeUsersModal'));
+    	    modal.show();
+    	}
+    	</script>
+    </th:block>
+</html>

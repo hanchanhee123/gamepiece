@@ -1,6 +1,9 @@
 package gamepiece.admin.point.service;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
 import gamepiece.util.PageInfo;
@@ -16,10 +19,16 @@ public interface PointService {
 	// 아이템 카테고리 조회
 	List<PointCategories> findCate();
 	
-	void addItem(Point point);
+	void addItem(Point point,MultipartFile files);
 	
 	void modifyItem(Point point);
 	
 	void removeItem(String ps_cd);
+	
+	void inactiveItem(String ps_cd);
+	
+	void logcount(String ps_cd);
+	
+	PageInfo<Point> searchList(String searchCate, String searchValue, Pageable pageable);
 	
 }

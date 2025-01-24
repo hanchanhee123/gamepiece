@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/layout/default}">
+   
+    <th:block layout:fragment="contents-header">   
+        <div class="row">
+            <div class="col-6">
+                <div class="content-header">
+                    <h2 class="content-title" th:text="${title}"></h2>
+                    <div>
+                        <button class="btn btn-md rounded font-sm hover-up" id="addEventBtn">생성</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+    <th:block layout:fragment="contents-body">
+		<form id="addEventForm" th:action="@{/admin/event/listWrite}" method="post">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card mb-4">
+                        <div class="card-body">
+                            <!-- 1. 일반 정보 -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>1. 일반 정보</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">이벤트당첨자리스트명</label>
+                                        <input type="text" placeholder="Type here" class="form-control" name="ewNm" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mb-4 mt-0">
+                            <!-- 2. 이벤트 명 -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>2. 이벤트 명</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <div class="input-group">
+                                            <select class="custom-select" aria-label="Event selection" name="evCd">
+                                                <option value="">-선택-</option>
+	                                                <th:block th:each="Event : ${eventList}">
+														<option th:data-event-nm="${Event.evNm}" 
+														        th:text="${Event.evNm}" 
+														        th:value="${Event.evCd}">
+														</option>
+	                                                </th:block>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mb-4 mt-0">
+                            <!-- 3. 당첨 인원 -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>3. 당첨 인원</h6>
+                                </div>
+                                <div class="col-md-9">
+								    <div class="mb-4 winner-table">
+								        <!-- 당첨자 데이터가 있는 경우 -->
+								        <th:block th:if="${addEventList != null && !addEventList.isEmpty()}">
+								            <th:block th:each="Event : ${addEventList}">
+								                <span class="winner-item" th:text="${Event}"></span>
+								            </th:block>
+								        </th:block>
+								        <!-- 당첨자 데이터가 없는 경우 -->
+								        <th:block th:if="${addEventList == null || addEventList.isEmpty()}">
+											<p class="no-winners">등록된 당첨자가 없습니다.</p>
+								        </th:block>
+								    </div>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</form>
+    </th:block>
+	<!-- 사용자 추가 js script -->
+	<th:block layout:fragment="customJs">
+		<script th:inline="javascript">
+		// 폼 제출 로직
+		$('#addEventBtn').click(function () {
+			let isSubmit = true;
+			const $formControl = $('#addEventForm').find('input, select');
+		
+			$formControl.each((idx, elem) => {
+			    const value = $(elem).val();
+			    if (!value) {
+			        isSubmit = false;
+			        $(elem).focus();
+			        return false; // 루프 종료
+			    }
+			});
+		
+			if (isSubmit) {
+			    $('#addEventForm').submit();
+			} else {
+			    alert('모든 필수 입력 항목을 작성해주세요.');
+			}
+		});
+		
+		// 이벤트 선택 시 당첨자 목록 업데이트
+		$('.custom-select').change(function () {
+			const eventCd = $(this).val()
+			const eventList = /*[[${eventList}]]*/"";
+			
+			const filter = $(eventList).filter((idx, element) => element.evCd == eventCd);
+			
+			const evWinnersNum = filter[0].evWinnersNum;
+			
+			if (!eventCd) {
+			    alert('올바른 이벤트를 선택해주세요.');
+			    return;
+			}
+			    
+			$.ajax({
+				url: '/admin/event/winner/winners',
+				method: 'POST',
+				data: { 'evCd' : eventCd ,
+						'evWinnersNum' : evWinnersNum },
+				dataType: 'json',
+				success: function (data) {
+				    
+				const $div = $('.winner-table');
+				$div.empty();
+				            
+				data.forEach(item => {
+					$div.append(`<span style="padding: 3px;">${item}</span>`);
+				});
+				},
+				error: function (jqXHR, textStatus) {
+				console.error("요청 실패:", textStatus);
+				}
+			});
+		});
+		</script>
+	</th:block>
+</html>

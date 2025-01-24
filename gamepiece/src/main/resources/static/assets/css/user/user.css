@@ -46,6 +46,14 @@ main {
     background-color: white;
 }
 
+.user-info-result {
+	padding: 10px 0px;
+}
+
+.user-info-result span {
+	color: #007bff;
+}
+
 .join-info-form {
     display: inline-block;
     margin: 0 auto;
@@ -100,6 +108,11 @@ main {
     border: 0;
 }
 
+label.focus {
+    border: 2px solid black;
+}
+
+
 label[for="male"] {
     border-radius: 10px 0px 0px 10px;
 }
@@ -108,9 +121,16 @@ label[for="female"] {
     border-radius: 0px 10px 10px 0px;
 }
 
-input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-    content: attr(placeholder);
-    /* visibility: hidden; */
+input[type="date"] {
+    color: dimgrey;
+}
+
+input[type="date"].has-value {
+    color: black;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 500px lightgray inset !important;
 }
 
 .user-insert-form {

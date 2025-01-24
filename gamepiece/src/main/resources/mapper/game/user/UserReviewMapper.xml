@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.user.game.mapper.UserReviewMapper">
+	<resultMap type="gamepiece.user.game.domain.UserReview" id="userReview">
+		<id 	column="rv_no" property="reviewNo"></id>
+		<result column="gm_cd" property="gameCode"></result>
+		<result column="id" property="id"></result>
+		<result column="rv_grade" property="grade"></result>
+		<result column="rv_contents" property="reviewContents"></result>
+		<result column="rv_empathy" property="reviewEmpathy"></result>
+		<result column="rv_disempathy" property="reviewDisempathy"></result>
+		<result column="rv_log_ymd" property="reviewLogYmd"></result>
+		
+	</resultMap>
+	<select id="getUserReview" resultMap="userReview">
+		/* 해당 게임의 리뷰 보기 */
+		SELECT
+			rv_no,
+			gm_cd,
+			id,
+			rv_grade,
+			rv_contents,
+			rv_empathy,
+			rv_disempathy,
+			rv_log_ymd
+		FROM
+			reviews
+		WHERE 
+			gm_cd = #{gameCode};
+	</select>
+	
+	<select id="getLastReviewNum">
+		/* 리뷰 테이블의 마지막 번호 조회 */
+		SELECT
+			MAX(rv_no)
+		FROM
+			reviews;
+	</select>
+	
+	<insert id="writeUserReview" parameterType="gamepiece.user.game.domain.UserReview">
+		/* 리뷰 작성 */
+		INSERT INTO reviews
+		(rv_no, gm_cd, id, rv_grade, rv_contents, rv_empathy, rv_disempathy, rv_log_ymd)
+		VALUES 
+		(#{nextReviewNum}, #{gameCode}, #{id}, #{grade}, #{review}, 0, 0, NOW());
+	</insert>
+	
+	
+	
+
+	
+	
+</mapper>

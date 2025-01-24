@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{user/layout/default}">
+<head>
+	<link rel="stylesheet" th:href="@{/assets/css/game/gamelist.css}" />
+</head>
+<th:block layout:fragment="contents-body">
+	<main>
+        <div class="main">
+        	<th:block th:unless="${gameDetail.isDetail}">
+        		<div class="main-contents" style = "margin-top : 20px; text-align : center; color : white;">
+        			<h1>해당 페이지는 추후 업데이트 예정입니다.</h1>
+        			<a th:href="@{/game/steam}" style = "text-decoration : none; color : white;">게임목록으로 돌아가기</a>
+        		</div>
+        	</th:block>
+        	<th:block th:if="${gameDetail.isDetail}">
+        		<div class="main-contents">
+	                <div class="main_div">
+				        <div class="detail-info">
+				            <div class="detail1">
+				                <div class="video">
+				                	<th:block th:if="${!#strings.isEmpty(gameDetail['videoSrc'])}">
+				                		<video th:src="${gameDetail.videoSrc}" autoplay />	
+				                	</th:block>
+				                	<th:block th:unless="${!#strings.isEmpty(gameDetail['videoSrc'])}">
+				                		<img th:src="${gameDetail.imgSrcSec}" />	
+				                	</th:block>
+				                    
+				                </div>
+				                <div class="game-price-detail">
+				                    <span th:text=${gameDetail.title}></span>
+				                    <span th:text=${gameDetail.finalPrice}></span>
+				                </div>
+				                <div class="wishlist">
+				                    <div class="button-area">
+				                        <button type="button" class="btn btn-primary" id="wishList">위시리스트에 넣기</button>
+				                        <button type="button" class="btn btn-primary" id="cart">장바구니에 넣기</button>
+				                        <button type="button" class="btn btn-primary" id="cartView" onclick="location.href='/game/gameCartList'">장바구니로 이동</button>
+				                    </div>
+				                </div>
+				                <div class="game-script">
+				                    
+				                    <div>
+				                        <span th:text="${gameDetail.deepInfoText}"></span>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="detail2">
+				                <div class="more-info">
+				                    <img th:src="${gameDetail.imgSrc}">
+				                    <div class="more-info-area">
+				                        <div>
+				                            <span class="gm-summation" th:text="${gameDetail.lightInfo}">크레토스와 아트레우스가 종말의 위협 속에서 아홉 영역을 탐험하며, 신화적 전투와 감동적인 이야기를 담은 갓 오브 워 라그나로크를 경험하세요.</span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">출시일자</span>
+				                            <span class="gm-value" th:text="${gameDetail.date}"></span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">장르</span>
+				                            <span class="gm-value" th:text=${gameDetail.genre}></span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">개발사</span>
+				                            <span class="gm-value" th:text=${gameDetail.developer}></span>
+				                        </div>
+				                        <div>
+				                            <span class="gm-info">플랫폼</span>
+				                            <span class="gm-value">steam</span>
+				                        </div>
+				                    </div>
+				                </div>
+				                <!-- <div class="other-game">
+				                    <div class="more-game">
+				                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
+				                        <span>DARK SOULⅢ</span>
+				                    </div>
+				                    <div class="more-game">
+				                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
+				                        <span>DARK SOULⅢ</span>
+				                    </div>
+				                    <div class="more-game">
+				                        <img src="https://cdn.icon-icons.com/icons2/510/PNG/512/image_icon-icons.com_50366.png">
+				                        <span>DARK SOULⅢ</span>
+				                    </div>
+				                </div> -->
+				            </div>
+				        </div>
+				        <div class="review-list">
+				             <div class = "write-review">
+				                <div class = "user">
+				                    <img src = "https://cdn-icons-png.flaticon.com/512/159/159833.png">
+				                </div>
+				                <div class = "reviewbox">
+				                    <textarea class="writeBox" cols = "50" rows = "10" placeholder="리뷰를 500자 이내로 작성해주세요" ></textarea>
+				                </div>
+				                <div class = "reviewbutton">
+				                	<select name="grade" id="reviewGrade">
+				                		<option value="0">선택</option>
+				                		<option value="1">★☆☆☆☆</option>
+				                		<option value="2">★★☆☆☆</option>
+				                		<option value="3">★★★☆☆</option>
+				                		<option value="4">★★★★☆</option>
+				                		<option value="5">★★★★★</option>
+				                	</select>
+				                    <button type = "button" class="writeButton">게시</button>
+				                </div>
+				            </div> 
+				            <div class="review-info">
+				                <li>전체 리뷰</li>
+				                <li>리뷰 개수 : 3000개</li>
+				            </div>
+				            <div class="review-cate">
+				                <li><a href="#">최근작성</a></li>
+				                <li style="margin-left: 15px;"><a href="#">추천</a></li>
+				                <li style="margin-left: 15px;"><a href="#">비추천</a></li>
+				            </div>
+				            <div class="reviewList">
+				                <div class="review-area">
+				                	<th:block th:if="${!#lists.isEmpty(userReview)}">
+					                    <div class="review" th:each="l : ${userReview}">
+				                        	<div>
+				                        		<span th:text=${id}></span>
+				                        	</div>
+					                        <div class="review-content">
+					                            <div class="likeDislike">
+					                            	<th:block th:switch="${l.grade}">
+					                            		<div th:case="1">
+					                                    	<span>★☆☆☆☆</span>
+					                                	</div>	
+					                            		<div th:case="2">
+					                                    	<span>★★☆☆☆</span>
+					                                	</div>	
+					                            		<div th:case="3">
+					                                    	<span>★★★☆☆</span>
+					                                	</div>	
+					                            		<div th:case="4">
+					                                    	<span>★★★★☆</span>
+					                                	</div>	
+					                            		<div th:case="5">
+					                                    	<span>★★★★★</span>
+					                                	</div>	
+					                            	</th:block>
+					                                <div>
+					                                    <span><a href="#" class="report">신고</a></span>
+					                                </div>
+					                            </div>
+					                            <div class="content">
+					                                <span th:text="${l.reviewContents}"></span>
+					                            </div>
+					                            <div class="comment">
+					                                <div class="like-dislike">
+					                                    <span><i class="fa-solid fa-thumbs-up" aria-hidden="true">0</i></span>
+					                                    <span><i class="fa-solid fa-thumbs-down" aria-hidden="true">0</i></span>
+					                                    <span><i class="bi bi-chat-left-text-fill"></i></span>
+					                                </div>
+					                                <div>
+					                                    <span>게시날짜 : 2024-10-20</span>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </div>
+				                	</th:block>
+				                	<th:block th:unless="${!#lists.isEmpty(userReview)}">
+				                		<div class="text-center">
+				                			<span style = "color : white; display : block;">아직 작성된 리뷰가 없습니다.</span>
+				                		</div>
+				                	</th:block>
+				                </div>	                
+				                <div class="more-look" >
+	                    			<button type="button" class="btn btn-primary" id="put-game-in-cart">더보기</button>
+				                </div>
+				            </div>
+				        </div>
+	    			</div>	
+				        
+	            </div>
+        	</th:block>
+            
+        </div>
+    </main>
+</th:block>
+<!--/* 사용자 추가 js file */-->
+<th:block layout:fragment="customJsResource">
+	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+</th:block>
+<!--/* 사용자 추가 js script */-->
+<th:block layout:fragment="customJs">
+	<script th:inline="javascript">
+		const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
+		if(isDetail) {
+			$('.writeButton').click(function() {
+				const review = $('.writeBox').val();
+				const grade = $('#reviewGrade').val();
+				console.log(grade);
+				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
+				
+				const nextReviewNumInt = /*[[${nextReviewNumInt}]]*/"nextReviewNumInt";
+				const nextReviewNum = 'rv_' + nextReviewNumInt;
+				const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
+				console.log(nextReviewNum);
+				const id = /*[[${id}]]*/"id";
+				if(!review) {
+					alert("리뷰를 작성해주세요");
+					review.focus();
+					return false;
+				};
+				if(!grade) {
+					alert("별점을 선택해주세요");
+					grade.focus();
+					return false;
+				}
+				if(!id) {
+					alert("로그인 이후 작성해주세요");
+					return false;
+				}
+				console.log(grade);
+				
+				const $form = $('<form />', {'action' : '/game/writeReview', 'method' : 'post'});
+				const $review = $('<input />', {'type' : 'hidden', 'name' : 'review'}).val(review);
+				const $grade = $('<input />', {'type' : 'hidden', 'name' : 'grade'}).val(grade);
+				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
+				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+				const $nextReviewNum = $('<input />', {'type' : 'hidden', 'name' : 'nextReviewNum'}).val(nextReviewNum);
+
+				const $isDetail = $('<input />', {'type' : 'hidden', 'name' : 'isDetail'});
+				
+				
+				
+				$form.append($review, $grade, $gameCode, $id, $nextReviewNum, $isDetail);
+				$('body').append($form);
+				$form.submit();
+				
+				
+			})	
+			
+			const reviewListArea = $('.reviewList');
+			const reviewArea = $('.review-area');
+			const reviewList = reviewArea.find('.review');
+			
+			reviewList.each((index, item) => {
+				if(index % 2 == 1) {
+					const $reviewArea = $('<div />', {'class' : 'review-area'})
+					$reviewArea.append(item);
+					reviewListArea.next().append($reviewArea);
+				} 
+			})
+			
+			$('#cart').click(function() {
+				alert("장바구니에 추가하시겠습니까?");
+				const title = /*[[${gameDetail.title}]]*/"gameDetail";
+				const finalPrice = /*[[${gameDetail.finalPrice}]]*/"gameDetail";
+				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
+				const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
+				const id = /*[[${id}]]*/"id";
+				
+				if(id == null) {
+					alert("로그인 이후 이용해주세요");
+					return false;
+				}
+				
+				const $form = $('<form />', {'action' : '/game/gameCart', 'method' : 'post'});
+				const $title = $('<input />', {'type' : 'hidden', 'name' : 'title'}).val(title);
+				const $finalPrice = $('<input />', {'type' : 'hidden', 'name' : 'finalPrice'}).val(finalPrice);
+				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
+				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+				
+				const $isDetail = $('<input />', {'type' : 'hidden', 'name' : 'isDetail'}).val(isDetail);
+				$form.append($title, $finalPrice, $gameCode, $isDetail, $id);
+				$('body').append($form);
+				$form.submit();
+			})
+			$('#cartView').click(function() {
+				const id = /*[[${id}]]*/"id";
+				console.log(id);
+				
+				if(id == null) {
+					alert("로그인 이후 이용가능합니다.");
+					return false;
+				}
+				
+				const $form = $('<form />', {'action' : '/game/gameCartView', 'method' : 'get'});
+				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+				$form.append($id);
+				$('body').append($form);
+				$form.submit();
+			})
+			
+		}
+		
+			
+		
+			
+	
+		
+		
+		
+			
+		
+		
+	</script>
+</th:block>
+</html>

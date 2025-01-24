@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.admin.report.mapper.ReportMapper">
+
+
+
+	
+	<resultMap type="gamepiece.admin.report.domain.Report" id="ReportResultMap">
+	  <id column="report_no"  property="reportNo" />
+    <result column="reporter_id" property="reportUser" />
+    <result column="reported_id" property="reportedUser" />
+    <result column="report_content" property="reportContent" />
+    <result column="diposal_situation" property="reportProgress" />
+    <result column="report_ymd" property="reportYmd" />
+    
+    
+    
+    <association property="userInfo" javaType="gamepiece.admin.user.domain.User">
+ 			<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="authrt_nm" property="authrtNm"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+		<result column="login_no" property="loginNo"/>
+		<result column="lgn_dt" property="lgnDt"/>
+		<result column="inactive_days" property="inactiveDays"/>
+    </association>
+
+    <association property="disposalInfo" javaType="gamepiece.admin.report.domain.Disposal">
+ 				  <id column="disposal_cd"  property="disposalCode" />
+    <result column="report_no" property="reportNo" />
+    <result column="disposal_content" property="disposalContent" />
+    <result column="disposal_ymd" property="disposalYmd" />
+    <result column="disposal_criteria" property="disposalCriteria" />
+    <result column="disposal_start_ymd" property="disposalStartYmd" />
+    <result column="disposal_end_ymd" property="disposalEndYmd" />
+    <result column="admin_id" property="adminId" />
+    <result column="reg_ymd" property="disposalRegdate" />
+    </association>
+
+
+	</resultMap>
+	
+	
+	
+
+<select id="getCntReport" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			 u_report
+</select>
+
+
+
+<select id="getReportList" parameterType="gamepiece.util.Pageable" resultMap="ReportResultMap">
+
+SELECT 
+	ur.report_no, 
+	ur.reporter_id, 
+	ur.reported_id, 
+	ur.report_content,
+	ur.diposal_situation, 
+	ur.report_ymd,
+	ud.disposal_cd
+FROM   
+	u_report ur LEFT JOIN u_disposal ud 
+	ON ur.report_no = ud.report_no
+	
+	  ORDER BY
+        CAST(SUBSTRING_INDEX(ur.report_no,'r_',-1) AS UNSIGNED)
+     LIMIT #{rowPerPage} OFFSET #{offset}
+
+</select>
+
+
+<update id="modifyReportReview">
+    UPDATE u_report 
+    SET diposal_situation = '검토 중'
+    WHERE report_no IN
+    <foreach collection="list" item="reportNumber" open="(" separator="," close=")">
+        #{reportNumber}   
+    </foreach>
+</update>
+
+<update id="modifyReportClear" parameterType="Report">
+
+UPDATE
+	 u_report
+SET
+	diposal_situation='처리 완료'	
+WHERE 
+		report_no=#{reportNo};	
+		
+</update>
+
+
+</mapper>
+
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{admin/layout/default}">
+
+	<th:block layout:fragment="contents-header"> 	
+	<div class="col-6">
+      <div class="content-header">
+          <div>
+              <h2 class="content-title card-title" th:text="${title}"></h2>
+          </div>
+     
+      </div>
+     </div>
+   	</th:block>
+   	<th:block layout:fragment="contents-body">
+   	<form id="dispoForm" th:action="@{/admin/report/detail}" method="post" th:object="${disposalInfo}">
+   	    <input type="hidden" name="disposalCode" th:value="*{disposalCode}">
+   		    <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                       
+								<div class="mb-4">
+									    <label for="disposalCriteria" class="form-label">처분기준</label>
+						<select name="disposalCriteria" id="disposalCriteria" class="form-control text-center">
+						  <option value="">처분기준을 선택하세요</option>
+						  <option value="허위신고 ,심한 욕설 및 언쟁" th:selected="${disposalInfo.disposalCriteria.equals('허위신고 ,심한 욕설 및 언쟁')}">허위신고 ,심한 욕설 및 언쟁</option>
+						  <option value="경고 3회 누적" th:selected="${disposalInfo.disposalCriteria.equals('경고 3회 누적')}">경고 3회 누적</option>
+						  <option value="정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배" th:selected="${disposalInfo.disposalCriteria.equals('정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배')}">정치적발언, 사회적 발언, 경고 4회, 광고 및 홍보, 도배</option>
+					</select>
+									</div>
+												
+					               <div class="mb-4">
+					    <label for="disposalContent" class="form-label">처분명</label>
+					    <input type="text" class="form-control text-center"
+					           id="disposalContent" name="disposalContent" 
+					           th:value="*{disposalContent}">
+					</div>
+					
+					<!-- 처분시작날짜를 date 타입으로 변경 -->
+					<div class="mb-4">
+					    <label for="disposalStartYmd" class="form-label">처분시작날짜</label>
+					    <input type="text" class="form-control text-center"
+					           id="disposalStartYmd" name="disposalStartYmd" 
+					           th:value="*{disposalStartYmd}">
+					</div>
+					
+					<!-- 처분종료날짜도 date 타입으로 변경 -->
+					<div class="mb-4">
+					    <label for="disposalEndYmd" class="form-label">처분종료날짜</label>
+					    <input type="text" class="form-control text-center"
+					           id="disposalEndYmd" name="disposalEndYmd"
+					           th:value="*{disposalEndYmd}"
+					           th:readonly="*{disposalEndYmd == null || disposalEndYmd == ''}">
+					</div>
+					
+					<!-- 처분담당자는 그대로 type="text" -->
+					<div class="mb-4">
+					    <label class="form-label">처분담당자</label>
+					    <input type="text" class="form-control text-center" 
+					           name="adminId" id="adminId"
+					           th:value="*{adminId}">
+					</div>
+						         
+						         
+						                          
+                         
+                     
+                        <!-- table-responsive //end -->
+                   
+                             
+                        </div>
+                    </div>
+                 
+                </div>
+                   
+                
+            </div>
+            
+    </form>
+            
+            
+   	</th:block>
+   	<!--/* 사용자 추가 js file */-->
+    <th:block layout:fragment="customJsResource"></th:block>
+    <!--/* 사용자 추가 js script */-->
+    <th:block layout:fragment="customJs">
+    	<script>
+    	
+    	</script>
+    </th:block>
+</html>

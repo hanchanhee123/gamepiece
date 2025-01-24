@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.board.mapper.ReportMapper">
+
+
+
+	
+	<resultMap type="gamepiece.user.board.domain.Report" id="ReportResultMap">
+	  <id column="report_no"  property="reportNo" />
+    <result column="reporter_id" property="reportUser" />
+    <result column="reported_id" property="reportedUser" />
+    <result column="report_content" property="reportContent" />
+    <result column="diposal_situation" property="reportProgress" />
+    <result column="report_ymd" property="reportYmd" />
+    
+    
+      <association property="userInfo" javaType="gamepiece.user.user.domain.User">
+ 			<id column="id" property="id" />
+		<result column="authrt_cd" property="authrtCd"/>
+		<result column="user_pw" property="userPswd"/>
+		<result column="user_nm" property="userNm"/>
+		<result column="user_gender" property="userGender"/>
+		<result column="user_eml_addr" property="userEmlAddr"/>
+		<result column="user_brdt" property="userBrdt"/>
+		<result column="user_telno" property="userTelno"/>
+		<result column="user_nn" property="userNn"/>
+		<result column="join_ymd" property="joinYmd"/>
+		<result column="whdwl_ymd" property="whdwlYmd"/>
+    </association>
+
+	</resultMap>
+	
+	
+<insert id="addReport" parameterType="Report">
+			
+			
+			INSERT INTO u_report(
+						report_no, 
+						reporter_id, 
+						reported_id, 
+						report_content,
+						report_ymd
+			)
+			VALUES(
+			 CONCAT('r_', LPAD((
+            SELECT next_num FROM (
+                SELECT MAX(CAST(SUBSTRING_INDEX(report_no, 'r_', -1) AS UNSIGNED)) + 1 AS next_num 
+                FROM u_report
+            ) AS temp
+        	), 2, '0')),
+			#{reportUser}, 
+			#{reportedUser}, 
+			#{reportContent}, 
+			NOW()
+			);
+
+
+
+</insert>
+
+</mapper>
+
+
