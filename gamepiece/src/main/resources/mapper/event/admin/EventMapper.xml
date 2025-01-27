@@ -188,10 +188,8 @@
 		INSERT INTO events_winners
 		  (ew_cd, ev_cd, ew_nm, admin_id, ew_reg_ymd)
 		VALUES 
-		  (	
-		    <![CDATA[(SELECT CONCAT('ew_', LPAD(IFNULL(MAX(SUBSTRING(ew.ew_cd, 4) + 1), 0), 
-		                          IF(LENGTH(MAX(SUBSTRING(ew.ew_cd, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(ew.ew_cd, 4) + 1))), '0')) ]]>
-		     FROM events_winners ew),
+		  (
+		  	#{ewCd},
 		    #{evCd},
 		    #{ewNm}, 
 		    #{adminId}, 

@@ -25,16 +25,6 @@
 		<result column="file_idx" 				property="fileIdx" />
 		<result column="file_path" 				property="filePath" />
 	</resultMap>
-
-	<!-- 이벤트 삭제 -->
-	<update id="removeEvent" parameterType="gamepiece.user.event.domain.Event">
-		UPDATE
-			events
-		SET
-			is_delete = 'delete'
-		WHERE
-			ev_cd = #{evCd};
-	</update>
 	
 	<select id="getSearchList" parameterType="map" resultMap="eventResultMap">
 		SELECT
@@ -93,7 +83,7 @@
 			ev_cd = #{evCd};
 	</select>
 	
-	<select id="getEventDetail" parameterType="string" resultMap="eventResultMap">
+	<!-- <select id="getEventDetail" parameterType="string" resultMap="eventResultMap">
 		SELECT
 			*
 		FROM
@@ -101,9 +91,9 @@
 			ON e.file_idx = f.file_idx
 		WHERE
 			ev_cd=#{evCd};
-	</select>
+	</select> -->
 	
-	<insert id="addEvent" parameterType="gamepiece.user.event.domain.Event">
+	<!-- <insert id="addEvent" parameterType="gamepiece.user.event.domain.Event">
 		INSERT INTO events
 		  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, ev_img)
 		VALUES 
@@ -120,9 +110,9 @@
 		    CURDATE(), 
 		    #{evImg}
 		  );
-	</insert>
+	</insert> -->
 	
-	<update id="modifyEvent" parameterType="gamepiece.user.event.domain.Event">
+<!-- 	<update id="modifyEvent" parameterType="gamepiece.user.event.domain.Event">
 		UPDATE events
 		<trim prefix="SET" suffixOverrides=",">
 			<if test="evNm != null and evNm != ''">
@@ -146,7 +136,7 @@
 		</trim>
 		WHERE 
 			ev_cd=#{evCd};
-	</update>
+	</update> -->
 	
 	<select id="getEventInfoById" parameterType="String" resultMap="eventResultMap">
 		SELECT
@@ -229,9 +219,10 @@
 		  (evp_no, ev_cd, id, ev_participate_ymd)
 		VALUES 
 		  (	
-		    <![CDATA[(SELECT CONCAT('evp_', LPAD(IFNULL(MAX(SUBSTRING(evp.evp_no, 5) + 1), 0), 
+		    <!-- <![CDATA[(SELECT CONCAT('evp_', LPAD(IFNULL(MAX(SUBSTRING(evp.evp_no, 5) + 1), 0), 
 		                          IF(LENGTH(MAX(SUBSTRING(evp.evp_no, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(evp.evp_no, 5) + 1))), '0')) ]]>
-		     FROM event_participations evp),
+		     FROM event_participations evp), -->
+		    #{evpNo}, 
 		    #{evCd},
 		    #{id}, 
 		    CURDATE()

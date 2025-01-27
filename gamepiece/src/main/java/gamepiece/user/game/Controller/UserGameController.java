@@ -36,6 +36,8 @@ public class UserGameController {
 		@GetMapping("/steam")
 		public String getUserGameListView(@RequestParam(value="currentPage", required=false, defaultValue = "1") int currentPage,
 										  @RequestParam(value="searchValue", required=false, defaultValue = "") String searchValue,
+										  @RequestParam(value="id", required=false, defaultValue = "") String id,
+										  HttpSession session,
 										  Model model) {
 		
 			
@@ -63,12 +65,18 @@ public class UserGameController {
 			 * model.addAttribute("genreList", genreList); 
 			 * return "user/game/gameList";
 			 */
+			id = (String) session.getAttribute("SID");
+			
+			model.addAttribute("id", id);
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 			
 			
 			 
 			ArrayList<String> platformList = userGameService.getPlatformList();
 			
 			
+			model.addAttribute("id", id);
 			Map<String, Object> gameList = userGameService.getGameListApi(searchValue, currentPage);
 			model.addAttribute("gameList", gameList);
 			model.addAttribute("platformList", platformList);
@@ -164,7 +172,7 @@ public class UserGameController {
 								   Model model, HttpSession session) {
 		
 		List<UserGame> cartList = userGameService.getUserCartList(id);
-		// log.info("cartList : {}", cartList);
+		 log.info("cartList : {}", cartList);
 		
 		int totalPrice = userGameService.cartTotalPrice();
 		id = (String) session.getAttribute("SID");

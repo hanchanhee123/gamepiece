@@ -8,6 +8,7 @@ import org.apache.catalina.util.ParameterMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import gamepiece.common.mapper.CommonMapper;
 import gamepiece.file.mapper.FileMapper;
 import gamepiece.user.event.domain.Event;
 import gamepiece.user.event.mapper.UserEventMapper;
@@ -23,7 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 public class EventServiceImpl implements EventService {
 
 	private final UserEventMapper userEventMapper;
-	private final FileMapper fileMapper;
+	/* private final FileMapper fileMapper; */
+	private final CommonMapper commonMapper;
 	
 	@Override
 	public PageInfo<Event> getProgressEvent(Pageable pageable) {
@@ -85,6 +87,10 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public void insertParticipant(Event event) {
 	
+		String evpNo = commonMapper.getPrimaryKey("evp_", "event_participations", "evp_no");
+		
+		event.setEvpNo(evpNo);
+		
 		userEventMapper.insertParticipant(event);
 	}
 
