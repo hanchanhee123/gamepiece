@@ -1,8 +1,14 @@
 package gamepiece.user.board.service;
 
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
+import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
@@ -12,6 +18,24 @@ import gamepiece.util.Pageable;
 
 public interface BoardService {
 	
+
+	BoardFiles getBoardFileInfo(String boardNum);
+	
+	BoardFiles getFileInfo(String fileIdx);
+	//게시판 파일 조회
+	
+	BoardFiles getInquiryFile(String inquiryNum);
+	
+	BoardFiles getBoardFile(String boardNum);
+	
+    void addFilesWithInfo(MultipartFile[] files, List<BoardFiles> fileDtoList);
+	
+	
+	void addFile(MultipartFile file); 
+	
+	void addFiles(MultipartFile[] files);
+
+	void deleteFile(BoardFiles fileDto); 
 	
 	
 	//공지 조회수 증가
@@ -100,7 +124,7 @@ public interface BoardService {
 	
 	//정보게시글목록
 	PageInfo<Board> getInfoBoardsList(Pageable pageable);
-	
+
 
 	
 

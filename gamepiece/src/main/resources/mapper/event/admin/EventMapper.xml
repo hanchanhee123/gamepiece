@@ -215,8 +215,8 @@
 			<if test="evWinnersNum != null and evWinnersNum != ''">
 				ev_winners_num=#{evWinnersNum},
 			</if>		
-			<if test="evImg != null and evImg !=''">
-				ev_img=#{evImg},
+			<if test="fileIdx != null and fileIdx !=''">
+				file_idx=#{fileIdx},
 			</if>			
 		</trim>
 		WHERE 
@@ -225,7 +225,7 @@
 	
 	<select id="getEventInfoById" parameterType="String" resultMap="eventResultMap">
 		SELECT
-			*
+			ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, file_idx
 		FROM
 			events
 		WHERE

@@ -18,6 +18,7 @@ import gamepiece.admin.event.service.EventService;
 import gamepiece.admin.point.domain.Point;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
+import jakarta.servlet.annotation.MultipartConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -235,10 +236,11 @@ public class EventController {
 	}
 	
 	@PostMapping("/modify")
-	public String modifyEvent(Event event,
+	public String modifyEvent(Event event, @RequestPart(name="files", required = false) MultipartFile files,
 							   RedirectAttributes reAttr) {
 		
-		eventService.modifyEvent(event);
+		
+		eventService.modifyEvent(event, files);
 		
 		reAttr.addAttribute("evCd", event.getEvCd());
 		
@@ -250,7 +252,7 @@ public class EventController {
 	
 		Event eventInfo = eventService.getEventInfoById(evCd);
 		
-		model.addAttribute("title", "회원수정");
+		model.addAttribute("title", "이벤트 수정");
 		model.addAttribute("eventInfo", eventInfo);
 		
 		return "admin/event/modifyEvent";

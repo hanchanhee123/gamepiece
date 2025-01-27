@@ -40,27 +40,7 @@
 
 
 
-<!-- 
 
-
-
-
- 
-
-<select id="getCntComment" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			board_comments 
-		where 
-			is_delete = 'active'
-	
-</select>
-
--->
-<!-- 
- -->
- 
  <insert id="addComment" parameterType="BoardComment">
 	INSERT INTO board_comments(
 	bc_no, 
