@@ -15,14 +15,19 @@ public class UserHomeController {
 	public final UserService userService;
 	
 	@GetMapping(value = {"","/"})
-	public String getHomeView(HttpSession session,
-							  Model model) {
+	public String getHomeView() {
+		
+		return "user/infomationpage";
+	}
+	@GetMapping(value = "/main")
+	public String HomeView(HttpSession session,
+			Model model) {
 		
 		String id = (String) session.getAttribute("SID");
 		
 		String avatar = userService.getUserAvatar(id);
 		
-        model.addAttribute("avatar", avatar);
+		model.addAttribute("avatar", avatar);
 		model.addAttribute("userId", id);
 		
 		return "user/index";

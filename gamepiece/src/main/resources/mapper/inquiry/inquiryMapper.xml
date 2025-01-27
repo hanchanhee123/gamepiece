@@ -39,8 +39,20 @@
 		<result column="response_content" property="responeContent"/>
 		<result column="admin_id" property="adminId"/>
 		<result column="response_ymd" property="responeYmd"/>
-		
 		</association>
+		
+		
+		  <association property="fileInfo" javaType="gamepiece.admin.board.domain.AdminBoardFiles">
+		<id column="fileIdx" 				property="file_idx"/>
+		<result property="fileNewName" 		column="file_new_name"/>
+		<result property="fileOriginalName" column="file_original_name"/>
+		<result property="filePath" 		column="file_path"/>
+		<result property="fileSize" 		column="file_size"/>
+		</association>
+		
+		
+		
+		
 		</resultMap>
 		
 		
@@ -61,7 +73,7 @@
 					   <if test="searchValue != null and searchValue != ''">
 					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
 					   </if>
-					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED)
+					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED) DESC
 					   LIMIT #{rowPerPage} OFFSET #{offset}
 					</select>
 					
@@ -104,34 +116,13 @@ SELECT
 		LEFT JOIN inquiry_response ir
 	   USING (inquiry_id)
 	ORDER BY
-		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED)
+		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED) DESC
 	LIMIT #{rowPerPage} OFFSET #{offset}
 
 	</select>
 
 
-	<insert id="addInquiry" parameterType="Inquiry">
 
-		INSERT INTO inquiry(
-			inquiry_id,
-			id,
-			inquiry_title,
-			inquiry_content,
-			inquiry_ymd
-			)VALUES(
-			CONCAT('inq_', LPAD(COALESCE((
-			SELECT next_num FROM (
-			SELECT MAX(CAST(SUBSTRING_INDEX(inquiry_id, 'inq_', -1) AS UNSIGNED)) + 1 AS
-			next_num FROM inquiry
-			) AS temp
-			), 1), 2, '0')),
-			CONCAT('id', LPAD(#{idN}+1,2,'0')),
-			#{inquiryTitle},
-			#{inquiryContent},
-			CURDATE()
-			);
-
-	</insert>
 
 
 
@@ -140,11 +131,10 @@ SELECT
 
 	<select id="getInquiryInfo" parameterType="string" resultMap="InquiryResultMap">
 	SELECT
-	i.inquiry_id,
-	i.inquiry_title,
-	i.inquiry_content
+	*
 	FROM
-		inquiry i 
+		inquiry i LEFT JOIN files f
+		ON i.file_idx = f.file_idx 
 	WHERE
 		inquiry_id =#{inquiryNum};
 

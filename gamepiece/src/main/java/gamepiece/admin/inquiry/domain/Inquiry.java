@@ -1,5 +1,6 @@
 package gamepiece.admin.inquiry.domain;
 
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.user.domain.User;
 import lombok.Data;
 
@@ -15,5 +16,8 @@ public class Inquiry {
 	private User userInfo; //유저정보
 	private Integer idN = 3; //아이디넘버
 	private InquiryRespone responeInfo; //문의답변정보
+	private String fileIdx;
+	private AdminBoardFiles fileInfo;
+	
 
 }

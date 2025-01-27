@@ -4,7 +4,7 @@
       layout:decorate="~{user/layout/default}">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/assets/css/board/addboard.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/board/modifyBoard.css}" />
     <!-- jQuery 추가 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- 스마트 에디터 스크립트 -->
@@ -72,21 +72,49 @@
 			
 			
 			
-			          <div class="file">
-			            <div class="file-details">
-			              <div>
-			                <span class="file-font">첨부파일</span>
-			                <span id="fileName" class="file-name">선택된 파일이 없습니다.</span>
-			              </div>
-			              <div>
-			                <input type="file" id="fileInput" name="file" style="display: none;" />
-			                <button type="button" class="upload-button" id="uploadButton">
-			                  <span>업로드</span>
-			                </button>
-			              </div>
-			            </div>
-			          </div>
-
+<div class="fileSpace">
+   <div class="col">
+    <div class="card">
+        <div class="card-header">
+            <h4>파일 업로드</h4>
+        </div>
+        <div class="card-body">
+            <div class="input-group">
+    <input type="file" id="files" name="files" 
+           class="form-control bg-light border-0 small d-none" multiple>
+    <div class="input-group border rounded bg-white p-2 w-100">
+        <button onclick="document.getElementById('files').click()" 
+                type="button" 
+                class="btn btn-outline-primary">
+            <i class="bi bi-folder-plus me-1"></i>파일선택
+        </button>
+        <span id="fileLabel" 
+              class="d-flex align-items-center ms-3 text-secondary"
+              th:text="${boardFile != null ? boardFile.fileOriginalName : '선택된 파일 없음'}">
+        </span>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h4>파일미리보기</h4>
+            </div>
+            <div class="card-body">
+                <div id="preview">
+                    <!-- 기존 파일이 있다면 미리보기에 표시 -->
+                    <div th:if="${boardFile != null}" class="col-md-3 img-box" style="position:relative">
+                        <img th:src="${boardFile.filePath}" th:id="${boardFile.fileIdx}">
+                        <span class="delete-img" th:data-remove-key="${boardFile.fileIdx}">X</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
           <div id="button">
         
              <button type="button" class="cancel" onclick="location.href='/board';">취소</button>
@@ -104,6 +132,13 @@
 
         // 스마트 에디터 초기화
         $(document).ready(function() {
+
+        	const originalFileName = $('#files').data('original-name');
+            if (originalFileName) {
+                // 파일 input의 커스텀 라벨 생성 또는 업데이트
+                $('#files').after(`<div class="selected-file">${originalFileName}</div>`);
+            }
+        	
             // 스마트 에디터 초기화 전에 버전 정보 제거
             $(".se2_multy").hide();
             
@@ -113,32 +148,74 @@
                 sSkinURI: "/smarteditor/SmartEditor2Skin.html",
                 fCreator: "createSEditor2",
                 htParams: {
-                	
-                	//툴바 사용 true
-                    bUseToolbar: true,
-                    //크기조절창 false
-                    bUseVerticalResizer: false,
-                    // HTML세션 TRUE 
-                    bUseModeChanger: true,
-                    I18N_LOCALE: 'ko_KR',
-                    fOnBeforeUnload: function() {},
-                    aAdditionalFontList: [
-                        ['나눔고딕', 'NanumGothic'],
-                        ['나눔명조', 'NanumMyeongjo']
-                    ]
-                }
+                    bUseToolbar: true,                // 툴바 사용 여부
+                    bUseVerticalResizer: false,       // 입력창 크기 조절바 사용 여부
+                    bUseModeChanger: true,           // 모드 탭(Editor | HTML | TEXT) 사용 여부
+                    I18N_LOCALE: 'ko_KR',            // 한글 언어 설정
+                    fOnBeforeUnload: function() {},   // 페이지 이동/새로고침 시 알림 메시지 제거
+                 	
+                    
+                    
+                    
+                    
+                    
+                    // 이미지 업로드 설정 추가
+                    SE2M_SamplePlugin: {
+                        bUsePlugin: true
+                    },
+                    
+                    // 이미지 업로드 설정
+                    SE2M_AttachPhoto: {
+                        sUploadURL: '/board/uploadImage',   // 이미지 업로드 URL
+                        sPopupURL: '/smarteditor/photo_uploader/photo_uploader.html'  // 팝업 URL (경로 수정)
+                    },
+
+                    
+                    // 기본 글꼴 목록에 추가할 글꼴 목록
+                    // 글꼴 설정
+     				 aAdditionalFontList: [
+            
+                 // 나눔 글꼴
+                 ['나눔고딕', '나눔고딕'],
+                 ['나눔고딕Bold', '나눔고딕볼드체'],
+                 ['나눔명조', '나눔명조'],
+                 ['나눔바른고딕', '나눔바른고딕'],
+                 ['나눔스퀘어', '나눔스퀘어'],
+                 // 추가 글꼴
+                 ['맑은 고딕', '맑은 고딕'],
+                 ['함초롬바탕', '함초롬바탕'],
+                 ['함초롬돋움', '함초롬돋움']
+             ],
+     				               
+                    // 에디터 툴바 버튼 설정
+                    aToolBarSettings: [
+                        ['style', ['style']],                         // 스타일
+                        ['font', ['bold', 'underline', 'clear']],     // 글자 스타일
+                        ['fontname', ['fontname']],                   // 글꼴
+                        ['fontsize', ['fontsize']],                   // 크기
+                        ['color', ['color']],                         // 색상
+                        ['para', ['ul', 'ol', 'paragraph']],         // 문단/정렬
+                        ['table', ['table']],                        // 표
+                        ['insert', ['link', 'picture']],             // 링크, 사진
+                        ['view', ['fullscreen', 'codeview']]         // 전체화면, HTML 편집
+                    ],
+                    
+                    // 여백 설정
+                    Body_Padding: '10px',
+                    
+                    // 정렬 스타일 클래스 정의
+                    classStyles: {
+                        'text-align-left': 'text-align: left',        // 왼쪽 정렬
+                        'text-align-center': 'text-align: center',    // 가운데 정렬
+                        'text-align-right': 'text-align: right'       // 오른쪽 정렬
+                    }
+                },
             });
 
-            // 파일 업로드 버튼 클릭 이벤트
-            $("#uploadButton").click(function() {
-                $("#fileInput").click();
-            });
-
-            // 파일 선택 시 파일명 표시
-            $("#fileInput").change(function() {
-                const fileName = $(this).val().split("\\").pop();
-                $("#fileName").text(fileName || "선택된 파일이 없습니다.");
-            });
+            
+            
+            
+ 
         });
 
     
@@ -174,11 +251,119 @@
             console.log("boardNum:", boardNum);
 
             if(isSubmit) {
-                console.log("Submitting form with boardNum:", $("#boardNum").val());
-                $("#modifyBoardForm").submit();
-            }
-        }
+                const formData = new FormData();
 
+                // 파일이 선택되었을 경우
+                const filesInput = document.getElementById('files');
+                if (filesInput.files.length > 0) {
+                    for (let i = 0; i < filesInput.files.length; i++) {
+                        formData.append('files', filesInput.files[i]); 
+                    }
+                }
+                
+                formData.append('boardNum', boardNum);
+                formData.append('boardCategory', $("#boardCategory").val());
+                formData.append('boardTitle', $("#boardTitle").val());
+                formData.append('boardContent', $("#editorTxt").val());
+                
+                $.ajax({
+                    url: '/board/modify',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = `/board/detail?boardNum=${boardNum}`; 
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('게시글 수정 중 오류가 발생했습니다.'); 
+                   },
+                  
+                });
+             }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        $('#files').change(function(){
+            $('#preview').empty();
+            const files = this.files;
+            if(files.length > 0) {
+                $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
+            } else {
+                $('#fileLabel').text('선택된 파일 없음');
+            }
+            const fileList = [...files];
+            fileList.forEach(function(file, idx){
+                //div에 이미지 추가
+                const imgDiv = $('<div class="col-md-3 img-box" style="position:relative"></div>');
+                const lastModified = files[idx].lastModified;
+                
+                //이미지 파일 미리보기
+                if(file.type.match('image.*')){
+                    const reader = new FileReader(); 
+                    reader.onload = function (e) { 
+                        const img = $('<img />', {src: e.target.result, id : lastModified });
+                        const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
+                        imgDiv.append(img,span);
+                        imgDiv.appendTo('#preview');
+                    } 
+                    reader.readAsDataURL(file);
+                } else {
+                    const noImage = $('<img />', { src : '/manage/assets/imgs/theme/upload.svg', id : lastModified });
+                    const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
+                    imgDiv.append(noImage, span);
+                    imgDiv.appendTo('#preview');
+                }
+            });
+
+           
+        });
+        
+        
+        
+    	$(document).on('click', '.delete-img',function(){
+    		const files = $("#files").prop('files');
+    		
+            const dataTranster = new DataTransfer();
+            const removeTargetId = $(this).attr('data-remove-key');
+            
+            Array.from(files)
+            	 .filter(file => file.lastModified != removeTargetId)
+    	         .forEach(file => dataTranster.items.add(file));
+     
+            $('#files')[0].files = dataTranster.files;
+     
+            $(this).closest('.img-box').remove();
+     
+    	});
+
+    	
+    	$(document).ready(function() {
+    	    const currentFileName = $("#currentFileName").val();
+    	    if (currentFileName) {
+    	        const imgDiv = $('<div class="col-md-3 img-box" style="position:relative"></div>');
+    	        const img = $('<img />', { src : '/manage/assets/imgs/theme/upload.svg' });
+    	        const span = $('<span />', {'class': 'delete-img'}).text('X');
+    	        const fileName = $('<div class="file-name"></div>').text(currentFileName);
+    	        imgDiv.append(img, span, fileName);
+    	        $('#preview').append(imgDiv);
+    	    }
+    	});
+    	
+    	
+        window.insertImageCallback = function(sFileUrl, sFileName) {
+            var sHTML = '<img src="' + sFileUrl + '" alt="' + sFileName + '">';
+            oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
+        };
+        
+      
     	
     </script>
 </th:block>

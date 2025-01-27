@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+
 import gamepiece.file.dto.FileDto;
 
 @Mapper
@@ -15,4 +16,5 @@ public interface FileMapper {
 	int addfile(FileDto fileDto);
 	int addfiles(List<FileDto> fileDto);
 	int modifyfile(FileDto fileDto);
+	String getNextFileIdx();
 }
