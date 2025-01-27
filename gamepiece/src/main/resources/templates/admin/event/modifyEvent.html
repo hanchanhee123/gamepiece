@@ -9,14 +9,14 @@
 				<div class="content-header">
 					<h2 class="content-title" th:text="${title}"></h2>
 					<div>
-						<button class="btn btn-md rounded font-sm hover-up" id="modifyEventBtn">수정</button>
+						<button type="button" class="btn btn-md rounded font-sm hover-up" id="modifyEventBtn">수정</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</th:block>
 	<th:block layout:fragment="contents-body">
-		<form id="modifyEventForm" th:action="@{/admin/event/modify}" method="post">
+		<form id="modifyEventForm" th:action="@{/admin/event/modify}" method="post" enctype="multipart/form-data">
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="card mb-4">
@@ -78,8 +78,8 @@
 									</div>
 									<div class="col-md-9">
 										<div class="mb-4" th:each="eventInfo :${eventInfo}">
-											<input class="form-control" type="file" name="evImg">
-												<span th:text="${eventInfo.evImg}"></span>
+											<input class="form-control" type="file" id="files" name="files">
+											<input type="hidden" name="fileIdx" th:value="${eventInfo.fileIdx}" />
 										</div>
 									</div>
 								</div>
