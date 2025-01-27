@@ -33,6 +33,19 @@
 		<result column="inquiry_content" property="inquiryContent" />
 		<result column="inquiry_ymd" property="inquiryYmd" />
 			</association>
+			
+			
+					<association property="noticeInfo" javaType="gamepiece.user.board.domain.Notice">
+		    <id column="ntc_no"  property="noticeNum" />
+    <result column="ntc_title" property="noticeTitle" />
+    <result column="ntc_cn" property="noticeContent" />
+    <result column="ntc_img" property="noticeImg" />
+    <result column="ntc_view" property="viewCount" />
+    <result column="admin_id" property="adminId" />
+    <result column="reg_ymd" property="noticeYmd" />
+
+			</association>
+			
 	
 </resultMap>
 	<delete id="deleteFileByIdx" parameterType="String">
@@ -140,7 +153,17 @@ SELECT
     			inquiry_id =#{inquiryNum};
 </select>
 	
-	
+
+<select id="findByNoticeNum" resultMap="fileResultMap">
+ 
+SELECT
+*
+	FROM
+		ntc_mttr nm INNER JOIN files f
+		ON nm.file_idx = f.file_idx
+    WHERE 
+    			ntc_no=#{noticeNum};
+</select>
 	
 	<select id="findByFileIdx" resultType="gamepiece.user.board.domain.BoardFiles">
     SELECT * FROM files 

@@ -328,22 +328,29 @@
         
         
         
-    	$(document).on('click', '.delete-img',function(){
-    		const files = $("#files").prop('files');
-    		
+        $(document).on('click', '.delete-img',function(){
+            const files = $("#files").prop('files');
+            
             const dataTranster = new DataTransfer();
             const removeTargetId = $(this).attr('data-remove-key');
             
             Array.from(files)
-            	 .filter(file => file.lastModified != removeTargetId)
-    	         .forEach(file => dataTranster.items.add(file));
-     
+                 .filter(file => file.lastModified != removeTargetId)
+                 .forEach(file => dataTranster.items.add(file));
+         
             $('#files')[0].files = dataTranster.files;
-     
+            
+            // 파일 삭제 후 남은 파일 수에 따라 라벨 텍스트 업데이트
+            const remainingFiles = dataTranster.files;
+            if(remainingFiles.length > 0) {
+                $('#fileLabel').text(remainingFiles[0].name + 
+                    (remainingFiles.length > 1 ? ` 외 ${remainingFiles.length - 1}개` : ''));
+            } else {
+                $('#fileLabel').text('선택된 파일 없음');
+            }
+         
             $(this).closest('.img-box').remove();
-     
-    	});
-
+        });
     	
     	$(document).ready(function() {
     	    const currentFileName = $("#currentFileName").val();

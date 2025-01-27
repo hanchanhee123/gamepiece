@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -40,8 +38,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.file.service.FileService;
-import gamepiece.file.util.FilesUtils;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.BoardFiles;
@@ -77,68 +75,80 @@ public class BoardController {
     private String fileRealPath;  
 	
 	private final BoardService boardService;
-	private final UserService userService;
+
 	
 	private final FileService fileService;
-	private final FilesUtils filesUtils;
 	private final BoardFileMapper boardFileMapper;
 	private final BoardFilesUtils boardFilesUtils;
+	private final gamepiece.admin.board.mapper.BoardFileMapper adminBoardFileMapper;
+	
+	
 	
 	
 	
 	@GetMapping("/download")
 	public ResponseEntity<Object> downloadFile(@RequestParam String fileIdx,
-	        HttpServletRequest request) {
+	                                         HttpServletRequest request) {
 	    try {
-	        BoardFiles fileDto = boardFileMapper.getFileInfoByIdx(fileIdx);
+	        AdminBoardFiles fileDto = adminBoardFileMapper.getFileInfoByIdx(fileIdx);
 	        if(fileDto == null) {
+	            log.error("파일 정보를 찾을 수 없음: fileIdx={}", fileIdx);
 	            return ResponseEntity.notFound().build();
 	        }
-	        
-	        
-	        
-	        // contentType 분류해서 경로 구성
-	        String fileType = fileDto.getFileNewName().toLowerCase().matches(".*\\.(jpg|jpeg|png|gif|bmp)$") 
-	                       ? "/image" : "/file";
-	        
-	        // 전체 경로 구성
-	        String fullPath = fileRealPath + fileDto.getFilePath() 
-	                       + fileType + "/" + fileDto.getFileNewName();
-	        
-	        log.info("다운로드 시도 경로: {}", fullPath);
-	        
+
+	        String fileType = fileDto.getFileNewName().toLowerCase().matches(".*\\.(jpg|jpeg|png|gif|bmp)$")
+	                ? "image" : "file";
+
+	        // Windows 환경에서 경로 수정
+	        String fullPath;
+	        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+	            fullPath = "C:\\home\\teamproject\\ksmybatis\\attachment\\" + 
+	                      fileDto.getFilePath().substring(fileDto.getFilePath().lastIndexOf("/") + 1) + 
+	                      "\\" + fileType + "\\" + 
+	                      fileDto.getFileNewName();
+	        } else {
+	            fullPath = fileRealPath + 
+	                      fileDto.getFilePath() + 
+	                      "/" + fileType + "/" + 
+	                      fileDto.getFileNewName();
+	        }
+
+	        log.info("=== 파일 다운로드 디버깅 정보 ===");
+	        log.info("운영체제: {}", System.getProperty("os.name"));
+	        log.info("파일 ID: {}", fileIdx);
+	        log.info("최종 시도 경로: {}", fullPath);
+
 	        File file = new File(fullPath);
 	        if (!file.exists()) {
 	            log.error("파일이 존재하지 않음: {}", fullPath);
+	            File directory = file.getParentFile();
+	            log.info("상위 디렉토리 존재 여부: {}", directory.exists());
+	            log.info("상위 디렉토리 경로: {}", directory.getAbsolutePath());
 	            return ResponseEntity.notFound().build();
 	        }
-	        
-	        log.info("파일 크기: {} bytes", file.length());
-	        
-	        Path path = Paths.get(file.getAbsolutePath());
-	        Resource resource = new UrlResource(path.toUri());
 
+	        Resource resource = new UrlResource(file.toURI());
+	        
 	        String contentType = request.getServletContext()
-	                .getMimeType(resource.getFile().getAbsolutePath());
+	                                  .getMimeType(file.getAbsolutePath());
 	        if(contentType == null) {
 	            contentType = "application/octet-stream";
 	        }
 
 	        return ResponseEntity.ok()
-	                .contentType(MediaType.parseMediaType(contentType))
-	                .header(HttpHeaders.CONTENT_DISPOSITION,
-	                        "attachment; filename=\"" +
-	                                URLEncoder.encode(fileDto.getFileOriginalName(),"UTF-8") +
-	                                "\";")
-	                .body(resource);
-	        
+	            .contentType(MediaType.parseMediaType(contentType))
+	            .header(HttpHeaders.CONTENT_DISPOSITION,
+	                    "attachment; filename=\"" + 
+	                    URLEncoder.encode(fileDto.getFileOriginalName(), "UTF-8") + 
+	                    "\";")
+	            .body(resource);
+
 	    } catch (Exception e) {
-	        log.error("파일 다운로드 중 오류 발생: {}", e.getMessage());
+	        log.error("파일 다운로드 중 오류 발생", e);
+	        log.error("상세 오류: ", e);
 	        return ResponseEntity.internalServerError().build();
 	    }
 	}
-	
-	
 	
 	@PostMapping("/uploadFiles")
 	public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files) {
@@ -594,10 +604,10 @@ public class BoardController {
 		
 			Notice noticeInfo = boardService.getNoticeInfo(noticeNum);
 		
-			
+			BoardFiles boardFile = boardService.getNoticeNum(noticeNum);
 		
 		model.addAttribute("noticeInfo", noticeInfo);
-		
+		model.addAttribute("boardFile", boardFile);
 		
 		 return "user/board/noticeDetail";
 	}

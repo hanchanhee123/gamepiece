@@ -69,22 +69,7 @@ public class BoardServiceImpl implements BoardService{
 
 
 
-    // MultipartFile을 FileDto로 변환하는 메서드
-    private FileDto convertToFileDto(MultipartFile file) {
-        // 파일 정보를 FileDto에 맞게 변환
-        String fileOriginalName = file.getOriginalFilename();
-        String fileNewName = "file_" + System.currentTimeMillis();  // 예시로 파일 이름을 시간 기반으로 생성
-        String filePath = "/path/to/file";  // 실제 경로로 변경 필요
-        Long fileSize = file.getSize();
-
-        // 빌더를 사용하여 FileDto 객체 생성
-        return FileDto.builder()
-                .fileOriginalName(fileOriginalName)
-                .fileNewName(fileNewName)
-                .filePath(filePath)
-                .fileSize(fileSize)
-                .build();
-    }
+ 
 	
 	@Override
 	public PageInfo<Board> getFreeBoardsList(Pageable pageable) {
@@ -659,6 +644,14 @@ public class BoardServiceImpl implements BoardService{
 	public BoardFiles getBoardFileInfo(String boardNum) {
 		// TODO Auto-generated method stub
 		return allBoardMapper.getBoardFile(boardNum);
+	}
+
+
+
+	@Override
+	public BoardFiles getNoticeNum(int noticeNum) {
+		// TODO Auto-generated method stub
+		return boardFileMapper.findByNoticeNum(noticeNum);
 	}
 
 	
