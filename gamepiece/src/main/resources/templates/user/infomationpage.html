@@ -1,8 +1,9 @@
-<html><head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
 	<meta charset="UTF-8">
 	<title>project infomation</title>
-	<link rel="stylesheet" href="/asset/css/common-css.css">
-	<link rel="stylesheet" href="/asset/css/fonts/font.css">
+	<link rel="stylesheet" th:href="@{/assets/css/common-css.css}">
+	<link rel="stylesheet" th:href="@{/assets/fonts/font.css}">
 	<style>
 		#wrap {
 			margin: 50px 0;
@@ -141,7 +142,7 @@
 			<tbody>
 				<tr>
 					<td class="table-th">
-					 	<p>이승현</p>
+					 	<p>한찬희</p>
 					 	<br>
 					 	<a href="https://github.com/LeeSHerald" target="_blank" class="icon-link">
 					        <img alt="github" src="/assets/imgs/github-logo.png" style="width: 25px">
@@ -198,7 +199,7 @@
 				</tr>
 				<tr>
 					<td class="table-th">
-						<p>김광민</p>
+						<p>유경식</p>
 					 	<br>
 					 	<a href="https://github.com/kwangmin4874" target="_blank" class="icon-link">
 					        <img alt="github" src="/assets/imgs/github-logo.png" style="width: 25px">
@@ -255,7 +256,7 @@
 				</tr>
 				<tr>
 					<td class="table-th">
-						<p>정용우</p>
+						<p>조은아</p>
 					 	<br>
 					 	<a href="https://github.com/yonguuu131" target="_blank" class="icon-link">
 					        <img alt="github" src="/assets/imgs/github-logo.png" style="width: 25px">
@@ -308,7 +309,7 @@
 				</tr>
 				<tr>
 					<td class="table-th">
-						<p>조미희</p>
+						<p>이재환</p>
 					 	<br>
 					 	<a href="https://github.com/jmh118" target="_blank" class="icon-link">
 					        <img alt="github" src="/assets/imgs/github-logo.png" style="width: 25px">
@@ -366,6 +367,112 @@
 								<ul class="sub-list">
 									<li>명예 멘토 기준 조회 및 승인, 취소</li>
 									<li>명예 멘토 조회</li>
+								</ul>
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td class="table-th">
+						<p>이지성</p>
+					 	<br>
+					 	<a href="https://github.com/yonguuu131" target="_blank" class="icon-link">
+					        <img alt="github" src="/assets/imgs/github-logo.png" style="width: 25px">
+					    </a>
+					</td>
+					<td colspan="2">
+						<ul style="padding-left:15px;">
+							<li class="title-li">
+								<a class="menu-title" target="_blank">회원</a>
+								<h5>1. 멘토링 공고 관리</h5>
+								<p>멘토링 공고를 조회하고 관리</p>
+								<ul class="sub-list">
+									<li>멘토링 공고 조회</li>
+									<li>멘토링 공고 등록 (멘토) : Flatpickr를 활용해 입력 필드에 날짜 선택 기능을 추가하고, 사용자 정의 옵션으로 날짜 형식, 최소/최대 날짜, 시간 선택 등을 설정 </li>
+									<li>멘토링 공고 수정 (멘토)</li>
+								</ul>
+								<br>
+								<h5>2. 멘토링 공고 상세 관리</h5>
+								<p>멘토링 공고 상세 조회하는 화면</p>
+								<br>
+								<h5>3. 멘토링 공고 질문/답변 관리</h5>
+								<p>멘토링 공고에 대한 질문과 답변을 등록, 수정 및 삭제하는 화면</p>
+								<ul class="sub-list">
+									<li>멘토링 공고 질문 조회</li>
+									<li>멘토링 공고 질문 수정</li>
+									<li>멘토링 공고 질문 삭제</li>
+									<li>멘토링 공고 질문 답변 조회</li>
+									<li>멘토링 공고 질문 답변 수정</li>
+									<li>멘토링 공고 질문 답변 삭제</li>
+								</ul>
+								<br>
+								<h5>4. 멘토링 신청 (멘티)</h5>
+								<br>
+								<h5>5. 멘토링 신청 멘티 관리 (멘토)</h5>
+								<p>멘토링 신청 멘티 프로필 조회하는 화면</p>
+							</li>
+							<li class="title-li">
+								<a class="menu-title" target="_blank">관리자</a>
+								<h5>1. 멘토링 관리</h5>
+								<p>멘토링과 관련된 기능을 관리하는 화면</p>
+								<ul class="sub-list">
+									<li>멘토링 공고 조회</li>
+									<li>멘토링 공고 질문 관리</li>
+									<li>멘토링 공고 답변 관리</li>
+									<li>멘토링 신청 조회</li>
+								</ul>
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td class="table-th">
+						<p>홍정호</p>
+					 	<br>
+					 	<a href="https://github.com/yonguuu131" target="_blank" class="icon-link">
+					        <img alt="github" src="/assets/imgs/github-logo.png" style="width: 25px">
+					    </a>
+					</td>
+					<td colspan="2">
+						<ul style="padding-left:15px;">
+							<li class="title-li">
+								<a class="menu-title" target="_blank">회원</a>
+								<h5>1. 멘토링 공고 관리</h5>
+								<p>멘토링 공고를 조회하고 관리</p>
+								<ul class="sub-list">
+									<li>멘토링 공고 조회</li>
+									<li>멘토링 공고 등록 (멘토) : Flatpickr를 활용해 입력 필드에 날짜 선택 기능을 추가하고, 사용자 정의 옵션으로 날짜 형식, 최소/최대 날짜, 시간 선택 등을 설정 </li>
+									<li>멘토링 공고 수정 (멘토)</li>
+								</ul>
+								<br>
+								<h5>2. 멘토링 공고 상세 관리</h5>
+								<p>멘토링 공고 상세 조회하는 화면</p>
+								<br>
+								<h5>3. 멘토링 공고 질문/답변 관리</h5>
+								<p>멘토링 공고에 대한 질문과 답변을 등록, 수정 및 삭제하는 화면</p>
+								<ul class="sub-list">
+									<li>멘토링 공고 질문 조회</li>
+									<li>멘토링 공고 질문 수정</li>
+									<li>멘토링 공고 질문 삭제</li>
+									<li>멘토링 공고 질문 답변 조회</li>
+									<li>멘토링 공고 질문 답변 수정</li>
+									<li>멘토링 공고 질문 답변 삭제</li>
+								</ul>
+								<br>
+								<h5>4. 멘토링 신청 (멘티)</h5>
+								<br>
+								<h5>5. 멘토링 신청 멘티 관리 (멘토)</h5>
+								<p>멘토링 신청 멘티 프로필 조회하는 화면</p>
+							</li>
+							<li class="title-li">
+								<a class="menu-title" target="_blank">관리자</a>
+								<h5>1. 멘토링 관리</h5>
+								<p>멘토링과 관련된 기능을 관리하는 화면</p>
+								<ul class="sub-list">
+									<li>멘토링 공고 조회</li>
+									<li>멘토링 공고 질문 관리</li>
+									<li>멘토링 공고 답변 관리</li>
+									<li>멘토링 신청 조회</li>
 								</ul>
 							</li>
 						</ul>

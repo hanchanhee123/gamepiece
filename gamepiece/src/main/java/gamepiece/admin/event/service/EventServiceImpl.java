@@ -1,5 +1,6 @@
 package gamepiece.admin.event.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +55,29 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void modifyEvent(Event event) {
+	public void modifyEvent(Event event, MultipartFile files) {
 	
-		eventMapper.modifyEvent(event);	
+		if(files != null && !files.isEmpty()) {			
+			FileDto newFileInfo = fileUtils.uploadFile(files);
+			if(newFileInfo != null) {
+				String fileIdx = event.getFileIdx();
+				if(fileIdx != null && !"".equals(fileIdx)) {					
+					FileDto fileInfo = fileMapper.getFileInfoByIdx(fileIdx);
+					boolean isDelete = fileUtils.deleteFileByPath(fileInfo.getFilePath());
+					if(isDelete) {
+						newFileInfo.setFileIdx(fileIdx);
+						fileMapper.modifyfile(newFileInfo);
+					}
+				}else {
+					fileIdx = commonMapper.getPrimaryKey("file_", "files", "file_idx");
+					newFileInfo.setFileIdx(fileIdx);
+					fileMapper.addfile(newFileInfo);
+				}
+				
+			}
+		}
+		
+        eventMapper.modifyEvent(event);		
 	}
 
 	@Override
