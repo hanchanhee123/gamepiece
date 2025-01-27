@@ -1,4 +1,4 @@
-package gamepiece.file.util;
+package gamepiece.admin.board.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,24 +16,31 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import gamepiece.file.dto.FileDto;
+import gamepiece.admin.board.domain.AdminBoardFiles;
+import gamepiece.admin.board.mapper.BoardFileMapper;
+import lombok.RequiredArgsConstructor;
 
-@Component
-public class FilesUtils {
+
+
+@Component("adminBoardFilesUtils")
+@RequiredArgsConstructor
+public class BoardFilesUtils {
 	
 	@Value("${file.path}")
 	private String fileRealPath;
+	private final BoardFileMapper boardFileMapper;
+	
 
-	public FileDto uploadFile(MultipartFile multipartFile) {
+	public AdminBoardFiles uploadFile(MultipartFile multipartFile) {
 		
-		FileDto fileInfo = storeFile(multipartFile);
+		AdminBoardFiles fileInfo = storeFile(multipartFile);
 		
 		return fileInfo;
 	}
 
-	public List<FileDto> uploadFiles(MultipartFile[] multipartFiles) {
-		List<FileDto> fileList = new ArrayList<FileDto>();
-		FileDto fileInfo;
+	public List<AdminBoardFiles> uploadFiles(MultipartFile[] multipartFiles) {
+		List<AdminBoardFiles> fileList = new ArrayList<AdminBoardFiles>();
+		AdminBoardFiles fileInfo;
 		for(MultipartFile multipartFile : multipartFiles) {
 			fileInfo = storeFile(multipartFile);
 			if(fileInfo != null) fileList.add(fileInfo);
@@ -42,7 +49,7 @@ public class FilesUtils {
 	}
 	
 	
-	private FileDto storeFile(MultipartFile multipartFile) {
+	private AdminBoardFiles storeFile(MultipartFile multipartFile) {
 		if(multipartFile.isEmpty()) return null;
 		
 		// 현재 날짜 구하기(Asia/Seoul)
@@ -88,31 +95,30 @@ public class FilesUtils {
     	
     	dbFilePath += ("/" + newFileName);
     	
-    	FileDto fileInfo = null;
+    	AdminBoardFiles fileInfo = null;
     	
-		try {
-			
-			bytes = multipartFile.getBytes();
-			
-			// 파일업로드 
-			Files.write(uploadPath, bytes);
-			
-			DateTimeFormatter fileFormatter = DateTimeFormatter.ofPattern("yyMMdd");
-			
-			//String fileIdx = "file_"+ now.format(fileFormatter)+Long.toString(System.nanoTime());
-			fileInfo = FileDto.builder()
-							  .fileOriginalName(multipartFile.getOriginalFilename())
-							  .fileNewName(newFileName)
-							  .filePath(dbFilePath.replaceAll(fileRealPath, ""))
-							  .fileSize(multipartFile.getSize())
-							  .build();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+    	try {
+            bytes = multipartFile.getBytes();
+            Files.write(uploadPath, bytes);
+
+            // 파일 인덱스를 BoardFileMapper에서 가져오도록 수정
+            String fileIdx = boardFileMapper.getNextFileIdx();
+
+            return AdminBoardFiles.builder()
+                .fileIdx(fileIdx) // 파일 인덱스 추가
+                .fileOriginalName(multipartFile.getOriginalFilename())
+                .fileNewName(newFileName)
+                .filePath(dbFilePath.replaceAll(fileRealPath, ""))
+                .fileSize(multipartFile.getSize())
+                .build();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    
 		
-		return fileInfo;
+	
 	}
 	
 	
@@ -146,6 +152,16 @@ public class FilesUtils {
 		
 		return isDelete;
 	}
+	
+	
+	 public static String formatFileSize(long bytes) {
+	        if (bytes < 1024) return bytes + " B";
+	        int exp = (int) (Math.log(bytes) / Math.log(1024));
+	        String pre = "KMGTPE".charAt(exp-1) + "";
+	        return String.format("%.1f %sB", bytes / Math.pow(1024, exp), pre);
+	    }
+	
+	
 }
 
 

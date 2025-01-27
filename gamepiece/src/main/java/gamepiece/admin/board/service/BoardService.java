@@ -3,11 +3,22 @@ package gamepiece.admin.board.service;
 
 
 
+
+
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 
 public interface BoardService {
+	
+	
+
+	
+	
+	
+	//파일조회
+	AdminBoardFiles getBoardFile(String boardNum);
 	
 	
 	// 회원목록 검색조회

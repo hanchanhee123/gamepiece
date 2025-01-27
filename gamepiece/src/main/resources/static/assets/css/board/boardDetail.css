@@ -1,5 +1,19 @@
 @charset "UTF-8";
 
+
+
+.attachment-container {
+    max-width: 100%;
+}
+.small-card {
+    font-size: 0.875rem;
+}
+.small-card .btn {
+    font-size: 0.75rem;
+}
+
+
+
  .editor-content .text-center {
         text-align: center !important;
         display: block;
@@ -313,6 +327,26 @@
 
 
 
+
+
+
+.fileBorder {
+	
+	    border: 3px solid #007bff;
+	  border-radius: 15px;
+		    margin-left: 3%;
+	    border-width: 3px;
+		margin-bottom: 20px;	
+}
+
+.InfileBorder{
+	
+	
+		  border-radius: 13px;
+	
+}
+
+
 .boards-content {
     border: 3px solid #007bff;
     border-radius: 0 0 15px 15px;
@@ -475,6 +509,15 @@
     font-family: '나눔고딕', 'NanumGothic', sans-serif; 
     line-height: 1.5;
     width: 100%;
+    word-wrap: break-word;    
+    max-width: 100%;           
+    overflow-x: hidden;        
+}
+
+
+.content-details img {
+    max-width: 100%;         
+    height: auto;            
 }
 
 
@@ -672,6 +715,14 @@
 .editor-content {
     width: 100%;
     word-wrap: break-word;
+    max-width: 100%;          /* 추가 */
+    overflow-x: hidden;       /* 추가 */
+}
+
+
+.editor-content img {
+    max-width: 100%;        
+    height: auto;            
 }
 
 .plain-text {

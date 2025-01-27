@@ -46,6 +46,20 @@
         <result column="reg_ymd" property="categoryYmd" />
               <result column="board_count" property="boardCount" />
     </association>
+    
+    <association property="fileInfo" javaType="gamepiece.admin.board.domain.AdminBoardFiles">
+		<id column="fileIdx" 				property="file_idx"/>
+		<result property="fileNewName" 		column="file_new_name"/>
+		<result property="fileOriginalName" column="file_original_name"/>
+		<result property="filePath" 		column="file_path"/>
+		<result property="fileSize" 		column="file_size"/>
+		</association>
+
+
+    
+    
+
+    
 </resultMap>
 
 						
@@ -83,7 +97,7 @@
 						    <if test="searchValue != null and searchValue != ''">
 						        AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%')
 						    </if>
-						    ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED)
+						    ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
 						    LIMIT #{rowPerPage} OFFSET #{offset}
 						</select>
 
@@ -150,7 +164,7 @@
         ON b.id = u.id
   
     ORDER BY
-        CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED)
+        CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
     LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
@@ -158,34 +172,6 @@
 
 
 
-<insert id="addBoard" parameterType="Board">
-    INSERT INTO boards(
-        bbs_no,
-        bbs_cate_cd,
-        id,
-        bbs_title,
-        bbs_cn,
-        bbs_like,
-        bbs_dislike,
-        bbs_view,
-        bbs_ymd
-    )VALUES(
-        CONCAT('bbs_', LPAD((
-            SELECT next_num FROM (
-                SELECT MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)) + 1 AS next_num 
-                FROM boards
-            ) AS temp
-        ), 2, '0')),
-        #{boardCategory},
-        CONCAT('id', LPAD(#{idN}+1,2,'0')),
-        #{boardTitle},
-        #{boardContent},
-        #{boardLikeCnt},
-        #{boardDisLikeCnt},
-        #{boardViewCnt},
-        CURDATE()
-    );
-</insert>
 
 	<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">	
 	
@@ -199,11 +185,15 @@
 		b.bbs_view,
 		b.bbs_like,
 		b.bbs_dislike,
-		b.bbs_ymd
+		b.bbs_ymd,
+		f.*
 		
 	FROM
 	    boards b LEFT JOIN boards_categories bc
 	    ON b.bbs_cate_cd = bc.bbs_cate_cd
+	    LEFT JOIN files f
+		ON b.file_idx = f.file_idx
+		
 	  
 	 WHERE
 	bbs_no = #{boardNum};

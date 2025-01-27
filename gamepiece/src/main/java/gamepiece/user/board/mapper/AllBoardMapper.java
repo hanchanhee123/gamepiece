@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import gamepiece.user.board.domain.Board;
+import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.util.Pageable;
 
 @Mapper
@@ -14,6 +15,8 @@ import gamepiece.util.Pageable;
 public interface AllBoardMapper {
 	
 	
+	//게시판 파일 조회
+	BoardFiles getBoardFile(String boardNum);
 	
 	//게시판 조회수 증가
 	int addViewCount(String boardNum);

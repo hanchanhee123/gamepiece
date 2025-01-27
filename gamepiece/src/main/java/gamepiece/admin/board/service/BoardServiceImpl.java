@@ -1,14 +1,23 @@
 package gamepiece.admin.board.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.board.domain.Board;
+import gamepiece.admin.board.mapper.BoardFileMapper;
 import gamepiece.admin.board.mapper.BoardMapper;
+import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardServiceImpl implements BoardService{
 	
 	private final BoardMapper boardMapper;
-	
+	private final BoardFileMapper boardFileMapper;
+
 	
 	@Override
 	public PageInfo<Board> getBoardsList(Pageable pageable) {
@@ -107,9 +117,25 @@ public class BoardServiceImpl implements BoardService{
 
 	   return new PageInfo<>(boardList, pageable, rowCnt);
 	}
-	    
-	    
-	    
+
+
+
+
+
+
+	@Override
+	public AdminBoardFiles getBoardFile(String boardNum) {
+		// TODO Auto-generated method stub
+		return boardFileMapper.findByBoardNum(boardNum);
+	}
+
+
+
+
+
+
+
+
 	
 
 	
