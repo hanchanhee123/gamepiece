@@ -1,5 +1,6 @@
 package gamepiece.admin.event.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,7 @@ public interface EventService {
 	Event getEventInfoById(String evCd);
 
 	//특정 회원 수정
-	void modifyEvent(Event event);
+	void modifyEvent(Event event, MultipartFile files);
 	
 	String getEventsWithStatus(String evCd);
 

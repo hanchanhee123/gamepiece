@@ -84,14 +84,31 @@
 		</foreach>
 	</insert>
 	
-	
-	
+
+	<update id="modifyfile" parameterType="gamepiece.file.dto.FileDto">
+		UPDATE files
+		<set>
+			<if test="fileNewName !=null and fileNewName !=''">
+				file_new_name=#{fileNewName},
+			</if>
+			<if test="fileOriginalName !=null and fileOriginalName !=''">
+				file_original_name=#{fileOriginalName},
+			</if>
+			<if test="filePath !=null and filePath !=''">
+				file_path=#{filePath},
+			</if>
+			<if test="fileSize !=null and fileSize !=''">
+				file_size=#{fileSize},
+			</if>
+		</set>
+		WHERE
+			file_idx = #{fileIdx};
+	</update>
+
 	<select id="getNextFileIdx" resultType="String">
-    SELECT CONCAT('file_', LPAD(SUBSTRING(MAX(file_idx), 6) + 1, 3, '0'))
-    FROM files
-</select>
-	
-	
+	    SELECT CONCAT('file_', LPAD(SUBSTRING(MAX(file_idx), 6) + 1, 3, '0'))
+	    FROM files
+	</select>
 </mapper>
 
 
