@@ -66,22 +66,46 @@
 			
 			
 			
-			
-			
-			          <div class="file">
-			            <div class="file-details">
-			              <div>
-			                <span class="file-font">첨부파일</span>
-			                <span id="fileName" class="file-name">선택된 파일이 없습니다.</span>
-			              </div>
-			              <div>
-			                <input type="file" id="fileInput" name="file" style="display: none;" />
-			                <button type="button" class="upload-button" id="uploadButton">
-			                  <span>업로드</span>
-			                </button>
-			              </div>
-			            </div>
-			          </div>
+ 		
+		<div class="fileSpace">
+<div class="col">
+   <div class="card">
+       <div class="card-header">
+           <h4>파일 업로드</h4>
+       </div>
+       <div class="card-body">
+           <div class="input-group">
+               <input type="file" id="files" name="files" 
+                      class="form-control bg-light border-0 small d-none" multiple>
+               <div class="input-group border rounded bg-white p-2 w-100">
+                   <button onclick="document.getElementById('files').click()" 
+                           type="button" 
+                           class="btn btn-outline-primary">
+                       <i class="bi bi-folder-plus me-1"></i>파일선택
+                   </button>
+                   <span id="fileLabel" 
+                         class="d-flex align-items-center ms-3 text-secondary">
+                 
+                   </span>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<div class="col">
+	<div class="card">
+		<div class="card-header">
+			<h4>파일미리보기</h4>
+		</div>
+		<div class="card-body">
+			<div id="preview">
+				
+			</div>
+		</div>
+	</div>
+</div>
+</div> 
 
           <div id="button">
         
@@ -122,6 +146,22 @@
                bUseModeChanger: true,           // 모드 탭(Editor | HTML | TEXT) 사용 여부
                I18N_LOCALE: 'ko_KR',            // 한글 언어 설정
                fOnBeforeUnload: function() {},   // 페이지 이동/새로고침 시 알림 메시지 제거
+               bSkipXssFilter: true,
+           
+       
+       
+               
+               // HTML 태그 필터 비활성화
+               SE2M_Configuration: {
+                   SE2M_AutoSave: false,
+                   bUseHighlight: false,
+                   htFilter: {
+                       whitelist: { iframe: ["src", "width", "height", "frameborder", "allow", "allowfullscreen"] },
+                   },
+                   
+               },
+               
+               
                
                // 이미지 업로드 설정 추가
                SE2M_SamplePlugin: {
@@ -180,16 +220,7 @@
        
        
 
-       // 파일 업로드 버튼 클릭시 숨겨진 input file 클릭
-       $("#uploadButton").click(function() {
-           $("#fileInput").click();
-       });
 
-       // 파일 선택 시 파일명 표시
-       $("#fileInput").change(function() {
-           const fileName = $(this).val().split("\\").pop();
-           $("#fileName").text(fileName || "선택된 파일이 없습니다.");
-       });
     });
 
     // 폼 제출 전 유효성 검사 함수
@@ -225,13 +256,105 @@
        }
 
        // 모든 검증을 통과했을 때만 폼 제출
-       if(isSubmit) {
-          $("#addBoardForm").submit();
-       }
+  if(isSubmit) {
+    const formData = new FormData();
+    
+    // 파일 추가 (있는 경우에만)
+    const filesInput = document.getElementById('files');
+    // 파일 필수 체크 제거
+    if (filesInput.files.length > 0) {
+        for (let i = 0; i < filesInput.files.length; i++) {
+            formData.append('files', filesInput.files[i]);
+        }
+    }
+    
+    // 게시글 정보 추가
+    formData.append('boardCategory', $("#boardCategory").val());
+    formData.append('boardTitle', $("#boardTitle").val());
+    formData.append('boardContent', $("#editorTxt").val());
+
+    $.ajax({
+        url: '/board/write',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            location.href = '/board';
+        },
+        error: function(xhr, status, error) {
+            console.error("에러 상태:", status);
+            console.error("에러 내용:", error);
+            console.error("서버 응답:", xhr.responseText);
+            alert('게시글 등록 중 오류가 발생했습니다.');
+        }
+    });
+}
+       
+       
     }
     
     
-    	
+    
+    
+    $('#files').change(function(){
+		$('#preview').empty();
+		const files = this.files;
+		 if(files.length > 0) {
+		        // 여러 파일인 경우 "첫번째파일.확장자 외 N개" 형식으로 표시
+		        $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
+		    } else {
+		        $('#fileLabel').text('"""');
+		    }
+		const fileList = [...files];
+		fileList.forEach(function(file, idx){
+             
+             //div에 이미지 추가
+             const imgDiv = $('<div class="col-md-3 img-box" style="position:relative"></div>');
+             const lastModified = files[idx].lastModified;
+             //이미지 파일 미리보기
+             if(file.type.match('image.*')){
+                 //파일을 읽기 위한 FileReader객체 생성
+                 const reader = new FileReader(); 
+                 reader.onload = function (e) { 
+                     //파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
+                     const img = $('<img />', {src: e.target.result, id : lastModified });
+                     const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
+                     imgDiv.append(img,span);
+                     imgDiv.appendTo('#preview');
+                 } 
+                 reader.readAsDataURL(file);
+             }else{
+                 //이미지 파일 아닐 경우 대체 이미지
+                 const noImage = $('<img />', { src : '/manage/assets/imgs/theme/upload.svg', id : lastModified });
+              	  const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
+                 imgDiv.append(noImage, span);
+                 imgDiv.appendTo('#preview');
+                 
+             }
+         })
+	});
+	
+    
+    
+    
+	$(document).on('click', '.delete-img',function(){
+		const files = $("#files").prop('files');
+		
+        const dataTranster = new DataTransfer();
+        const removeTargetId = $(this).attr('data-remove-key');
+        
+        Array.from(files)
+        	 .filter(file => file.lastModified != removeTargetId)
+	         .forEach(file => dataTranster.items.add(file));
+ 
+        $('#files')[0].files = dataTranster.files;
+ 
+        $(this).closest('.img-box').remove();
+ 
+	});
+	
+ 
     </script>
 </th:block>
 </html>

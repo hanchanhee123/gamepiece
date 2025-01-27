@@ -2,16 +2,27 @@ package gamepiece.user.board.service;
 
 
 
+
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import gamepiece.file.dto.FileDto;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
+import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
@@ -19,12 +30,14 @@ import gamepiece.user.board.domain.Report;
 import gamepiece.user.board.mapper.AllBoardMapper;
 import gamepiece.user.board.mapper.AttackBoardMapper;
 import gamepiece.user.board.mapper.BoardCommentMapper;
+import gamepiece.user.board.mapper.BoardFileMapper;
 import gamepiece.user.board.mapper.FreeBoardMapper;
 import gamepiece.user.board.mapper.InfoBoardMapper;
 import gamepiece.user.board.mapper.InquiryMapper;
 import gamepiece.user.board.mapper.InquiryResponeMapper;
 import gamepiece.user.board.mapper.NoticeMapper;
 import gamepiece.user.board.mapper.ReportMapper;
+import gamepiece.user.board.util.BoardFilesUtils;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +49,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardServiceImpl implements BoardService{
 	
+	
+
+    @Value("${file.path}")
+    private String fileRealPath;  
+	
 	private final AttackBoardMapper attackBoardMapper;
 	private final FreeBoardMapper freeBoardMapper;
 	private final InfoBoardMapper infoBoardMapper;
@@ -45,6 +63,28 @@ public class BoardServiceImpl implements BoardService{
 	private final BoardCommentMapper boardCommentMapper;
 	private final InquiryResponeMapper inquiryResponeMapper;
 	private final ReportMapper reportMapper; 
+	private final BoardFileMapper boardFileMapper; 
+	private final BoardFilesUtils boardFilesUtils;
+
+
+
+
+    // MultipartFile을 FileDto로 변환하는 메서드
+    private FileDto convertToFileDto(MultipartFile file) {
+        // 파일 정보를 FileDto에 맞게 변환
+        String fileOriginalName = file.getOriginalFilename();
+        String fileNewName = "file_" + System.currentTimeMillis();  // 예시로 파일 이름을 시간 기반으로 생성
+        String filePath = "/path/to/file";  // 실제 경로로 변경 필요
+        Long fileSize = file.getSize();
+
+        // 빌더를 사용하여 FileDto 객체 생성
+        return FileDto.builder()
+                .fileOriginalName(fileOriginalName)
+                .fileNewName(fileNewName)
+                .filePath(filePath)
+                .fileSize(fileSize)
+                .build();
+    }
 	
 	@Override
 	public PageInfo<Board> getFreeBoardsList(Pageable pageable) {
@@ -286,7 +326,10 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int modifyBoard(Board board) {
 		// TODO Auto-generated method stub
-		return allBoardMapper.modifyBoard(board);
+	    if (board.getFileIdx() != null) {
+	        return allBoardMapper.modifyBoard(board);
+	    }
+	    return 0;
 	}
 
 
@@ -512,10 +555,117 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		return noticeMapper.addViewCount(noticeNum);
 	}
-	
-	
-	
 
+	@Override
+	public void deleteFile(BoardFiles fileDto) {
+		String path = fileDto.getFilePath();
+		Boolean isDelete = boardFilesUtils.deleteFileByPath(path);
+		if(isDelete) boardFileMapper.deleteFileByIdx(fileDto.getFileIdx());
+	}
+	
+	@Override
+	public void addFile(MultipartFile file) {
+		BoardFiles fileInfo = boardFilesUtils.uploadFile(file);
+		if(fileInfo != null) boardFileMapper.addfile(fileInfo); 
+	}
+	
+	@Override
+	public void addFiles(MultipartFile[] files) {
+		List<BoardFiles> fileList = boardFilesUtils.uploadFiles(files);
+		if(!fileList.isEmpty()) boardFileMapper.addfiles(fileList);
+	}
+
+	@Override
+	@Transactional
+	public void addFilesWithInfo(MultipartFile[] files, List<BoardFiles> fileDtoList) {
+	    // 파일 정보 먼저 저장
+	    boardFileMapper.addfiles(fileDtoList);
+	    log.info("데이터베이스에 {} 개의 파일 정보 저장 완료", fileDtoList.size());
+	    
+	    // 실제 파일 저장 로직
+	    for (int i = 0; i < files.length; i++) {
+	        MultipartFile file = files[i];
+	        BoardFiles fileDto = fileDtoList.get(i);
+	        
+	        try {
+	            // 실제 파일 저장 경로 재확인
+	            String uploadPath = fileRealPath + File.separator + "attachment" 
+	                               + File.separator + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+	                               + File.separator + (file.getContentType().contains("image") ? "image" : "file");
+	            
+	            // 디렉토리 생성
+	            File directory = new File(uploadPath);
+	            if (!directory.exists()) {
+	                directory.mkdirs();
+	            }
+	            
+	            // 파일 저장
+	            File dest = new File(directory, fileDto.getFileNewName());
+	            
+	            // FileCopyUtils 대신 InputStream과 OutputStream 사용
+	            try (var inputStream = file.getInputStream();
+	                 var outputStream = new FileOutputStream(dest)) {
+	                byte[] buffer = new byte[8192];
+	                int bytesRead;
+	                while ((bytesRead = inputStream.read(buffer)) != -1) {
+	                    outputStream.write(buffer, 0, bytesRead);
+	                }
+	                outputStream.flush();
+	                
+	                // 파일 크기 확인
+	                if (dest.length() == 0) {
+	                    throw new IOException("파일이 0바이트로 저장됨");
+	                }
+	                
+	                log.info("파일 저장 완료: {}, 크기: {} bytes", dest.getAbsolutePath(), dest.length());
+	            }
+	        } catch (IOException e) {
+	            log.error("파일 저장 중 오류 발생: {}", e.getMessage());
+	            throw new RuntimeException("파일 저장 실패: " + e.getMessage(), e);
+	        }
+	    }
+	}
+
+	@Override
+	public BoardFiles getBoardFile(String boardNum) {
+		// TODO Auto-generated method stub
+		return boardFileMapper.findByBoardNum(boardNum);
+	}
+
+	
+	
+	@Override
+	public BoardFiles getFileInfo(String fileIdx) {
+	    // 로깅 추가
+	    log.info("Retrieving file info for fileIdx: {}", fileIdx);
+	    
+	    BoardFiles fileInfo = boardFileMapper.findByFileIdx(fileIdx);
+	    
+	    // 로깅 추가
+	    if (fileInfo == null) {
+	        log.warn("No file found for fileIdx: {}", fileIdx);
+	    }
+	    
+	    return fileInfo;
+	}
+
+	@Override
+	public BoardFiles getInquiryFile(String inquiryNum) {
+		// TODO Auto-generated method stub
+		return boardFileMapper.findByInquiryNum(inquiryNum);
+	}
+
+	@Override
+	public BoardFiles getBoardFileInfo(String boardNum) {
+		// TODO Auto-generated method stub
+		return allBoardMapper.getBoardFile(boardNum);
+	}
+
+	
+	
+	
+	
+	
 	}
 	
 	

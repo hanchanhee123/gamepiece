@@ -5,12 +5,16 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.board.domain.Board;
 import gamepiece.util.Pageable;
 
 @Mapper
 public interface BoardMapper {
 	
+	
+	//게시판 파일 조회
+	AdminBoardFiles getBoardFile(String boardNum);
 	
 	//게시판 검색행 세기
 	int getCntSearchBoard(Map<String, Object> searchMap);

@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import gamepiece.admin.board.domain.AdminBoardFiles;
+import gamepiece.admin.board.mapper.BoardFileMapper;
 import gamepiece.admin.inquiry.domain.Inquiry;
 import gamepiece.admin.inquiry.domain.InquiryRespone;
 import gamepiece.admin.inquiry.mapper.InquiryMapper;
@@ -25,16 +27,10 @@ public class InquiryServiceImpl implements InquiryService{
 
 	private final InquiryMapper inquiryMapper;
 	private final InquiryResponeMapper inquiryResponeMapper;
+	private final BoardFileMapper boardFileMapper;
 	
 	
 	
-	
-
-	@Override
-	public int addInquiry(Inquiry inquiry) {
-		int result = inquiryMapper.addInquiry(inquiry);
-		return result;
-	}
 
 	@Override
 	public Inquiry getInquiryInfo(String inquiryNum) {
@@ -87,6 +83,12 @@ public class InquiryServiceImpl implements InquiryService{
 		   List<Inquiry> inquiryList = inquiryMapper.getInquirySearchList(searchMap);
 		 
 		   return new PageInfo<>(inquiryList, pageable, rowCnt);
+	}
+
+	@Override
+	public AdminBoardFiles getInquiryFile(String inquiryNum) {
+		// TODO Auto-generated method stub
+		return boardFileMapper.findByInquiryNum(inquiryNum);
 	}
 
 	

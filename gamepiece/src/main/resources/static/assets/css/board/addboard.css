@@ -10,6 +10,9 @@
 
 
 
+
+
+
 .content {
     
     flex-grow: 1;
@@ -148,3 +151,56 @@
 }
 
 
+.fileSpace{
+	
+margin-top: 20px;
+margin-left: 35px;	
+	
+}
+
+.card{
+	
+margin-top: 20px;
+	
+}
+
+
+#preview img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+#preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.img-box {
+  flex: 0 0 calc(25% - 10px);
+  margin-bottom: 10px;
+}
+
+.img-box img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+.delete-img {
+			    position: absolute;
+			    top: 0;
+			    right: 0;
+			    font-size: 13px;
+			    background-color: #000;
+			    color: #fff;
+			    width: 18px;
+			    height: 18px;
+			    line-height: 16px;
+			    display: inline-block;
+			    text-align: center;
+			    cursor: pointer;
+			    z-index: 99999;
+			}
