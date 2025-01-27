@@ -1,5 +1,6 @@
 package gamepiece.admin.notice.domain;
 
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import lombok.Data;
 
 @Data
@@ -12,6 +13,10 @@ public class Notice {
 	private int viewCount; //공지조회수
 	private String adminId; 
 	private String noticeYmd; //공지작성일
+	private String filePath; 
+	private String fileIdx;
+	private AdminBoardFiles fileInfo;
+	
 	
 	
 

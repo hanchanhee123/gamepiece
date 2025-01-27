@@ -24,6 +24,9 @@ public interface BoardService {
 	BoardFiles getFileInfo(String fileIdx);
 	//게시판 파일 조회
 	
+	
+	BoardFiles getNoticeNum(int noticeNum);
+	
 	BoardFiles getInquiryFile(String inquiryNum);
 	
 	BoardFiles getBoardFile(String boardNum);

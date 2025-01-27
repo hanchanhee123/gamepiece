@@ -22,5 +22,6 @@ public class BoardFiles {
 	private Long fileSize;
 	private Board boardInfo;
 	private Inquiry inquiryInfo;
+	private Notice noticeInfo;
 
 }

@@ -14,5 +14,8 @@ public class Notice {
 	private String adminId; 
 	private String noticeYmd; //공지작성일
 	private User userInfo; 
+	private String filePath; 
+	private String fileIdx;
+	private BoardFiles fileInfo;
 
 }
