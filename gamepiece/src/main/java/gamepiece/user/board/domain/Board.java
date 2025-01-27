@@ -4,6 +4,9 @@ package gamepiece.user.board.domain;
 
 
 
+
+
+
 import gamepiece.user.user.domain.User;
 import lombok.Data;
 
@@ -20,8 +23,11 @@ public class Board {
 	private int boardDisLikeCnt; //게시판싫어요수
 	private int boardViewCnt; //게시판조회수
 	private String boardYmd; //게시판작성일자
+	private String filePath; 
+	private String fileIdx;
 	private User userInfo; //유저정보
-
+	private BoardFiles FileInfo; //파일
+	
 
 	
 	

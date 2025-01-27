@@ -1,11 +1,16 @@
 package gamepiece.user.board.controller;
 
 
+
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -18,27 +23,35 @@ import java.util.UUID;
 
 // Spring Framework
 import org.springframework.beans.factory.annotation.Value;
-
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.file.service.FileService;
+import gamepiece.file.util.FilesUtils;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
+import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.user.board.domain.Report;
+import gamepiece.user.board.mapper.BoardFileMapper;
 import gamepiece.user.board.service.BoardService;
+import gamepiece.user.board.util.BoardFilesUtils;
 import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -50,6 +63,9 @@ import jakarta.servlet.http.Part;
 // Lombok
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+
+
 @Controller("userBoardController")
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -64,13 +80,80 @@ public class BoardController {
 	private final UserService userService;
 	
 	private final FileService fileService;
+	private final FilesUtils filesUtils;
+	private final BoardFileMapper boardFileMapper;
+	private final BoardFilesUtils boardFilesUtils;
+	
+	
+	
+	@GetMapping("/download")
+	public ResponseEntity<Object> downloadFile(@RequestParam String fileIdx,
+	        HttpServletRequest request) {
+	    try {
+	        BoardFiles fileDto = boardFileMapper.getFileInfoByIdx(fileIdx);
+	        if(fileDto == null) {
+	            return ResponseEntity.notFound().build();
+	        }
+	        
+	        
+	        
+	        // contentType 분류해서 경로 구성
+	        String fileType = fileDto.getFileNewName().toLowerCase().matches(".*\\.(jpg|jpeg|png|gif|bmp)$") 
+	                       ? "/image" : "/file";
+	        
+	        // 전체 경로 구성
+	        String fullPath = fileRealPath + fileDto.getFilePath() 
+	                       + fileType + "/" + fileDto.getFileNewName();
+	        
+	        log.info("다운로드 시도 경로: {}", fullPath);
+	        
+	        File file = new File(fullPath);
+	        if (!file.exists()) {
+	            log.error("파일이 존재하지 않음: {}", fullPath);
+	            return ResponseEntity.notFound().build();
+	        }
+	        
+	        log.info("파일 크기: {} bytes", file.length());
+	        
+	        Path path = Paths.get(file.getAbsolutePath());
+	        Resource resource = new UrlResource(path.toUri());
 
-	
-	
+	        String contentType = request.getServletContext()
+	                .getMimeType(resource.getFile().getAbsolutePath());
+	        if(contentType == null) {
+	            contentType = "application/octet-stream";
+	        }
 
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.parseMediaType(contentType))
+	                .header(HttpHeaders.CONTENT_DISPOSITION,
+	                        "attachment; filename=\"" +
+	                                URLEncoder.encode(fileDto.getFileOriginalName(),"UTF-8") +
+	                                "\";")
+	                .body(resource);
+	        
+	    } catch (Exception e) {
+	        log.error("파일 다운로드 중 오류 발생: {}", e.getMessage());
+	        return ResponseEntity.internalServerError().build();
+	    }
+	}
 	
-
 	
+	
+	@PostMapping("/uploadFiles")
+	public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files) {
+	    // 파일 업로드
+		 try {
+		        if (files != null && files.length > 0) {
+		            boardService.addFiles(files);
+		            return ResponseEntity.ok("파일 업로드 성공");
+		        }
+		        return ResponseEntity.ok("업로드할 파일이 없습니다.");
+		    } catch (Exception e) {
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+		                           .body("파일 업로드 실패: " + e.getMessage());
+		    }
+	}
 	
 	
 	
@@ -132,6 +215,9 @@ public class BoardController {
 	        return ResponseEntity.internalServerError().body(result);
 	    }
 	}
+	
+	
+	
 	
 	@PostMapping("/noticeList")
 	public String noticeBoardSearch(@RequestParam(value="searchValue") String searchValue,
@@ -418,39 +504,52 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modifyBoard(Board board, RedirectAttributes rttr) {
-		int result = boardService.modifyBoard(board);
-		
-		  if(result > 0) {
-		        rttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
-			 
-		    } else {
-		        rttr.addFlashAttribute("error", "게시글 수정에 실패했습니다.");
-		       
-		    }
-		  
-		  System.out.println("boardNum : " + board.getBoardNum());
-			
-			return "redirect:/board";
-		  
+	@Transactional
+	public String modifyBoard(Board board, 
+	                         @RequestParam(required = false) MultipartFile[] files, 
+	                         RedirectAttributes rttr) {
+	    try {
+	        // 새 파일이 업로드된 경우
+	        if (files != null && files.length > 0 && !files[0].isEmpty()) {
+	            // 기존 파일 조회
+	            BoardFiles oldFile = boardService.getBoardFile(board.getBoardNum());
+	            
+	            // 기존 파일이 있다면 삭제
+	            if (oldFile != null) {
+	                boardService.deleteFile(oldFile);  // void 메서드 호출
+	            }
+	            
+	            // 새 파일 업로드 및 게시글 fileIdx 업데이트 로직...
+	            List<BoardFiles> fileList = boardFilesUtils.uploadFiles(files);
+	            if (!fileList.isEmpty()) {
+	                board.setFileIdx(fileList.get(0).getFileIdx());
+	                boardFileMapper.addfiles(fileList);
+	            }
+	        }
+	        
+	        // 게시글 수정
+	        boardService.modifyBoard(board);
+	        
+	        return "redirect:/board/detail?boardNum=" + board.getBoardNum();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "redirect:/board";
+	    }
 	}
-	
-	
 	
 	@GetMapping("/modify")
-	public String modifyBoardView(@RequestParam(name="boardNum") String boardNum ,Model model) {
-		
-			Board boardInfo = boardService.getBoardInfo(boardNum);
-			
-	
-			
-			
-			model.addAttribute("boardInfo", boardInfo);
-	
-		
-		 return "user/board/modifyBoard";
+	public String modifyBoardView(@RequestParam(name="boardNum") String boardNum, Model model) {
+	    Board boardInfo = boardService.getBoardInfo(boardNum);
+	    
+	    // 파일 정보 추가로 가져오기
+	    BoardFiles boardFile = boardService.getBoardFile(boardNum); 
+	    
+	    model.addAttribute("boardInfo", boardInfo);
+	    model.addAttribute("boardFile", boardFile);   // 파일 정보 추가
+
+	    return "user/board/modifyBoard";
 	}
-		
 		  
 		  	
 	
@@ -475,9 +574,11 @@ public class BoardController {
 		Inquiry inquiryInfo = boardService.getInquiryInfo(inquiryNum);
 		InquiryRespone responeInfo = boardService.getInquiryResponeInfo(inquiryNum);
 		
+		 BoardFiles boardFile = boardService.getInquiryFile(inquiryNum);
+		
 		model.addAttribute("inquiryInfo", inquiryInfo);
 		model.addAttribute("responeInfo", responeInfo);
-		
+		model.addAttribute("boardFile", boardFile);
 		
 		
 		 return "user/board/inquiryDetail";
@@ -523,51 +624,84 @@ public class BoardController {
 	public String detailBoardView(@RequestParam(name="boardNum") String boardNum,
 	                          Pageable pageable,
 	                          Model model) {
-		
-		  int updateResult = boardService.addViewCount(boardNum);
-		    log.info("조회수 증가 결과: {}", updateResult);  // 로그로 확인
-		
-	    Board boardInfo = boardService.getBoardInfo(boardNum);
-	    
 
-	
+	    int updateResult = boardService.addViewCount(boardNum);
+	    log.info("조회수 증가 결과: {}", updateResult);  // 로그로 확인
+
+	    Board boardInfo = boardService.getBoardInfo(boardNum);
+
+	    // 파일 정보 조회
+	    BoardFiles boardFile = boardService.getBoardFile(boardNum);
 
 	    // 댓글 정보 조회 (페이징 처리)
 	    PageInfo<BoardComment> pageInfo = boardService.getBoardCommentInfo(boardNum, pageable);
-	    
+
 	    // 모델에 데이터 추가
 	    model.addAttribute("title", "게시글상세");
 	    model.addAttribute("boardInfo", boardInfo);
+	    model.addAttribute("boardFile", boardFile); // 파일 정보 추가
 	    model.addAttribute("commentList", pageInfo.getContents());
 	    model.addAttribute("currentPage", pageInfo.getCurrentPage());
 	    model.addAttribute("startPageNum", pageInfo.getStartPageNum());
 	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
 	    model.addAttribute("lastPage", pageInfo.getLastPage());
 	    model.addAttribute("boardNum", boardNum);
+	 
 	    
 	    return "user/board/boardDetail";
 	}
-	
 
 
 	@PostMapping("/inquiry/write")
-	public String addInquiry(Inquiry inquiry, HttpSession session, RedirectAttributes rttr) {
+	public String addInquiry(Inquiry inquiry, 
+	                         @RequestParam(required = false) MultipartFile[] files, 
+	                         HttpSession session,
+	                         RedirectAttributes rttr) {
 
-		String loginId = (String) session.getAttribute("SID");
-		inquiry.setInquiryUserId(loginId);
+	    String loginId = (String) session.getAttribute("SID");
+	    inquiry.setInquiryUserId(loginId);
 
+	   
 	
+	    
+	    // 파일 업로드 처리
+	    List<BoardFiles> fileDtoList = new ArrayList<>();
+	    if (files != null && files.length > 0 && !files[0].isEmpty()) {
+	        for (MultipartFile file : files) {
+	            BoardFiles boardFiles = new BoardFiles();
 
-		int result = boardService.addInquiry(inquiry);
+	            // 각 파일마다 고유한 파일 인덱스 생성
+	            String fileIdx = boardFileMapper.getNextFileIdx();
 
-		if (result > 0) {
-			rttr.addFlashAttribute("message", "게시글이 작성되었습니다.");
-			return "redirect:/board/inquiry";
-		} else {
-			rttr.addFlashAttribute("message", "게시글이 작성실패하였습니다.");
-			return "redirect:/board/inquiry";
-		}
+	            boardFiles.setFileIdx(fileIdx);
+	            boardFiles.setFileNewName(UUID.randomUUID().toString() + "_" + file.getOriginalFilename());
+	            boardFiles.setFileOriginalName(file.getOriginalFilename());
+	            boardFiles.setFilePath("/attachment/" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+	            boardFiles.setFileSize(file.getSize());
 
+	            fileDtoList.add(boardFiles);
+	            
+	            System.out.println("Inquiry file_idx: " + inquiry.getFileIdx());
+	            System.out.println("Files uploaded: " + fileDtoList.size());
+	            System.out.println("First file idx: " + (fileDtoList.isEmpty() ? "N/A" : fileDtoList.get(0).getFileIdx()));
+	        }
+
+	        // 파일 정보와 실제 파일을 함께 저장
+	        boardService.addFilesWithInfo(files, fileDtoList);
+
+	        // 첫 번째 파일의 인덱스를 inquiry의 fileIdx로 설정
+	        inquiry.setFileIdx(fileDtoList.get(0).getFileIdx());
+	    }
+
+	    int result = boardService.addInquiry(inquiry);
+	    
+	    if (result > 0) {
+	        rttr.addFlashAttribute("message", "게시글이 작성되었습니다.");
+	        return "redirect:/board/inquiry";
+	    } else {
+	        rttr.addFlashAttribute("message", "게시글이 작성실패하였습니다.");
+	        return "redirect:/board/inquiry";
+	    }
 	}
 
 	@GetMapping("/inquiry/write")
@@ -577,32 +711,66 @@ public class BoardController {
 	}
 
 	
-	
 	@PostMapping("/write")
-	public String addBoard(Board board, HttpSession session, RedirectAttributes rttr) {
+	public String addBoard(Board board,
+	                      @RequestParam(required = false) MultipartFile[] files,
+	                      HttpSession session,
+	                      RedirectAttributes rttr) {
+	    String loginId = (String) session.getAttribute("SID");
+	    board.setBoardUserId(loginId);
 
-		String loginId = (String) session.getAttribute("SID");
+	    // 파일 업로드 처리
+	    List<BoardFiles> fileDtoList = new ArrayList<>();
+	    if (files != null && files.length > 0 && !files[0].isEmpty()) {
+	        for (MultipartFile file : files) {
+	            log.info("업로드된 파일명: {}", file.getOriginalFilename());
+	            log.info("파일 크기: {} bytes", file.getSize());
+	            log.info("파일 타입: {}", file.getContentType());
 
-		board.setBoardUserId(loginId);
-	
-	
-		
+	            BoardFiles boardFiles = new BoardFiles();
 
-		int result = boardService.addBoard(board);
-		
-		rttr.addFlashAttribute("message", "게시글이 작성되었습니다.");
+	            // 각 파일마다 고유한 파일 인덱스 생성
+	            String fileIdx = boardFileMapper.getNextFileIdx();
+	 
+	            boardFiles.setFileIdx(fileIdx);
+	            boardFiles.setFileNewName(UUID.randomUUID().toString() + "_" + file.getOriginalFilename());
+	            boardFiles.setFileOriginalName(file.getOriginalFilename());
+	            boardFiles.setFilePath("/attachment/" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+	            boardFiles.setFileSize(file.getSize());
 
-	
-			
-	
-		return "redirect:/board";
+	            fileDtoList.add(boardFiles);
+	            log.info("업로드된 파일명: {}", file.getOriginalFilename());
+	            log.info("파일 크기: {} bytes", file.getSize());
+	            log.info("파일 타입: {}", file.getContentType());
+	            log.info("생성된 파일 인덱스: {}", fileIdx);
+	            log.info("저장될 새 파일명: {}", boardFiles.getFileNewName());
+	            log.info("저장될 파일 경로: {}", boardFiles.getFilePath());
+	        }
+
+	        // 파일 정보와 실제 파일을 함께 저장
+	        boardService.addFilesWithInfo(files, fileDtoList);
+
+	        // 첫 번째 파일의 인덱스를 board의 fileIdx로 설정
+	        board.setFileIdx(fileDtoList.get(0).getFileIdx());
+	    }
+
+	    // 게시글 저장
+	    int result = boardService.addBoard(board);
+	    rttr.addFlashAttribute("message", "게시글이 작성되었습니다.");
+
+	    return "redirect:/board";
 	}
-
+	
+	
+	
+	
 	@GetMapping("/write")
 	public String addBoardView(Model model) {
 
 		return "user/board/addBoard";
 	}
+	
+	
 
 	@GetMapping("")
 	public String allBoardListView(Pageable pageable, Model model) {
@@ -613,6 +781,8 @@ public class BoardController {
 		int startPageNum = pageInfo.getStartPageNum();
 		int endPageNum = pageInfo.getEndPageNum();
 		int lastPage = pageInfo.getLastPage();
+		
+		
 
 		model.addAttribute("allBoardList", allBoardList);
 		model.addAttribute("currentPage", currentPage);

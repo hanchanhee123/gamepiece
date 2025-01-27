@@ -7,8 +7,7 @@
 
 
 
-	<resultMap type="gamepiece.user.board.domain.Board"
-		id="BoardResultMap">
+	<resultMap type="gamepiece.user.board.domain.Board" id="BoardResultMap">
 		<id column="bbs_no" property="boardNum" />
 		<result column="bbs_cate_cd" property="boardCategory" />
 		<result column="bbs_title" property="boardTitle" />
@@ -18,12 +17,12 @@
 		<result column="bbs_dislike" property="boardDisLikeCnt" />
 		<result column="bbs_view" property="boardViewCnt" />
 		<result column="bbs_ymd" property="boardYmd" />
+		<result column="file_idx" property="fileIdx" />
 
 
 
 
-		<association property="userInfo"
-			javaType="gamepiece.user.user.domain.User">
+		<association property="userInfo" javaType="gamepiece.user.user.domain.User">
 			<id column="id" property="id" />
 			<result column="authrt_cd" property="authrtCd" />
 			<result column="user_pw" property="userPswd" />
@@ -35,6 +34,15 @@
 			<result column="user_nn" property="userNn" />
 			<result column="join_ymd" property="joinYmd" />
 			<result column="whdwl_ymd" property="whdwlYmd" />
+		</association>
+
+
+		<association property="FileInfo" javaType="gamepiece.user.board.domain.BoardFiles">
+		<id column="fileIdx" 				property="file_idx"/>
+		<result property="fileNewName" 		column="file_new_name"/>
+		<result property="fileOriginalName" column="file_original_name"/>
+		<result property="filePath" 		column="file_path"/>
+		<result property="fileSize" 		column="file_size"/>
 		</association>
 
 
@@ -139,7 +147,8 @@
 		bbs_like,
 		bbs_dislike,
 		bbs_view,
-		bbs_ymd
+		bbs_ymd,
+		file_idx
 		)VALUES(
 		CONCAT('bbs_', LPAD((
 		SELECT next_num FROM (
@@ -155,7 +164,8 @@
 		#{boardLikeCnt},
 		#{boardDisLikeCnt},
 		#{boardViewCnt},
-		CURDATE()
+		CURDATE(),
+		#{fileIdx}
 		);
 	</insert>
 
@@ -173,10 +183,18 @@
 			b.bbs_dislike,
 			b.bbs_ymd,
 			u.user_nn,
-			u.id
+			u.id,
+			f.file_idx,
+			f.file_path,
+			f.file_original_name,
+			f.file_new_name,
+			f.file_size,
+			f.file_reg_ymd
 		FROM
 				boards b INNER JOIN user u
 				ON b.id = u.id
+				LEFT JOIN files f
+				ON b.file_idx = f.file_idx
 
 		WHERE
 		b.bbs_no=#{boardNum}
@@ -188,22 +206,39 @@
 
 
 
+	<select id="getBoardFile" parameterType="string" resultMap="BoardResultMap">
+	
+	
+		SELECT
+		*
+	FROM
+		boards b LEFT JOIN files f
+		ON b.file_idx = f.file_idx
+		
+			WHERE
+			b.bbs_no = #{boardNum}
+	
+	</select>
+
 
 
 
 	<update id="modifyBoard" parameterType="Board">
 		UPDATE boards
-		<set>
-			<if test="boardCategory != null and boardCategory != ''">
-				bbs_cate_cd = #{boardCategory}
-			</if>
-			<if test="boardTitle != null and boardTitle != ''">
-				,bbs_title = #{boardTitle}
-			</if>
-			<if test="boardContent != null and boardContent != ''">
-				,bbs_cn = #{boardContent}
-			</if>
-		</set>
+		  <set>
+        <if test="boardCategory != null and boardCategory != ''">
+            bbs_cate_cd = #{boardCategory}
+        </if>
+        <if test="boardTitle != null and boardTitle != ''">
+            ,bbs_title = #{boardTitle}
+        </if>
+        <if test="boardContent != null and boardContent != ''">
+            ,bbs_cn = #{boardContent}
+        </if>
+        <if test="fileIdx != null">
+            ,file_idx = #{fileIdx}
+        </if>
+    </set>
 		WHERE
 		bbs_no=#{boardNum}
 	</update>

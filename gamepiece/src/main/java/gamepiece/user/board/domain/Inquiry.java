@@ -12,7 +12,9 @@ public class Inquiry {
 	private String inquiryTitle; //문의제목
 	private String inquiryContent; //문의내용
 	private String inquiryYmd; //문의작성일자
+	private String fileIdx;
 	private User userInfo; //유저정보
 	private InquiryRespone responeInfo; //문의답변정보
+	private BoardFiles fileInfo;
 
 }

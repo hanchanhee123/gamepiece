@@ -2,6 +2,7 @@ package gamepiece.admin.board.domain;
 
 import gamepiece.admin.boardCategory.domain.BoardCategory;
 import gamepiece.admin.user.domain.User;
+
 import lombok.Data;
 
 @Data
@@ -20,6 +21,8 @@ public class Board {
 	private User userInfo; //유저정보
 	private BoardCategory categoryInfo; //카테고리정보
 	private Integer idN = 3; //아이디번호
-	
+	private String filePath; 
+	private String fileIdx;
+	private AdminBoardFiles fileInfo;
 
 }
