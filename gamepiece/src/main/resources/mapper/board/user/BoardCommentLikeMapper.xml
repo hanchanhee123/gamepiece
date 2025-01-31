@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.board.mapper.BoardCommentLikeMapper">
+
+
+	<resultMap type="gamepiece.user.board.domain.BoardCommentLikes" id="commentLikeResultMap">
+		<id column="bc_likes_no" property="commentLikeNum" />
+		<result column="bc_no" property="commentNum" />
+		<result column="id" property="userId" />
+		<result column="bc_likes_type" property="likesType" />
+		<result column="bc_likes_ymd" property="likeYmd" />
+
+
+
+
+
+
+	<association property="commentInfo" javaType="gamepiece.user.board.domain.BoardComment">
+		  <id column="bc_no"  property="commentNum" />
+	 <result column="bbs_no"  property="boardNum" />
+	 <result column="bc_id"  property="commentUserId" />
+    <result column="bc_cn" property="commentDetail" />
+    <result column="bc_like" property="commentLikeCnt" />
+    <result column="bc_dislike" property="commentDisLikeCnt" />
+    <result column="bc_ymd" property="commentYmd" />
+		</association>
+
+
+
+		<association property="userInfo" javaType="gamepiece.user.user.domain.User">
+			<id column="id" property="id" />
+			<result column="authrt_cd" property="authrtCd" />
+			<result column="user_pw" property="userPswd" />
+			<result column="user_nm" property="userNm" />
+			<result column="user_gender" property="userGender" />
+			<result column="user_eml_addr" property="userEmlAddr" />
+			<result column="user_brdt" property="userBrdt" />
+			<result column="user_telno" property="userTelno" />
+			<result column="user_nn" property="userNn" />
+			<result column="join_ymd" property="joinYmd" />
+			<result column="whdwl_ymd" property="whdwlYmd" />
+		</association>
+
+
+		
+
+
+
+
+	</resultMap>
+
+
+<insert id="addCommentLikes" parameterType="gamepiece.user.board.domain.BoardCommentLikes">
+    INSERT IGNORE INTO bc_likes(
+     bc_likes_no,
+     bc_no, 
+     id, 
+     bc_likes_type, 
+     bc_likes_ymd
+     )VALUES(
+    CONCAT('bc_likes_', LPAD((
+            SELECT next_num FROM (
+                SELECT IFNULL(MAX(CAST(SUBSTRING_INDEX(bc_likes_no, 'bc_likes_', -1) AS UNSIGNED)), 0) + 1 AS next_num
+                FROM bc_likes
+            ) AS temp
+        ), 3, '0')),
+    #{commentNum},
+    #{userId},
+    #{likesType},
+    CURDATE())
+</insert>
+
+<!-- 사용자가 이미 좋아요/싫어요를 했는지 확인 -->
+<select id="getCommentLikesByUser" parameterType="map" resultType="gamepiece.user.board.domain.BoardCommentLikes">
+    SELECT 
+        *
+    FROM 
+        bc_likes
+    WHERE 
+        bc_no = #{commentNum}
+        AND 
+        id = #{userId}
+    LIMIT 1
+</select>
+
+
+
+
+</mapper>

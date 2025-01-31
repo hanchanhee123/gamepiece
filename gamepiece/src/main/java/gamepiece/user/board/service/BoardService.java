@@ -2,9 +2,9 @@ package gamepiece.user.board.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
-
 
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
@@ -18,7 +18,26 @@ import gamepiece.util.Pageable;
 
 public interface BoardService {
 	
+	 
+   
+	Map<String, Object> addBoardLike(String boardNum, String userId, String likesType);
 
+	Map<String, Object> addCommentLike(String commentNum, String userId, String likesType);
+	
+	//덧글 좋아요 증가
+	int addCommentLikeCount(String commentNum);
+	
+	//덧글 싫어요 증가
+	int addCommentDisLikeCount(String commentNum);
+	
+	
+	//좋아요 증가
+	int addLikeCount(String boardNum);
+	
+	//싫어요 증가
+	int addDisLikeCount(String boardNum);
+	
+	
 	BoardFiles getBoardFileInfo(String boardNum);
 	
 	BoardFiles getFileInfo(String fileIdx);
