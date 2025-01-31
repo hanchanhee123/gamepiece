@@ -136,8 +136,7 @@
 
 
 
-
-	<insert id="addBoard" parameterType="Board">
+<insert id="addBoard" parameterType="Board">
 		INSERT INTO boards(
 		bbs_no,
 		bbs_cate_cd,
@@ -169,9 +168,7 @@
 		);
 	</insert>
 
-
-
-	<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">
+		<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">
 
 
 		SELECT
@@ -258,6 +255,30 @@
     SET bbs_view = bbs_view + 1
     WHERE 
     		bbs_no=#{boardNum}
+</update>
+
+<update id="addLikeCount" parameterType="String">
+		  UPDATE boards
+    SET 
+	 		bbs_like = bbs_like + 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
+
+
+
+<update id="addDisLikeCount" parameterType="String">
+	  UPDATE boards	
+    SET 
+	 	bbs_dislike = bbs_dislike + 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
+
+<update id="modifyFileIdxToNull" parameterType="String">
+    UPDATE boards 
+    SET file_idx = 'NULL' 
+    WHERE file_idx = #{fileIdx}
 </update>
 
 

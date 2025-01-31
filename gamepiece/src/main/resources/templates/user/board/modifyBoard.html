@@ -128,6 +128,15 @@
 
 <th:block layout:fragment="customJs">
     <script th:inline="javascript">
+    
+    function isImageFile(fileName) {
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+        const extension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+        return imageExtensions.includes(extension);
+    }
+	
+    
+    
         let oEditors = [];
 
         // 스마트 에디터 초기화
@@ -370,8 +379,7 @@
             oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
         };
         
-      
-    	
+     
     </script>
 </th:block>
 </html>

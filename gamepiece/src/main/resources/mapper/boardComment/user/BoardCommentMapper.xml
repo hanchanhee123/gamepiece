@@ -141,9 +141,28 @@ WHERE
 		WHERE 
 			bc_no = #{commentNum}
 
-
-
 </update>
+
+
+
+<update id="addCommentLikeCount" parameterType="String">
+		  UPDATE board_comments
+    SET 
+		bc_like= bc_like + 1
+    WHERE 
+    		bc_no = #{commentNum}
+</update>
+
+
+
+<update id="addCommentDisLikeCount" parameterType="String">
+	  UPDATE board_comments	
+    SET 
+	bc_dislike= bc_dislike + 1
+    WHERE 
+    		bc_no = #{commentNum}
+</update>
+
 
 
 </mapper>

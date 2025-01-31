@@ -23,5 +23,6 @@ public class BoardFiles {
 	private Board boardInfo;
 	private Inquiry inquiryInfo;
 	private Notice noticeInfo;
+	
 
 }
