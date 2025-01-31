@@ -144,6 +144,8 @@ public class UserGameController {
 		return "user/game/steamDetail";
 	}
 	
+	
+	
 	@PostMapping("/gameCart")
 	public String putGameInCart(@RequestParam(value="gameCode") String gameCode,
 									  @RequestParam(value="title", required = false, defaultValue = "") String title,
