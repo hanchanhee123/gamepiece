@@ -13,12 +13,14 @@ public interface BoardFileMapper {
 	BoardFiles findByFileIdx(String fileIdx);
 	int deleteFileByIdx(String fileIdx);
 	BoardFiles getFileInfoByIdx(String fileIdx);
+	BoardFiles getFilesInfoByIdx(String fileIdx);
 	List<BoardFiles> getFileList();
 	int addfile(BoardFiles fileInfo);
 	void addfiles(List<BoardFiles> fileDtoList);
 	String getNextFileIdx();
+		BoardFiles findByNoticeNum(int noticeNum);  
 	  BoardFiles findByBoardNum(String boardNum);
 	  BoardFiles findByInquiryNum(String inquiryNum);
-	  BoardFiles modifyFile(String boardNum);
-
+	   
+	 
 }

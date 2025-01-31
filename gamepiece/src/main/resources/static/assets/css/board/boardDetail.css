@@ -2,6 +2,21 @@
 
 
 
+
+.btn-outline-primary:hover .bi,
+.btn-outline-danger:hover .bi {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
 .attachment-container {
     max-width: 100%;
 }
@@ -231,15 +246,6 @@
     cursor: pointer;
 }
 
-/* 게시글 좋아요, 싫어요 숫자 */
-.likeCnt, .dislikeCnt {
-
-    font-weight: bold;
-    margin-left: 50px;
-    font-size: 30px;
-    color: white;
-
-}
 
 
 /* 게시물에 있는 덧글창 */

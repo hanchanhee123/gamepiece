@@ -136,23 +136,30 @@ public class BoardFilesUtils {
  	}
 
 	public boolean deleteFileByPath(String path) {
-		path = fileRealPath + path;
-		boolean isDelete = false;
-		File file = new File(path);
-		
-		Path deletePath = Paths.get(file.getAbsolutePath());
-		
-		try {
-			Files.deleteIfExists(deletePath);
-			isDelete = true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return isDelete;
+	    path = fileRealPath + path;
+	    boolean isDelete = false;
+	    
+	    try {
+	        File file = new File(path);
+	        if (file.exists()) {
+	            // 실제 파일만 삭제하고 디렉토리는 건드리지 않음
+	            if (file.isFile()) {
+	                isDelete = file.delete();
+	            } else {
+	                // 디렉토리인 경우는 true 반환 (에러로 처리하지 않음)
+	                isDelete = true;
+	            }
+	        } else {
+	            // 파일이 없는 경우도 true 반환 (이미 삭제된 것으로 간주)
+	            isDelete = true;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        isDelete = false;
+	    }
+	    
+	    return isDelete;
 	}
-	
 	
 	 public static String formatFileSize(long bytes) {
 	        if (bytes < 1024) return bytes + " B";

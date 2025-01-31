@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gamepiece.user.board.mapper.BoardLikeMapper">
+
+
+
+	<resultMap type="gamepiece.user.board.domain.BoardLikes" id="BoardLikeResultMap">
+		<id column="likes_no" property="likeNum" />
+		<result column="bbs_no" property="boardNum" />
+		<result column="id" property="userId" />
+		<result column="likes_type" property="likesType" />
+		<result column="likes_ymd" property="likeYmd" />
+
+
+
+
+
+
+	<association property="boardInfo" javaType="gamepiece.user.board.domain.Board">
+		<id column="bbs_no" property="boardNum" />
+		<result column="bbs_cate_cd" property="boardCategory" />
+		<result column="bbs_title" property="boardTitle" />
+		<result column="bbs_cn" property="boardContent" />
+		<result column="id" property="boardUserId" />
+		<result column="bbs_like" property="boardLikeCnt" />
+		<result column="bbs_dislike" property="boardDisLikeCnt" />
+		<result column="bbs_view" property="boardViewCnt" />
+		<result column="bbs_ymd" property="boardYmd" />
+		<result column="file_idx" property="fileIdx" />
+		</association>
+
+
+
+		<association property="userInfo" javaType="gamepiece.user.user.domain.User">
+			<id column="id" property="id" />
+			<result column="authrt_cd" property="authrtCd" />
+			<result column="user_pw" property="userPswd" />
+			<result column="user_nm" property="userNm" />
+			<result column="user_gender" property="userGender" />
+			<result column="user_eml_addr" property="userEmlAddr" />
+			<result column="user_brdt" property="userBrdt" />
+			<result column="user_telno" property="userTelno" />
+			<result column="user_nn" property="userNn" />
+			<result column="join_ymd" property="joinYmd" />
+			<result column="whdwl_ymd" property="whdwlYmd" />
+		</association>
+
+
+		
+
+
+
+
+	</resultMap>
+
+
+<insert id="addBoardLikes" parameterType="gamepiece.user.board.domain.BoardLikes">
+    INSERT IGNORE INTO boards_likes(
+     likes_no,
+     bbs_no, 
+     id, 
+     likes_type, 
+     likes_ymd
+     )VALUES(
+     CONCAT('likes_', LPAD((
+        SELECT next_num FROM (
+            SELECT MAX(CAST(SUBSTRING_INDEX(likes_no, 'likes_', -1) AS UNSIGNED)) + 1 AS next_num
+            FROM boards_likes
+        ) AS temp
+    ), 3, '0')),
+    #{boardNum},
+    #{userId},
+    #{likesType},
+    CURDATE())
+</insert>
+
+<!-- 사용자가 이미 좋아요/싫어요를 했는지 확인 -->
+<select id="getBoardLikesByUser" parameterType="map" resultType="gamepiece.user.board.domain.BoardLikes">
+    SELECT 
+        *
+    FROM 
+        boards_likes
+    WHERE 
+        bbs_no = #{boardNum}
+        AND 
+        id = #{userId}
+    LIMIT 1
+</select>
+
+
+
+
+</mapper>

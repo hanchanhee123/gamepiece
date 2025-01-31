@@ -4,6 +4,8 @@ package gamepiece.user.board.service;
 
 
 
+
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,18 +21,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import gamepiece.file.dto.FileDto;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
+import gamepiece.user.board.domain.BoardCommentLikes;
 import gamepiece.user.board.domain.BoardFiles;
+import gamepiece.user.board.domain.BoardLikes;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.user.board.domain.Report;
 import gamepiece.user.board.mapper.AllBoardMapper;
 import gamepiece.user.board.mapper.AttackBoardMapper;
+import gamepiece.user.board.mapper.BoardCommentLikeMapper;
 import gamepiece.user.board.mapper.BoardCommentMapper;
 import gamepiece.user.board.mapper.BoardFileMapper;
+import gamepiece.user.board.mapper.BoardLikeMapper;
 import gamepiece.user.board.mapper.FreeBoardMapper;
 import gamepiece.user.board.mapper.InfoBoardMapper;
 import gamepiece.user.board.mapper.InquiryMapper;
@@ -65,26 +70,10 @@ public class BoardServiceImpl implements BoardService{
 	private final ReportMapper reportMapper; 
 	private final BoardFileMapper boardFileMapper; 
 	private final BoardFilesUtils boardFilesUtils;
+	private final BoardLikeMapper boardLikeMapper;
+	private final BoardCommentLikeMapper boardCommentLikeMapper;
 
-
-
-
-    // MultipartFile을 FileDto로 변환하는 메서드
-    private FileDto convertToFileDto(MultipartFile file) {
-        // 파일 정보를 FileDto에 맞게 변환
-        String fileOriginalName = file.getOriginalFilename();
-        String fileNewName = "file_" + System.currentTimeMillis();  // 예시로 파일 이름을 시간 기반으로 생성
-        String filePath = "/path/to/file";  // 실제 경로로 변경 필요
-        Long fileSize = file.getSize();
-
-        // 빌더를 사용하여 FileDto 객체 생성
-        return FileDto.builder()
-                .fileOriginalName(fileOriginalName)
-                .fileNewName(fileNewName)
-                .filePath(filePath)
-                .fileSize(fileSize)
-                .build();
-    }
+ 
 	
 	@Override
 	public PageInfo<Board> getFreeBoardsList(Pageable pageable) {
@@ -557,12 +546,27 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
+	@Transactional
 	public void deleteFile(BoardFiles fileDto) {
-		String path = fileDto.getFilePath();
-		Boolean isDelete = boardFilesUtils.deleteFileByPath(path);
-		if(isDelete) boardFileMapper.deleteFileByIdx(fileDto.getFileIdx());
+	    try {
+	        // 1. boards 테이블의 file_idx를 null로 업데이트
+	    	allBoardMapper.modifyFileIdxToNull(fileDto.getFileIdx());
+	        
+	        // 2. 실제 파일 삭제 시도
+	        String path = fileDto.getFilePath();
+	        boolean isDelete = boardFilesUtils.deleteFileByPath(path);
+	        
+	        // 3. files 테이블에서 레코드 삭제
+	        if (isDelete) {
+	            boardFileMapper.deleteFileByIdx(fileDto.getFileIdx());
+	        } else {
+	            // 파일 삭제 실패시에도 DB 레코드는 삭제 (이미 게시글에서 참조가 제거됨)
+	            boardFileMapper.deleteFileByIdx(fileDto.getFileIdx());
+	        }
+	    } catch (Exception e) {
+	        throw new RuntimeException("파일 삭제 중 오류 발생", e);
+	    }
 	}
-	
 	@Override
 	public void addFile(MultipartFile file) {
 		BoardFiles fileInfo = boardFilesUtils.uploadFile(file);
@@ -661,9 +665,121 @@ public class BoardServiceImpl implements BoardService{
 		return allBoardMapper.getBoardFile(boardNum);
 	}
 
-	
-	
-	
+
+
+	@Override
+	public BoardFiles getNoticeNum(int noticeNum) {
+		// TODO Auto-generated method stub
+		return boardFileMapper.findByNoticeNum(noticeNum);
+	}
+
+
+
+	@Override
+	public int addLikeCount(String boardNum) {
+		// TODO Auto-generated method stub
+		return allBoardMapper.addLikeCount(boardNum);
+	}
+
+
+
+	@Override
+	public int addDisLikeCount(String boardNum) {
+		// TODO Auto-generated method stub
+		return allBoardMapper.addDisLikeCount(boardNum);
+	}
+
+
+
+	@Override
+	public int addCommentLikeCount(String commentNum) {
+		// TODO Auto-generated method stub
+		return boardCommentMapper.addCommentLikeCount(commentNum);
+	}
+
+
+
+	@Override
+	public int addCommentDisLikeCount(String commentNum) {
+		// TODO Auto-generated method stub
+		return boardCommentMapper.addCommentDisLikeCount(commentNum);
+	}
+
+
+	public Map<String, Object> addBoardLike(String boardNum, String userId, String likesType) {
+	    Map<String, Object> result = new HashMap<>();
+
+	    // 이미 좋아요/싫어요를 했는지 확인
+	    Map<String, String> params = new HashMap<>();
+	    params.put("boardNum", boardNum);
+	    params.put("userId", userId);
+
+	    BoardLikes existingLike = boardLikeMapper.getBoardLikesByUser(params);  // 메서드명 수정
+
+	    if (existingLike != null) {
+	        result.put("success", false);
+	        result.put("message", "이미 누르셨습니다");
+	        return result;
+	    }
+
+	    // 새로운 좋아요/싫어요 추가
+	    BoardLikes boardLikes = new BoardLikes();
+	    boardLikes.setBoardNum(boardNum);
+	    boardLikes.setUserId(userId);
+	    boardLikes.setLikesType(likesType);
+
+	    int addResult = boardLikeMapper.addBoardLikes(boardLikes);
+
+	    // 좋아요/싫어요 카운트 증가
+	    if ("좋아요".equals(likesType)) {
+	        allBoardMapper.addLikeCount(boardNum);
+	    } else {
+	        allBoardMapper.addDisLikeCount(boardNum);
+	    }
+
+	    result.put("success", addResult > 0);
+	    return result;
+	}
+
+
+
+	@Override
+	public Map<String, Object> addCommentLike(String commentNum, String userId, String likesType) {
+		 Map<String, Object> result = new HashMap<>();
+
+		    // 이미 좋아요/싫어요를 했는지 확인
+		    Map<String, String> params = new HashMap<>();
+		    params.put("commentNum", commentNum);
+		    params.put("userId", userId);
+		
+		    BoardCommentLikes commentLikeInfo = boardCommentLikeMapper.getCommentLikesByUser(params);  
+		    
+		    if (commentLikeInfo != null) {
+		        result.put("success", false);
+		        result.put("message", "이미 누르셨습니다");
+		        return result;
+		    }
+
+		    BoardCommentLikes boardCommentLikes = new BoardCommentLikes();
+		    boardCommentLikes.setCommentNum(commentNum);
+		    boardCommentLikes.setUserId(userId);
+		    boardCommentLikes.setLikesType(likesType);
+		    
+		    int addResult = boardCommentLikeMapper.addCommentLikes(boardCommentLikes);
+		    
+		    // 좋아요/싫어요 카운트 증가
+		    if ("좋아요".equals(likesType)) {
+		        boardCommentMapper.addCommentLikeCount(commentNum);
+		    } else {
+		       boardCommentMapper.addCommentDisLikeCount(commentNum);
+		    }
+		    
+		    result.put("success", addResult > 0);
+		return result;
+	}
+
+
+
 	
 	
 	}

@@ -15,6 +15,15 @@ import gamepiece.util.Pageable;
 public interface AllBoardMapper {
 	
 	
+    void modifyFileIdxToNull(String fileIdx);
+	
+	//좋아요 증가
+	int addLikeCount(String boardNum);
+	
+	//싫어요 증가
+	int addDisLikeCount(String boardNum);
+	
+
 	//게시판 파일 조회
 	BoardFiles getBoardFile(String boardNum);
 	

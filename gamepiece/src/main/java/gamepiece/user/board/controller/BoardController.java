@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -34,14 +32,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import gamepiece.file.service.FileService;
-import gamepiece.file.util.FilesUtils;
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.BoardFiles;
@@ -52,7 +51,6 @@ import gamepiece.user.board.domain.Report;
 import gamepiece.user.board.mapper.BoardFileMapper;
 import gamepiece.user.board.service.BoardService;
 import gamepiece.user.board.util.BoardFilesUtils;
-import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 // Jakarta EE
@@ -77,68 +75,79 @@ public class BoardController {
     private String fileRealPath;  
 	
 	private final BoardService boardService;
-	private final UserService userService;
+
 	
-	private final FileService fileService;
-	private final FilesUtils filesUtils;
+
 	private final BoardFileMapper boardFileMapper;
 	private final BoardFilesUtils boardFilesUtils;
+	private final gamepiece.admin.board.mapper.BoardFileMapper adminBoardFileMapper;
 	
 	
-	
+
+
 	@GetMapping("/download")
 	public ResponseEntity<Object> downloadFile(@RequestParam String fileIdx,
-	        HttpServletRequest request) {
+	                                         HttpServletRequest request) {
 	    try {
-	        BoardFiles fileDto = boardFileMapper.getFileInfoByIdx(fileIdx);
+	        AdminBoardFiles fileDto = adminBoardFileMapper.getFileInfoByIdx(fileIdx);
 	        if(fileDto == null) {
+	            log.error("파일 정보를 찾을 수 없음: fileIdx={}", fileIdx);
 	            return ResponseEntity.notFound().build();
 	        }
-	        
-	        
-	        
-	        // contentType 분류해서 경로 구성
-	        String fileType = fileDto.getFileNewName().toLowerCase().matches(".*\\.(jpg|jpeg|png|gif|bmp)$") 
-	                       ? "/image" : "/file";
-	        
-	        // 전체 경로 구성
-	        String fullPath = fileRealPath + fileDto.getFilePath() 
-	                       + fileType + "/" + fileDto.getFileNewName();
-	        
-	        log.info("다운로드 시도 경로: {}", fullPath);
-	        
+
+	        String fileType = fileDto.getFileNewName().toLowerCase().matches(".*\\.(jpg|jpeg|png|gif|bmp)$")
+	                ? "image" : "file";
+
+	        // Windows 환경에서 경로 수정
+	        String fullPath;
+	        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+	            fullPath = "C:\\home\\teamproject\\ksmybatis\\attachment\\" + 
+	                      fileDto.getFilePath().substring(fileDto.getFilePath().lastIndexOf("/") + 1) + 
+	                      "\\" + fileType + "\\" + 
+	                      fileDto.getFileNewName();
+	        } else {
+	            fullPath = fileRealPath + 
+	                      fileDto.getFilePath() + 
+	                      "/" + fileType + "/" + 
+	                      fileDto.getFileNewName();
+	        }
+
+	        log.info("=== 파일 다운로드 디버깅 정보 ===");
+	        log.info("운영체제: {}", System.getProperty("os.name"));
+	        log.info("파일 ID: {}", fileIdx);
+	        log.info("최종 시도 경로: {}", fullPath);
+
 	        File file = new File(fullPath);
 	        if (!file.exists()) {
 	            log.error("파일이 존재하지 않음: {}", fullPath);
+	            File directory = file.getParentFile();
+	            log.info("상위 디렉토리 존재 여부: {}", directory.exists());
+	            log.info("상위 디렉토리 경로: {}", directory.getAbsolutePath());
 	            return ResponseEntity.notFound().build();
 	        }
-	        
-	        log.info("파일 크기: {} bytes", file.length());
-	        
-	        Path path = Paths.get(file.getAbsolutePath());
-	        Resource resource = new UrlResource(path.toUri());
 
+	        Resource resource = new UrlResource(file.toURI());
+	        
 	        String contentType = request.getServletContext()
-	                .getMimeType(resource.getFile().getAbsolutePath());
+	                                  .getMimeType(file.getAbsolutePath());
 	        if(contentType == null) {
 	            contentType = "application/octet-stream";
 	        }
 
 	        return ResponseEntity.ok()
-	                .contentType(MediaType.parseMediaType(contentType))
-	                .header(HttpHeaders.CONTENT_DISPOSITION,
-	                        "attachment; filename=\"" +
-	                                URLEncoder.encode(fileDto.getFileOriginalName(),"UTF-8") +
-	                                "\";")
-	                .body(resource);
-	        
+	            .contentType(MediaType.parseMediaType(contentType))
+	            .header(HttpHeaders.CONTENT_DISPOSITION,
+	                    "attachment; filename=\"" + 
+	                    URLEncoder.encode(fileDto.getFileOriginalName(), "UTF-8") + 
+	                    "\";")
+	            .body(resource);
+
 	    } catch (Exception e) {
-	        log.error("파일 다운로드 중 오류 발생: {}", e.getMessage());
+	        log.error("파일 다운로드 중 오류 발생", e);
+	        log.error("상세 오류: ", e);
 	        return ResponseEntity.internalServerError().build();
 	    }
 	}
-	
-	
 	
 	@PostMapping("/uploadFiles")
 	public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files) {
@@ -197,7 +206,7 @@ public class BoardController {
 
 	    try {
 	        // 파일 저장 처리
-	        fileService.addFile(file);  // 파일은 저장되지만 반환값이 없음
+	        boardService.addFile(file);  // 파일은 저장되지만 반환값이 없음
 
 	        // 저장된 파일의 경로와 이름을 직접 설정 (가정)
 	        String savedFilePath = "/attachment/" + file.getOriginalFilename(); // 예시
@@ -505,35 +514,41 @@ public class BoardController {
 	
 	@PostMapping("/modify")
 	@Transactional
-	public String modifyBoard(Board board, 
-	                         @RequestParam(required = false) MultipartFile[] files, 
+	public String modifyBoard(Board board,
+	                         @RequestParam(required = false) MultipartFile[] files,
 	                         RedirectAttributes rttr) {
 	    try {
-	        // 새 파일이 업로드된 경우
+	        // 파일 업로드가 있는 경우
 	        if (files != null && files.length > 0 && !files[0].isEmpty()) {
-	            // 기존 파일 조회
-	            BoardFiles oldFile = boardService.getBoardFile(board.getBoardNum());
-	            
-	            // 기존 파일이 있다면 삭제
-	            if (oldFile != null) {
-	                boardService.deleteFile(oldFile);  // void 메서드 호출
-	            }
-	            
-	            // 새 파일 업로드 및 게시글 fileIdx 업데이트 로직...
+	            // 1. 새 파일 업로드
 	            List<BoardFiles> fileList = boardFilesUtils.uploadFiles(files);
 	            if (!fileList.isEmpty()) {
+	                // 2. 기존 파일이 있는지 확인
+	                BoardFiles oldFile = boardService.getBoardFile(board.getBoardNum());
+	                
+	                // 3. 새 파일의 fileIdx를 게시글에 설정
 	                board.setFileIdx(fileList.get(0).getFileIdx());
 	                boardFileMapper.addfiles(fileList);
+	                
+	                // 4. 게시글 수정
+	                boardService.modifyBoard(board);
+	                
+	                // 5. 기존 파일이 있었다면 삭제
+	                if (oldFile != null) {
+	                    boardService.deleteFile(oldFile);
+	                }
 	            }
+	        } else {
+	            // 파일 변경이 없는 경우 게시글만 수정
+	            boardService.modifyBoard(board);
 	        }
-	        
-	        // 게시글 수정
-	        boardService.modifyBoard(board);
-	        
+
+	        rttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
 	        return "redirect:/board/detail?boardNum=" + board.getBoardNum();
-	        
+
 	    } catch (Exception e) {
 	        e.printStackTrace();
+	        rttr.addFlashAttribute("error", "게시글 수정 중 오류가 발생했습니다.");
 	        return "redirect:/board";
 	    }
 	}
@@ -594,10 +609,10 @@ public class BoardController {
 		
 			Notice noticeInfo = boardService.getNoticeInfo(noticeNum);
 		
-			
+			BoardFiles boardFile = boardService.getNoticeNum(noticeNum);
 		
 		model.addAttribute("noticeInfo", noticeInfo);
-		
+		model.addAttribute("boardFile", boardFile);
 		
 		 return "user/board/noticeDetail";
 	}
@@ -619,11 +634,42 @@ public class BoardController {
 	}
 	
 	
+	@PostMapping("/like")
+	@ResponseBody
+	public Map<String, Object> addBoardLike(@RequestParam String boardNum, HttpSession session) {
+	    String userId = (String) session.getAttribute("SID");
+	    return boardService.addBoardLike(boardNum, userId, "좋아요");  
+	}
+
+	@PostMapping("/dislike")
+	@ResponseBody
+	public Map<String, Object> addBoardDislike(@RequestParam String boardNum, HttpSession session) {
+	    String userId = (String) session.getAttribute("SID");
+	    return boardService.addBoardLike(boardNum, userId, "싫어요"); 
+	}
+	
+
+	@PostMapping("/comment/like")
+	@ResponseBody
+	public Map<String, Object> addCommentLike(@RequestParam String commentNum, HttpSession session) {
+		 String userId = (String) session.getAttribute("SID");
+	    return boardService.addCommentLike(commentNum, userId, "좋아요");
+	}
+
+	@PostMapping("/comment/dislike")
+	@ResponseBody
+	public Map<String, Object> addCommentDislike(@RequestParam String commentNum, HttpSession session) {
+		 String userId = (String) session.getAttribute("SID");
+		 return boardService.addCommentLike(commentNum, userId, "싫어요");
+	}
+	
 
 	@GetMapping("/detail")
 	public String detailBoardView(@RequestParam(name="boardNum") String boardNum,
-	                          Pageable pageable,
+	                          Pageable pageable, HttpSession session,
 	                          Model model) {
+		
+
 
 	    int updateResult = boardService.addViewCount(boardNum);
 	    log.info("조회수 증가 결과: {}", updateResult);  // 로그로 확인
@@ -652,6 +698,8 @@ public class BoardController {
 	}
 
 
+	
+	
 	@PostMapping("/inquiry/write")
 	public String addInquiry(Inquiry inquiry, 
 	                         @RequestParam(required = false) MultipartFile[] files, 
@@ -710,7 +758,6 @@ public class BoardController {
 		return "user/board/addInquiry";
 	}
 
-	
 	@PostMapping("/write")
 	public String addBoard(Board board,
 	                      @RequestParam(required = false) MultipartFile[] files,
@@ -760,8 +807,6 @@ public class BoardController {
 
 	    return "redirect:/board";
 	}
-	
-	
 	
 	
 	@GetMapping("/write")

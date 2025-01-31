@@ -35,6 +35,7 @@ public interface UserGameService {
 	
 	void writeUserReview(UserReview userReview);
 	
+	
 	void putGameInCart(UserGame userGame);
 	
 	List<UserGame> getUserCartList(String id);
