@@ -6,12 +6,11 @@ package gamepiece.admin.board.controller;
 
 
 
+
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.board.domain.AdminBoardFiles;
+import gamepiece.admin.board.domain.AdminBoardsFiles;
 import gamepiece.admin.board.domain.Board;
 import gamepiece.admin.board.mapper.BoardFileMapper;
 import gamepiece.admin.board.service.BoardService;
@@ -193,7 +193,7 @@ public class BoardController {
 	   var pageInfo = boardCommentService.getBoardCommentInfo(boardNum, pageable);
 	   
 	   
-	   AdminBoardFiles boardFile = boardService.getBoardFile(boardNum);
+	   List<AdminBoardsFiles> boardFiles = boardService.getBoardFiles(boardNum); 
 
 	   model.addAttribute("title", "게시글상세");
 	   model.addAttribute("boardInfo", boardInfo);
@@ -204,7 +204,7 @@ public class BoardController {
 	   model.addAttribute("endPageNum", pageInfo.getEndPageNum());
 	   model.addAttribute("lastPage", pageInfo.getLastPage());
 	   model.addAttribute("boardNum", boardNum);  // 페이징 처리시 필요
-	   model.addAttribute("boardFile", boardFile);
+	   model.addAttribute("boardFiles", boardFiles);
 	   	
 	   return "admin/board/boardDetail";
 	}

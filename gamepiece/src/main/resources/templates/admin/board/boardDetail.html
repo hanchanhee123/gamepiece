@@ -91,33 +91,36 @@
 						         
 					    <hr class="mb-6 mt-0">
 					      
-					     <div class="fileBorder" th:if="${boardFile != null}">    
-					     <label for="file" class="form-label">첨부파일</label>         
-	      <div  class="attachment-container small-card">
-    <div class="card shadow-sm border-0 InfileBorder">
-        <div class="card-body d-flex justify-content-between align-items-center p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
-                <div>
-                    <a th:href="@{/admin/board/download(fileIdx=${boardFile.fileIdx})}"
-                       class="text-decoration-none text-dark fw-semibold">
-                        <small th:text="|첨부파일: ${boardFile.fileOriginalName}|"></small>
+					 <div class="fileBorder" th:if="${boardFiles != null and not #lists.isEmpty(boardFiles)}">             
+    <div class="attachment-container small-card">
+        <div class="card shadow-sm border-0 InfileBorder">
+            <div class="card-header">
+                <h4>첨부파일</h4>
+            </div>
+            <div class="card-body">
+                <div th:each="file : ${boardFiles}" class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
+                        <div>
+                            <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
+                               class="text-decoration-none text-dark fw-semibold">
+                                <small th:text="|첨부파일: ${file.fileInfo.fileOriginalName}|"></small>
+                            </a>
+                            <p class="text-muted mb-0">
+                                <small th:text="${T(gamepiece.admin.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
+                            </p>
+                        </div>
+                    </div>
+                    <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
+                       class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                        <i class="bi bi-download me-2"></i>
+                        <span>다운로드</span>
                     </a>
-			                   <p class="text-muted mb-0">
-			    <small th:text="${T(gamepiece.admin.board.util.BoardFilesUtils).formatFileSize(boardFile.fileSize)}"></small>
-			</p>
                 </div>
             </div>
-            <a th:href="@{/admin/board/download(fileIdx=${boardFile.fileIdx})}"
-               class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                <i class="bi bi-download me-2"></i>
-                <span>다운로드</span>
-            </a>
         </div>
     </div>
-</div>
-</div> 
-	   	         
+</div>         
 						         
 						                          
                          

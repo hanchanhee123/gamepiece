@@ -5,7 +5,10 @@ package gamepiece.admin.board.service;
 
 
 
+import java.util.List;
+
 import gamepiece.admin.board.domain.AdminBoardFiles;
+import gamepiece.admin.board.domain.AdminBoardsFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
@@ -14,7 +17,7 @@ public interface BoardService {
 	
 	
 
-	
+	  List<AdminBoardsFiles> getBoardFiles(String boardNum);
 	
 	
 	//파일조회

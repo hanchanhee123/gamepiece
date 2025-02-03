@@ -65,54 +65,78 @@
 			  <textarea name="boardContent" id="editorTxt" rows="20" cols="50"
 			       
 			          style="width: 100%; height: 400px; box-sizing: border-box; padding: 10px;"
-			          th:text="${boardInfo.boardContent}"></textarea>
+			          th:utext="${boardInfo.boardContent}"></textarea>
 			</div>
 			
 			
 			
 			
-			
+			<input type="hidden" name="fileDelete" id="fileDelete" value="N">
 <div class="fileSpace">
-   <div class="col">
-    <div class="card">
-        <div class="card-header">
-            <h4>파일 업로드</h4>
-        </div>
-        <div class="card-body">
-            <div class="input-group">
-    <input type="file" id="files" name="files" 
-           class="form-control bg-light border-0 small d-none" multiple>
-    <div class="input-group border rounded bg-white p-2 w-100">
-        <button onclick="document.getElementById('files').click()" 
-                type="button" 
-                class="btn btn-outline-primary">
-            <i class="bi bi-folder-plus me-1"></i>파일선택
-        </button>
-        <span id="fileLabel" 
-              class="d-flex align-items-center ms-3 text-secondary"
-              th:text="${boardFile != null ? boardFile.fileOriginalName : '선택된 파일 없음'}">
-        </span>
-    </div>
-</div>
-        </div>
-    </div>
-</div>
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <h4>파일미리보기</h4>
+                <h4>파일 업로드</h4>
             </div>
             <div class="card-body">
-                <div id="preview">
-                    <!-- 기존 파일이 있다면 미리보기에 표시 -->
-                    <div th:if="${boardFile != null}" class="col-md-3 img-box" style="position:relative">
-                        <img th:src="${boardFile.filePath}" th:id="${boardFile.fileIdx}">
-                        <span class="delete-img" th:data-remove-key="${boardFile.fileIdx}">X</span>
+                <div class="input-group">
+                    <input type="file" id="files" name="files" 
+                           class="form-control bg-light border-0 small d-none" multiple>
+                    <div class="input-group border rounded bg-white p-2 w-100">
+                        <button onclick="document.getElementById('files').click()" 
+                                type="button" 
+                                class="btn btn-outline-primary">
+                            <i class="bi bi-folder-plus me-1"></i>파일선택
+                        </button>
+                        <span id="fileLabel" class="d-flex align-items-center ms-3 text-secondary">
+                            선택된 파일 없음
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+   <div class="col mt-3">
+    <div class="card">
+        <div class="card-header">
+            <h4>현재 첨부파일</h4>
+        </div>
+        <div class="card-body">
+            <div id="currentFiles">
+                <div th:each="file : ${boardFiles}" class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                     <div class="d-flex align-items-center" th:data-file-idx="${file.fileInfo.fileIdx}">
+                        <!-- 이미지 파일인 경우 미리보기 -->
+                        <th:block th:if="${file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpg') || 
+                                         file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpeg') || 
+                                         file.fileInfo.fileOriginalName.toLowerCase().endsWith('.png') || 
+                                         file.fileInfo.fileOriginalName.toLowerCase().endsWith('.gif')}">
+                            <img th:src="@{${file.fileInfo.filePath}}" 
+                                 class="img-thumbnail me-3" 
+                                 style="width: 50px; height: 50px; object-fit: cover;">
+                        </th:block>
+                        <!-- 일반 파일인 경우 아이콘 -->
+                        <th:block th:unless="${file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpg') || 
+                                            file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpeg') || 
+                                            file.fileInfo.fileOriginalName.toLowerCase().endsWith('.png') || 
+                                            file.fileInfo.fileOriginalName.toLowerCase().endsWith('.gif')}">
+                            <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
+                        </th:block>
+                        <!-- 파일명 -->
+                        <div>
+                            <span th:text="${file.fileInfo.fileOriginalName}" class="me-2"></span>
+                            <small class="text-muted" th:text="${T(gamepiece.user.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-danger btn-sm"
+            th:onclick="deleteFile([[${file.fileInfo.fileIdx}]])"
+            th:data-file-idx="${file.fileInfo.fileIdx}">
+        <i class="bi bi-trash"></i>
+    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 </div>
           <div id="button">
@@ -137,7 +161,8 @@
 	
     
     
-        let oEditors = [];
+    let oEditors = [];
+    let deletedFiles = [];
 
         // 스마트 에디터 초기화
         $(document).ready(function() {
@@ -227,77 +252,6 @@
  
         });
 
-    
-        function modifyForm() {
-            // 에디터 내용을 textarea에 적용
-            oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
-
-            let isSubmit = true;
-            
-            const category = $("#boardCategory").val();
-            if(category === "" || category === null) {
-                alert("게시판을 선택해주세요.");
-                $("#boardCategory").focus();
-                return false;
-            }
-            
-            const title = $("#boardTitle").val();
-            if(!title) {
-                alert("제목을 입력해주세요.");
-                $("#boardTitle").focus();
-                return;
-            }
-
-            const content = $("#editorTxt").val();
-            console.log(content);
-            if(!content || content === '<p>&nbsp;</p>' || content === '') {
-                alert("내용을 입력해주세요.");
-                oEditors.getById["editorTxt"].exec("FOCUS");
-                return;
-            }
-
-            const boardNum = $("#boardNum").val();
-            console.log("boardNum:", boardNum);
-
-            if(isSubmit) {
-                const formData = new FormData();
-
-                // 파일이 선택되었을 경우
-                const filesInput = document.getElementById('files');
-                if (filesInput.files.length > 0) {
-                    for (let i = 0; i < filesInput.files.length; i++) {
-                        formData.append('files', filesInput.files[i]); 
-                    }
-                }
-                
-                formData.append('boardNum', boardNum);
-                formData.append('boardCategory', $("#boardCategory").val());
-                formData.append('boardTitle', $("#boardTitle").val());
-                formData.append('boardContent', $("#editorTxt").val());
-                
-                $.ajax({
-                    url: '/board/modify',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        location.href = `/board/detail?boardNum=${boardNum}`; 
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        alert('게시글 수정 중 오류가 발생했습니다.'); 
-                   },
-                  
-                });
-             }
-        }
-        
-        
-        
-        
-        
-        
         
         
         $('#files').change(function(){
@@ -336,10 +290,10 @@
         });
         
         
-        
-        $(document).on('click', '.delete-img',function(){
+    
+     // 파일 삭제 이벤트
+        $(document).on('click', '.delete-img', function(){
             const files = $("#files").prop('files');
-            
             const dataTranster = new DataTransfer();
             const removeTargetId = $(this).attr('data-remove-key');
             
@@ -348,38 +302,114 @@
                  .forEach(file => dataTranster.items.add(file));
          
             $('#files')[0].files = dataTranster.files;
+            updateFileLabel(dataTranster.files);
+            $(this).closest('.img-box').remove();
+        });
+
+        // 기존 파일 삭제 함수
+       function deleteFile(fileIdx) {
+    if(confirm('파일을 삭제하시겠습니까?')) {
+        // 삭제할 파일 목록에 추가
+        deletedFiles.push(fileIdx);
+        
+        // UI에서 해당 파일 항목 제거
+        const fileElement = $(`[data-file-idx="${fileIdx}"]`).closest('.d-flex');
+        fileElement.fadeOut(300, function() {
+            $(this).remove();
             
-            // 파일 삭제 후 남은 파일 수에 따라 라벨 텍스트 업데이트
-            const remainingFiles = dataTranster.files;
-            if(remainingFiles.length > 0) {
-                $('#fileLabel').text(remainingFiles[0].name + 
-                    (remainingFiles.length > 1 ? ` 외 ${remainingFiles.length - 1}개` : ''));
+            // 파일이 모두 삭제되었을 경우 메시지 표시
+            if ($('#currentFiles').children().length === 0) {
+                $('#currentFiles').html('<div class="text-center text-muted p-3">첨부된 파일이 없습니다.</div>');
+            }
+        });
+    }
+}
+
+        // 파일 라벨 업데이트 함수
+        function updateFileLabel(files) {
+            if(files.length > 0) {
+                $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
             } else {
                 $('#fileLabel').text('선택된 파일 없음');
             }
-         
-            $(this).closest('.img-box').remove();
-        });
-    	
-    	$(document).ready(function() {
-    	    const currentFileName = $("#currentFileName").val();
-    	    if (currentFileName) {
-    	        const imgDiv = $('<div class="col-md-3 img-box" style="position:relative"></div>');
-    	        const img = $('<img />', { src : '/manage/assets/imgs/theme/upload.svg' });
-    	        const span = $('<span />', {'class': 'delete-img'}).text('X');
-    	        const fileName = $('<div class="file-name"></div>').text(currentFileName);
-    	        imgDiv.append(img, span, fileName);
-    	        $('#preview').append(imgDiv);
-    	    }
-    	});
-    	
-    	
+        }
+
+        // 수정 폼 제출
+        function modifyForm() {
+            // 에디터 내용을 textarea에 적용
+            oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+
+            let isSubmit = true;
+            
+            // 유효성 검사
+            const category = $("#boardCategory").val();
+            if(category === "" || category === null) {
+                alert("게시판을 선택해주세요.");
+                $("#boardCategory").focus();
+                return false;
+            }
+            
+            const title = $("#boardTitle").val();
+            if(!title) {
+                alert("제목을 입력해주세요.");
+                $("#boardTitle").focus();
+                return;
+            }
+
+            const content = $("#editorTxt").val();
+            if(!content || content === '<p>&nbsp;</p>' || content === '') {
+                alert("내용을 입력해주세요.");
+                oEditors.getById["editorTxt"].exec("FOCUS");
+                return;
+            }
+
+            const boardNum = $("#boardNum").val();
+
+            if(isSubmit) {
+                const formData = new FormData();
+
+                // 새로운 파일 추가
+                const filesInput = document.getElementById('files');
+                if (filesInput.files.length > 0) {
+                    for (let i = 0; i < filesInput.files.length; i++) {
+                        formData.append('files', filesInput.files[i]);
+                    }
+                }
+
+                // 삭제된 파일 정보 추가
+                if (deletedFiles.length > 0) {
+                    formData.append('deletedFiles', deletedFiles.join(','));
+                }
+
+                // 기본 정보 추가
+                formData.append('boardNum', boardNum);
+                formData.append('boardCategory', $("#boardCategory").val());
+                formData.append('boardTitle', $("#boardTitle").val());
+                formData.append('boardContent', $("#editorTxt").val());
+
+                $.ajax({
+                    url: '/board/modify',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = `/board/detail?boardNum=${boardNum}`;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('게시글 수정 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        }
+
+        // 이미지 콜백 함수
         window.insertImageCallback = function(sFileUrl, sFileName) {
             var sHTML = '<img src="' + sFileUrl + '" alt="' + sFileName + '">';
             oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
         };
         
-     
     </script>
 </th:block>
 </html>
