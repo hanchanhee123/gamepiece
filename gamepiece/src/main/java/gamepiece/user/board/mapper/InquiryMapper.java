@@ -13,6 +13,7 @@ import gamepiece.util.Pageable;
 @Repository("userInquiryMapper")
 public interface InquiryMapper {
 	
+	String getLastInquiryNum();
 	
 	//문의 검색행 세기
 	int getCntSearchInquiry(Map<String, Object> searchMap);

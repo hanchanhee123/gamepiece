@@ -2,7 +2,6 @@
 
 
 
-
 .btn-outline-primary:hover .bi,
 .btn-outline-danger:hover .bi {
     transform: scale(1.2);
@@ -666,10 +665,12 @@
 .btn-primary {
     background-color: #3b82f6;
     border: none;
-    padding: 0.5rem 1.5rem;
+    padding: 0rem 0.5rem;
     font-size: 0.95rem;
     transition: all 0.2s;
 }
+
+
 
 .btn-primary:hover {
     background-color: #2563eb;
@@ -703,7 +704,7 @@
 	
 	margin-bottom: 2px;
     margin-right: 5px;
-	
+	padding : 0.6rem 1.5rem;
 	
 }
 

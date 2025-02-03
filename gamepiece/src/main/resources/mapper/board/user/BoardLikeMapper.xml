@@ -77,7 +77,7 @@
 </insert>
 
 <!-- 사용자가 이미 좋아요/싫어요를 했는지 확인 -->
-<select id="getBoardLikesByUser" parameterType="map" resultType="gamepiece.user.board.domain.BoardLikes">
+<select id="getBoardLikesByUser" parameterType="map" resultMap="BoardLikeResultMap">
     SELECT 
         *
     FROM 
@@ -86,10 +86,16 @@
         bbs_no = #{boardNum}
         AND 
         id = #{userId}
-    LIMIT 1
+        AND likes_type = #{likesType}
+
 </select>
 
-
+<delete id="removeBoardLikes">
+    DELETE FROM boards_likes 
+    WHERE bbs_no = #{boardNum} 
+    AND id = #{userId}
+    AND likes_type = #{likesType}
+</delete>
 
 
 </mapper>

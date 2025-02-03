@@ -27,8 +27,6 @@ public class AdminBoardFiles {
 	private Board boardInfo;
 	private Inquiry inquiryInfo;
 	private Notice noticeInfo;
-
-	
 	
 
 }

@@ -1,5 +1,7 @@
 package gamepiece.user.board.domain;
 
+import java.util.List;
+
 import gamepiece.user.user.domain.User;
 import lombok.Data;
 
@@ -17,4 +19,5 @@ public class Inquiry {
 	private InquiryRespone responeInfo; //문의답변정보
 	private BoardFiles fileInfo;
 
+    private List<InquiryFiles> inquiryFiles;
 }

@@ -2,8 +2,8 @@ package gamepiece.user.board.mapper;
 
 import java.util.List;
 
-
 import org.apache.ibatis.annotations.Mapper;
+
 
 import gamepiece.user.board.domain.BoardFiles;
 
@@ -20,7 +20,5 @@ public interface BoardFileMapper {
 	String getNextFileIdx();
 		BoardFiles findByNoticeNum(int noticeNum);  
 	  BoardFiles findByBoardNum(String boardNum);
-	  BoardFiles findByInquiryNum(String inquiryNum);
-	   
-	 
+	  BoardFiles findByInquiryNum(String inquiryNum);	  
 }

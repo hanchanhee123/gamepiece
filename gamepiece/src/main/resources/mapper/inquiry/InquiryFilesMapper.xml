@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.admin.inquiry.mapper.InquiryFilesMapper">
+
+	
+  <resultMap type="gamepiece.admin.inquiry.domain.InquiryFiles" id="inquiryFileResultMap">
+        <result property="inqFileIdx" column="inq_file_idx"/>
+        <result property="inquiryNum" column="inquiry_id"/>
+        <result property="fileIdx" column="file_idx"/>
+        <!-- 파일 정보 매핑 -->
+     <association property="fileInfo" javaType="gamepiece.admin.board.domain.AdminBoardFiles">
+		<result property="fileIdx" 			column="file_idx"/>
+		<result property="fileNewName" 		column="file_new_name"/>
+		<result property="fileOriginalName" column="file_original_name"/>
+		<result property="filePath" 		column="file_path"/>
+		<result property="fileSize" 		column="file_size"/>
+		</association>
+	
+    </resultMap>
+
+    <!-- 게시글의 모든 파일 정보 조회 -->
+    <select id="getInquiryFiles" parameterType="String" resultMap="inquiryFileResultMap">
+        SELECT 
+   			*
+     	FROM 
+     		inquiry_files inf INNER JOIN files f 
+			ON inf.file_idx = f.file_idx
+        WHERE 
+            inf.inquiry_id = #{inquiryNum}
+    </select>
+
+
+ 
+
+
+</mapper>
+
+
+    
+
+
+
+
+

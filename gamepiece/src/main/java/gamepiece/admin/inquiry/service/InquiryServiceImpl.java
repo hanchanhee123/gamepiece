@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.board.mapper.BoardFileMapper;
 import gamepiece.admin.inquiry.domain.Inquiry;
+import gamepiece.admin.inquiry.domain.InquiryFiles;
 import gamepiece.admin.inquiry.domain.InquiryRespone;
+import gamepiece.admin.inquiry.mapper.InquiryFilesMapper;
 import gamepiece.admin.inquiry.mapper.InquiryMapper;
 import gamepiece.admin.inquiry.mapper.InquiryResponeMapper;
 import gamepiece.util.PageInfo;
@@ -28,7 +30,7 @@ public class InquiryServiceImpl implements InquiryService{
 	private final InquiryMapper inquiryMapper;
 	private final InquiryResponeMapper inquiryResponeMapper;
 	private final BoardFileMapper boardFileMapper;
-	
+	private final InquiryFilesMapper inquiryFilesMapper;
 	
 	
 
@@ -89,6 +91,12 @@ public class InquiryServiceImpl implements InquiryService{
 	public AdminBoardFiles getInquiryFile(String inquiryNum) {
 		// TODO Auto-generated method stub
 		return boardFileMapper.findByInquiryNum(inquiryNum);
+	}
+
+	@Override
+	public List<InquiryFiles> getInquiryFiles(String inquiryNum) {
+		// TODO Auto-generated method stub
+		return inquiryFilesMapper.getInquiryFiles(inquiryNum);
 	}
 
 	

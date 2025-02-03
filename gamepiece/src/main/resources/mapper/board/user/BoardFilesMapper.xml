@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gamepiece.user.board.mapper.BoardFilesMapper">
+
+	
+  <resultMap type="gamepiece.user.board.domain.BoardsFiles" id="boardFileMappingResultMap">
+        <result property="bfIdx" column="bf_idx"/>
+        <result property="boardNum" column="bbs_no"/>
+        <result property="fileIdx" column="file_idx"/>
+        <!-- 파일 정보 매핑 -->
+        <association property="fileInfo" javaType="gamepiece.user.board.domain.BoardFiles">
+            <result property="fileIdx" column="file_idx"/>
+            <result property="fileOriginalName" column="file_original_name"/>
+            <result property="fileNewName" column="file_new_name"/>
+            <result property="filePath" column="file_path"/>
+            <result property="fileSize" column="file_size"/>
+        </association>
+    </resultMap>
+
+    <!-- 게시글의 모든 파일 정보 조회 -->
+    <select id="getBoardFiles" parameterType="String" resultMap="boardFileMappingResultMap">
+        SELECT 
+            bf.bf_idx,
+            bf.bbs_no,
+            f.file_idx,
+            f.file_original_name,
+            f.file_new_name,
+            f.file_path,
+            f.file_size
+        FROM 
+            boards_files bf
+            INNER JOIN files f ON bf.file_idx = f.file_idx
+        WHERE 
+            bf.bbs_no = #{boardNum}
+    </select>
+
+    <!-- 게시글의 파일 매핑 정보만 조회 -->
+    <select id="getMappingsByBoardNum" parameterType="String" resultMap="boardFileMappingResultMap">
+        SELECT 
+            bf_idx,
+            bbs_no,
+            file_idx
+        FROM 
+            boards_files
+        WHERE 
+            bbs_no = #{boardNum}
+    </select>
+
+    <!-- 파일 매핑 추가 -->
+    <insert id="insertMapping" parameterType="gamepiece.user.board.domain.BoardsFiles">
+        INSERT INTO boards_files (
+            bf_idx,
+            bbs_no,
+            file_idx
+        ) VALUES (
+            CONCAT('bf_', LPAD((
+                SELECT next_num FROM (
+                    SELECT IFNULL(MAX(CAST(SUBSTRING_INDEX(bf_idx, 'bf_', -1) AS UNSIGNED)), 0) + 1 AS next_num
+                    FROM boards_files
+                ) AS temp
+            ), 3, '0')),
+            #{boardNum},
+            #{fileIdx}
+        )
+    </insert>
+
+    <!-- 특정 매핑 삭제 -->
+    <delete id="deleteMapping" parameterType="String">
+        DELETE FROM boards_files
+        WHERE bf_idx = #{bfIdx}
+    </delete>
+
+    <!-- 게시글의 모든 파일 매핑 삭제 -->
+    <delete id="deleteAllFileMapping" parameterType="String">
+        DELETE FROM boards_files
+        WHERE bbs_no = #{boardNum}
+    </delete>
+
+    <!-- 특정 게시글의 특정 파일 매핑 삭제 -->
+    <delete id="deleteFileMapping">
+        DELETE FROM boards_files
+        WHERE bbs_no = #{boardNum} 
+        AND file_idx = #{fileIdx}
+    </delete>
+
+    <!-- 파일 매핑 추가 (파라미터 버전) -->
+    <insert id="addFileMapping">
+        INSERT INTO boards_files (
+            bf_idx,
+            bbs_no,
+            file_idx
+        ) VALUES (
+            CONCAT('bf_', LPAD((
+                SELECT next_num FROM (
+                    SELECT IFNULL(MAX(CAST(SUBSTRING_INDEX(bf_idx, 'bf_', -1) AS UNSIGNED)), 0) + 1 AS next_num
+                    FROM boards_files
+                ) AS temp
+            ), 3, '0')),
+            #{boardNum},
+            #{fileIdx}
+        )
+    </insert>
+</mapper>
+
+
+    
+
+
+
+
+
