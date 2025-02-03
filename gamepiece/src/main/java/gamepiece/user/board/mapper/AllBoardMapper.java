@@ -14,6 +14,13 @@ import gamepiece.util.Pageable;
 @Repository("userBoardMapper")
 public interface AllBoardMapper {
 	
+	//좋아요 취소
+	int cancelLikeCount(String boardNum);
+		
+	//싫어요 취소
+	int cancelDisLikeCount(String boardNum);
+		
+	
 	
     void modifyFileIdxToNull(String fileIdx);
 	

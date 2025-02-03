@@ -9,34 +9,47 @@ import org.springframework.web.multipart.MultipartFile;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.BoardFiles;
+import gamepiece.user.board.domain.BoardsFiles;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.user.board.domain.Report;
+import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface BoardService {
 	
-	 
+	
+	
+	List<InquiryFiles> getInquiryFiles(String inquiryNum);
+	
+
+    void addInquiryWithFiles(Inquiry inquiry, MultipartFile[] files);
+  
+    void deleteInquiryFile(String inquiryNum, String fileIdx);
+    
+    Inquiry getInquiryWithFiles(String inquiryNum);
+
+	
+	
+	
+	  List<BoardsFiles> getBoardFiles(String boardNum);
+	  
+	    void addBoardFileMapping(String boardNum, String fileIdx);
+	    
+	    void deleteBoardFileMapping(String boardNum, String fileIdx);
+	    
+	    void deleteAllBoardFiles(String boardNum);
+	    
+	    void updateBoardFiles(String boardNum, List<MultipartFile> newFiles);
    
 	Map<String, Object> addBoardLike(String boardNum, String userId, String likesType);
 
 	Map<String, Object> addCommentLike(String commentNum, String userId, String likesType);
 	
-	//덧글 좋아요 증가
-	int addCommentLikeCount(String commentNum);
-	
-	//덧글 싫어요 증가
-	int addCommentDisLikeCount(String commentNum);
-	
-	
-	//좋아요 증가
-	int addLikeCount(String boardNum);
-	
-	//싫어요 증가
-	int addDisLikeCount(String boardNum);
-	
+
+	BoardFiles saveFile(MultipartFile file);
 	
 	BoardFiles getBoardFileInfo(String boardNum);
 	
