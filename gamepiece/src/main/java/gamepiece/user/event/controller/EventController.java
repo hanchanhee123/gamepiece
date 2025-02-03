@@ -247,10 +247,10 @@ public class EventController {
 		return getParticipations;
 	}
 
-	@GetMapping("/insertParticipant")
-	public String insertParticipant(Event event, Model model, RedirectAttributes reAttr) {
+	@GetMapping("/addParticipant")
+	public String addParticipant(Event event, Model model, RedirectAttributes reAttr) {
 
-		eventService.insertParticipant(event);
+		eventService.addParticipant(event);
 
 		reAttr.addAttribute("evCd", event.getEvCd());
 		reAttr.addAttribute("evStatus", event.getEvStatus());
