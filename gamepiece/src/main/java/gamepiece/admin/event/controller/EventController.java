@@ -15,10 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.service.EventService;
-import gamepiece.admin.point.domain.Point;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
-import jakarta.servlet.annotation.MultipartConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
