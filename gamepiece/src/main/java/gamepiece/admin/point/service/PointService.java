@@ -21,8 +21,6 @@ public interface PointService {
 	
 	void addItem(Point point,MultipartFile files);
 	
-	void modifyItem(Point point);
-	
 	void removeItem(String ps_cd);
 	
 	void inactiveItem(String ps_cd);
@@ -30,5 +28,7 @@ public interface PointService {
 	void logcount(String ps_cd);
 	
 	PageInfo<Point> searchList(String searchCate, String searchValue, Pageable pageable);
+
+	void modifyItem(Point point, MultipartFile files);
 	
 }

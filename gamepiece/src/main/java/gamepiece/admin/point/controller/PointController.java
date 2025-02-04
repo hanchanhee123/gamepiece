@@ -31,7 +31,7 @@ public class PointController {
 		this.pointService = pointService;
 	}
 
-	@GetMapping("/searchList")
+	@PostMapping("/searchList")
 	public String searchListView(
 			@RequestParam(value = "searchCate", required = false, defaultValue = "id") String searchCate,
 			@RequestParam(value = "searchValue") String searchValue, Pageable pageable, Model model) {
@@ -105,11 +105,10 @@ public class PointController {
 	}
 
 	@GetMapping("/modify")
-	public String modifyMember(Point point, RedirectAttributes reAttr) {
-		System.out.println(point);
-		pointService.modifyItem(point);
-
-		log.info("Point : {}", point);
+	public String modifyMember(Point point, @RequestPart(name="files", required = false) MultipartFile files,
+								RedirectAttributes reAttr) {
+		
+		pointService.modifyItem(point, files);
 
 		reAttr.addFlashAttribute("ItemName", point.getItemName());
 
