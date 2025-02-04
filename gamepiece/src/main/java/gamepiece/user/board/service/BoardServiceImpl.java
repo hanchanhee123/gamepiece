@@ -6,6 +6,9 @@ package gamepiece.user.board.service;
 
 
 
+
+
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,9 +18,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +31,9 @@ import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.BoardCommentLikes;
 import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.user.board.domain.BoardLikes;
+import gamepiece.user.board.domain.BoardsFiles;
 import gamepiece.user.board.domain.Inquiry;
+import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.user.board.domain.Report;
@@ -35,9 +42,11 @@ import gamepiece.user.board.mapper.AttackBoardMapper;
 import gamepiece.user.board.mapper.BoardCommentLikeMapper;
 import gamepiece.user.board.mapper.BoardCommentMapper;
 import gamepiece.user.board.mapper.BoardFileMapper;
+import gamepiece.user.board.mapper.BoardFilesMapper;
 import gamepiece.user.board.mapper.BoardLikeMapper;
 import gamepiece.user.board.mapper.FreeBoardMapper;
 import gamepiece.user.board.mapper.InfoBoardMapper;
+import gamepiece.user.board.mapper.InquiryFilesMapper;
 import gamepiece.user.board.mapper.InquiryMapper;
 import gamepiece.user.board.mapper.InquiryResponeMapper;
 import gamepiece.user.board.mapper.NoticeMapper;
@@ -72,6 +81,8 @@ public class BoardServiceImpl implements BoardService{
 	private final BoardFilesUtils boardFilesUtils;
 	private final BoardLikeMapper boardLikeMapper;
 	private final BoardCommentLikeMapper boardCommentLikeMapper;
+	private final BoardFilesMapper boardFilesMapper;
+	private final InquiryFilesMapper inquiryFilesMapper;
 
  
 	
@@ -221,10 +232,31 @@ public class BoardServiceImpl implements BoardService{
 	    return allBoardMapper.addBoard(board);
 	}
 
-
+	public String generateInquiryNum() {
+        // 마지막 inquiry 번호를 가져와서 +1
+        String lastNum = inquiryMapper.getLastInquiryNum();
+        if (lastNum == null) {
+            return "inq_01";
+        }
+        
+        // 번호 부분만 추출해서 증가
+        int num = Integer.parseInt(lastNum.replace("inq_", "")) + 1;
+        return String.format("inq_%02d", num);
+    }
+    
+	  public String getLatestInquiryNum() {
+	        String lastNum = inquiryMapper.getLastInquiryNum();
+	        if (lastNum == null) {
+	            return "inq_01";
+	        }
+	        return lastNum;
+	    }
 
 	@Override
 	public int addInquiry(Inquiry inquiry) {
+		
+		 String newInquiryNum = generateInquiryNum();
+	        inquiry.setInquiryNum(newInquiryNum);
 	
 		return inquiryMapper.addInquiry(inquiry);
 	}
@@ -314,13 +346,8 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int modifyBoard(Board board) {
-		// TODO Auto-generated method stub
-	    if (board.getFileIdx() != null) {
-	        return allBoardMapper.modifyBoard(board);
-	    }
-	    return 0;
+	    return allBoardMapper.modifyBoard(board);
 	}
-
 
 
 	@Override
@@ -675,36 +702,6 @@ public class BoardServiceImpl implements BoardService{
 
 
 
-	@Override
-	public int addLikeCount(String boardNum) {
-		// TODO Auto-generated method stub
-		return allBoardMapper.addLikeCount(boardNum);
-	}
-
-
-
-	@Override
-	public int addDisLikeCount(String boardNum) {
-		// TODO Auto-generated method stub
-		return allBoardMapper.addDisLikeCount(boardNum);
-	}
-
-
-
-	@Override
-	public int addCommentLikeCount(String commentNum) {
-		// TODO Auto-generated method stub
-		return boardCommentMapper.addCommentLikeCount(commentNum);
-	}
-
-
-
-	@Override
-	public int addCommentDisLikeCount(String commentNum) {
-		// TODO Auto-generated method stub
-		return boardCommentMapper.addCommentDisLikeCount(commentNum);
-	}
-
 
 	public Map<String, Object> addBoardLike(String boardNum, String userId, String likesType) {
 	    Map<String, Object> result = new HashMap<>();
@@ -713,76 +710,280 @@ public class BoardServiceImpl implements BoardService{
 	    Map<String, String> params = new HashMap<>();
 	    params.put("boardNum", boardNum);
 	    params.put("userId", userId);
+	    params.put("likesType", likesType);
 
-	    BoardLikes existingLike = boardLikeMapper.getBoardLikesByUser(params);  // 메서드명 수정
+	    BoardLikes existingLike = boardLikeMapper.getBoardLikesByUser(params);
 
 	    if (existingLike != null) {
-	        result.put("success", false);
-	        result.put("message", "이미 누르셨습니다");
-	        return result;
-	    }
-
-	    // 새로운 좋아요/싫어요 추가
-	    BoardLikes boardLikes = new BoardLikes();
-	    boardLikes.setBoardNum(boardNum);
-	    boardLikes.setUserId(userId);
-	    boardLikes.setLikesType(likesType);
-
-	    int addResult = boardLikeMapper.addBoardLikes(boardLikes);
-
-	    // 좋아요/싫어요 카운트 증가
-	    if ("좋아요".equals(likesType)) {
-	        allBoardMapper.addLikeCount(boardNum);
+	        // 이미 좋아요/싫어요가 있으면 취소
+	        boardLikeMapper.removeBoardLikes(boardNum, userId, likesType);
+	        
+	        // 카운트 감소
+	        if ("좋아요".equals(likesType)) {
+	            allBoardMapper.cancelLikeCount(boardNum);
+	        } else {
+	            allBoardMapper.cancelDisLikeCount(boardNum);
+	        }
+	        
+	        result.put("success", true);
+	        result.put("action", "remove");
+	        log.info("좋아요/싫어요 취소 : {}", result);
 	    } else {
-	        allBoardMapper.addDisLikeCount(boardNum);
+	        // 새로운 좋아요/싫어요 추가
+	        BoardLikes boardLikes = new BoardLikes();
+	        boardLikes.setBoardNum(boardNum);
+	        boardLikes.setUserId(userId);
+	        boardLikes.setLikesType(likesType);
+
+	        int addResult = boardLikeMapper.addBoardLikes(boardLikes);
+
+	        // 카운트 증가
+	        if ("좋아요".equals(likesType)) {
+	            allBoardMapper.addLikeCount(boardNum);
+	        } else {
+	            allBoardMapper.addDisLikeCount(boardNum);
+	        }
+
+	        result.put("success", true);
+	        result.put("action", "add");
+	        log.info("좋아요/싫어요 추가 : {}", result);
 	    }
 
-	    result.put("success", addResult > 0);
+	    return result;
+	}
+
+	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED)
+	public Map<String, Object> addCommentLike(String commentNum, String userId, String likesType) {
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    // 현재 클릭한 타입의 반대 타입
+	    String oppositeType = "좋아요".equals(likesType) ? "싫어요" : "좋아요";
+	    
+	    // 반대 타입의 좋아요/싫어요가 있는지 확인
+	    Map<String, String> oppositeParams = new HashMap<>();
+	    oppositeParams.put("commentNum", commentNum);
+	    oppositeParams.put("userId", userId);
+	    oppositeParams.put("likesType", oppositeType);
+	    
+	    // 반대 타입이 있으면 삭제
+	    BoardCommentLikes oppositeLike = boardCommentLikeMapper.getCommentLikesByUser(oppositeParams);
+	    if (oppositeLike != null) {
+	        boardCommentLikeMapper.removeCommentLikes(commentNum, userId, oppositeType);
+	        if ("좋아요".equals(oppositeType)) {
+	            boardCommentMapper.cancelCommentLikeCount(commentNum);
+	        } else {
+	            boardCommentMapper.cancelCommentDisLikeCount(commentNum);
+	        }
+	    }
+	    
+	    // 현재 타입 처리
+	    Map<String, String> currentParams = new HashMap<>();
+	    currentParams.put("commentNum", commentNum);
+	    currentParams.put("userId", userId);
+	    currentParams.put("likesType", likesType);
+	    
+	    BoardCommentLikes currentLike = boardCommentLikeMapper.getCommentLikesByUser(currentParams);
+	    
+	    if (currentLike != null) {
+	        // 취소
+	        boardCommentLikeMapper.removeCommentLikes(commentNum, userId, likesType);
+	        if ("좋아요".equals(likesType)) {
+	            boardCommentMapper.cancelCommentLikeCount(commentNum);
+	        } else {
+	            boardCommentMapper.cancelCommentDisLikeCount(commentNum);
+	        }
+	        result.put("action", "remove");
+	    } else {
+	        // 추가
+	        BoardCommentLikes boardCommentLikes = new BoardCommentLikes();
+	        boardCommentLikes.setCommentNum(commentNum);
+	        boardCommentLikes.setUserId(userId);
+	        boardCommentLikes.setLikesType(likesType);
+	        boardCommentLikeMapper.addCommentLikes(boardCommentLikes);
+	        
+	        if ("좋아요".equals(likesType)) {
+	            boardCommentMapper.addCommentLikeCount(commentNum);
+	        } else {
+	            boardCommentMapper.addCommentDisLikeCount(commentNum);
+	        }
+	        result.put("action", "add");
+	    }
+	    
+	    result.put("success", true);
 	    return result;
 	}
 
 
 
-	@Override
-	public Map<String, Object> addCommentLike(String commentNum, String userId, String likesType) {
-		 Map<String, Object> result = new HashMap<>();
+	 @Override
+	    public List<BoardsFiles> getBoardFiles(String boardNum) {
+	        return boardFilesMapper.getBoardFiles(boardNum);
+	    }
 
-		    // 이미 좋아요/싫어요를 했는지 확인
-		    Map<String, String> params = new HashMap<>();
-		    params.put("commentNum", commentNum);
-		    params.put("userId", userId);
-		
-		    BoardCommentLikes commentLikeInfo = boardCommentLikeMapper.getCommentLikesByUser(params);  
-		    
-		    if (commentLikeInfo != null) {
-		        result.put("success", false);
-		        result.put("message", "이미 누르셨습니다");
-		        return result;
-		    }
+	    @Override
+	    public void addBoardFileMapping(String boardNum, String fileIdx) {
+	        BoardsFiles mapping = new BoardsFiles();
+	        mapping.setBoardNum(boardNum);
+	        mapping.setFileIdx(fileIdx);
+	        boardFilesMapper.insertMapping(mapping);
+	    }
 
-		    BoardCommentLikes boardCommentLikes = new BoardCommentLikes();
-		    boardCommentLikes.setCommentNum(commentNum);
-		    boardCommentLikes.setUserId(userId);
-		    boardCommentLikes.setLikesType(likesType);
-		    
-		    int addResult = boardCommentLikeMapper.addCommentLikes(boardCommentLikes);
-		    
-		    // 좋아요/싫어요 카운트 증가
-		    if ("좋아요".equals(likesType)) {
-		        boardCommentMapper.addCommentLikeCount(commentNum);
-		    } else {
-		       boardCommentMapper.addCommentDisLikeCount(commentNum);
+	    @Override
+	    public void deleteBoardFileMapping(String boardNum, String fileIdx) {
+	        boardFilesMapper.deleteFileMapping(boardNum, fileIdx);
+	    }
+
+	    @Override
+	    public void deleteAllBoardFiles(String boardNum) {
+	        boardFilesMapper.deleteAllFileMapping(boardNum);
+	    }
+
+	    @Override
+	    @Transactional
+	    public void updateBoardFiles(String boardNum, List<MultipartFile> newFiles) {
+	        // 1. 기존 파일 매핑 모두 삭제
+	        deleteAllBoardFiles(boardNum);
+
+	        // 2. 새 파일들 저장 및 매핑
+	        for(MultipartFile file : newFiles) {
+	            if(!file.isEmpty()) {
+	                BoardFiles fileInfo = saveFile(file); // 파일 저장 메서드 (기존 로직 사용)
+	                addBoardFileMapping(boardNum, fileInfo.getFileIdx());
+	            }
+	        }
+	    }
+
+
+
+	    @Transactional
+	    public BoardFiles saveFile(MultipartFile file) {
+	        try {
+	            String fileIdx = boardFileMapper.getNextFileIdx();
+	            String originalFileName = file.getOriginalFilename();
+	            String newFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+	            String filePath = "/attachment/" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+	            
+	            BoardFiles boardFile = BoardFiles.builder()
+	                    .fileIdx(fileIdx)
+	                    .fileOriginalName(originalFileName)
+	                    .fileNewName(newFileName)
+	                    .filePath(filePath)
+	                    .fileSize(file.getSize())
+	                    .build();
+
+	            // 파일 저장 로직
+	            File saveFile = new File(filePath);
+	            if (!saveFile.exists()) {
+	                saveFile.mkdirs();
+	            }
+	            file.transferTo(new File(filePath + File.separator + newFileName));
+
+	            return boardFile;
+	        } catch (Exception e) {
+	            throw new RuntimeException("파일 저장 중 오류가 발생했습니다.", e);
+	        }
+	    }
+
+
+
+		@Override
+		public List<InquiryFiles> getInquiryFiles(String inquiryNum) {
+			// TODO Auto-generated method stub
+			return inquiryFilesMapper.getInquiryFiles(inquiryNum);
+		}
+
+
+
+		@Override
+		@Transactional
+		public void addInquiryWithFiles(Inquiry inquiry, MultipartFile[] files) {
+		    try {
+		        // 1. 문의글 번호 생성 및 저장
+		        String newInquiryNum = generateInquiryNum();
+		        inquiry.setInquiryNum(newInquiryNum);
+		        int result = inquiryMapper.addInquiry(inquiry);
+		        
+		        if (result <= 0) {
+		            throw new RuntimeException("문의글 저장에 실패했습니다.");
+		        }
+
+		        // 2. 파일 처리
+		        if (files != null && files.length > 0 && !files[0].isEmpty()) {
+		            // 파일 업로드 및 files 테이블에 저장
+		            List<BoardFiles> uploadedFiles = boardFilesUtils.uploadFiles(files);
+		            if (!uploadedFiles.isEmpty()) {
+		                // files 테이블에 저장
+		                boardFileMapper.addfiles(uploadedFiles);
+
+		                // 3. 매핑 정보 저장
+		                for (BoardFiles file : uploadedFiles) {
+		                    InquiryFiles mapping = InquiryFiles.builder()
+		                            .inquiryNum(newInquiryNum)
+		                            .fileIdx(file.getFileIdx())
+		                            .fileInfo(file)
+		                            .build();
+		                    
+		                    inquiryFilesMapper.addInquiryFileMapping(mapping);
+		                }
+		            }
+		        }
+		    } catch (Exception e) {
+		        log.error("문의글 및 파일 저장 중 오류 발생: ", e);
+		        throw new RuntimeException("문의글 및 파일 저장 중 오류가 발생했습니다.", e);
 		    }
-		    
-		    result.put("success", addResult > 0);
-		return result;
-	}
+		}
+
+	
+
+		@Override
+		@Transactional
+		public void deleteInquiryFile(String inquiryNum, String fileIdx) {
+		    try {
+		        // 1. 매핑 정보 삭제
+		        inquiryFilesMapper.removeInquiryMapping(fileIdx);
+		        
+		        // 2. 실제 파일 삭제
+		        BoardFiles fileInfo = boardFileMapper.getFileInfoByIdx(fileIdx);
+		        if (fileInfo != null) {
+		            String filePath = fileInfo.getFilePath();
+		            boolean isDeleted = boardFilesUtils.deleteFileByPath(filePath);
+		            
+		            // 3. files 테이블에서 레코드 삭제
+		            if (isDeleted) {
+		                boardFileMapper.deleteFileByIdx(fileIdx);
+		            } else {
+		                log.warn("파일 삭제 실패: {}", filePath);
+		            }
+		        }
+		    } catch (Exception e) {
+		        log.error("문의글 파일 삭제 중 오류 발생: ", e);
+		        throw new RuntimeException("파일 삭제 중 오류가 발생했습니다.", e);
+		    }
+		}
+
+		@Override
+		public Inquiry getInquiryWithFiles(String inquiryNum) {
+		    // 1. 문의글 정보 조회
+		    Inquiry inquiry = inquiryMapper.getInquiryInfo(inquiryNum);
+		    if (inquiry != null) {
+		        // 2. 첨부 파일 정보 조회
+		        List<InquiryFiles> files = inquiryFilesMapper.getInquiryFiles(inquiryNum);
+		        inquiry.setInquiryFiles(files);  
+		    }
+		    return inquiry;
+		}
+
+
+
+		}
 
 
 
 	
 	
-	}
+	
+	
 	
 	
 	

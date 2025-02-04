@@ -1,8 +1,11 @@
 package gamepiece.admin.inquiry.service;
 
 
+import java.util.List;
+
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.inquiry.domain.Inquiry;
+import gamepiece.admin.inquiry.domain.InquiryFiles;
 import gamepiece.admin.inquiry.domain.InquiryRespone;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -10,7 +13,7 @@ import gamepiece.util.Pageable;
 public interface InquiryService {
 	
 	
-	
+	List<InquiryFiles> getInquiryFiles(String inquiryNum);
 	
 	
 	//파일조회

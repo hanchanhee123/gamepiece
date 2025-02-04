@@ -47,7 +47,7 @@
                                 	<input type="hidden" th:value="${l.itemCd}">
                                     <a href="#" class="img-wrap"> 
                                     	<img class="item-img" style="width: 200px; height: 200px;" th:src="${l.filePath}" alt="Product" /> 
-                                    </a>
+        							</a>
                                     <div class="info-wrap">
                                         <a href="#" class="title text-truncate" th:text="${l.itemName}"></a>
                                         <div class="price mb-2" th:text="${l.itemPrice}"></div>
@@ -110,7 +110,7 @@
 				const searchLink = $('.page-link');
 				console.log(searchLink);
 				
-				const $form = $('<form />', { 'action' : '/admin/point/searchList', 'method': 'post'});
+				const $form = $('<form />', { 'action' : '/admin/point/searchList', 'method': 'get'});
 				const $searchCate = 
 						$('<input />', {'type':'hidden', 'name' : 'searchCate'}).val(searchCate);
 				const $searchValue = 

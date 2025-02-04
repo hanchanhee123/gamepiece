@@ -73,7 +73,7 @@
 </insert>
 
 <!-- 사용자가 이미 좋아요/싫어요를 했는지 확인 -->
-<select id="getCommentLikesByUser" parameterType="map" resultType="gamepiece.user.board.domain.BoardCommentLikes">
+<select id="getCommentLikesByUser" parameterType="map" resultMap="commentLikeResultMap">
     SELECT 
         *
     FROM 
@@ -82,9 +82,16 @@
         bc_no = #{commentNum}
         AND 
         id = #{userId}
-    LIMIT 1
+  		AND bc_likes_type = #{likesType}
 </select>
 
+
+<delete id="removeCommentLikes">
+    DELETE FROM bc_likes 
+    WHERE bc_no = #{commentNum} 
+    AND id = #{userId}
+    AND bc_likes_type = #{likesType}
+</delete>
 
 
 

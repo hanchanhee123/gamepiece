@@ -16,6 +16,13 @@ public interface BoardCommentMapper {
 	
 
 	
+	//덧글 좋아요 취소
+	int cancelCommentLikeCount(String commentNum);
+	
+	//덧글 싫어요 취소
+	int cancelCommentDisLikeCount(String commentNum);
+	
+	
 	//덧글 좋아요 증가
 	int addCommentLikeCount(String commentNum);
 	

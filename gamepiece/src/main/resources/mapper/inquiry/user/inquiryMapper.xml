@@ -44,13 +44,11 @@
 		
 	
 	
-		<association property="fileInfo" javaType="gamepiece.user.board.domain.BoardFiles">
-		<id column="fileIdx" 				property="file_idx"/>
-		<result property="fileNewName" 		column="file_new_name"/>
-		<result property="fileOriginalName" column="file_original_name"/>
-		<result property="filePath" 		column="file_path"/>
-		<result property="fileSize" 		column="file_size"/>
-		</association>
+	   <collection property="inquiryFiles" 
+                ofType="gamepiece.user.board.domain.InquiryFiles"
+                column="inquiry_id" 
+                select="gamepiece.user.board.mapper.InquiryFilesMapper.getInquiryFiles"/>
+		
 	
 	
 		</resultMap>
@@ -134,8 +132,7 @@ SELECT
 			id,
 			inquiry_title,
 			inquiry_content,
-			inquiry_ymd,
-			file_idx
+			inquiry_ymd
 			)VALUES(
 			CONCAT('inq_', LPAD(COALESCE((
 			SELECT next_num FROM (
@@ -146,8 +143,7 @@ SELECT
 			#{inquiryUserId},
 			#{inquiryTitle},
 			#{inquiryContent},
-			CURDATE(),
-			#{fileIdx}
+			CURDATE()
 			);
 
 	</insert>
@@ -160,21 +156,28 @@ SELECT
 			i.inquiry_id,
 			u.user_nn,
 			i.inquiry_title,
-			i.inquiry_content,
-			f.*
+			i.inquiry_content
 	FROM
 		inquiry i INNER JOIN user u
 		ON i.id = u.id
-		LEFT JOIN files f
-	ON i.file_idx = f.file_idx
+
 
 	WHERE
 		inquiry_id =#{inquiryNum};
 
 	</select> 
 
+<select id="getLastInquiryNum" resultType="String">
+    SELECT inquiry_id 
+    FROM inquiry 
+    ORDER BY inquiry_id DESC 
+    LIMIT 1
+</select>
 
-
-
+<select id="checkInquiryExists" parameterType="String" resultType="int">
+    SELECT COUNT(*) 
+    FROM inquiry 
+    WHERE inquiry_id = #{inquiryId}
+</select>
 
 </mapper>

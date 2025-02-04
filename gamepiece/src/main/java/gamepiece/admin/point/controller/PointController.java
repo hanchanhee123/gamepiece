@@ -31,7 +31,7 @@ public class PointController {
 		this.pointService = pointService;
 	}
 
-	@PostMapping("/searchList")
+	@GetMapping("/searchList")
 	public String searchListView(
 			@RequestParam(value = "searchCate", required = false, defaultValue = "id") String searchCate,
 			@RequestParam(value = "searchValue") String searchValue, Pageable pageable, Model model) {
@@ -110,18 +110,19 @@ public class PointController {
 		
 		pointService.modifyItem(point, files);
 
-		reAttr.addFlashAttribute("ItemName", point.getItemName());
+		reAttr.addAttribute("ItemCd", point.getItemCd());
 
 		return "redirect:/admin/point/list";
 	}
 
 	@GetMapping("/detail")
-	public String pointDetail(@RequestParam(value = "itemCode") String itemCode, String ps_cd, Model model) {
+	public String pointDetail(@RequestParam(value = "itemCode") String itemCd, String ps_cd, Model model) {
 
-		var ItemInfo = pointService.getItemInfoByItemName(itemCode);
+		var ItemInfo = pointService.getItemInfoByItemCd(itemCd);
+		// 아이템 판매 중지 
 		pointService.inactiveItem(ps_cd);
 
-		System.out.println(itemCode);
+		System.out.println(itemCd);
 
 		List<PointCategories> test = new ArrayList<>();
 		test = pointService.findCate();

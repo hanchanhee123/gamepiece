@@ -97,9 +97,9 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
-	public Point getItemInfoByItemName(String itemName) {
+	public Point getItemInfoByItemCd(String itemCd) {
 		
-		return pointshopMapper.getItemInfoByItemName(itemName);
+		return pointshopMapper.getItemInfoByItemCd(itemCd);
 	}
 	@Override
 	public PageInfo<Point> findAll(Pageable pageable) {
