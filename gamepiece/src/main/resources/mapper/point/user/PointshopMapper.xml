@@ -381,7 +381,7 @@
 		    pl.id,
 		    SUM(pl.point_receive)-(
 		                                    SELECT 
-		                                        SUM(point_receive) 
+		                                        COALESCE(SUM(pl_sub.point_receive), 0) 
 		                                    FROM 
 		                                        point_log pl_sub 
 		                                    WHERE 

@@ -11,7 +11,7 @@
           </div>
    	</th:block>
    	<th:block layout:fragment="contents-body" th:object="${ItemInfo}">
-   		<form id="modifyPointForm" th:action="@{/admin/point/modify}" method="get">
+   		<form id="modifyPointForm" th:action="@{/admin/point/modify}" method="post" enctype="multipart/form-data">
 	   	<div class="row">
                 <div class="col-lg-6">
                     <div class="card mb-4">
@@ -62,7 +62,8 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">이미지</label>
-                                        <input class="form-control" type="file">
+                                        <input class="form-control" type="file" id="files" name="files" />
+                                        <input type="hidden" name="fileIdx" th:value="${ItemInfo.fileIdx}"/>
                                     </div>
                                 </div> <!-- col.// -->
                                 <div>

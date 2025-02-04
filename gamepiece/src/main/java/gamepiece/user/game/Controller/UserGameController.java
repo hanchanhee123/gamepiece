@@ -84,30 +84,29 @@ public class UserGameController {
 			return "user/game/steamList";
 		}
 	
-	@GetMapping("/platform")
-	public String getUserGameListWithPlatform(@RequestParam(value="platformCode") String platformCode, Model model, Pageable pageable) {
-		var pageInfo = userGameService.getGameListWithPlatform(pageable, platformCode);
-		
-		
-		List<UserGame> gameList = pageInfo.getContents();
-		ArrayList<String> platformList = userGameService.getPlatformList();
-		ArrayList<String> genreList = userGameService.getGenreList();
-		
-		int currentPage = pageInfo.getCurrentPage();
-		int startPageNum = pageInfo.getStartPageNum();
-		int endPageNum = pageInfo.getEndPageNum();
-		int lastPage = pageInfo.getLastPage();
-		
-		model.addAttribute("currentPlatformCode", platformCode);
-		model.addAttribute("userGameList", gameList);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("startPageNum", startPageNum);
-		model.addAttribute("endPageNum", endPageNum);
-		model.addAttribute("lastPage", lastPage);
-		model.addAttribute("platformList", platformList);
-		model.addAttribute("genreList", genreList);
-		return "user/game/gameList";
-	}
+		/*
+		 * @GetMapping("/platform") public String
+		 * getUserGameListWithPlatform(@RequestParam(value="platformCode") String
+		 * platformCode, Model model, Pageable pageable) { var pageInfo =
+		 * userGameService.getGameListWithPlatform(pageable, platformCode);
+		 * 
+		 * 
+		 * List<UserGame> gameList = pageInfo.getContents(); ArrayList<String>
+		 * platformList = userGameService.getPlatformList(); ArrayList<String> genreList
+		 * = userGameService.getGenreList();
+		 * 
+		 * int currentPage = pageInfo.getCurrentPage(); int startPageNum =
+		 * pageInfo.getStartPageNum(); int endPageNum = pageInfo.getEndPageNum(); int
+		 * lastPage = pageInfo.getLastPage();
+		 * 
+		 * model.addAttribute("currentPlatformCode", platformCode);
+		 * model.addAttribute("userGameList", gameList);
+		 * model.addAttribute("currentPage", currentPage);
+		 * model.addAttribute("startPageNum", startPageNum);
+		 * model.addAttribute("endPageNum", endPageNum); model.addAttribute("lastPage",
+		 * lastPage); model.addAttribute("platformList", platformList);
+		 * model.addAttribute("genreList", genreList); return "user/game/gameList"; }
+		 */
 	
 	@GetMapping("/steamDetail")
 	public String getUserGameDetailApi(@RequestParam(value="gameCode") String gameCode,
@@ -144,6 +143,8 @@ public class UserGameController {
 		return "user/game/steamDetail";
 	}
 	
+	
+	
 	@PostMapping("/gameCart")
 	public String putGameInCart(@RequestParam(value="gameCode") String gameCode,
 									  @RequestParam(value="title", required = false, defaultValue = "") String title,
@@ -157,6 +158,8 @@ public class UserGameController {
 		List<UserReview> userReview = userGameService.getUserReview(gameCode);
 		String nextReviewNum = userGameService.getLastReviewNo();
 		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ;
+		
+		
 		
 		userGameService.putGameInCart(userGame);
 		
@@ -172,10 +175,10 @@ public class UserGameController {
 								   Model model, HttpSession session) {
 		
 		List<UserGame> cartList = userGameService.getUserCartList(id);
-		 log.info("cartList : {}", cartList);
 		
-		int totalPrice = userGameService.cartTotalPrice();
+		int totalPrice = userGameService.cartTotalPrice(id);
 		id = (String) session.getAttribute("SID");
+		log.info(id);
 		
 		model.addAttribute("id", id);
         String avatar = userService.getUserAvatar(id);
@@ -195,7 +198,7 @@ public class UserGameController {
 		List<UserGame> cartList = userGameService.getUserCartList(id);
 		log.info("cartList : {}", cartList);
 		
-		int totalPrice = userGameService.cartTotalPrice();
+		int totalPrice = userGameService.cartTotalPrice(id);
 		
 		List<UserGame> paymentList = userGameService.getPaymentList();
 		

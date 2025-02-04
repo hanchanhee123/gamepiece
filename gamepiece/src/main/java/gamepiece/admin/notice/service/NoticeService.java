@@ -1,11 +1,30 @@
 package gamepiece.admin.notice.service;
 
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.notice.domain.Notice;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface NoticeService {
+	
+	
+	AdminBoardFiles getNoticeFile(int noticeNum);
+	
+	
+	  void addFilesWithInfo(MultipartFile[] files, List<AdminBoardFiles> fileDtoList);
+		
+		
+		void addFile(MultipartFile file); 
+		
+		void addFiles(MultipartFile[] files);
+
+		void deleteFile(AdminBoardFiles fileDto); 
+	
 	
 	
 	//공지 검색조회

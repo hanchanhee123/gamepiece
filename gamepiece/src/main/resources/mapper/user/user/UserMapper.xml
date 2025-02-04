@@ -34,7 +34,7 @@
 		<result column="ps_nm" property="psNm"/>
 	</resultMap>
 	
-	<!-- 전체 회원정보 조회 -->
+	<!-- 로그인 (회원 아이디 확인) -->
 	<select id="checkUser" resultMap="userResultMap">
 		SELECT
 			*

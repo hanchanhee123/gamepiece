@@ -16,4 +16,5 @@ public interface UserReviewMapper {
 	String getLastReviewNum();
 	
 	int writeUserReview(UserReview userReview);
+	
 }

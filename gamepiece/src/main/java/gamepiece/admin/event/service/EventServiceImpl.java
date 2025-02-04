@@ -60,12 +60,18 @@ public class EventServiceImpl implements EventService {
 		if(files != null && !files.isEmpty()) {			
 			FileDto newFileInfo = fileUtils.uploadFile(files);
 			if(newFileInfo != null) {
-				String fileIdx = event.getFileIdx();				
-				FileDto fileInfo = fileMapper.getFileInfoByIdx(fileIdx);
-				boolean isDelete = fileUtils.deleteFileByPath(fileInfo.getFilePath());
-				if(isDelete) {
+				String fileIdx = event.getFileIdx();
+				if(fileIdx != null && !"".equals(fileIdx)) {					
+					FileDto fileInfo = fileMapper.getFileInfoByIdx(fileIdx);
+					boolean isDelete = fileUtils.deleteFileByPath(fileInfo.getFilePath());
+					if(isDelete) {
+						newFileInfo.setFileIdx(fileIdx);
+						fileMapper.modifyfile(newFileInfo);
+					}
+				}else {
+					fileIdx = commonMapper.getPrimaryKey("file_", "files", "file_idx");
 					newFileInfo.setFileIdx(fileIdx);
-					fileMapper.modifyfile(newFileInfo);
+					fileMapper.addfile(newFileInfo);
 				}
 				
 			}

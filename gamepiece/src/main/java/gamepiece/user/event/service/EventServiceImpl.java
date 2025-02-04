@@ -85,13 +85,13 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void insertParticipant(Event event) {
+	public void addParticipant(Event event) {
 	
 		String evpNo = commonMapper.getPrimaryKey("evp_", "event_participations", "evp_no");
 		
 		event.setEvpNo(evpNo);
 		
-		userEventMapper.insertParticipant(event);
+		userEventMapper.addParticipant(event);
 	}
 
 	@Override

@@ -133,8 +133,7 @@ SELECT
 	SELECT
 	*
 	FROM
-		inquiry i LEFT JOIN files f
-		ON i.file_idx = f.file_idx 
+		inquiry 
 	WHERE
 		inquiry_id =#{inquiryNum};
 

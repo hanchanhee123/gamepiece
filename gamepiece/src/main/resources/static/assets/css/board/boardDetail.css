@@ -2,6 +2,20 @@
 
 
 
+.btn-outline-primary:hover .bi,
+.btn-outline-danger:hover .bi {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
 .attachment-container {
     max-width: 100%;
 }
@@ -231,15 +245,6 @@
     cursor: pointer;
 }
 
-/* 게시글 좋아요, 싫어요 숫자 */
-.likeCnt, .dislikeCnt {
-
-    font-weight: bold;
-    margin-left: 50px;
-    font-size: 30px;
-    color: white;
-
-}
 
 
 /* 게시물에 있는 덧글창 */
@@ -660,10 +665,12 @@
 .btn-primary {
     background-color: #3b82f6;
     border: none;
-    padding: 0.5rem 1.5rem;
+    padding: 0rem 0.5rem;
     font-size: 0.95rem;
     transition: all 0.2s;
 }
+
+
 
 .btn-primary:hover {
     background-color: #2563eb;
@@ -697,7 +704,7 @@
 	
 	margin-bottom: 2px;
     margin-right: 5px;
-	
+	padding : 0.6rem 1.5rem;
 	
 }
 

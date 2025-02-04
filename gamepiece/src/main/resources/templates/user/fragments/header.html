@@ -3,7 +3,7 @@
 <header class="main-header navbar" th:fragment="headerFragment">
 	<div class="header-div">
             <div class="header-img">
-                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}" th:onclick="|location.href='@{/}'|"/>
+                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}" th:onclick="|location.href='@{/main}'|"/>
             </div>
             <div class="header-cate">
                 <ul>
@@ -21,8 +21,7 @@
 				</button>
 					<ul class="dropdown-menu"  aria-labelledby="dropdownAccount">
 					<th:block th:unless="${session.SID == null}">
-						<li><a class="dropdown-item" th:href="@{/myPageUser}">개인 정보 수정</a></li>
-					    <li><a class="dropdown-item" th:href="@{/myPageReview}">마이페이지</a></li>
+					    <li><a class="dropdown-item" th:href="@{/myPageUser}">마이페이지</a></li>
 						<li><hr class="dropdown-divider"></li>
 					</th:block>
 						<li><a th:if="${session.SID == null}" class="dropdown-item text-primary" th:href="@{/login}">로그인</a></li>

@@ -151,9 +151,9 @@
 					                            </div>
 					                            <div class="comment">
 					                                <div class="like-dislike">
-					                                    <span><i class="fa-solid fa-thumbs-up" aria-hidden="true">0</i></span>
-					                                    <span><i class="fa-solid fa-thumbs-down" aria-hidden="true">0</i></span>
-					                                    <span><i class="bi bi-chat-left-text-fill"></i></span>
+					                                    <a id="reviewLike" href="#"><span><i class="fa-solid fa-thumbs-up" aria-hidden="true">0</i></span></a>
+					                                    <a id="reviewDislike" href="#"><span><i class="fa-solid fa-thumbs-down" aria-hidden="true">0</i></span></a>
+					                                    <a id="reviewComment" href="#"><span><i class="bi bi-chat-left-text-fill"></i></span></a>
 					                                </div>
 					                                <div>
 					                                    <span>게시날짜 : 2024-10-20</span>
@@ -246,6 +246,8 @@
 					reviewListArea.next().append($reviewArea);
 				} 
 			})
+			
+			
 			
 			$('#cart').click(function() {
 				alert("장바구니에 추가하시겠습니까?");

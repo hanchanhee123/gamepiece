@@ -9,7 +9,7 @@
 	<th:block layout:fragment="contents-body">
 		<header>
 			<div class="header-div">
-	            <div class="header-img" th:onclick="|location.href='@{/}'|">
+	            <div class="header-img" th:onclick="|location.href='@{/main}'|">
 	                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}"/>
 	            </div>
 	        </div>
@@ -22,9 +22,6 @@
             <div class="user-form-group">
                 <input type="text" id="id" name="id" class="user-insert-form" placeholder="아이디를 입력해주세요" required>
             </div>
-            <!-- <div>
-                <input type="hidden" id="authrtNm" name="authrtNm" value="회원">
-            </div> -->
             <div class="user-form-group">
                 <input type="password" id="userPswd" name="userPswd" class="user-insert-form" placeholder="비밀번호를 입력해주세요" disabled="disabled">
             </div>

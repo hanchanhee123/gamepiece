@@ -2,6 +2,8 @@ package gamepiece.admin.inquiry.controller;
 
 
 
+
+
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.file.Path;
@@ -25,9 +27,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.board.mapper.BoardFileMapper;
 import gamepiece.admin.inquiry.domain.Inquiry;
+import gamepiece.admin.inquiry.domain.InquiryFiles;
 import gamepiece.admin.inquiry.domain.InquiryRespone;
 import gamepiece.admin.inquiry.service.InquiryService;
-
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpServletRequest;
@@ -167,12 +169,12 @@ public class InquiryController {
 		Inquiry inquiryInfo = inquiryService.getInquiryInfo(inquiryNum);
 		InquiryRespone responeInfo = inquiryService.getInquiryResponeInfo(inquiryNum);
 		
-		AdminBoardFiles inquiryFile = inquiryService.getInquiryFile(inquiryNum);
+		List<InquiryFiles> inquiryFiles = inquiryService.getInquiryFiles(inquiryNum);
 		
 		model.addAttribute("title","문의글상세");
 		model.addAttribute("inquiryInfo", inquiryInfo);
 		model.addAttribute("responeInfo", responeInfo);
-		model.addAttribute("inquiryFile", inquiryFile);
+		model.addAttribute("inquiryFiles", inquiryFiles);
 	
 		
 		return "admin/inquiry/inquiryDetail";
@@ -186,7 +188,7 @@ public class InquiryController {
 	
 	
 	@GetMapping("/list")
-	public String inquiryList(Pageable pageable, Model model) {
+	public String getInquiryList(Pageable pageable, Model model) {
 		
 	    var pageInfo = inquiryService.getInquiryList(pageable);  
 	    

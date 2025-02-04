@@ -72,6 +72,16 @@
 
 
 <th:block layout:fragment="contents-body">
+<div th:if="${message}" class="alert alert-primary alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    	<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
 			<div th:if="${commentDel}" class="alert alert-danger alert-dismissible fade show" role="alert">
         <span th:text="${commentDel}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -225,51 +235,81 @@
     <!-- 첨부파일 영역 수정 -->
    
 </div>    
-			 
-			 <div class="fileBorder" th:if="${boardFile != null}">             
-	      <div  class="attachment-container small-card">
-    <div class="card shadow-sm border-0 InfileBorder">
-        <div class="card-body d-flex justify-content-between align-items-center p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
-                <div>
-                    <a th:href="@{/board/download(fileIdx=${boardFile.fileIdx})}"
-                       class="text-decoration-none text-dark fw-semibold">
-                        <small th:text="|첨부파일: ${boardFile.fileOriginalName}|"></small>
+
+
+<div class="fileBorder" th:if="${boardFiles != null and not #lists.isEmpty(boardFiles)}">             
+    <div class="attachment-container small-card">
+        <div class="card shadow-sm border-0 InfileBorder">
+            <div class="card-header">
+                <h4>첨부파일</h4>
+            </div>
+            <div class="card-body">
+                <div th:each="file : ${boardFiles}" class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
+                        <div>
+                            <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
+                               class="text-decoration-none text-dark fw-semibold">
+                                <small th:text="|첨부파일: ${file.fileInfo.fileOriginalName}|"></small>
+                            </a>
+                            <p class="text-muted mb-0">
+                                <small th:text="${T(gamepiece.user.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
+                            </p>
+                        </div>
+                    </div>
+                    <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
+                       class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                        <i class="bi bi-download me-2"></i>
+                        <span>다운로드</span>
                     </a>
-			                   <p class="text-muted mb-0">
-			    <small th:text="${T(gamepiece.user.board.util.BoardFilesUtils).formatFileSize(boardFile.fileSize)}"></small>
-			</p>
                 </div>
             </div>
-            <a th:href="@{/board/download(fileIdx=${boardFile.fileIdx})}"
-               class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                <i class="bi bi-download me-2"></i>
-                <span>다운로드</span>
-            </a>
         </div>
     </div>
 </div>
-</div> 
-	               
-			               
-			               
-			          
-			               
-			               
-			               
-                <div class="likeAndDis">
-                    <div class="like-button" id="likeButton">
-                        <i class="bi bi-hand-thumbs-up-fill" id="like"></i>
-                        <span class="likeCnt" th:text="${boardInfo.boardLikeCnt}">0</span>
-                    </div>
-                
-                    <div class="dislike-button" id="dislikeButton">
-                        <i class="bi bi-hand-thumbs-down-fill" id ="disLike"></i>
-                        <span class="dislikeCnt" th:text="${boardInfo.boardDisLikeCnt}">0</span>
-                    </div>
-                </div>
 
+	               
+						              
+															
+								<div class="d-flex justify-content-center gap-4 my-5">
+			    <!-- 비로그인 상태 -->
+			    <div th:if="${session.SID eq null}" class="d-flex gap-5" onclick="checkLogin()">
+			        <button class="btn btn-outline-primary px-4">
+			            <i class="bi bi-hand-thumbs-up-fill me-2"></i>
+			            좋아요 <span class="likeCnt" th:text="${boardInfo.boardLikeCnt}">0</span>
+			        </button>
+			        
+			        <button class="btn btn-outline-danger px-4">
+			            <i class="bi bi-hand-thumbs-down-fill me-2"></i>
+			            싫어요 <span class="dislikeCnt" th:text="${boardInfo.boardDisLikeCnt}">0</span>
+			        </button>
+			    </div>
+			    
+<!-- 디버깅용 (개발 완료 후 제거) -->
+
+
+<!-- 좋아요/싫어요 버튼 -->
+<div th:if="${session.SID != null}" class="d-flex gap-5">
+    <button class="btn btn-outline-primary px-4"
+            th:class="${boardLikeStatus != null} ? 'btn btn-primary px-4' : 'btn btn-outline-primary px-4'"
+            th:data-board-num="${boardInfo.boardNum}"
+            onclick="handleBoardLike(this.getAttribute('data-board-num'))">
+        <i class="bi bi-hand-thumbs-up-fill me-2"
+           th:class="${boardLikeStatus != null} ? 'bi bi-hand-thumbs-up-fill me-2 text-white' : 'bi bi-hand-thumbs-up-fill me-2'"></i>
+        좋아요 <span class="likeCnt" th:text="${boardInfo.boardLikeCnt}">0</span>
+    </button>
+    
+    <button class="btn btn-outline-danger px-4"
+            th:class="${boardDislikeStatus != null} ? 'btn btn-danger px-4' : 'btn btn-outline-danger px-4'"
+            th:data-board-num="${boardInfo.boardNum}"
+            onclick="handleBoardDislike(this.getAttribute('data-board-num'))">
+        <i class="bi bi-hand-thumbs-down-fill me-2"
+           th:class="${boardDislikeStatus != null} ? 'bi bi-hand-thumbs-down-fill me-2 text-white' : 'bi bi-hand-thumbs-down-fill me-2'"></i>
+        싫어요 <span class="dislikeCnt" th:text="${boardInfo.boardDisLikeCnt}">0</span>
+    </button>
+</div>
+
+</div>
 
 
 		   
@@ -320,16 +360,38 @@
             <p class="card-text content-text" th:text="${l.commentDetail}">댓글 내용</p>
             
             <!-- 좋아요/싫어요 버튼 -->
-            <div class="d-flex gap-3 justify-content-end">
-                <button class="btn btn-light btn-sm comment-like-btn" id="likeButton2">
-                    <i class="bi bi-hand-thumbs-up-fill text-primary fs-5"></i>
-                    <span class="ms-1 likeCnt2" th:text="${l.commentLikeCnt}">0</span>
-                </button>
-                <button class="btn btn-light btn-sm comment-dislike-btn" id="dislikeButton2">
-                    <i class="bi bi-hand-thumbs-down-fill text-danger fs-5"></i>
-                    <span class="ms-1 dislikeCnt2" th:text="${l.commentDisLikeCnt}">0</span>
-                </button>
-            </div>
+			   <!-- 댓글 좋아요/싫어요 버튼 부분 수정 -->
+<div class="d-flex gap-3 justify-content-end" th:if="${session.SID eq null}" onclick="checkLogin()">
+    <button class="btn btn-light btn-sm comment-like-btn">
+        <i class="bi bi-hand-thumbs-up-fill text-primary fs-5"></i>
+        <span class="ms-1 likeCnt2" th:text="${l.commentLikeCnt}">0</span>
+    </button>
+    <button class="btn btn-light btn-sm comment-dislike-btn">
+        <i class="bi bi-hand-thumbs-down-fill text-danger fs-5"></i>
+        <span class="ms-1 dislikeCnt2" th:text="${l.commentDisLikeCnt}">0</span>
+    </button>
+</div>
+
+<div class="d-flex gap-3 justify-content-end" th:if="${session.SID != null}">
+  <button class="btn btn-sm comment-like-btn"
+        th:class="${commentLikeStatuses != null and commentLikeStatuses[l.commentNum]['like'] != null} ? 'btn btn-sm btn-primary comment-like-btn' : 'btn btn-sm btn-light comment-like-btn'"
+        th:data-comment-num="${l.commentNum}"
+        onclick="handleCommentLike(this.getAttribute('data-comment-num'))">
+    <i class="bi bi-hand-thumbs-up-fill fs-5"
+       th:class="${commentLikeStatuses != null and commentLikeStatuses[l.commentNum]['like'] != null} ? 'bi bi-hand-thumbs-up-fill fs-5 text-white' : 'bi bi-hand-thumbs-up-fill fs-5 text-primary'"></i>
+    <span class="ms-1 likeCnt2" th:text="${l.commentLikeCnt}">0</span>
+</button>
+
+<!-- 싫어요 버튼 -->
+<button class="btn btn-sm comment-dislike-btn"
+        th:class="${commentLikeStatuses != null and commentLikeStatuses[l.commentNum]['dislike'] != null} ? 'btn btn-sm btn-danger comment-dislike-btn' : 'btn btn-sm btn-light comment-dislike-btn'"
+        th:data-comment-num="${l.commentNum}"
+        onclick="handleCommentDislike(this.getAttribute('data-comment-num'))">
+    <i class="bi bi-hand-thumbs-down-fill fs-5"
+       th:class="${commentLikeStatuses != null and commentLikeStatuses[l.commentNum]['dislike'] != null} ? 'bi bi-hand-thumbs-down-fill fs-5 text-white' : 'bi bi-hand-thumbs-down-fill fs-5 text-danger'"></i>
+    <span class="ms-1 dislikeCnt2" th:text="${l.commentDisLikeCnt}">0</span>
+</button>
+</div>
         </div>
 
         <!-- 수정 모드 (기본적으로 숨김) -->
@@ -512,39 +574,67 @@
         location.href = '/login';
     }
     
-    
-        document.getElementById('likeButton').addEventListener('click', function() {
-            const likeCountElement = document.querySelector('.likeCnt');
-            let currentCount = parseInt(likeCountElement.textContent, 10);
-            likeCountElement.textContent = currentCount + 1;
-            
-            // 서버로 좋아요 증가 요청 보내기
-            sendLikeDislikeRequest('like');
+    function handleBoardLike(boardNum) {
+        fetch('/board/like', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `boardNum=${boardNum}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
         });
-        
-        document.getElementById('dislikeButton').addEventListener('click', function() {
-            const dislikeCountElement = document.querySelector('.dislikeCnt');
-            let currentCount = parseInt(dislikeCountElement.textContent, 10);
-            dislikeCountElement.textContent = currentCount + 1;
-            
-            
+    }
 
-            // 서버로 싫어요 증가 요청 보내기
-            sendLikeDislikeRequest('dislike');
+    function handleBoardDislike(boardNum) {
+        fetch('/board/dislike', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `boardNum=${boardNum}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
         });
-        
-        document.getElementById('likeButton2').addEventListener('click', function() {
-            const likeCountElement = document.querySelector('.likeCnt2');
-            let currentCount = parseInt(likeCountElement.textContent, 10);
-            likeCountElement.textContent = currentCount + 1;
+    }
+    
+    function handleCommentLike(commentNum) {
+        fetch(`/board/comment/like?commentNum=${commentNum}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
         });
-        
-        document.getElementById('dislikeButton2').addEventListener('click', function() {
-            const dislikeCountElement = document.querySelector('.dislikeCnt2');
-            let currentCount = parseInt(dislikeCountElement.textContent, 10);
-            dislikeCountElement.textContent = currentCount + 1;
+    }
+
+    function handleCommentDislike(commentNum) {
+        fetch(`/board/comment/dislike?commentNum=${commentNum}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
         });
-        
+    }
         
         function userReport() {
         	   // 버튼 비활성화 (중복 클릭 방지)
@@ -683,6 +773,10 @@ function saveEdit(commentNum) {
         return;
     }
     
+    // 수정 중임을 표시하는 스피너 또는 메시지 추가
+    const editArea = document.getElementById('edit-area-' + commentNum);
+    editArea.style.opacity = '0.5';  // 수정 영역을 흐리게 처리
+    
     $.ajax({
         url: '/board/modifycomment',
         type: 'POST',
@@ -692,11 +786,37 @@ function saveEdit(commentNum) {
             boardNum: boardNum
         },
         success: function(response) {
-            // 수정 후 댓글 목록을 다시 불러오기 위해 페이지 리로드
-            location.reload();
+            // 댓글 내용 업데이트
+            const contentText = document.querySelector(`#view-mode-${commentNum} .content-text`);
+            
+            // 페이드 아웃 효과
+            editArea.style.transition = 'opacity 0.3s';
+            editArea.style.opacity = '0';
+            
+            setTimeout(() => {
+                // 수정 모드 숨기기
+                editArea.style.display = 'none';
+                
+                // 일반 모드 보이기 및 내용 업데이트
+                const viewMode = document.getElementById('view-mode-' + commentNum);
+                viewMode.style.opacity = '0';
+                viewMode.style.display = 'block';
+                contentText.textContent = newContent;
+                
+                // 페이드 인 효과
+                setTimeout(() => {
+                    viewMode.style.transition = 'opacity 0.3s';
+                    viewMode.style.opacity = '1';
+                    
+                    // 버튼 상태 변경
+                    document.getElementById('edit-buttons-' + commentNum).style.display = 'none';
+                    document.getElementById('comment-buttons-' + commentNum).style.display = 'flex';
+                }, 50);
+            }, 300);
         },
         error: function() {
             alert('댓글 수정 중 오류가 발생했습니다.');
+            editArea.style.opacity = '1';  // 오류 시 opacity 복구
         }
     });
 }
@@ -707,7 +827,9 @@ function confirmDelete(commentNum) {
         location.href = '/board/removecomment?commentNum=' + commentNum + '&boardNum=' + boardNum;
     }
 }
-     
+function downloadFile(fileIdx) {
+	   window.location.href = `/board/download?fileIdx=${fileIdx}`;
+	}
 
 
     </script>

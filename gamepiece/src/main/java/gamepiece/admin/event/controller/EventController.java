@@ -15,10 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.service.EventService;
-import gamepiece.admin.point.domain.Point;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
-import jakarta.servlet.annotation.MultipartConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -137,7 +135,7 @@ public class EventController {
 	@GetMapping("/addEvent")
 	public String AddEvent(Model model) {
 		
-		model.addAttribute("title", "이벤트목록 추가");
+		model.addAttribute("title", "이벤트 추가");
 		
 		return "admin/event/addEvent";
 	}

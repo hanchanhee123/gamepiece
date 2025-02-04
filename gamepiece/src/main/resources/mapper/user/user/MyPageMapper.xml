@@ -78,6 +78,17 @@
 		<result column="user_nn" property="userNn"/>
 	</resultMap>
 	
+	<!-- <resultMap type="gamepiece.user.game.domain.UserReview" id="UserReviewMap">
+		<id 	column="rv_no" property="reviewNo"></id>
+		<result column="gm_cd" property="gameCode"></result>
+		<result column="id" property="id"></result>
+		<result column="rv_grade" property="grade"></result>
+		<result column="rv_contents" property="reviewContents"></result>
+		<result column="rv_empathy" property="reviewEmpathy"></result>
+		<result column="rv_disempathy" property="reviewDisempathy"></result>
+		<result column="rv_log_ymd" property="reviewLogYmd"></result>
+	</resultMap> -->
+	
 	<!-- 마이페이지 - 사용자정보조회 (정보수정) -->
 	<select id="myPageUser" resultMap="myPageResultMap">
 		SELECT
@@ -100,7 +111,9 @@
 		FROM
 			point_log
 		WHERE
-			id = #{id};
+			id = #{id}
+		ORDER BY
+			point_receive_ymd DESC;
 	</select>
 	
 	<!-- 아바타 조회 -->
@@ -117,7 +130,9 @@
 		WHERE
 			id = #{id}
 			AND
-			ps.ps_cate_cd = 'cate_02';
+			ps.ps_cate_cd = 'cate_02'
+		ORDER BY
+			pl.psl_log_ymd DESC;
 	</select>
 	
 	<!-- 기존 아바타 -->
@@ -138,6 +153,25 @@
    			#{avatarNo}, #{id}, #{selectAvatar}, CURDATE());
 	</insert>
 	
+	<!-- 배경프로필 조회 -->
+	<select id="getBackground" resultMap="pointshopResultMap">
+		SELECT
+			ps.ps_cd,
+			ps.ps_nm,
+			f.file_path
+		FROM
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_logs pl
+			USING (ps_cd)
+		WHERE
+			id = #{id}
+			AND
+			ps.ps_cate_cd = 'cate_05'
+		ORDER BY
+			pl.psl_log_ymd DESC;
+	</select>
+	
 	<!-- 기존 배경프로필 -->
 	<update id="updateBackground" parameterType="gamepiece.user.user.domain.Background">
 	    UPDATE
@@ -156,23 +190,6 @@
    			#{backgroundNo}, #{id}, #{selectBackground}, CURDATE());
 	</insert>
 	
-	<!-- 배경프로필 조회 -->
-	<select id="getBackground" resultMap="pointshopResultMap">
-		SELECT
-			ps.ps_cd,
-			ps.ps_nm,
-			f.file_path
-		FROM
-			point_shop ps INNER JOIN files f
-			ON ps.file_idx = f.file_idx
-			INNER JOIN pointshop_logs pl
-			USING (ps_cd)
-		WHERE
-			id = #{id}
-			AND
-			ps.ps_cate_cd = 'cate_05';
-	</select>
-	
 	<!-- 마이페이지 - 보유 이모티콘 -->
 	<select id="myPageEmoticon" resultMap="pointshopResultMap">
 		SELECT
@@ -187,20 +204,22 @@
 		WHERE
 			id = #{id}
 			AND
-			ps.ps_cate_cd = 'cate_01';
+			ps.ps_cate_cd = 'cate_01'
+		ORDER BY
+			pl.psl_log_ymd DESC;
 	</select>
 	
 	<!-- 마이페이지 - 내 리뷰 -->
-	<!-- <select id="myPageReview" resultMap="BoardResultMap">
+	<!-- <select id="myPageReview" resultMap="UserReviewMap">
 		SELECT
 			*
 		FROM
-			boards_categories bc INNER JOIN boards b
-			USING (bbs_cate_cd)
+			reviews r INNER JOIN `user` u
+			ON r.id = u.id
 		WHERE
-			id = #{id}
-			AND
-			b.is_delete = 'active';
+			r.id = 'id01'
+		ORDER BY
+			r.rv_log_ymd DESC;
 	</select> -->
 	
 	<!-- 마이페이지 - 내 게시글 -->
@@ -213,7 +232,9 @@
 		WHERE
 			id = #{id}
 			AND
-			b.is_delete = 'active';
+			b.is_delete = 'active'
+		ORDER BY
+			b.bbs_ymd DESC;
 	</select>
 	
 	<!-- 마이페이지 - 내 문의글 -->
@@ -225,7 +246,9 @@
 		WHERE
 			id = #{id}
 			AND
-			is_delete = 'active';
+			is_delete = 'active'
+		ORDER BY
+			inquiry_ymd DESC;
 	</select>
 	
 	<!-- 마이페이지 - 참여한 이벤트 -->
@@ -238,7 +261,9 @@
 		WHERE
 			id = #{id}
 			AND
-			ev_winner_yn = 'Y';
+			ev_winner_yn = 'Y'
+		ORDER BY
+			ep.ev_participate_ymd DESC;
 	</select>
 	
 	<!-- <select id="myPageBoardComments" resultMap="BoardResultMap">

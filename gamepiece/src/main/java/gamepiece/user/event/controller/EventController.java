@@ -2,7 +2,6 @@ package gamepiece.user.event.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gamepiece.user.event.domain.Event;
 import gamepiece.user.event.service.EventService;
+import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpSession;
@@ -27,10 +27,16 @@ import lombok.extern.slf4j.Slf4j;
 public class EventController {
 
 	private final EventService eventService;
+	private final UserService userService;
 
 	@GetMapping("/progressEvent")
-	public String getProgressEvent(Pageable pageable, Model model) {
+	public String getProgressEvent(Pageable pageable, Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
 
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+        
 		var pageInfo = eventService.getProgressEvent(pageable);
 
 		List<Event> eventList = pageInfo.getContents();
@@ -55,8 +61,13 @@ public class EventController {
 	
 	@GetMapping("/searchList")
 	public String getSearchListView(@RequestParam(value = "searchValue") String searchValue, Model model,
-			Pageable pageable) {
+			Pageable pageable, HttpSession session) {
 
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+        
 		PageInfo<Event> pageInfo = eventService.searchList(searchValue, pageable);
 
 		List<Event> eventList = pageInfo.getContents();
@@ -112,8 +123,13 @@ public class EventController {
 	}
 
 	@GetMapping("/endEvent")
-	public String getEndEvent(Pageable pageable, Model model) {
+	public String getEndEvent(Pageable pageable, Model model, HttpSession session) {
 
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 		var pageInfo = eventService.getProgressEvent(pageable);
 
 		List<Event> eventList = pageInfo.getContents();
@@ -137,8 +153,13 @@ public class EventController {
 	}
 
 	@GetMapping("/winnerList")
-	public String getWinnerList(Pageable pageable, Model model) {
+	public String getWinnerList(Pageable pageable, Model model, HttpSession session) {
 
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 		var pageInfo = eventService.getEventWinnerList(pageable);
 
 		List<Event> eventList = pageInfo.getContents();
@@ -156,8 +177,13 @@ public class EventController {
 
 	@GetMapping("/searchWinnerList")
 	public String getSearchwinnerListView(@RequestParam(value="searchValue") String searchValue, Model model,
-			Pageable pageable) {
+			Pageable pageable, HttpSession session) {
 	
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 		PageInfo<Event> pageInfo = eventService.searchWinnerList(searchValue, pageable);
 		
 		List<Event> eventWinnerList = pageInfo.getContents();
@@ -222,6 +248,11 @@ public class EventController {
 	@GetMapping("/eventDetail")
 	public String eventDetail(@RequestParam("evCd") String evCd, String evStatus, Model model, HttpSession session) {
 
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 		String loginId = (String) session.getAttribute("SID");
 
 		List<Event> eventDetail = eventService.eventDetail(evCd);
@@ -248,10 +279,10 @@ public class EventController {
 		return getParticipations;
 	}
 
-	@GetMapping("/insertParticipant")
-	public String insertParticipant(Event event, Model model, RedirectAttributes reAttr) {
+	@GetMapping("/addParticipant")
+	public String addParticipant(Event event, Model model, RedirectAttributes reAttr) {
 
-		eventService.insertParticipant(event);
+		eventService.addParticipant(event);
 
 		reAttr.addAttribute("evCd", event.getEvCd());
 		reAttr.addAttribute("evStatus", event.getEvStatus());

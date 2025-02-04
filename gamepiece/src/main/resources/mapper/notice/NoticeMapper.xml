@@ -15,6 +15,19 @@
     <result column="reg_ymd" property="noticeYmd" />
 
 
+
+	  <association property="fileInfo" javaType="gamepiece.admin.board.domain.AdminBoardFiles">
+		<id column="fileIdx" 				property="file_idx"/>
+		<result property="fileNewName" 		column="file_new_name"/>
+		<result property="fileOriginalName" column="file_original_name"/>
+		<result property="filePath" 		column="file_path"/>
+		<result property="fileSize" 		column="file_size"/>
+		</association>
+		
+		
+
+
+
 </resultMap>
 
 				<select id="getNoticeSearchList" parameterType="map" resultMap="NoticeResultMap">
@@ -32,7 +45,7 @@
 				   <if test="searchValue != null and searchValue != ''">
 				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
 				   </if>
-			
+			ORDER BY ntc_no DESC 
 				   LIMIT #{rowPerPage} OFFSET #{offset}
 				</select>
 				
@@ -69,22 +82,19 @@ SELECT
 FROM
 	 ntc_mttr
 
+ORDER BY ntc_no DESC 
  LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
 
 	<select id="getNoticeInfo" parameterType="Notice" resultMap="NoticeResultMap">
 	
+
 	SELECT 
-		ntc_no, 
-		ntc_title, 
-		ntc_cn, 
-		ntc_img, 
-		ntc_view, 
-		admin_id, 
-		reg_ymd
+			*
 	FROM 
-		ntc_mttr
+		ntc_mttr nm LEFT JOIN files f
+		ON nm.file_idx = f.file_idx
 	WHERE
 		ntc_no=#{noticeNum};
 		
@@ -101,7 +111,8 @@ FROM
 			ntc_img, 
 			ntc_view, 
 			admin_id, 
-			reg_ymd
+			reg_ymd,
+			file_idx
 			)VALUES(
 			#{noticeNum}, 
 			#{noticeTitle},
@@ -109,7 +120,8 @@ FROM
 			#{noticeImg},
 			#{viewCount},
 			#{adminId},
-			CURDATE()
+			CURDATE(),
+			#{fileIdx}
 			);
 				  
 				  
@@ -126,6 +138,9 @@ FROM
 			<if test="noticeContent != null and noticeContent != ''">
 				ntc_cn = #{noticeContent}
 			</if>
+		<if test="fileIdx != null">
+            ,file_idx = #{fileIdx}
+        </if>
 		</set>
 	WHERE
 		ntc_no=#{noticeNum};
