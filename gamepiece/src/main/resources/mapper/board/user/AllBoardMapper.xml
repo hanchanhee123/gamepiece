@@ -17,7 +17,7 @@
 		<result column="bbs_dislike" property="boardDisLikeCnt" />
 		<result column="bbs_view" property="boardViewCnt" />
 		<result column="bbs_ymd" property="boardYmd" />
-		<result column="file_idx" property="fileIdx" />
+	
 
 
 
@@ -135,75 +135,61 @@
 
 
 
+<insert id="addBoard" parameterType="Board">
+ <selectKey keyProperty="boardNum" resultType="String" order="BEFORE">
+        SELECT CONCAT('bbs_', LPAD((
+            SELECT next_num FROM (
+                SELECT IFNULL(MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)), 0) + 1 AS next_num
+                FROM boards
+            ) AS temp
+        ), 2, '0')) AS boardNum
+    </selectKey>
+    INSERT INTO boards(
+        bbs_no,
+        bbs_cate_cd,
+        id,
+        bbs_title,
+        bbs_cn,
+        bbs_like,
+        bbs_dislike,
+        bbs_view,
+        bbs_ymd
+    )VALUES(
+        CONCAT('bbs_', LPAD((
+            SELECT next_num FROM (
+                SELECT MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)) + 1 AS next_num
+                FROM boards
+            ) AS temp
+        ), 2, '0')),
+        #{boardCategory},
+        #{boardUserId},
+        #{boardTitle},
+        #{boardContent},
+        #{boardLikeCnt},
+        #{boardDisLikeCnt},
+        #{boardViewCnt},
+        CURDATE()
+    );
+</insert>
 
-
-	<insert id="addBoard" parameterType="Board">
-		INSERT INTO boards(
-		bbs_no,
-		bbs_cate_cd,
-		id,
-		bbs_title,
-		bbs_cn,
-		bbs_like,
-		bbs_dislike,
-		bbs_view,
-		bbs_ymd,
-		file_idx
-		)VALUES(
-		CONCAT('bbs_', LPAD((
-		SELECT next_num FROM (
-		SELECT MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)) + 1 AS
-		next_num
-		FROM boards
-		) AS temp
-		), 2, '0')),
-		#{boardCategory},
-		#{boardUserId},
-		#{boardTitle},
-		#{boardContent},
-		#{boardLikeCnt},
-		#{boardDisLikeCnt},
-		#{boardViewCnt},
-		CURDATE(),
-		#{fileIdx}
-		);
-	</insert>
-
-
-
-	<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">
-
-
-		SELECT
-			b.bbs_no,
-			b.bbs_cate_cd,
-			b.bbs_title,
-			b.bbs_cn,
-			b.bbs_like,
-			b.bbs_dislike,
-			b.bbs_ymd,
-			u.user_nn,
-			u.id,
-			f.file_idx,
-			f.file_path,
-			f.file_original_name,
-			f.file_new_name,
-			f.file_size,
-			f.file_reg_ymd
-		FROM
-				boards b INNER JOIN user u
-				ON b.id = u.id
-				LEFT JOIN files f
-				ON b.file_idx = f.file_idx
-
-		WHERE
-		b.bbs_no=#{boardNum}
-		AND 
-		b.is_delete = 'active'
-
-
-	</select>
-
+		<select id="getBoardInfo" parameterType="string" resultMap="BoardResultMap">
+    SELECT
+        b.bbs_no,
+        b.bbs_cate_cd,
+        b.bbs_title,
+        b.bbs_cn,
+        b.bbs_like,
+        b.bbs_dislike,
+        b.bbs_ymd,
+        u.user_nn,
+        u.id
+    FROM
+        boards b 
+        INNER JOIN user u ON b.id = u.id
+    WHERE
+        b.bbs_no=#{boardNum}
+        AND b.is_delete = 'active'
+</select>
 
 
 	<select id="getBoardFile" parameterType="string" resultMap="BoardResultMap">
@@ -222,10 +208,9 @@
 
 
 
-
-	<update id="modifyBoard" parameterType="Board">
-		UPDATE boards
-		  <set>
+<update id="modifyBoard" parameterType="Board">
+    UPDATE boards
+    <set>
         <if test="boardCategory != null and boardCategory != ''">
             bbs_cate_cd = #{boardCategory}
         </if>
@@ -235,14 +220,10 @@
         <if test="boardContent != null and boardContent != ''">
             ,bbs_cn = #{boardContent}
         </if>
-        <if test="fileIdx != null">
-            ,file_idx = #{fileIdx}
-        </if>
     </set>
-		WHERE
-		bbs_no=#{boardNum}
-	</update>
-
+    WHERE
+        bbs_no=#{boardNum}
+</update>
 
 	<update id="removeBoard" parameterType="string">
 		UPDATE
@@ -260,5 +241,46 @@
     		bbs_no=#{boardNum}
 </update>
 
+<update id="addLikeCount" parameterType="String">
+		  UPDATE boards
+    SET 
+	 		bbs_like = bbs_like + 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
+
+
+
+<update id="addDisLikeCount" parameterType="String">
+	  UPDATE boards	
+    SET 
+	 	bbs_dislike = bbs_dislike + 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
+
+<update id="modifyFileIdxToNull" parameterType="String">
+    UPDATE boards 
+    SET file_idx = 'NULL' 
+    WHERE file_idx = #{fileIdx}
+</update>
+
+<update id="cancelLikeCount" parameterType="String">
+		  UPDATE boards
+    SET 
+	 		bbs_like = bbs_like - 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
+
+
+
+<update id="cancelDisLikeCount" parameterType="String">
+	  UPDATE boards	
+    SET 
+	 	bbs_dislike = bbs_dislike - 1
+    WHERE 
+    		bbs_no=#{boardNum}
+</update>
 
 </mapper>

@@ -24,7 +24,7 @@ public interface EventService {
 
 	int getParticipations(String evCd, String loginId);
 	
-	void insertParticipant(Event event);
+	void addParticipant(Event event);
 
 	PageInfo<Event> getEventWinnerList(Pageable pageable);
 	

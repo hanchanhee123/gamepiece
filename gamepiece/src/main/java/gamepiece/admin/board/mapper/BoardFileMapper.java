@@ -22,6 +22,7 @@ public interface BoardFileMapper {
 	String getNextFileIdx();
 	AdminBoardFiles findByBoardNum(String boardNum);
 	  AdminBoardFiles findByInquiryNum(String inquiryNum);
+	  AdminBoardFiles findByNoticeNum(int noticeNum);  
 	  AdminBoardFiles modifyFile(String boardNum);
 
 }

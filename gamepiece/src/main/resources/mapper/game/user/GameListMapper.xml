@@ -163,7 +163,9 @@
 		SELECT 
 			SUM(CAST(price AS UNSIGNED))
 		FROM 
-			game_cart_list;
+			game_cart_list
+		WHERE
+			id = #{id};
 	</select>
 	
 	<select id="getPaymentList" resultMap="gameList">

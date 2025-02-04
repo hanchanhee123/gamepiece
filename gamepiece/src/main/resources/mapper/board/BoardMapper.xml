@@ -185,15 +185,13 @@
 		b.bbs_view,
 		b.bbs_like,
 		b.bbs_dislike,
-		b.bbs_ymd,
-		f.*
+		b.bbs_ymd
+		
 		
 	FROM
 	    boards b LEFT JOIN boards_categories bc
 	    ON b.bbs_cate_cd = bc.bbs_cate_cd
-	    LEFT JOIN files f
-		ON b.file_idx = f.file_idx
-		
+	    
 	  
 	 WHERE
 	bbs_no = #{boardNum};

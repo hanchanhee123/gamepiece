@@ -375,6 +375,14 @@ body {
     height: 180px;
 }
 
+
+
+.like-dislike a{
+	color : white;
+	text-decoration: none;
+	margin-right: 5px;
+}
+
 .likeDislike {
     display: flex;
     justify-content: space-between;

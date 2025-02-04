@@ -2,27 +2,62 @@ package gamepiece.user.board.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
-
 
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.BoardFiles;
+import gamepiece.user.board.domain.BoardsFiles;
 import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
 import gamepiece.user.board.domain.Report;
+import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface BoardService {
 	
+	
+	
+	List<InquiryFiles> getInquiryFiles(String inquiryNum);
+	
 
+    void addInquiryWithFiles(Inquiry inquiry, MultipartFile[] files);
+  
+    void deleteInquiryFile(String inquiryNum, String fileIdx);
+    
+    Inquiry getInquiryWithFiles(String inquiryNum);
+
+	
+	
+	
+	  List<BoardsFiles> getBoardFiles(String boardNum);
+	  
+	    void addBoardFileMapping(String boardNum, String fileIdx);
+	    
+	    void deleteBoardFileMapping(String boardNum, String fileIdx);
+	    
+	    void deleteAllBoardFiles(String boardNum);
+	    
+	    void updateBoardFiles(String boardNum, List<MultipartFile> newFiles);
+   
+	Map<String, Object> addBoardLike(String boardNum, String userId, String likesType);
+
+	Map<String, Object> addCommentLike(String commentNum, String userId, String likesType);
+	
+
+	BoardFiles saveFile(MultipartFile file);
+	
 	BoardFiles getBoardFileInfo(String boardNum);
 	
 	BoardFiles getFileInfo(String fileIdx);
 	//게시판 파일 조회
+	
+	
+	BoardFiles getNoticeNum(int noticeNum);
 	
 	BoardFiles getInquiryFile(String inquiryNum);
 	

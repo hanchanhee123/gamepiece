@@ -29,6 +29,14 @@
 		<result column="whdwl_ymd" property="whdwlYmd"/>
     </association>
 
+		<association property="fileInfo" javaType="gamepiece.user.board.domain.BoardFiles">
+		<id column="fileIdx" 				property="file_idx"/>
+		<result property="fileNewName" 		column="file_new_name"/>
+		<result property="fileOriginalName" column="file_original_name"/>
+		<result property="filePath" 		column="file_path"/>
+		<result property="fileSize" 		column="file_size"/>
+		</association>
+	
 
 
 
@@ -101,16 +109,12 @@ WHERE
 	<select id="getNoticeInfo" parameterType="Notice" resultMap="NoticeResultMap">
 	
 	SELECT 
-		nm.ntc_no, 
-		nm.ntc_title, 
-		nm.ntc_cn, 
-		nm.ntc_img, 
-		nm.ntc_view, 
-		u.user_nn, 
-		nm.reg_ymd
+	*
 	FROM 
 		ntc_mttr nm INNER JOIN user u 
 		ON nm.admin_id = u.id
+		LEFT JOIN files f 
+		ON nm.file_idx = f.file_idx
 	WHERE
 		nm.ntc_no=#{noticeNum};
 		

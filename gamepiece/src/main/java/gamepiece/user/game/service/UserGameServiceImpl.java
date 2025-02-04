@@ -311,6 +311,8 @@ public class UserGameServiceImpl implements UserGameService {
 		
 	}
 	
+	
+	
 	@Override
 	public void putGameInCart(UserGame userGame) {
 		int result = userGameMapper.putGameInCart(userGame);
@@ -333,8 +335,8 @@ public class UserGameServiceImpl implements UserGameService {
 		return cartList;
 	}
 	@Override
-	public Integer cartTotalPrice() {
-		Integer totalPrice = userGameMapper.cartTotalPrice();
+	public Integer cartTotalPrice(String id) {
+		Integer totalPrice = userGameMapper.cartTotalPrice(id);
 		if(totalPrice == null) {
 			totalPrice = 0;
 		}

@@ -214,14 +214,11 @@
 			ev_cd=#{evCd};
 	</select>
 	
-	<insert id="insertParticipant" parameterType="gamepiece.user.event.domain.Event">
+	<insert id="addParticipant" parameterType="gamepiece.user.event.domain.Event">
 		INSERT INTO event_participations
 		  (evp_no, ev_cd, id, ev_participate_ymd)
 		VALUES 
 		  (	
-		    <!-- <![CDATA[(SELECT CONCAT('evp_', LPAD(IFNULL(MAX(SUBSTRING(evp.evp_no, 5) + 1), 0), 
-		                          IF(LENGTH(MAX(SUBSTRING(evp.evp_no, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(evp.evp_no, 5) + 1))), '0')) ]]>
-		     FROM event_participations evp), -->
 		    #{evpNo}, 
 		    #{evCd},
 		    #{id}, 

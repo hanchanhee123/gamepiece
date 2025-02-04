@@ -1,0 +1,16 @@
+package gamepiece.admin.inquiry.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
+
+import gamepiece.admin.inquiry.domain.InquiryFiles;
+
+@Mapper
+@Repository("adminInquiryFilesMapper")
+public interface InquiryFilesMapper {
+	
+	  List<InquiryFiles> getInquiryFiles(String inquiryNum);
+
+}

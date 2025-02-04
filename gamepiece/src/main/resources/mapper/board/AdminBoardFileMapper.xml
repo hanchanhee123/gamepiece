@@ -34,6 +34,20 @@
 		<result column="inquiry_ymd" property="inquiryYmd" />
 			</association>
 	
+	
+		<association property="noticeInfo" javaType="gamepiece.admin.notice.domain.Notice">
+			    <id column="ntc_no"  property="noticeNum" />
+    <result column="ntc_title" property="noticeTitle" />
+    <result column="ntc_cn" property="noticeContent" />
+    <result column="ntc_img" property="noticeImg" />
+    <result column="ntc_view" property="viewCount" />
+    <result column="admin_id" property="adminId" />
+    <result column="reg_ymd" property="noticeYmd" />
+			</association>
+	
+	
+			
+	
 </resultMap>
 	<delete id="deleteFileByIdx" parameterType="String">
 		DELETE
@@ -100,7 +114,7 @@
         file_path,
         file_size,
         file_reg_ymd
-    ) VALUES 
+    ) VALUES
     <foreach collection="list" item="file" separator=",">
     (
         #{file.fileIdx},
@@ -114,12 +128,12 @@
 </insert>
 	
 	
-	
-	<select id="getNextFileIdx" resultType="string">
-    SELECT CONCAT('file_', LPAD(IFNULL(MAX(CAST(SUBSTRING_INDEX(file_idx, 'file_', -1) AS UNSIGNED)), 0) + 1, 3, '0'))
-    FROM files
+<select id="getNextFileIdx" resultType="string">
+    SELECT file_idx 
+    FROM files 
+    ORDER BY CAST(SUBSTRING_INDEX(file_idx, '_', -1) AS UNSIGNED) DESC 
+    LIMIT 1
 </select>
-	
 	
 <select id="findByBoardNum" resultMap="fileResultMap">
   SELECT
@@ -139,6 +153,17 @@ SELECT
 	  ON i.file_idx = f.file_idx
     WHERE 
     			inquiry_id =#{inquiryNum};
+</select>
+
+<select id="findByNoticeNum" resultMap="fileResultMap">
+ 
+SELECT
+*
+	FROM
+		ntc_mttr nm INNER JOIN files f
+		ON nm.file_idx = f.file_idx
+    WHERE 
+    			ntc_no=#{noticeNum};
 </select>
 	
 	

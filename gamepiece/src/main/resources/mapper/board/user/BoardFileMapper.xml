@@ -33,6 +33,19 @@
 		<result column="inquiry_content" property="inquiryContent" />
 		<result column="inquiry_ymd" property="inquiryYmd" />
 			</association>
+			
+			
+					<association property="noticeInfo" javaType="gamepiece.user.board.domain.Notice">
+		    <id column="ntc_no"  property="noticeNum" />
+    <result column="ntc_title" property="noticeTitle" />
+    <result column="ntc_cn" property="noticeContent" />
+    <result column="ntc_img" property="noticeImg" />
+    <result column="ntc_view" property="viewCount" />
+    <result column="admin_id" property="adminId" />
+    <result column="reg_ymd" property="noticeYmd" />
+
+			</association>
+			
 	
 </resultMap>
 	<delete id="deleteFileByIdx" parameterType="String">
@@ -92,31 +105,22 @@
 	</insert>
 
 <insert id="addfiles" parameterType="java.util.List">
-    INSERT INTO files (
-        file_idx,
-        file_new_name,
-        file_original_name,
-        file_path,
-        file_size,
-        file_reg_ymd
-    ) VALUES 
+    INSERT INTO files
+        (file_idx, file_new_name, file_original_name, file_path, file_size, file_reg_ymd)
+    VALUES
     <foreach collection="list" item="file" separator=",">
-    (
-        #{file.fileIdx},
-        #{file.fileNewName},
-        #{file.fileOriginalName},
-        #{file.filePath},
-        #{file.fileSize},
-        CURDATE()
-    )
+        (#{file.fileIdx}, #{file.fileNewName}, #{file.fileOriginalName}, 
+         #{file.filePath}, #{file.fileSize}, CURDATE())
     </foreach>
 </insert>
 	
 	
 	
-	<select id="getNextFileIdx" resultType="string">
-    SELECT CONCAT('file_', LPAD(IFNULL(MAX(CAST(SUBSTRING_INDEX(file_idx, 'file_', -1) AS UNSIGNED)), 0) + 1, 3, '0'))
-    FROM files
+<select id="getNextFileIdx" resultType="string">
+    SELECT file_idx 
+    FROM files 
+    ORDER BY CAST(SUBSTRING_INDEX(file_idx, '_', -1) AS UNSIGNED) DESC 
+    LIMIT 1
 </select>
 	
 	
@@ -140,7 +144,17 @@ SELECT
     			inquiry_id =#{inquiryNum};
 </select>
 	
-	
+
+<select id="findByNoticeNum" resultMap="fileResultMap">
+ 
+SELECT
+*
+	FROM
+		ntc_mttr nm INNER JOIN files f
+		ON nm.file_idx = f.file_idx
+    WHERE 
+    			ntc_no=#{noticeNum};
+</select>
 	
 	<select id="findByFileIdx" resultType="gamepiece.user.board.domain.BoardFiles">
     SELECT * FROM files 
@@ -148,7 +162,14 @@ SELECT
 </select>
 	
 
-	
+	<select id="getBoardFileList" resultMap="fileResultMap">
+  SELECT
+    	*
+    FROM 
+    	boards b inner JOIN files f 
+    	ON b.file_idx = f.file_idx
+    WHERE b.bbs_no = #{boardNum}
+</select>
 	
 	
 	
