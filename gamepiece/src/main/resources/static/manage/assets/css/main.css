@@ -928,6 +928,7 @@ b {
   width: 100%;
   border-radius: 4px;
   height: 41px;
+  margin-bottom: 15px;
 }
 
 .form-control:focus, .form-select:focus {
@@ -944,6 +945,7 @@ b {
 
 .form-label {
   font-size: 13px;
+  margin-bottom: 15px;
 }
 
 textarea.form-control {
