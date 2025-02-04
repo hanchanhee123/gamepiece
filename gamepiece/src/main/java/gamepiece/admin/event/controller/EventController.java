@@ -135,7 +135,7 @@ public class EventController {
 	@GetMapping("/addEvent")
 	public String AddEvent(Model model) {
 		
-		model.addAttribute("title", "이벤트목록 추가");
+		model.addAttribute("title", "이벤트 추가");
 		
 		return "admin/event/addEvent";
 	}
