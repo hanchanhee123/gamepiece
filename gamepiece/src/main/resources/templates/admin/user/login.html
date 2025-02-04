@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>관리자 로그인 화면</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/logo/GP_logo.png" />
+        <!-- Template CSS -->
+        <link href="/manage/assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <main>
+            <header class="main-header style-2 navbar">
+                <div class="col-brand" onclick="location.href='/admin'">
+                    <a class="brand-wrap">
+                        <img src="/manage/assets/imgs/theme/GamePeace_logo.png" class="logo"/>
+                    </a>
+                </div>
+            </header>
+            <section class="content-main mt-80 mb-80">
+                <div class="card mx-auto card-login">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4 text-center">로그인</h4>
+                        <hr/>
+                        
+                        <form id="adminLoginForm" action="/admin/loginPro" method="post">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="id" name="id" value="id01" placeholder="아이디를 입력해주세요." />
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" class="form-control" id="userPswd" name="userPswd" value="pw01" placeholder="비밀번호를 입력해주세요" />
+                            </div>
+                            <div class="mb-4">
+                                <button type="button" id="adminLoginBtn" class="btn btn-primary d-block mx-auto">로그인</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <footer class="main-footer font-xs">
+		         <div class="row pb-30 pt-15">
+		             <div class="col-sm-6">
+		             	Copyright © gamepiece. 2025
+		             </div>
+		             <div class="col-sm-6">
+		                 <div class="text-sm-end">All rights reserved</div>
+		             </div>
+		         </div>
+		     </footer>
+        </main>
+        <script src="/manage/assets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/manage/assets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/manage/assets/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/manage/assets/js/main.js?v=1.1" type="text/javascript"></script>
+        
+        <script>
+			
+        const urlParams = new URLSearchParams(window.location.search);
+        const msg = urlParams.get('msg');
+        
+        if (msg) {
+            alert(msg);
+        }
+    		
+		$('#adminLoginBtn').click(function() {
+		    adminLoginSubmit();
+		});
+
+		$('#adminLoginForm').keyup(function(event) {
+		    if (event.keyCode === 13) {
+		    	adminLoginSubmit();
+		    }
+		});
+
+		function adminLoginSubmit() {
+		    let isSubmit = true;
+		    $('#adminLoginForm input').each((idx, item) => {
+		        const inputValue = $(item).val();
+		        if (!inputValue) {
+		            isSubmit = false;
+		            $(item).focus();
+		            return false;
+		        }
+		    });
+
+		    if (isSubmit) $('#adminLoginForm').submit();
+		}
+        
+		</script>
+	</body>
+</html>
