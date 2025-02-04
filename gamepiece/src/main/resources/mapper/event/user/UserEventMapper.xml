@@ -214,7 +214,7 @@
 			ev_cd=#{evCd};
 	</select>
 	
-	<insert id="insertParticipant" parameterType="gamepiece.user.event.domain.Event">
+	<insert id="addParticipant" parameterType="gamepiece.user.event.domain.Event">
 		INSERT INTO event_participations
 		  (evp_no, ev_cd, id, ev_participate_ymd)
 		VALUES 
