@@ -24,7 +24,7 @@ public class ReportServiceImpl implements ReportService{
 		private final DisposalMapper disposalMapper;
 
 		@Override
-		public PageInfo<Report> getInquiryList(Pageable pageable) {
+		public PageInfo<Report> getReportList(Pageable pageable) {
 		
 			int rowCnt = reportmapper.getCntReport();
 			List<Report> reportList = reportmapper.getReportList(pageable);

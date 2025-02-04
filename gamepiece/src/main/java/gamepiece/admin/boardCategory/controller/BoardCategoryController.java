@@ -89,7 +89,7 @@ public class BoardCategoryController {
 	
 	
 	@GetMapping("/list")
-	public String BoardCategoryList(Pageable pageable, Model model) {
+	public String getBoardCategoryList(Pageable pageable, Model model) {
 		
 	
 		
