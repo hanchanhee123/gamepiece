@@ -31,7 +31,7 @@
 						</div>
 						<div class="cart-total">
 							<th:block th:if="${totalPrice != null}">
-								<li th:text="${'예상금액 : ₩' + totalPrice}">예상금액 : ₩199,400</li>
+								<li th:text="${'예상금액 : ₩' + totalPrice}"></li>
 							</th:block>
 							<th:block th:unless="${totalPrice != null}">
 								<li>예상금액 : ₩0</li>
