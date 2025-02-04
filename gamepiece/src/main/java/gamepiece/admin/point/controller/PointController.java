@@ -104,7 +104,7 @@ public class PointController {
 		return "admin/points/pointshopList";
 	}
 
-	@GetMapping("/modify")
+	@PostMapping("/modify")
 	public String modifyMember(Point point, @RequestPart(name="files", required = false) MultipartFile files,
 								RedirectAttributes reAttr) {
 		
