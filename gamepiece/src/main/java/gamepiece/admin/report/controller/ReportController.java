@@ -99,9 +99,9 @@ public class ReportController {
 		
 	
 	@GetMapping("/list")
-	public String reportList(Pageable pageable, Model model) {
+	public String getReportList(Pageable pageable, Model model) {
 		
-		var pageInfo = reportService.getInquiryList(pageable);
+		var pageInfo = reportService.getReportList(pageable);
 		
 		List<Report> reportList = pageInfo.getContents();
 	    int currentPage = pageInfo.getCurrentPage();

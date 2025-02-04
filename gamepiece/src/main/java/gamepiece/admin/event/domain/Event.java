@@ -18,7 +18,6 @@ public class Event {
 	private int evWinnersNum;
 	private String adminId;
 	private String regYmd;
-	/* private String evImg; */
 	private String evpNo;
 	private String id;
 	private String evParticipateYmd;

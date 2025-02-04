@@ -702,53 +702,65 @@ public class BoardServiceImpl implements BoardService{
 
 
 
-
+	@Override
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	public Map<String, Object> addBoardLike(String boardNum, String userId, String likesType) {
 	    Map<String, Object> result = new HashMap<>();
-
-	    // 이미 좋아요/싫어요를 했는지 확인
-	    Map<String, String> params = new HashMap<>();
-	    params.put("boardNum", boardNum);
-	    params.put("userId", userId);
-	    params.put("likesType", likesType);
-
-	    BoardLikes existingLike = boardLikeMapper.getBoardLikesByUser(params);
-
-	    if (existingLike != null) {
-	        // 이미 좋아요/싫어요가 있으면 취소
-	        boardLikeMapper.removeBoardLikes(boardNum, userId, likesType);
-	        
-	        // 카운트 감소
-	        if ("좋아요".equals(likesType)) {
+	    
+	    // 현재 클릭한 타입의 반대 타입
+	    String oppositeType = "좋아요".equals(likesType) ? "싫어요" : "좋아요";
+	    
+	    // 반대 타입의 좋아요/싫어요가 있는지 확인
+	    Map<String, String> oppositeParams = new HashMap<>();
+	    oppositeParams.put("boardNum", boardNum);
+	    oppositeParams.put("userId", userId);
+	    oppositeParams.put("likesType", oppositeType);
+	    
+	    // 반대 타입이 있으면 삭제
+	    BoardLikes oppositeLike = boardLikeMapper.getBoardLikesByUser(oppositeParams);
+	    if (oppositeLike != null) {
+	        boardLikeMapper.removeBoardLikes(boardNum, userId, oppositeType);
+	        if ("좋아요".equals(oppositeType)) {
 	            allBoardMapper.cancelLikeCount(boardNum);
 	        } else {
 	            allBoardMapper.cancelDisLikeCount(boardNum);
 	        }
-	        
-	        result.put("success", true);
+	    }
+	    
+	    // 현재 타입 처리
+	    Map<String, String> currentParams = new HashMap<>();
+	    currentParams.put("boardNum", boardNum);
+	    currentParams.put("userId", userId);
+	    currentParams.put("likesType", likesType);
+	    
+	    BoardLikes currentLike = boardLikeMapper.getBoardLikesByUser(currentParams);
+	    
+	    if (currentLike != null) {
+	        // 취소
+	        boardLikeMapper.removeBoardLikes(boardNum, userId, likesType);
+	        if ("좋아요".equals(oppositeType)) {
+	            allBoardMapper.cancelLikeCount(boardNum);
+	        } else {
+	            allBoardMapper.cancelDisLikeCount(boardNum);
+	        }
 	        result.put("action", "remove");
-	        log.info("좋아요/싫어요 취소 : {}", result);
 	    } else {
-	        // 새로운 좋아요/싫어요 추가
+	        // 추가
 	        BoardLikes boardLikes = new BoardLikes();
 	        boardLikes.setBoardNum(boardNum);
 	        boardLikes.setUserId(userId);
 	        boardLikes.setLikesType(likesType);
-
-	        int addResult = boardLikeMapper.addBoardLikes(boardLikes);
-
-	        // 카운트 증가
+	        boardLikeMapper.addBoardLikes(boardLikes);
+	        
 	        if ("좋아요".equals(likesType)) {
 	            allBoardMapper.addLikeCount(boardNum);
 	        } else {
 	            allBoardMapper.addDisLikeCount(boardNum);
 	        }
-
-	        result.put("success", true);
 	        result.put("action", "add");
-	        log.info("좋아요/싫어요 추가 : {}", result);
 	    }
-
+	    
+	    result.put("success", true);
 	    return result;
 	}
 

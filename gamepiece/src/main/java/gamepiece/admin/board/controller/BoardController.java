@@ -213,7 +213,7 @@ public class BoardController {
 	
 	
 	@GetMapping("/list")
-	public String BoardList(Pageable pageable, Model model) {        
+	public String getBoardList(Pageable pageable, Model model) {        
 	  
 	    var pageInfo = boardService.getBoardsList(pageable);   
 

@@ -188,7 +188,7 @@ public class InquiryController {
 	
 	
 	@GetMapping("/list")
-	public String inquiryList(Pageable pageable, Model model) {
+	public String getInquiryList(Pageable pageable, Model model) {
 		
 	    var pageInfo = inquiryService.getInquiryList(pageable);  
 	    

@@ -5,10 +5,11 @@
 	<resultMap type="gamepiece.admin.point.domain.Point" id="pointshopResultMap">
 			<id column="ps_cd" 			property="itemCd"/>
 			<result column="ps_cate_cd" property="itemCate" />
-			<result column="cate_nm" property="cateName" />
-			<result column="ps_nm" 	property="itemName" />
+			<result column="cate_nm" 	property="cateName" />
+			<result column="ps_nm" 		property="itemName" />
+			<result column="file_path" 	property="filePath" />
 			<result column="file_idx" 	property="fileIdx" />
-			<result column="ps_price" 		property="itemPrice" />
+			<result column="ps_price" 	property="itemPrice" />
 			<result column="admin_id" 	property="adminId" />
 			<result column="reg_ymd" 	property="regYmd" />
 			<result column="is_delete"  property="isDelete" />
@@ -29,12 +30,13 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
-			ps.file_idx,
-			pc.cate_nm,
-			ps.is_delete
+			f.file_path,
+			pc.cate_nm
 		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		<where>
 			<if test="searchCate != null and searchCate != ''">
 				ps.ps_cate_cd=#{searchCate}
@@ -50,16 +52,18 @@
 	
 	<select id="findAll" resultMap="pointshopResultMap" parameterType="Pageable">
 		/* 포인트샵 아이템 목록 조회 */
-		SELECT 
-			ps_cd, 
-			ps_cate_cd, 
-			ps_nm, 
-			file_idx,
-			ps_price,
-			admin_id,
-			reg_ymd
-		FROM 
-			point_shop
+		SELECT
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			f.file_path,
+			pc.cate_nm
+		FROM
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
@@ -83,12 +87,21 @@
 	</select>
 	
 	
-	<select id="getItemInfoByItemName" resultMap="pointshopResultMap" >
+	<select id="getItemInfoByItemCd" resultMap="pointshopResultMap" >
 		/* 특정 아이템 조회 */
 		SELECT
-			*
+			ps.ps_cd,
+			ps.ps_cate_cd,
+			ps.ps_nm,
+			ps.ps_price,
+			f.file_idx,
+			f.file_path,
+			pc.cate_nm
 		FROM
-			point_shop ps
+			point_shop ps INNER JOIN files f
+			ON ps.file_idx = f.file_idx
+			INNER JOIN pointshop_categories pc
+			ON pc.cate_cd = ps.ps_cate_cd
 		WHERE
 			ps.ps_cd = #{itemCd};
 	</select>
@@ -113,7 +126,7 @@
 				admin_id=#{adminId},
 			</if>
 			<if test="regYmd != null and regYmd > ''">
-				reg_ymd=#{regYmd},
+				reg_ymd=#{regYmd}
 			</if>
 		</trim>
 		WHERE 

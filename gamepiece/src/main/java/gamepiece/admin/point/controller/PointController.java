@@ -105,24 +105,24 @@ public class PointController {
 	}
 
 	@GetMapping("/modify")
-	public String modifyMember(Point point, RedirectAttributes reAttr) {
-		System.out.println(point);
-		pointService.modifyItem(point);
+	public String modifyMember(Point point, @RequestPart(name="files", required = false) MultipartFile files,
+								RedirectAttributes reAttr) {
+		
+		pointService.modifyItem(point, files);
 
-		log.info("Point : {}", point);
-
-		reAttr.addFlashAttribute("ItemName", point.getItemName());
+		reAttr.addAttribute("ItemCd", point.getItemCd());
 
 		return "redirect:/admin/point/list";
 	}
 
 	@GetMapping("/detail")
-	public String pointDetail(@RequestParam(value = "itemCode") String itemCode, String ps_cd, Model model) {
+	public String pointDetail(@RequestParam(value = "itemCode") String itemCd, String ps_cd, Model model) {
 
-		var ItemInfo = pointService.getItemInfoByItemName(itemCode);
+		var ItemInfo = pointService.getItemInfoByItemCd(itemCd);
+		// 아이템 판매 중지 
 		pointService.inactiveItem(ps_cd);
 
-		System.out.println(itemCode);
+		System.out.println(itemCd);
 
 		List<PointCategories> test = new ArrayList<>();
 		test = pointService.findCate();

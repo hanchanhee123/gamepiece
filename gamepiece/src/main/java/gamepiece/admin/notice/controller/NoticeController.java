@@ -168,7 +168,7 @@ public class NoticeController {
 	
 	
 	@PostMapping("/remove")
-	public String removeInquiry(@RequestParam(name="noticeNum") int noticeNum, RedirectAttributes rttr) {
+	public String removeNotice(@RequestParam(name="noticeNum") int noticeNum, RedirectAttributes rttr) {
 	    int result = noticeService.removeNotice(noticeNum);
 
 	
@@ -182,7 +182,7 @@ public class NoticeController {
 	
 	@PostMapping("/modify")
 	@Transactional
-	public String modifyInquiry(Notice notice, 
+	public String modifyNotice(Notice notice, 
 	                          @RequestParam(required = false) MultipartFile[] files,
 	                          RedirectAttributes rttr) {
 	    try {
@@ -287,7 +287,7 @@ public class NoticeController {
 	
 	
 	@GetMapping("/list")
-	public String noticeList(Pageable pageable, Model model) {
+	public String getNoticeList(Pageable pageable, Model model) {
 		
 		var pageInfo = noticeService.getNoticeList(pageable);
 
