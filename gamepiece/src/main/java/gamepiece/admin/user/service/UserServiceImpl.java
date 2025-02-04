@@ -1,5 +1,6 @@
 package gamepiece.admin.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,26 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 	
 	private final AdminUserMapper adminUserMapper;
+	
+	// 로그인 (회원 아이디, 비밀번호 확인)
+	@Override
+	public Map<String, Object> checkUser(String id, String userPswd) {
+
+		boolean isMatched = false;
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		User userInfo = adminUserMapper.checkUser(id);
+		if(userInfo != null) {
+			String checkPw = userInfo.getUserPswd();
+			if(checkPw.equals(userPswd)) {
+				isMatched = true;
+				resultMap.put("userInfo", userInfo);
+			}
+		}
+		resultMap.put("isMatched", isMatched);
+		
+		return resultMap;
+	}
 	
 	// 전체 회원정보 조회
 	@Override

@@ -9,6 +9,9 @@ import gamepiece.util.Pageable;
 
 public interface UserService {
 	
+	// 로그인 (회원 아이디, 비밀번호 확인)
+	public Map<String, Object> checkUser(String id, String userPswd);
+
 	// 전체 회원정보 조회
 	public PageInfo<User> getAllUserInfo(Pageable pageable);
 	
@@ -32,5 +35,5 @@ public interface UserService {
 
 	// 회원 탈퇴
 	public void removeUser(String id);
-	
+
 }
