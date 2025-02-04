@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-// Spring Framework
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -40,7 +38,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
@@ -62,12 +59,10 @@ import gamepiece.user.board.service.BoardService;
 import gamepiece.user.board.util.BoardFilesUtils;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
-// Jakarta EE
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-// Lombok
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -457,7 +452,7 @@ public class BoardController {
 	
 	
 	@PostMapping("/allsearchList")
-	public String boardsearchList(
+	public String allBoardsearch(
 		    @RequestParam(value="searchValue") String searchValue,
 		    Pageable pageable,
 		    Model model) {
@@ -479,7 +474,7 @@ public class BoardController {
 	
 	
 	@GetMapping("/allsearchList")
-	public String boardSearchList(
+	public String allBoardSearchList(
 					
 							        @RequestParam(value="searchValue", required = false) String searchValue,
 							        Pageable pageable,
@@ -653,6 +648,13 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, Object> handleBoardLike(@RequestParam String boardNum, HttpSession session) {
 	    String userId = (String) session.getAttribute("SID");
+	    if(userId == null) {
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("success", false);
+	        response.put("message", "로그인이 필요합니다.");
+	        return response;
+	    }
+	    
 	    Map<String, Object> result = boardService.addBoardLike(boardNum, userId, "좋아요");
 	    log.info("좋아요 처리 결과: {}", result);
 	    return result;
@@ -662,11 +664,17 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, Object> handleBoardDislike(@RequestParam String boardNum, HttpSession session) {
 	    String userId = (String) session.getAttribute("SID");
+	    if(userId == null) {
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("success", false);
+	        response.put("message", "로그인이 필요합니다.");
+	        return response;
+	    }
+
 	    Map<String, Object> result = boardService.addBoardLike(boardNum, userId, "싫어요");
 	    log.info("싫어요 처리 결과: {}", result);
 	    return result;
 	}
-
 	@PostMapping("/comment/like")
 	@ResponseBody
 	public Map<String, Object> addCommentLike(@RequestParam String commentNum, HttpSession session) {
@@ -696,18 +704,20 @@ public class BoardController {
 	    String userId = (String) session.getAttribute("SID");
 	    if (userId != null) {
 	        // 게시글 좋아요/싫어요 상태 확인
-	        Map<String, String> likeParams = new HashMap<>();
-	        likeParams.put("boardNum", boardNum);
-	        likeParams.put("userId", userId);
-	        likeParams.put("likesType", "좋아요");
-	        BoardLikes likeStatus = boardLikeMapper.getBoardLikesByUser(likeParams);
+	    	  Map<String, String> likeParams = new HashMap<>();
+	          likeParams.put("boardNum", boardNum);
+	          likeParams.put("userId", userId);
+	          likeParams.put("likesType", "좋아요");
+	          BoardLikes likeStatus = boardLikeMapper.getBoardLikesByUser(likeParams);
+	          model.addAttribute("boardLikeStatus", likeStatus);
 
-	        Map<String, String> dislikeParams = new HashMap<>();
-	        dislikeParams.put("boardNum", boardNum);
-	        dislikeParams.put("userId", userId);
-	        dislikeParams.put("likesType", "싫어요");
-	        BoardLikes dislikeStatus = boardLikeMapper.getBoardLikesByUser(dislikeParams);
-
+	          // 게시글 싫어요 상태 확인
+	          Map<String, String> dislikeParams = new HashMap<>();
+	          dislikeParams.put("boardNum", boardNum);
+	          dislikeParams.put("userId", userId);
+	          dislikeParams.put("likesType", "싫어요");
+	          BoardLikes dislikeStatus = boardLikeMapper.getBoardLikesByUser(dislikeParams);
+	          model.addAttribute("boardDislikeStatus", dislikeStatus);
 	     // 댓글 좋아요/싫어요 상태 확인
 	        List<BoardComment> comments = pageInfo.getContents();
 	        Map<String, Map<String, BoardCommentLikes>> commentLikeStatuses = new HashMap<>(); 
@@ -854,7 +864,7 @@ public class BoardController {
 	
 
 	@GetMapping("")
-	public String allBoardListView(Pageable pageable, Model model) {
+	public String getAllBoardListView(Pageable pageable, Model model) {
 
 		var pageInfo = boardService.getAllBoardsList(pageable);
 		List<Board> allBoardList = pageInfo.getContents();
@@ -876,7 +886,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/inquiry")
-	public String inquiryListView(Pageable pageable, Model model) {
+	public String getInquiryListView(Pageable pageable, Model model) {
 
 		var pageInfo = boardService.getInquiryList(pageable);
 		List<Inquiry> inquiryList = pageInfo.getContents();
@@ -914,7 +924,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/free")
-	public String FreeboardListView(Pageable pageable, Model model) {
+	public String getFreeboardListView(Pageable pageable, Model model) {
 
 		var pageInfo = boardService.getFreeBoardsList(pageable);
 		List<Board> freeBoardList = pageInfo.getContents();
@@ -934,7 +944,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/attack")
-	public String AttackboardListView(Pageable pageable, Model model) {
+	public String getAttackboardListView(Pageable pageable, Model model) {
 
 		var pageInfo = boardService.getAttackBoardsList(pageable);
 		List<Board> attackBoardList = pageInfo.getContents();
@@ -954,7 +964,7 @@ public class BoardController {
 	}
 
 	@GetMapping("/info")
-	public String InfoboardListView(Pageable pageable, Model model) {
+	public String getInfoboardListView(Pageable pageable, Model model) {
 
 		var pageInfo = boardService.getInfoBoardsList(pageable);
 		List<Board> infoBoardList = pageInfo.getContents();

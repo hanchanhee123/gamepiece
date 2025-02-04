@@ -24,6 +24,6 @@ public interface ReportService {
 	Disposal getDisposalInfo(String reportNo);
 	
 	//신고목록
-	PageInfo<Report> getInquiryList(Pageable pageable);
+	PageInfo<Report> getReportList(Pageable pageable);
 
 }
