@@ -22,6 +22,20 @@
 		<result column="lgn_dt" property="lgnDt"/>
 		<result column="inactive_days" property="inactiveDays"/>
 	</resultMap>
+	
+	<!-- 로그인 (회원 아이디-관리자 확인) -->
+	<select id="checkUser" resultMap="userResultMap">
+		SELECT
+			*
+		FROM
+			user
+		WHERE
+			id = 'id01'
+			AND
+			authrt_cd = 'cd_01'
+			AND
+			is_delete = 'active';
+	</select>
 
 	<!-- 전체 회원정보 조회 -->
 	<select id="getAllUserInfo" parameterType="Pageable" resultMap="userResultMap">
