@@ -49,7 +49,7 @@ public class UserTournamentController {
 		if(year == null && month == null) {
 			LocalDate now = LocalDate.now();
 			year = Integer.toString(now.getYear());
-			month = now.getMonth().toString();
+			month = String.format("%02d", now.getMonthValue());
 		}
 		
 		log.info("month : {}, year : {}",month,year);
@@ -76,7 +76,7 @@ public class UserTournamentController {
 		if(year == null && month == null) {
 			LocalDate now = LocalDate.now();
 			year = Integer.toString(now.getYear());
-			month = now.getMonth().toString();
+			month = String.format("%02d", now.getMonthValue());
 		}
 		
 		String userId = (String) session.getAttribute("SID");
@@ -107,7 +107,7 @@ public class UserTournamentController {
 		if(year == null && month == null) {
 			LocalDate now = LocalDate.now();
 			year = Integer.toString(now.getYear());
-			month = now.getMonth().toString();
+			month = String.format("%02d", now.getMonthValue());
 		}
 		
 		String userId = (String) session.getAttribute("SID");
