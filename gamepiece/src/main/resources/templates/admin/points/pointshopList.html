@@ -46,7 +46,7 @@
                                 <div class="card card-product-grid">
                                 	<input type="hidden" th:value="${l.itemCd}">
                                     <a href="#" class="img-wrap"> 
-                                    	<img th:src="@{/assets/imgs/logo/GP_logo.png}" alt="Product" /> 
+                                    	<img th:src="${l.file}" alt="Product" /> 
                                     </a>
                                     <div class="info-wrap">
                                         <a href="#" class="title text-truncate" th:text="${l.itemName}">Haagen-Dazs Caramel Cone Ice</a>
