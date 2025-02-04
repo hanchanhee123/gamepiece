@@ -58,7 +58,8 @@ public class PointServiceImpl implements PointService {
 	
 	@Override
 	public void modifyItem(Point point, MultipartFile files) {
-		if(files != null && !files.isEmpty()) {			
+		
+		if(files != null && !files.isEmpty()) {
 			FileDto newFileInfo = fileUtils.uploadFile(files);
 			if(newFileInfo != null) {
 				String fileIdx = point.getFileIdx();
