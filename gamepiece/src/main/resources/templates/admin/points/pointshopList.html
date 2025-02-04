@@ -46,10 +46,10 @@
                                 <div class="card card-product-grid">
                                 	<input type="hidden" th:value="${l.itemCd}">
                                     <a href="#" class="img-wrap"> 
-                                    	<img th:src="${l.file}" alt="Product" /> 
-                                    </a>
+                                    	<img class="item-img" style="width: 200px; height: 200px;" th:src="${l.filePath}" alt="Product" /> 
+        							</a>
                                     <div class="info-wrap">
-                                        <a href="#" class="title text-truncate" th:text="${l.itemName}">Haagen-Dazs Caramel Cone Ice</a>
+                                        <a href="#" class="title text-truncate" th:text="${l.itemName}"></a>
                                         <div class="price mb-2" th:text="${l.itemPrice}"></div>
                                         <!-- price.// -->
                                         <a th:href="@{/admin/point/detail(itemCode=${l.itemCd})}" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> 수정 </a>
@@ -110,7 +110,7 @@
 				const searchLink = $('.page-link');
 				console.log(searchLink);
 				
-				const $form = $('<form />', { 'action' : '/admin/point/searchList', 'method': 'post'});
+				const $form = $('<form />', { 'action' : '/admin/point/searchList', 'method': 'get'});
 				const $searchCate = 
 						$('<input />', {'type':'hidden', 'name' : 'searchCate'}).val(searchCate);
 				const $searchValue = 

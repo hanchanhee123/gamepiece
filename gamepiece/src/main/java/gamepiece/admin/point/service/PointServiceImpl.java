@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
 import gamepiece.admin.point.mapper.PointshopMapper;
@@ -58,10 +57,28 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
-	public void modifyItem(Point point) {
+	public void modifyItem(Point point, MultipartFile files) {
+		if(files != null && !files.isEmpty()) {			
+			FileDto newFileInfo = fileUtils.uploadFile(files);
+			if(newFileInfo != null) {
+				String fileIdx = point.getFileIdx();
+				if(fileIdx != null && !"".equals(fileIdx)) {					
+					FileDto fileInfo = fileMapper.getFileInfoByIdx(fileIdx);
+					boolean isDelete = fileUtils.deleteFileByPath(fileInfo.getFilePath());
+					if(isDelete) {
+						newFileInfo.setFileIdx(fileIdx);
+						fileMapper.modifyfile(newFileInfo);
+					}
+				}else {
+					fileIdx = commonMapper.getPrimaryKey("file_", "files", "file_idx");
+					newFileInfo.setFileIdx(fileIdx);
+					fileMapper.addfile(newFileInfo);
+				}
+				
+			}
+		}
 		pointshopMapper.modifyItem(point);
 	}
-	
 	@Override
 	public void inactiveItem(String ps_cd) {
 		pointshopMapper.inactiveItem(ps_cd);
@@ -80,9 +97,9 @@ public class PointServiceImpl implements PointService {
 	}
 	
 	@Override
-	public Point getItemInfoByItemName(String itemName) {
+	public Point getItemInfoByItemCd(String itemCd) {
 		
-		return pointshopMapper.getItemInfoByItemName(itemName);
+		return pointshopMapper.getItemInfoByItemCd(itemCd);
 	}
 	@Override
 	public PageInfo<Point> findAll(Pageable pageable) {

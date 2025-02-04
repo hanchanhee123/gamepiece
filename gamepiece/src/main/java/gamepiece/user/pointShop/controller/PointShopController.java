@@ -275,7 +275,7 @@ public class PointShopController {
 		
 		List<Point> etcList = etcInfo.getContents();
 		
-		List<Point> backList = backInfo.getContents(); 
+		List<Point> backList = backInfo.getContents();
 		
 		model.addAttribute("purchaseList", purchaseList);
 		

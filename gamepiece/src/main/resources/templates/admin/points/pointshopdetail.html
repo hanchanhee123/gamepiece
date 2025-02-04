@@ -62,7 +62,8 @@
                                 <div class="col-md-9">
                                     <div class="mb-4">
                                         <label class="form-label">이미지</label>
-                                        <input class="form-control" type="file">
+                                        <input class="form-control" type="file" id="files" name="files">
+                                        <input type="hidden" name="fileIdx" th:value="${ItemInfo.fileIdx}"/>
                                     </div>
                                 </div> <!-- col.// -->
                                 <div>
