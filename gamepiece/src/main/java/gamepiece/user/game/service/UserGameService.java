@@ -40,7 +40,7 @@ public interface UserGameService {
 	
 	List<UserGame> getUserCartList(String id);
 	
-	Integer cartTotalPrice();
+	Integer cartTotalPrice(String id);
 	
 	List<UserGame> getPaymentList();
 	
