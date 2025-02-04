@@ -51,7 +51,7 @@ public class UserController {
 			session.setAttribute("SID", userInfo.getId());
 			session.setAttribute("SNAME", userInfo.getUserNm());
 			
-			viewName = "redirect:/";
+			viewName = "redirect:/main";
 			
 			String sid = (String) session.getAttribute("SID");
 			
@@ -79,7 +79,7 @@ public class UserController {
 		
 		session.invalidate();
 		
-		return "redirect:/";
+		return "redirect:/main";
 	}
 	
 	// 회원가입
@@ -188,7 +188,7 @@ public class UserController {
 		
 		session.invalidate();
 		
-		return "redirect:/";
+		return "redirect:/main";
 	}
 	
 }
