@@ -11,7 +11,7 @@ import gamepiece.util.Pageable;
 
 public interface PointService {
 	//특정 아이템 조회
-	Point getItemInfoByItemName(String itemName);
+	Point getItemInfoByItemCd(String itemCd);
 	
 	// 아이템 목록 조회
 	PageInfo<Point> findAll(Pageable pageable);
@@ -21,8 +21,6 @@ public interface PointService {
 	
 	void addItem(Point point,MultipartFile files);
 	
-	void modifyItem(Point point);
-	
 	void removeItem(String ps_cd);
 	
 	void inactiveItem(String ps_cd);
@@ -30,5 +28,7 @@ public interface PointService {
 	void logcount(String ps_cd);
 	
 	PageInfo<Point> searchList(String searchCate, String searchValue, Pageable pageable);
+
+	void modifyItem(Point point, MultipartFile files);
 	
 }

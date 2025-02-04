@@ -11,7 +11,7 @@ import gamepiece.util.Pageable;
 
 @Mapper
 public interface PointshopMapper {
-	Point getItemInfoByItemName(String itemName);
+	Point getItemInfoByItemCd(String itemCd);
 	
 	List<Point> findAll(Pageable pageable);
 	
