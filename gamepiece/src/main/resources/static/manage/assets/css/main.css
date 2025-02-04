@@ -550,15 +550,15 @@ b {
 }
 
 .menu-aside .menu-item.active .icon {
-  color: #3BB77E;
+  color: #007bff;
 }
 
 .menu-aside .menu-item.active .menu-link {
-  background-color: rgba(59, 183, 126, 0.2);
+  background-color: rgba(0, 123, 255, 0.2);
 }
 
 .menu-aside .menu-item.active .submenu a.active {
-  color: #3BB77E !important;
+  color: #007bff !important;
 }
 
 .menu-aside .menu-link {
@@ -666,7 +666,7 @@ b {
 
 .pagination-area .page-item.active .page-link, .pagination-area .page-item:hover .page-link {
   color: #fff;
-  background: #3BB77E;
+  background: #007bff;
 }
 
 .pagination-area .page-item .page-link {
@@ -724,7 +724,7 @@ b {
   padding: 10px 40px;
   color: #ffffff;
   border: none;
-  background-color: #3BB77E;
+  background-color: #007bff;
   border-radius: 4px;
 }
 
@@ -735,7 +735,7 @@ b {
 }
 
 .btn.btn-primary:hover {
-  background-color: #29A56C;
+  background-color: #007bff;
 }
 
 .btn.btn-secondary {
@@ -756,12 +756,12 @@ b {
 .btn.btn-md {
   padding: 0.5rem 0.95rem;
   font-weight: 500;
-  background-color: #3BB77E;
+  background-color: #007bff;
   color: #ffffff;
 }
 
 .btn.btn-md:hover {
-  background-color: #29A56C;
+  background-color: #007bff;
 }
 
 .btn.btn-xs {
@@ -848,7 +848,7 @@ b {
 }
 
 .btn-light:hover {
-  background-color: #3BB77E;
+  background-color: #007bff;
   color: #fff !important;
 }
 
@@ -889,13 +889,13 @@ b {
 }
 
 .btn-brand {
-  background-color: #3BB77E;
+  background-color: #007bff;
   border: 0;
   color: #fff;
 }
 
 .btn-brand:hover {
-  background-color: #29A56C;
+  background-color: #007bff;
   color: #fff;
 }
 
@@ -970,7 +970,7 @@ textarea.form-control {
 }
 
 .searchform button:hover {
-  background-color: #3BB77E;
+  background-color: #007bff;
 }
 
 .searchform button:hover i {
@@ -984,8 +984,8 @@ textarea.form-control {
 }
 
 .form-check-input:checked {
-  background-color: #3BB77E;
-  border-color: #3BB77E;
+  background-color: #007bff;
+  border-color: #007bff;
 }
 
 /*Nice select*/
@@ -1362,7 +1362,7 @@ textarea.form-control {
 }
 
 .progress-bar {
-  background-color: #3BB77E;
+  background-color: #007bff;
 }
 
 .new-member-list {
@@ -1393,7 +1393,7 @@ textarea.form-control {
 }
 
 .verti-timeline .event-list.active .event-timeline-dot {
-  color: #3BB77E;
+  color: #007bff;
 }
 
 .verti-timeline .event-list:last-child {
@@ -1445,7 +1445,7 @@ textarea.form-control {
 
 .badge.bg-primary[href]:focus,
 .badge.bg-primary[href]:hover {
-  background-color: #3BB77E !important;
+  background-color: #007bff !important;
 }
 
 .badge.bg-light {
@@ -1458,13 +1458,13 @@ textarea.form-control {
 }
 
 .badge-soft-primary {
-  color: #3BB77E;
+  color: #007bff;
   background-color: rgba(85, 230, 150, 0.18);
 }
 
 .badge-soft-primary[href]:focus,
 .badge-soft-primary[href]:hover {
-  color: #3BB77E;
+  color: #007bff;
   text-decoration: none;
   background-color: rgba(85, 230, 150, 0.18);
 }
