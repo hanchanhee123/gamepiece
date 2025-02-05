@@ -7,7 +7,7 @@ import gamepiece.user.user.domain.User;
 @Mapper
 public interface UserMapper {
 	
-	// 로그인 (회원 아이디, 비밀번호 확인)
+	// 로그인 (회원 아이디 확인)
 	User checkUser(String id);
 	
 	// 사용자 로그 확인 (오늘 날짜)

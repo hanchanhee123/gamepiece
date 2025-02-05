@@ -30,6 +30,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
+			f.file_idx,
 			f.file_path,
 			pc.cate_nm
 		FROM
@@ -57,6 +58,7 @@
 			ps.ps_cate_cd,
 			ps.ps_nm,
 			ps.ps_price,
+			f.file_idx,
 			f.file_path,
 			pc.cate_nm
 		FROM
