@@ -190,6 +190,7 @@ public class UserGameController {
 		int totalPrice = userGameService.cartTotalPrice(id);
 		id = (String) session.getAttribute("SID");
 		
+		log.info("cartList : {}", cartList);
 		model.addAttribute("id", id);
         String avatar = userService.getUserAvatar(id);
         model.addAttribute("avatar", avatar);
@@ -207,6 +208,21 @@ public class UserGameController {
 									 Model model, HttpSession session) {
 		
 		userGameService.deleteGameCartList(id);
+		return "user/game/gameCartList";
+	}
+	
+	// 장바구니 선택 삭제
+	@GetMapping("/deleteGameCartItem")
+	public String deleteGameCartItem(@RequestParam(value="id") String id,
+									 @RequestParam(value="gameCode") String gameCode,
+									 Model model, HttpSession session) {
+		
+		userGameService.deleteGameCartItem(id, gameCode);
+		
+		List<UserGame> cartList = userGameService.getUserCartList(id);
+		
+		model.addAttribute("cartList", cartList);
+		
 		return "user/game/gameCartList";
 	}
 	
