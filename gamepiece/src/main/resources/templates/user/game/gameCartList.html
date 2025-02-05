@@ -37,7 +37,7 @@
 								<li>예상금액 : ₩0</li>
 							</th:block>
 							
-							<li>모든 제품 제거</li>
+							<li class="delete"><a th:href="@{/game/deleteGameCartList}">모든 제품 제거</a></li>
 						</div>
 					</div>
 					<div class="cart-continue">
@@ -61,6 +61,17 @@
 			const id = /*[[${id}]]*/"id";
 			
 			const $form = $('<form />', {'action' : '/game/paymentView', 'method' : 'get'});
+			const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+			$form.append($id);
+			$('body').append($form);
+			$form.submit();
+		})
+		
+		$('.delete').click(function(event) {
+			event.preventDefault();
+			const id = /*[[${id}]]*/"id";
+			
+			const $form = $('<form />', {'action' : '/game/deleteGameCartList', 'method' : 'get'});
 			const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
 			$form.append($id);
 			$('body').append($form);
