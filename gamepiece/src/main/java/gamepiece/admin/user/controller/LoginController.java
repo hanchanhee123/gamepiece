@@ -50,6 +50,7 @@ public class LoginController {
 			
 			session.setAttribute("SID", userInfo.getId());
 			session.setAttribute("SNAME", userInfo.getUserNm());
+			session.setAttribute("SGRD", userInfo.getAuthrtCd());
 			
 			viewName = "redirect:/admin/user/allUserInfo";
 			

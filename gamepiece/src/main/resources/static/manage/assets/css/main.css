@@ -246,11 +246,11 @@ table .form-check {
 }
 
 .text-brand {
-  color: #3BB77E !important;
+  color: #007BFF !important;
 }
 
 .bg-primary {
-  background-color: rgba(59, 183, 126, 0.2);
+  background-color: rgba(0, 123, 255, 0.2);
 }
 
 .bg-brand-2 {
@@ -258,15 +258,15 @@ table .form-check {
 }
 
 .text-primary {
-  color: #3BB77E !important;
+  color: #007BFF !important;
 }
 
 .bg-primary-light {
-  background-color: rgba(59, 183, 126, 0.2) !important;
+  background-color: rgba(0, 123, 255, 0.2) !important;
 }
 
 .dropdown-item.active, .dropdown-item:active {
-  background-color: #3BB77E;
+  background-color: #007BFF;
 }
 
 .screen-overlay {
@@ -416,7 +416,7 @@ table .form-check {
 }
 
 a {
-  color: #3BB77E;
+  color: #007BFF;
 }
 
 body {
@@ -703,8 +703,8 @@ b {
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #3BB77E;
-  background-color: rgba(59, 183, 126, 0.2);
+  color: #007BFF;
+  background-color: rgba(0, 123, 255, 0.2);
 }
 
 .btn {
@@ -765,7 +765,7 @@ b {
 }
 
 .btn.btn-xs {
-  background-color: #3BB77E;
+  background-color: #007BFF;
   color: #ffffff;
   border: none;
   font-size: 11px;
@@ -1799,7 +1799,7 @@ a[class*='card'] {
 }
 
 a[class*='card']:hover .title {
-  color: #3BB77E;
+  color: #007BFF;
 }
 
 /* ITEM LIST */
@@ -1813,7 +1813,7 @@ a[class*='card']:hover .title {
 }
 
 .itemlist:hover {
-  background-color: rgba(59, 183, 126, 0.075);
+  background-color: rgba(0, 123, 255, 0.075);
 }
 
 /* ITEMSIDE */
@@ -1849,7 +1849,7 @@ a[class*='card']:hover .title {
 }
 
 .itemside a.title:hover {
-  color: #3BB77E;
+  color: #007BFF;
 }
 
 a.itemside {
@@ -1903,7 +1903,7 @@ a.itemside:hover .title {
 }
 
 .card-product-grid a.title:hover {
-  color: #3BB77E;
+  color: #007BFF;
 }
 
 .card-product-grid:hover {
@@ -1939,7 +1939,7 @@ a.itemside:hover .title {
 .card-user .card-header {
   position: relative;
   height: 100px;
-  background-color: rgba(59, 183, 126, 0.2) !important;
+  background-color: rgba(0, 123, 255, 0.2) !important;
   text-align: center;
 }
 
@@ -2046,7 +2046,7 @@ ul.row, ul.row-sm {
   width: 7px;
   border-radius: 100%;
   height: 7px;
-  background: #3BB77E;
+  background: #007BFF;
 }
 
 .list-check {
@@ -2083,7 +2083,7 @@ ul.row, ul.row-sm {
 
 .list-normal li:before {
   content: "\2022";
-  color: #3BB77E;
+  color: #007BFF;
   display: inline-block;
   width: 1em;
   margin-left: -1em;
@@ -2104,7 +2104,7 @@ ul.row, ul.row-sm {
 }
 
 .list-menu a:hover {
-  color: #3BB77E;
+  color: #007BFF;
 }
 
 .cols-two {
@@ -3748,7 +3748,7 @@ body.offcanvas-active {
   line-height: 17px;
   display: block;
   padding: 0;
-  background-color: #3BB77E;
+  background-color: #007BFF;
 }
 
 .main-header .nav-item.dropdown {
@@ -3757,7 +3757,7 @@ body.offcanvas-active {
 
 .main-header .nav-link:hover {
   background-color: transparent;
-  color: #3BB77E;
+  color: #007BFF;
 }
 
 .main-header .col-search {
@@ -3785,7 +3785,7 @@ body.offcanvas-active {
 }
 
 .nav-item img.rounded-circle:hover {
-  border-color: #3BB77E;
+  border-color: #007BFF;
 }
 
 .content-header {
