@@ -21,6 +21,9 @@
 										<li th:text="${l.gameName}"></li>
 										<li th:text="${l.price}"></li>
 									</div>
+									<div>
+										<a href="#" class="deleteItem" style="text-decoration: none; color : gray;">제거</a>
+									</div>
 								</div>
 							</th:block>
 							<th:block th:if="${#lists.isEmpty(cartList)}">
@@ -77,6 +80,8 @@
 			$('body').append($form);
 			$form.submit();
 		})
+		
+		
 	</script>
 </th:block>
 </html>
