@@ -178,7 +178,6 @@ public class UserGameController {
 		
 		int totalPrice = userGameService.cartTotalPrice(id);
 		id = (String) session.getAttribute("SID");
-		log.info(id);
 		
 		model.addAttribute("id", id);
         String avatar = userService.getUserAvatar(id);
@@ -188,6 +187,14 @@ public class UserGameController {
 		model.addAttribute("cartList", cartList);
 		model.addAttribute("totalPrice", totalPrice);
 		
+		return "user/game/gameCartList";
+	}
+	
+	@GetMapping("/deleteGameCartList")
+	public String deleteGameCartList(@RequestParam(value="id") String id,
+									 Model model, HttpSession session) {
+		
+		userGameService.deleteGameCartList(id);
 		return "user/game/gameCartList";
 	}
 	
