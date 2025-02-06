@@ -7,6 +7,8 @@ package gamepiece.user.board.domain;
 
 
 
+import gamepiece.file.dto.FileDto;
+import gamepiece.user.user.domain.Avatar;
 import gamepiece.user.user.domain.User;
 import lombok.Data;
 
@@ -27,9 +29,11 @@ public class Board {
 	private String fileIdx;
 	private User userInfo; //유저정보
 	private BoardFiles FileInfo; //파일
+	private Avatar avatarInfo;
+	private FileDto fileDtoInfo;
 	
-
 	
+		
 	
 	
 }

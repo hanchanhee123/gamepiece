@@ -36,7 +36,12 @@
 
     </association>
     
-    
+     <association property="avatarInfo" javaType="gamepiece.user.user.domain.Avatar">
+        <id column="avatar_no" property="avatarNo"/>
+        <result column="avatar_yn" property="avatarYn"/>
+        <result column="ps_cd" property="psCd"/>
+        <result column="avatar_path" property="filePath"/>
+    </association>
   
 </resultMap>
 
