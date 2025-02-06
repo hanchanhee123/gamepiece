@@ -351,8 +351,8 @@ public class UserGameServiceImpl implements UserGameService {
 	}
 	
 	@Override
-	public void deleteGameCartItem(String id, String gameCode) {
-		int result = userGameMapper.deleteGameCartItem(id, gameCode);
+	public void deleteGameCartItem(String id, String cartCode) {
+		int result = userGameMapper.deleteGameCartItem(id, cartCode);
 		
 	}
 	
