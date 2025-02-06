@@ -9,6 +9,8 @@ package gamepiece.user.board.service;
 
 
 
+
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,6 +38,7 @@ import gamepiece.user.board.domain.Inquiry;
 import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
+import gamepiece.user.board.domain.NoticeFiles;
 import gamepiece.user.board.domain.Report;
 import gamepiece.user.board.mapper.AllBoardMapper;
 import gamepiece.user.board.mapper.AttackBoardMapper;
@@ -49,6 +52,7 @@ import gamepiece.user.board.mapper.InfoBoardMapper;
 import gamepiece.user.board.mapper.InquiryFilesMapper;
 import gamepiece.user.board.mapper.InquiryMapper;
 import gamepiece.user.board.mapper.InquiryResponeMapper;
+import gamepiece.user.board.mapper.NoticeFileMapper;
 import gamepiece.user.board.mapper.NoticeMapper;
 import gamepiece.user.board.mapper.ReportMapper;
 import gamepiece.user.board.util.BoardFilesUtils;
@@ -83,7 +87,7 @@ public class BoardServiceImpl implements BoardService{
 	private final BoardCommentLikeMapper boardCommentLikeMapper;
 	private final BoardFilesMapper boardFilesMapper;
 	private final InquiryFilesMapper inquiryFilesMapper;
-
+	private final NoticeFileMapper noticeFileMapper;
  
 	
 	@Override
@@ -984,6 +988,14 @@ public class BoardServiceImpl implements BoardService{
 		        inquiry.setInquiryFiles(files);  
 		    }
 		    return inquiry;
+		}
+
+
+
+		@Override
+		public List<NoticeFiles> getNoticeFiles(int noticeNum) {
+			// TODO Auto-generated method stub
+			return noticeFileMapper.getNoticeFiles(noticeNum);
 		}
 
 

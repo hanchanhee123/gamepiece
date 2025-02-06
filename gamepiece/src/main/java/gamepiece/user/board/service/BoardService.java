@@ -11,16 +11,18 @@ import gamepiece.user.board.domain.BoardComment;
 import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.user.board.domain.BoardsFiles;
 import gamepiece.user.board.domain.Inquiry;
+import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
+import gamepiece.user.board.domain.NoticeFiles;
 import gamepiece.user.board.domain.Report;
-import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface BoardService {
 	
 	
+    List<NoticeFiles> getNoticeFiles(int noticeNum);
 	
 	List<InquiryFiles> getInquiryFiles(String inquiryNum);
 	

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-
 import gamepiece.user.board.domain.BoardFiles;
 
 @Mapper

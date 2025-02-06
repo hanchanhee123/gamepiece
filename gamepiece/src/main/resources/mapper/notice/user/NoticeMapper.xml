@@ -113,8 +113,7 @@ WHERE
 	FROM 
 		ntc_mttr nm INNER JOIN user u 
 		ON nm.admin_id = u.id
-		LEFT JOIN files f 
-		ON nm.file_idx = f.file_idx
+		
 	WHERE
 		nm.ntc_no=#{noticeNum};
 		
