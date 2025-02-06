@@ -99,7 +99,16 @@ public class BoardController {
 
 	@GetMapping("/download")
 	public ResponseEntity<Resource> downloadFile(@RequestParam String fileIdx,
-	                                         HttpServletRequest request) {
+	                                         HttpServletRequest request
+	                                         , HttpSession session, Model model) {
+		
+
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
+		
+		
 	    try {
 	        AdminBoardFiles fileDto = adminBoardFileMapper.getFileInfoByIdx(fileIdx);
 	        if(fileDto == null) {
