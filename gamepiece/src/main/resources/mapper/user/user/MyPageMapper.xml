@@ -76,6 +76,8 @@
 		<result column="ev_winner_yn" property="evWinnerYn" />
 		<result column="ev_status" property="evStatus" />
 		<result column="user_nn" property="userNn"/>
+		<result column="file_idx" property="fileIdx" />
+		<result column="file_path" property="filePath" />
 	</resultMap>
 	
 	<!-- <resultMap type="gamepiece.user.game.domain.UserReview" id="UserReviewMap">
@@ -254,10 +256,15 @@
 	<!-- 마이페이지 - 참여한 이벤트 -->
 	<select id="myPageEvent" resultMap="EventResultMap">
 		SELECT
-			*
+			e.ev_nm,
+			e.ev_start_ymd,
+			e.ev_end_ymd,
+			f.file_path
 		FROM
 			`events` e INNER JOIN event_participations ep
 			USING (ev_cd)
+			INNER JOIN files f
+			ON e.file_idx = f.file_idx
 		WHERE
 			id = #{id}
 			AND

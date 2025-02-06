@@ -107,6 +107,7 @@ public class MyPageController {
 		return "아바타 저장 성공";
 	}
 	
+	// 내 리뷰
 	@GetMapping("/myPageReview")
 	public String myPageReview(Model model, HttpSession session) {
 		
@@ -132,6 +133,7 @@ public class MyPageController {
 		return "user/myPage/myPageReview";
 	}
 	
+	// 게임 결제/환불 내역
 	@GetMapping("/myPageRefundPayment")
 	public String myPageRefundPayment(Model model, HttpSession session) {
 		
@@ -153,6 +155,7 @@ public class MyPageController {
 		return "user/myPage/myPageRefundPayment";
 	}
 
+	// 내 이모티콘
 	@GetMapping("/myPageEmoticon")
 	public String myPageEmoticon(Model model, HttpSession session, Pageable pageable) {
 		
@@ -178,6 +181,7 @@ public class MyPageController {
 		return "user/myPage/myPageEmoticon";
 	}
 	
+	// 내 게시글
 	@GetMapping("/myPageBoard")
 	public String myPageBoard(Model model, HttpSession session) {
 		
@@ -205,6 +209,7 @@ public class MyPageController {
 		return "user/myPage/myPageBoard";
 	}
 	
+	// 내 문의글
 	@GetMapping("/myPageInquiry")
 	public String myPageInquiry(Model model, HttpSession session) {
 		
@@ -230,6 +235,7 @@ public class MyPageController {
 		return "user/myPage/myPageInquiry";
 	}
 	
+	// 참여한 이벤트
 	@GetMapping("/myPageEvent")
 	public String myPageEvent(Model model, HttpSession session) {
 		

@@ -52,6 +52,8 @@ public class LoginController {
 			session.setAttribute("SNAME", userInfo.getUserNm());
 			session.setAttribute("SGRD", userInfo.getAuthrtCd());
 			
+			String userGrade = (String) session.getAttribute("SGRD");
+			
 			viewName = "redirect:/admin/user/allUserInfo";
 			
 			String sid = (String) session.getAttribute("SID");
@@ -71,6 +73,5 @@ public class LoginController {
 		
 		return "redirect:/admin/login";
 	}
-	
 	
 }

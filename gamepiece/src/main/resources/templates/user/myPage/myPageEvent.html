@@ -70,11 +70,11 @@
 	
 	<th:block layout:fragment="contents-body">
 		<div class="mypage-event">
-	        <span>참여한 이벤트 보기</span>
+	        <span>참여한 이벤트 조회</span>
 	        <div class="common-card-section">
 	        <th:block th:if="${myPageEvent != null}" th:each="myPageEvent : ${myPageEvent}">
 	            <div class="card-section-md">
-	                <img th:src="@{|${myPageEvent.evImg}|}" alt="이미지" />
+	                <img th:src="@{|${myPageEvent.filePath}|}" alt="이미지" />
 	                <span class="mypage-event-name" th:text="${myPageEvent.evNm}"></span>
 	                <div class="mypage-event-period">
 						<span>이벤트 기간 : </span>
