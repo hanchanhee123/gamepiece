@@ -45,6 +45,15 @@
 		<result property="fileSize" 		column="file_size"/>
 		</association>
 
+	
+	<association property="avatarInfo" javaType="gamepiece.user.user.domain.Avatar">
+			<id column="avatar_no" property="avatarNo" />
+		<result column="id" property="id"/>
+		<result column="ps_cd" property="psCd"/>
+		<result column="avatar_yn" property="avatarYn"/>
+		<result column="reg_ymd" property="regYmd"/>
+		<result column="ps_nm" property="psNm"/>
+		</association>
 
 
 
@@ -182,12 +191,20 @@
         b.bbs_dislike,
         b.bbs_ymd,
         u.user_nn,
-        u.id
+        u.id,
+        a.avatar_no,
+        a.ps_cd,
+        a.avatar_yn,
+        ps.file_idx,
+        f.file_path
     FROM
         boards b 
         INNER JOIN user u ON b.id = u.id
+        LEFT JOIN avatar a ON u.id = a.id AND a.avatar_yn = '선택'
+        LEFT JOIN point_shop ps ON a.ps_cd = ps.ps_cd AND ps.ps_cate_cd = 'cate_02'
+        LEFT JOIN files f ON ps.file_idx = f.file_idx
     WHERE
-        b.bbs_no=#{boardNum}
+        b.bbs_no = #{boardNum}
         AND b.is_delete = 'active'
 </select>
 

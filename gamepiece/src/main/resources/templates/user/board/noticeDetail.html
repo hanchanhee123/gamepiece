@@ -29,7 +29,20 @@
 				        </div>
 				        <div class="user-info-row d-flex align-items-center">
 				            <div class="d-flex align-items-center flex-grow-1 gap-3">
-				              <img src="data:image/png;base64,..." class="rounded-circle" style="width: 30px; height: 30px;">
+				            	<!-- 게시물 작성자 아바타 -->
+<img th:if="${writerAvatar != null}" 
+     th:src="@{${writerAvatar}}"
+     class="rounded-circle"
+     style="width: 30px; height: 30px;">
+     
+<!-- 아바타 이미지가 없는 경우 UI Avatars 사용 -->
+<div th:unless="${writerAvatar != null and writerAvatar != ''}"
+     class="rounded-circle d-flex align-items-center justify-content-center"
+     style="width: 30px; height: 30px; background: linear-gradient(45deg, #6c757d, #495057);">
+     <i class="bi bi-person-fill text-white" style="font-size: 18px;"></i>
+</div>				             
+				             
+				           
 				                <span class="username fw-semibold" th:text="${noticeInfo.userInfo.userNn}">회원</span>
 				                <span class="text-muted small" th:text="${noticeInfo.noticeYmd}">2012-11-11</span>
 				            </div>
