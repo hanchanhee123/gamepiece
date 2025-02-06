@@ -44,6 +44,8 @@ public interface UserGameService {
 	
 	void deleteGameCartList(String id);
 	
+	void deleteGameCartItem(String id, String gameCode);
+	
 	List<UserGame> getPaymentList();
 	
 	

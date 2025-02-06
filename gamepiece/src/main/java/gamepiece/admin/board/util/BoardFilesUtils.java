@@ -1,15 +1,17 @@
 package gamepiece.admin.board.util;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.board.mapper.BoardFileMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 
 @Component("adminBoardFilesUtils")
 @RequiredArgsConstructor
+@Slf4j
 public class BoardFilesUtils {
 	
 	@Value("${file.path}")
@@ -31,95 +35,136 @@ public class BoardFilesUtils {
 	private final BoardFileMapper boardFileMapper;
 	
 
-	public AdminBoardFiles uploadFile(MultipartFile multipartFile) {
-		
-		AdminBoardFiles fileInfo = storeFile(multipartFile);
-		
-		return fileInfo;
+	   
+	public AdminBoardFiles uploadFile(MultipartFile file) {
+	    if (file == null || file.isEmpty()) {
+	        return null;
+	    }
+	    
+	    try {
+	        String lastFileIdx = boardFileMapper.getNextFileIdx();
+	        int nextNum = 1;
+	        
+	        if (lastFileIdx != null) {
+	            String numStr = lastFileIdx.substring(lastFileIdx.lastIndexOf("_") + 1);
+	            nextNum = Integer.parseInt(numStr) + 1;
+	        }
+	        
+	        String fileIdx = String.format("file_%03d", nextNum);
+	        return storeFile(file, fileIdx);
+	        
+	    } catch (Exception e) {
+	        log.error("Error in uploadFile: ", e);
+	        return null;
+	    }
 	}
-
-	public List<AdminBoardFiles> uploadFiles(MultipartFile[] multipartFiles) {
-		List<AdminBoardFiles> fileList = new ArrayList<AdminBoardFiles>();
-		AdminBoardFiles fileInfo;
-		for(MultipartFile multipartFile : multipartFiles) {
-			fileInfo = storeFile(multipartFile);
-			if(fileInfo != null) fileList.add(fileInfo);
-		}
-		return fileList;
-	}
-	
-	
-	private AdminBoardFiles storeFile(MultipartFile multipartFile) {
-		if(multipartFile.isEmpty()) return null;
-		
-		// 현재 날짜 구하기(Asia/Seoul)
-		LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
-		// 날짜 패턴(디렉토리)
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-		
-		// 콘텐츠타입 분류(디렉토리)
-		String contentType = multipartFile.getContentType();
-		
-		if(contentType != null && contentType.indexOf("image") > -1) {
-			contentType = "/image";
-		}else {
-			contentType = "/file";
-		}
-		
-		String dbFilePath = fileRealPath + "/attachment/" + now.format(formatter) + contentType;
-		String path = Paths.get(dbFilePath).toString();
-		
-		
-		
-		// 파일 명이 겹치지 않게 파일명 설정
-    	String newFileName = "";
-    	/*
-    	String[] fileNameSplit = multipartFile.getOriginalFilename().split("\\.");
-
-    	for(int i=0; i<fileNameSplit.length; i++) {
-    		if(i == (fileNameSplit.length-1)) {
-    			fileNameSplit[i] = "." + fileNameSplit[i];
-    		}else {			    			
-    			fileNameSplit[i] = fileNameSplit[i].replaceAll("\\s", "") + Long.toString(System.nanoTime());
-    		}
-    		resultFileName += fileNameSplit[i];
-    	}
-		*/
-    	String[] fileNameSplit = multipartFile.getOriginalFilename().split("\\.");
-    	newFileName = UUID.randomUUID().toString()+ "." + fileNameSplit[1];
-    	
-    	createFolder(path);
-    	
-    	byte[] bytes;			    	
-    	Path uploadPath = Paths.get(path + "/" + newFileName);
-    	
-    	dbFilePath += ("/" + newFileName);
-    	
-    	AdminBoardFiles fileInfo = null;
-    	
-    	try {
-            bytes = multipartFile.getBytes();
-            Files.write(uploadPath, bytes);
-
-            // 파일 인덱스를 BoardFileMapper에서 가져오도록 수정
-            String fileIdx = boardFileMapper.getNextFileIdx();
-
-            return AdminBoardFiles.builder()
-                .fileIdx(fileIdx) // 파일 인덱스 추가
-                .fileOriginalName(multipartFile.getOriginalFilename())
-                .fileNewName(newFileName)
-                .filePath(dbFilePath.replaceAll(fileRealPath, ""))
-                .fileSize(multipartFile.getSize())
-                .build();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+    public List<AdminBoardFiles> uploadFiles(MultipartFile[] multipartFiles) {
+        List<AdminBoardFiles> fileList = new ArrayList<>();
+        
+        if (multipartFiles == null || multipartFiles.length == 0 || multipartFiles[0].isEmpty()) {
+            return fileList;
         }
-    
+        
+        // Set을 사용하여 중복 파일 체크
+        Set<String> processedFiles = new HashSet<>();
+        String lastFileIdx = boardFileMapper.getNextFileIdx();
+        int nextNum = 1;
+        
+        if (lastFileIdx != null) {
+            String numStr = lastFileIdx.substring(lastFileIdx.lastIndexOf("_") + 1);
+            nextNum = Integer.parseInt(numStr) + 1;
+        }
+        
+        for (MultipartFile file : multipartFiles) {
+            if (file != null && !file.isEmpty()) {
+                // 원본 파일명으로 중복 체크
+                String originalFileName = file.getOriginalFilename();
+                if (!processedFiles.add(originalFileName)) {
+                    continue;  // 이미 처리된 파일은 건너뛰기
+                }
+                
+                String fileIdx = String.format("file_%03d", nextNum++);
+                AdminBoardFiles fileInfo = storeFile(file, fileIdx);
+                if (fileInfo != null) {
+                    fileList.add(fileInfo);
+                }
+            }
+        }
+        
+        return fileList;
+    }
+
+    private int getNextFileNumber() {
+        String lastFileIdx = boardFileMapper.getNextFileIdx();
+        if (lastFileIdx == null) {
+            return 1;
+        }
+        String numStr = lastFileIdx.substring(lastFileIdx.lastIndexOf("_") + 1);
+        return Integer.parseInt(numStr) + 1;
+    }
+	  private String getOSFilePath() {
+	        String rootPath = "/";
+	        String os = System.getProperty("os.name").toLowerCase();
+	        
+	        if(os.contains("win")) {
+	            rootPath = "C:";
+	        }
+	        
+	        return rootPath;
+	    }
+	
+	  
+		private String extractExt(String originFileName) {
+		    int index = originFileName.lastIndexOf(".");
+		    return index > -1 ? originFileName.substring(index + 1) : "";
+		}
+		
+	  
+		public AdminBoardFiles storeFile(MultipartFile multipartFile, String fileIdx) {
+		    if (multipartFile == null || multipartFile.isEmpty()) {
+		        return null;
+		    }
+		    
+		    try {
+		        String rootPath = getOSFilePath();
+		        String originFileName = multipartFile.getOriginalFilename();
+		        
+		        // UUID로 새 파일명 생성
+		        String newFileName = UUID.randomUUID().toString() + "." + extractExt(originFileName);
+		        
+		        // 날짜 폴더명 생성
+		        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+		        String relativePath = "/attachment/" + today + 
+		            (multipartFile.getContentType() != null && 
+		             multipartFile.getContentType().contains("image") ? "/image" : "");
+		        
+		        // 전체 경로 생성
+		        String fullPath = rootPath + fileRealPath + relativePath;
+		        File dir = new File(fullPath);
+		        if(!dir.exists()) {
+		            dir.mkdirs();
+		        }
+		        
+		        AdminBoardFiles boardFile = AdminBoardFiles.builder()
+		                .fileIdx(fileIdx)
+		                .fileOriginalName(originFileName)
+		                .fileNewName(newFileName)
+		                .filePath(relativePath)
+		                .fileSize(multipartFile.getSize())
+		                .build();
+		        
+		        File saveFile = new File(dir, newFileName);
+		        multipartFile.transferTo(saveFile);
+		        
+		        return boardFile;
+		    } catch(IOException e) {
+		        log.error("File storage error: ", e);
+		        return null;
+		    }
+		}
 		
 	
-	}
+	
 	
 	
 	private void createFolder(String path){
@@ -160,6 +205,10 @@ public class BoardFilesUtils {
 	        String pre = "KMGTPE".charAt(exp-1) + "";
 	        return String.format("%.1f %sB", bytes / Math.pow(1024, exp), pre);
 	    }
+	 
+	 
+
+		
 	
 	
 }
