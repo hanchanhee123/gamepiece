@@ -214,10 +214,10 @@ public class UserGameController {
 	// 장바구니 선택 삭제
 	@GetMapping("/deleteGameCartItem")
 	public String deleteGameCartItem(@RequestParam(value="id") String id,
-									 @RequestParam(value="gameCode") String gameCode,
+									 @RequestParam(value="cartCode") String cartCode,
 									 Model model, HttpSession session) {
 		
-		userGameService.deleteGameCartItem(id, gameCode);
+		userGameService.deleteGameCartItem(id, cartCode);
 		
 		List<UserGame> cartList = userGameService.getUserCartList(id);
 		
