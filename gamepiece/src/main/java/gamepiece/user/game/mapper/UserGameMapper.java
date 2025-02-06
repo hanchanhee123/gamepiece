@@ -47,7 +47,7 @@ public interface UserGameMapper {
 	int deleteGameCartList(String id);
 	
 	// 장바구니 선택 제거
-	int deleteGameCartItem(String id, String gameCode);
+	int deleteGameCartItem(String id, String cartCode);
 	
 	// 결제 방법 목록 조회
 	List<UserGame> getPaymentList();
