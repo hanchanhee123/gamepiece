@@ -1,14 +1,17 @@
 package gamepiece.admin.notice.controller;
 
+
+
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -30,10 +33,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.board.mapper.BoardFileMapper;
 import gamepiece.admin.board.util.BoardFilesUtils;
-import gamepiece.admin.inquiry.controller.InquiryController;
 import gamepiece.admin.notice.domain.Notice;
+import gamepiece.admin.notice.domain.NoticeFiles;
+import gamepiece.admin.notice.mapper.NoticeFilesMapper;
 import gamepiece.admin.notice.service.NoticeService;
-import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,6 +58,59 @@ public class NoticeController {
 	private final NoticeService noticeService;
 	private final BoardFileMapper boardFileMapper;
 	private final BoardFilesUtils boardFilesUtils;
+	private final NoticeFilesMapper noticeFilesMapper;
+	
+	
+	
+	
+	@GetMapping("/display")
+	public ResponseEntity<Resource> getImage(@RequestParam("fileIdx") String fileIdx) {
+	    try {
+	        AdminBoardFiles fileDto = boardFileMapper.getFileInfoByIdx(fileIdx);
+	        if(fileDto == null) return ResponseEntity.notFound().build();
+
+	        String fullPath;
+	        String filePath = fileDto.getFilePath();
+	        
+	        // 공지사항과 일반게시판/문의 구분
+	        if (filePath.endsWith("/image") || filePath.endsWith("/file")) {
+	            // 공지사항
+	            fullPath = fileRealPath + filePath + "/" + fileDto.getFileNewName();
+	        } else {
+	            // 일반게시판/문의
+	            fullPath = fileRealPath + filePath;
+	        }
+
+	        Path path = Paths.get(fullPath);
+	        Resource resource = new UrlResource(path.toUri());
+
+	        if(!resource.exists()) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        // 이미지 타입 결정
+	        String contentType = "image/" + extractExt(fileDto.getFileOriginalName());
+	        
+	        // 응답 헤더 최적화
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.parseMediaType(contentType));
+	        headers.setCacheControl("public, max-age=31536000"); // 캐시 1년
+	        headers.setContentLength(resource.contentLength());
+
+	        return ResponseEntity.ok()
+	                .headers(headers)
+	                .body(resource);
+	                
+	    } catch (Exception e) {
+	        log.error("이미지 로딩 중 오류 발생: ", e);
+	        return ResponseEntity.internalServerError().build();
+	    }
+	}
+
+	private String extractExt(String fileName) {
+	    int dot = fileName.lastIndexOf('.');
+	    return dot > -1 ? fileName.substring(dot + 1) : "";
+	}
 	
 	
 	@GetMapping("/download")
@@ -184,40 +240,47 @@ public class NoticeController {
 	@Transactional
 	public String modifyNotice(Notice notice, 
 	                          @RequestParam(required = false) MultipartFile[] files,
+	                          @RequestParam(required = false) String[] deletedFiles,
 	                          RedirectAttributes rttr) {
-	    try {
-	        // 새 파일이 업로드된 경우
-	        if (files != null && files.length > 0 && !files[0].isEmpty()) {
-	            // 기존 파일 조회 및 삭제
-	            AdminBoardFiles oldFile = noticeService.getNoticeFile(notice.getNoticeNum());
-	            if (oldFile != null) {
-	                noticeService.deleteFile(oldFile);
+	     try {
+	        // 1. 게시글 수정
+	        noticeService.modifyNotice(notice);
+
+	        // 2. 삭제할 파일 처리
+	        if (deletedFiles != null && deletedFiles.length > 0) {
+	            for (String fileIdx : deletedFiles) {
+	                // 파일 매핑만 삭제
+	            	noticeFilesMapper.deleteFileMapping(notice.getNoticeNum(), fileIdx);
+	                // 실제 파일도 삭제
+	            	AdminBoardFiles fileInfo = boardFileMapper.findByFileIdx(fileIdx);
+	                if (fileInfo != null) {
+	                    noticeService.deleteFile(fileInfo);
+	                }
 	            }
-
-	            // 새 파일 정보 생성
-	            String fileIdx = boardFileMapper.getNextFileIdx();
-	            AdminBoardFiles newFile = new AdminBoardFiles();
-	            newFile.setFileIdx(fileIdx);
-	            newFile.setFileNewName(UUID.randomUUID().toString() + "_" + files[0].getOriginalFilename());
-	            newFile.setFileOriginalName(files[0].getOriginalFilename());
-	            newFile.setFilePath("/attachment/" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-	            newFile.setFileSize(files[0].getSize());
-
-	            // 파일 저장
-	            boardFileMapper.addfile(newFile);
-	            notice.setFileIdx(fileIdx);
 	        }
 
-	        // 게시글 수정
-	        int result = noticeService.modifyNotice(notice);
-	        if (result > 0) {
-	            rttr.addFlashAttribute("message", "수정되었습니다.");
+	        // 3. 새 파일 추가
+	        if (files != null && files.length > 0 && !files[0].isEmpty()) {
+	            List<AdminBoardFiles> newFiles = boardFilesUtils.uploadFiles(files);
+	            
+	            // 3-1. 새 파일 정보 저장
+	            boardFileMapper.addfiles(newFiles);
+	            
+	            // 3-2. 새 파일 매핑 추가
+	            for (AdminBoardFiles file : newFiles) {
+	            	NoticeFiles mapping = new NoticeFiles();
+	                mapping.setNoticeNum(notice.getNoticeNum());
+	                mapping.setFileIdx(file.getFileIdx());  // () 추가
+	                noticeFilesMapper.addNoticeMapping(mapping);
+	            }
 	        }
 
+	        rttr.addFlashAttribute("message", "게시글이 수정되었습니다.");
 	        return "redirect:/admin/notice/list";
+
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        rttr.addFlashAttribute("error", "수정 중 오류가 발생했습니다.");
+	        rttr.addFlashAttribute("error", "게시글 수정 중 오류가 발생했습니다.");
 	        return "redirect:/admin/notice/list";
 	    }
 	}
@@ -231,11 +294,11 @@ public class NoticeController {
 		
 		Notice noticeInfo = noticeService.getNoticeInfo(noticeNum);
 		
-		 AdminBoardFiles boardFile = noticeService.getNoticeFile(noticeNum);
+		List<NoticeFiles> noticeFiles = noticeService.getNoticeFiles(noticeNum);
 		
 		model.addAttribute("noticeInfo", noticeInfo);
 		model.addAttribute("title", "공지수정");
-		model.addAttribute("boardFile", boardFile);
+		model.addAttribute("noticeFiles", noticeFiles);
 		
 		
 		
@@ -243,37 +306,67 @@ public class NoticeController {
 	}
 	
 	@PostMapping("/write")
-	public String addNotice(Notice notice, @RequestParam(required = false) MultipartFile[] files,
-	                       HttpSession session,
+	public String addNotice(Notice notice, 
+	                       @RequestParam(required = false) MultipartFile[] files,
+	                       HttpSession session, 
 	                       RedirectAttributes rttr) {
+	    
 	    String adminId = "id01";
 	    notice.setAdminId(adminId);
-
-	    if (files != null && files.length > 0 && !files[0].isEmpty()) {
-	        List<AdminBoardFiles> fileDtoList = new ArrayList<>();
-	        synchronized (this) {
-	            MultipartFile file = files[0];  // 첫 번째 파일만 처리
-	            AdminBoardFiles noticeFiles = new AdminBoardFiles();
-
-	            String fileIdx = boardFileMapper.getNextFileIdx();
-	            noticeFiles.setFileIdx(fileIdx);
-	            noticeFiles.setFileNewName(UUID.randomUUID().toString() + "_" + file.getOriginalFilename());
-	            noticeFiles.setFileOriginalName(file.getOriginalFilename());
-	            noticeFiles.setFilePath("/attachment/" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-	            noticeFiles.setFileSize(file.getSize());
-
-	            fileDtoList.add(noticeFiles);
-	            notice.setFileIdx(fileIdx);
-
-	            noticeService.addFilesWithInfo(new MultipartFile[]{file}, fileDtoList);
+	    
+	    try {
+	        // 1. 게시글 저장
+	        int result = noticeService.addNotice(notice);
+	        if (result <= 0) {
+	            throw new RuntimeException("게시글 저장에 실패했습니다.");
 	        }
-	    }
 
-	    noticeService.addNotice(notice);
-	    return "redirect:/admin/notice/list";
+	        // 2. 파일 업로드 및 매핑 처리
+	        if (files != null && files.length > 0 && !files[0].isEmpty()) {
+	            // 중복 파일 체크를 위한 Set
+	            Set<String> processedFiles = new HashSet<>();
+	            String lastFileIdx = boardFileMapper.getNextFileIdx();
+	            int nextNum = 1;
+	            
+	            if (lastFileIdx != null) {
+	                String numStr = lastFileIdx.substring(lastFileIdx.lastIndexOf("_") + 1);
+	                nextNum = Integer.parseInt(numStr) + 1;
+	            }
+
+	            for (MultipartFile file : files) {
+	                if (!file.isEmpty()) {
+	                    // 이미 처리된 파일은 스킵
+	                    String originalFileName = file.getOriginalFilename();
+	                    if (!processedFiles.add(originalFileName)) {
+	                        continue;
+	                    }
+
+	                    String fileIdx = String.format("file_%03d", nextNum++);
+	                    AdminBoardFiles fileInfo = boardFilesUtils.storeFile(file, fileIdx);
+	                    
+	                    if (fileInfo != null) {
+	                        // 파일 정보 저장
+	                        boardFileMapper.addfile(fileInfo);
+	                        
+	                        // 게시글-파일 매핑 생성 (한 번만)
+	                        NoticeFiles mapping = new NoticeFiles();
+	                        mapping.setNoticeNum(notice.getNoticeNum());
+	                        mapping.setFileIdx(fileInfo.getFileIdx());
+	                        noticeFilesMapper.addNoticeMapping(mapping);
+	                    }
+	                }
+	            }
+	        }
+
+	        rttr.addFlashAttribute("message", "게시글이 작성되었습니다.");
+	        return "redirect:/admin/notice/list";
+	        
+	    } catch (Exception e) {
+	        log.error("Error in addNotice: ", e);
+	        rttr.addFlashAttribute("error", "게시글 작성 중 오류가 발생했습니다.");
+	        return "redirect:/admin/notice/list";
+	    }
 	}
-	
-	
 	@GetMapping("/write")
 	public String addNoticeView(Model model) {
 		

@@ -7,11 +7,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.notice.domain.Notice;
+import gamepiece.admin.notice.domain.NoticeFiles;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 
 public interface NoticeService {
 	
+	
+	 List<NoticeFiles> getNoticeFiles(int noticeNum);
+	  
+	    void addNoticeFileMapping(int noticeNum, String fileIdx);
+	    
+	    void deleteBoardFileMapping(int noticeNum, String fileIdx);
+	    
+	    void deleteAllNoticeBoardFiles(int noticeNum);
+	    
+	    void updateNoticeFiles(int noticeNum, List<MultipartFile> newFiles);
+	    
+	    
+	
+	void addNoticeWithFiles(Notice notice, MultipartFile[] files);
 	
 	AdminBoardFiles getNoticeFile(int noticeNum);
 	
