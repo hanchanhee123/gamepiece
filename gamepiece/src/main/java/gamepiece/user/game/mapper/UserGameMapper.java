@@ -43,6 +43,12 @@ public interface UserGameMapper {
 	// 장바구니 안 가격 총합
 	Integer cartTotalPrice(String id);
 	
+	// 장바구니 목록 제거
+	int deleteGameCartList(String id);
+	
+	// 장바구니 선택 제거
+	int deleteGameCartItem(String id, String gameCode);
+	
 	// 결제 방법 목록 조회
 	List<UserGame> getPaymentList();
 }

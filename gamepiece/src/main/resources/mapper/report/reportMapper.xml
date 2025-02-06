@@ -77,7 +77,7 @@ FROM
 	ON ur.report_no = ud.report_no
 	
 	  ORDER BY
-        CAST(SUBSTRING_INDEX(ur.report_no,'r_',-1) AS UNSIGNED)
+        CAST(SUBSTRING_INDEX(ur.report_no,'r_',-1) AS UNSIGNED) DESC
      LIMIT #{rowPerPage} OFFSET #{offset}
 
 </select>

@@ -108,6 +108,7 @@ public class UserGameController {
 		 * model.addAttribute("genreList", genreList); return "user/game/gameList"; }
 		 */
 	
+	// 게임 상세 정보 화면
 	@GetMapping("/steamDetail")
 	public String getUserGameDetailApi(@RequestParam(value="gameCode") String gameCode,
 									   @RequestParam(value="title", required=false, defaultValue = "" )String title,
@@ -132,6 +133,7 @@ public class UserGameController {
 		return "user/game/steamDetail";
 	}
 	
+	// 리뷰 작성
 	@PostMapping("/writeReview")
 	public String writeGameReview(UserReview userReview,
 								  Model model) {
@@ -145,6 +147,8 @@ public class UserGameController {
 	
 	
 	
+	
+	// 장바구니에 게임 담기
 	@PostMapping("/gameCart")
 	public String putGameInCart(@RequestParam(value="gameCode") String gameCode,
 									  @RequestParam(value="title", required = false, defaultValue = "") String title,
@@ -152,12 +156,18 @@ public class UserGameController {
 									  @RequestParam(value="isDetail") String isDetail,
 									  @RequestParam(value="id") String id,
 									  UserGame userGame,
-									  Model model) {
+									  Model model,
+									  HttpSession session) {
 		
 		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
 		List<UserReview> userReview = userGameService.getUserReview(gameCode);
 		String nextReviewNum = userGameService.getLastReviewNo();
 		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ;
+		
+		id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
 		
 		
 		
@@ -170,6 +180,7 @@ public class UserGameController {
 		return "user/game/steamDetail";
 	}
 	
+	// 장바구니 화면
 	@GetMapping("/gameCartView") 
 	public String userGameCartList(@RequestParam(value="id") String id,
 								   Model model, HttpSession session) {
@@ -178,8 +189,8 @@ public class UserGameController {
 		
 		int totalPrice = userGameService.cartTotalPrice(id);
 		id = (String) session.getAttribute("SID");
-		log.info(id);
 		
+		log.info("cartList : {}", cartList);
 		model.addAttribute("id", id);
         String avatar = userService.getUserAvatar(id);
         model.addAttribute("avatar", avatar);
@@ -191,12 +202,46 @@ public class UserGameController {
 		return "user/game/gameCartList";
 	}
 	
-	@GetMapping("/paymentView") 
-	public String paymentView(@RequestParam(value="id") String id,
-			Model model) {
+	// 장바구니 목록 삭제
+	@GetMapping("/deleteGameCartList")
+	public String deleteGameCartList(@RequestParam(value="id") String id,
+									 Model model, HttpSession session) {
+		
+		userGameService.deleteGameCartList(id);
+		return "user/game/gameCartList";
+	}
+	
+	// 장바구니 선택 삭제
+	@GetMapping("/deleteGameCartItem")
+	public String deleteGameCartItem(@RequestParam(value="id") String id,
+									 @RequestParam(value="gameCode") String gameCode,
+									 Model model, HttpSession session) {
+		
+		userGameService.deleteGameCartItem(id, gameCode);
 		
 		List<UserGame> cartList = userGameService.getUserCartList(id);
-		log.info("cartList : {}", cartList);
+		
+		model.addAttribute("cartList", cartList);
+		
+		return "user/game/gameCartList";
+	}
+	
+	
+	
+	// 결제 진행 화면
+	@GetMapping("/paymentView") 
+	public String paymentView(@RequestParam(value="id") String id,
+			Model model,
+			HttpSession session) {
+		
+		
+		id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
+		List<UserGame> cartList = userGameService.getUserCartList(id);
+		
 		
 		int totalPrice = userGameService.cartTotalPrice(id);
 		

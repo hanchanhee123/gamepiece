@@ -9,7 +9,7 @@
 	<th:block layout:fragment="contents-body">
 		<header>
 			<div class="header-div">
-	            <div class="header-img" th:onclick="|location.href='@{/}'|">
+	            <div class="header-img" th:onclick="|location.href='@{/main}'|">
 	                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}"/>
 	            </div>
 	        </div>
@@ -41,7 +41,7 @@
     </th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
-    	<script  th:inline="javascript">
+    	<script th:inline="javascript">
     	
     	const msg = /*[[${msg}]]*/ "msg";
 		if(msg) alert(msg);

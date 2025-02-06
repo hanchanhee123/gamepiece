@@ -50,10 +50,12 @@ public class UserController {
 			
 			session.setAttribute("SID", userInfo.getId());
 			session.setAttribute("SNAME", userInfo.getUserNm());
+			session.setAttribute("SGRD", userInfo.getAuthrtCd());
 			
 			viewName = "redirect:/main";
 			
 			String sid = (String) session.getAttribute("SID");
+			
 			
 			// 사용자 로그 확인 (오늘 날짜)
 			int findLoginLog = userService.findLoginLog(sid);

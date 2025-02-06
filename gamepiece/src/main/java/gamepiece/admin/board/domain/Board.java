@@ -2,7 +2,6 @@ package gamepiece.admin.board.domain;
 
 import gamepiece.admin.boardCategory.domain.BoardCategory;
 import gamepiece.admin.user.domain.User;
-
 import lombok.Data;
 
 @Data

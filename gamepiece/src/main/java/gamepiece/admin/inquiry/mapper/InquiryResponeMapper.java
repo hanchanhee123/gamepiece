@@ -5,7 +5,6 @@ package gamepiece.admin.inquiry.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-
 import gamepiece.admin.inquiry.domain.InquiryRespone;
 
 

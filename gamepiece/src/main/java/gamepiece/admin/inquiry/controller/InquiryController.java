@@ -4,6 +4,8 @@ package gamepiece.admin.inquiry.controller;
 
 
 
+
+
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.file.Path;
@@ -188,7 +190,7 @@ public class InquiryController {
 	
 	
 	@GetMapping("/list")
-	public String inquiryList(Pageable pageable, Model model) {
+	public String getInquiryList(Pageable pageable, Model model) {
 		
 	    var pageInfo = inquiryService.getInquiryList(pageable);  
 	    

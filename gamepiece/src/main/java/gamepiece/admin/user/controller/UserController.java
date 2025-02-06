@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gamepiece.admin.user.domain.User;
 import gamepiece.admin.user.service.UserService;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller("adminUserController")
@@ -28,7 +29,10 @@ public class UserController {
 
 	// 전체 회원정보 조회
 	@GetMapping("/allUserInfo")
-	public String getAllUserInfo(Pageable pageable, Model model) {
+	public String getAllUserInfo(Pageable pageable, Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+		model.addAttribute("adminId", id);
 		
 		var pageInfo = userService.getAllUserInfo(pageable);
 		
@@ -144,6 +148,7 @@ public class UserController {
 		return "admin/user/userLoginlog";
 	}
 	
+	// 회원 탈퇴
 	@GetMapping("/removeUser")
 	public String removeUser(String id) {
 		

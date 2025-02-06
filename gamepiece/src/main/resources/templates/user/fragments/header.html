@@ -3,7 +3,7 @@
 <header class="main-header navbar" th:fragment="headerFragment">
 	<div class="header-div">
             <div class="header-img">
-                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}" th:onclick="|location.href='@{/}'|"/>
+                <img id="header-img" th:src="@{/assets/imgs/logo/GP_logo.png}" th:onclick="|location.href='@{/main}'|"/>
             </div>
             <div class="header-cate">
                 <ul>
@@ -16,8 +16,10 @@
             </div>
             <div class="btn-group">
             	<button type="button" data-bs-toggle="dropdown" id="dropdownAccount" aria-expanded="false">
-					<span th:if="${session.SID == null}" class="material-symbols-outlined" id="person-img">person</span>
-					<img th:unless="${session.SID == null}" id="profile-img" th:src="@{|${avatar}|}" alt="이미지" />
+					<th:block th:unless="${session.SID == null}">
+						<img  th:if="${avatar} != null or ${avatar} != ''" id="profile-img" th:src="@{|${avatar}|}" alt="이미지" />
+						<span th:unless="${avatar} != null or ${avatar} != ''" class="material-symbols-outlined" id="person-img">person</span>
+					</th:block>
 				</button>
 					<ul class="dropdown-menu"  aria-labelledby="dropdownAccount">
 					<th:block th:unless="${session.SID == null}">

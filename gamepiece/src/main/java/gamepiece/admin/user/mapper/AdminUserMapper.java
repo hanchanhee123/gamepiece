@@ -11,6 +11,9 @@ import gamepiece.util.Pageable;
 @Mapper
 public interface AdminUserMapper {
 	
+	// 로그인 (회원 아이디-관리자 확인)
+	public User checkUser(String id);
+	
 	// 전체 회원정보 조회
 	public List<User> getAllUserInfo(Pageable pageable);
 	

@@ -27,7 +27,7 @@
 						<div class="input-group">
 							<input type="text" class="form-control" id="searchValue" 
 								   name="searchValue" th:value="${searchValue}" placeholder="Search">
-							<button class="btn btn-light bg" id="searchBtn" type="button">
+							<button class="btn btn-outline-primary" id="searchBtn" type="button">
 								<i class="material-icons md-search"></i>
 							</button>
 						</div>					
@@ -58,7 +58,7 @@
 									<td th:text="${eventList.evStatus}"></td>           			
 									<td><a th:if="${eventList.evStatus == '종료'}" th:href="@{/admin/event/eventWinner(evCd=${eventList.evCd})}" class="btn btn-sm font-sm rounded btn-brand"> 당첨자 </a></td> 			
 									<td><a th:href="@{/admin/event/eventDetail(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn- rounded btn-brand"> 상세 </a></td> 			
-									<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-success rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
+									<td><a th:href="@{/admin/event/modify(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-primary rounded">  <i class="material-icons md-edit"></i> 수정 </a></td> 			
 									<td><a th:href="@{/admin/event/remove(evCd=${eventList.evCd})}" class="btn btn-sm font-sm btn-outline-danger rounded">  <i class="material-icons md-delete"></i> 삭제 </a></td> 			
 								</tr>
 							</tbody>
