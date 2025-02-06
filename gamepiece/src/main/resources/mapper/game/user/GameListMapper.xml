@@ -177,6 +177,17 @@
 			id=#{id};
 	</delete>
 	
+	<delete id="deleteGameCartItem" parameterType="String">
+		/*장바구니 선택 제거*/
+		DELETE 
+		FROM 
+			game_cart_list 
+		WHERE 
+			id=#{id}
+			AND 
+			gm_cd=#{gameCode};
+	</delete>
+	
 	<select id="getPaymentList" resultMap="gameList">
 		/* 결제 방법 리스트 조회 */
 		SELECT
