@@ -28,8 +28,6 @@ public class LoginInterceptor implements HandlerInterceptor{
 		}else {
 			String userGrade = (String) session.getAttribute("SGRD");
 			
-			log.info("======================= userGrade : {} ", userGrade);
-			
 			String requestUri = request.getRequestURI();
 			if("cd_02".equals(userGrade)) {				
 				if(requestUri.indexOf("/admin") > -1) {
@@ -42,14 +40,3 @@ public class LoginInterceptor implements HandlerInterceptor{
 		return isProcess;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
