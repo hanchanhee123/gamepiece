@@ -662,6 +662,10 @@ public class BoardController {
 		Inquiry inquiryInfo = boardService.getInquiryInfo(inquiryNum);
 		InquiryRespone responeInfo = boardService.getInquiryResponeInfo(inquiryNum);
 		
+		  String writerAvatar = userService.getUserAvatar(inquiryInfo.getInquiryUserId());
+	        model.addAttribute("writerAvatar", writerAvatar); 
+		
+		
 		List<InquiryFiles> inquiryFiles = boardService.getInquiryFiles(inquiryNum);
 		
 		model.addAttribute("inquiryInfo", inquiryInfo);
@@ -683,6 +687,9 @@ public class BoardController {
         String avatar = userService.getUserAvatar(id);
         model.addAttribute("avatar", avatar);
         
+	
+        
+        
 
 		 int updateResult = boardService.addNoticeViewCount(noticeNum);
 		
@@ -691,7 +698,9 @@ public class BoardController {
 		    List<NoticeFiles> noticeFiles = noticeFileMapper.getNoticeFiles(noticeNum);
 			
 			
-			
+			  String writerAvatar = userService.getUserAvatar(noticeInfo.getAdminId());
+		        model.addAttribute("writerAvatar", writerAvatar); 
+	        
 			
 		
 		model.addAttribute("noticeInfo", noticeInfo);
@@ -779,6 +788,10 @@ public class BoardController {
         String avatar = userService.getUserAvatar(id);
         model.addAttribute("avatar", avatar);
 	    
+        
+        String writerAvatar = userService.getUserAvatar(boardInfo.getBoardUserId());
+        model.addAttribute("writerAvatar", writerAvatar); 
+        
 	    
 	    if (userId != null) {
 	        // 게시글 좋아요/싫어요 상태 확인

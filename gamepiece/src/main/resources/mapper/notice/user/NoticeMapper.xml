@@ -106,19 +106,25 @@ WHERE
 </select>
 
 
-	<select id="getNoticeInfo" parameterType="Notice" resultMap="NoticeResultMap">
-	
-	SELECT 
-	*
-	FROM 
-		ntc_mttr nm INNER JOIN user u 
-		ON nm.admin_id = u.id
-		
-	WHERE
-		nm.ntc_no=#{noticeNum};
-		
-	
-	</select>
+<select id="getNoticeInfo" parameterType="Notice" resultMap="NoticeResultMap">
+    SELECT
+        nm.*,
+        u.user_nn,
+        u.id,
+        a.avatar_no,
+        a.ps_cd,
+        a.avatar_yn,
+        ps.file_idx,
+        f.file_path
+    FROM
+        ntc_mttr nm 
+        INNER JOIN user u ON nm.admin_id = u.id
+        LEFT JOIN avatar a ON u.id = a.id AND a.avatar_yn = '선택'
+        LEFT JOIN point_shop ps ON a.ps_cd = ps.ps_cd AND ps.ps_cate_cd = 'cate_02'
+        LEFT JOIN files f ON ps.file_idx = f.file_idx
+    WHERE
+        nm.ntc_no = #{noticeNum}
+</select>
 	
 <update id="addViewCount" parameterType="int">
     UPDATE 
