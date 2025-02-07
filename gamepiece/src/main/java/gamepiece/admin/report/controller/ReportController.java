@@ -19,6 +19,7 @@ import gamepiece.admin.report.domain.Disposal;
 import gamepiece.admin.report.domain.Report;
 import gamepiece.admin.report.service.ReportService;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,7 +53,10 @@ public class ReportController {
 		}
 		
 		@GetMapping("/disposal/write")
-		public String addDisposalView(@RequestParam("reportNo") String reportNo, Model model) {
+		public String addDisposalView(@RequestParam("reportNo") String reportNo, HttpSession session, Model model) {
+			
+			String id = (String) session.getAttribute("SID");
+	        model.addAttribute("adminId", id);
 			
 		    model.addAttribute("reportNo", reportNo);
 			model.addAttribute("title", "처분작성");
@@ -64,9 +68,10 @@ public class ReportController {
 		
 		
 		@PostMapping("/reportReview")
-		public String reportReview(@RequestParam String reportNumbers, RedirectAttributes rttr) {
+		public String reportReview(@RequestParam String reportNumbers, RedirectAttributes rttr, HttpSession session, Model model) {
 		    // 로그 추가
-	
+			String id = (String) session.getAttribute("SID");
+	        model.addAttribute("adminId", id);
 		    
 		    List<String> reportNumbersList = Arrays.asList(reportNumbers.split(","));
 		    // 변환된 리스트 확인
@@ -84,7 +89,10 @@ public class ReportController {
 		
 		
 		@GetMapping("/detail")
-		public String disposalInfo(@RequestParam(name="reportNo") String reportNo,Model model) {
+		public String disposalInfo(@RequestParam(name="reportNo") String reportNo, HttpSession session, Model model) {
+			
+			String id = (String) session.getAttribute("SID");
+	        model.addAttribute("adminId", id);
 			
 			Disposal disposalInfo = reportService.getDisposalInfo(reportNo);
 			
@@ -99,7 +107,10 @@ public class ReportController {
 		
 	
 	@GetMapping("/list")
-	public String getReportList(Pageable pageable, Model model) {
+	public String getReportList(Pageable pageable, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		var pageInfo = reportService.getReportList(pageable);
 		
