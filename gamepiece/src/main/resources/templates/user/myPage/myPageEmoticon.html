@@ -71,14 +71,19 @@
 	<th:block layout:fragment="contents-body">
 		<div class="mypage-emoticon">
 	        <span>내 이모티콘</span>
-	        <div class="common-card-section">
 	        <th:block th:if="${myPageEmoticon != null}" th:each="myPageEmoticon : ${myPageEmoticon}">
+	        <div class="common-card-section">
 	            <div class="card-section">
 	                <img th:src="@{|${myPageEmoticon.filePath}|}" alt="이미지" />
 	                <p class="game-name" th:text="${myPageEmoticon.itemName}"></p>
 	            </div>
-	        </th:block>
 	        </div>
+	        </th:block>
+	        <th:block th:unless="${myPageEmoticon != null and not #lists.isEmpty(myPageEmoticon)}">
+        		<div class="main-contents" style = "margin-top : 100px; text-align : center; color : white;">
+        			<h5>보유한 이모티콘이 없습니다.</h5>
+        		</div>
+        	</th:block>
 	    </div>
 	</th:block>
 	

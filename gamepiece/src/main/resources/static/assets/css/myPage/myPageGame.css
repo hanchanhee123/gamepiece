@@ -1,9 +1,8 @@
 @charset "UTF-8";
 
 .main-div {
-    height: 100%;
+    min-height: 712px;
     display: flex;
-    background-color: rgba(0,0,0,0.4);
 }
 
 .content-main {

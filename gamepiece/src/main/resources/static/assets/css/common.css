@@ -17,7 +17,7 @@ header {
 footer {
 	color: white;
     margin-top: 40px;
-    background-color: #0072ff;
+    background-color: rgba(0, 0, 0, 0.3);
     height: 100px;
 }
 
@@ -236,14 +236,5 @@ main {
 
 .mypoint {
     width: 100px;
-    color: #007bff;
-}
-
-.mypage-coupon {
-    display: flex;
-    justify-content: space-between;
-}
-
-.mycoupon {
     color: #007bff;
 }
