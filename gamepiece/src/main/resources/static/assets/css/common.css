@@ -15,11 +15,15 @@ header {
 }
 
 footer {
-	color : white;
+	color: white;
+    margin-top: 40px;
+    background-color: #0072ff;
+    height: 100px;
+}
+
+.row{
 	width: 1280px;
-    margin: 0 auto;
-    margin-top : 40px;
-    margin-bottom: 40px;
+	margin: 0 auto;
 }
 
 .header-div{
