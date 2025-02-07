@@ -38,6 +38,7 @@ import gamepiece.admin.boardComment.service.BoardCommentService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,8 +62,11 @@ public class BoardController {
 	
 	
 	@GetMapping("/download")
-	public ResponseEntity<Object> downloadFile(@RequestParam String fileIdx,
-	        HttpServletRequest request) {
+	public ResponseEntity<Object> downloadFile(@RequestParam String fileIdx, HttpSession session,
+	        HttpServletRequest request,Model model) {
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 		log.info("다운로드 요청된 fileIdx: {}", fileIdx);
 	    try {
 	        AdminBoardFiles fileDto = boardFileMapper.getFileInfoByIdx(fileIdx);
@@ -120,9 +124,10 @@ public class BoardController {
 	        @RequestParam(value="searchCate", required = false, defaultValue = "all") String searchCate,
 	        @RequestParam(value="searchValue") String searchValue, 
 	        Pageable pageable, 
-	        Model model) {
+	        HttpSession session, Model model) {
 
-	
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 	    PageInfo<Board> pageInfo = boardService.getSearchList(searchCate, searchValue, pageable);
 	    
@@ -149,8 +154,12 @@ public class BoardController {
 							        @RequestParam(value="searchCate", required = false, defaultValue = "all") String searchCate,
 							        @RequestParam(value="searchValue", required = false) String searchValue,
 							        Pageable pageable,
+							        HttpSession session,
 							        Model model) {
-	        
+	       
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 	    PageInfo<Board> pageInfo = boardService.getSearchList(searchCate, searchValue, pageable);
 	
 	    model.addAttribute("title", "게시판 목록");
@@ -184,8 +193,11 @@ public class BoardController {
 	@GetMapping("/detail")
 	public String detailBoardView(@RequestParam(name="boardNum") String boardNum,
 	                            Pageable pageable,
-	                            Model model) {
-
+	                            HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 	   Board boardInfo = boardService.getBoardInfo(boardNum);
 	   List<BoardCategory> categoryList = boardCategoryService.getBoardCategoryList();
 
@@ -213,10 +225,13 @@ public class BoardController {
 	
 	
 	@GetMapping("/list")
-	public String getBoardList(Pageable pageable, Model model) {        
+	public String getBoardList(Pageable pageable, HttpSession session, Model model	) {        
 	  
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 	    var pageInfo = boardService.getBoardsList(pageable);   
-
+	    
 	    List<Board> boardList = pageInfo.getContents();
 	    int currentPage = pageInfo.getCurrentPage();
 	    int startPageNum = pageInfo.getStartPageNum();
