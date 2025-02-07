@@ -176,7 +176,7 @@ public class MyPageController {
 		
 		List<Point> myPageEmoticon = myPageService.myPageEmoticon(id);
 		model.addAttribute("myPageEmoticon", myPageEmoticon);
-		log.info("myPageEmoticon : {}", myPageEmoticon);
+		log.info("================ myPageEmoticon : {}", myPageEmoticon);
 		
 		return "user/myPage/myPageEmoticon";
 	}
