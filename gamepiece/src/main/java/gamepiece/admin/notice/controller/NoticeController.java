@@ -4,9 +4,7 @@ package gamepiece.admin.notice.controller;
 
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URLEncoder;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
@@ -186,8 +184,11 @@ public class NoticeController {
 	
 	@PostMapping("/searchList")
 	public String postNoticeSearchList(@RequestParam(value="searchValue") String searchValue,
-						Pageable pageable, Model model) {
-
+						Pageable pageable, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+        
 	   PageInfo<Notice> pageInfo = noticeService.getSearchList(searchValue, pageable);
 
 	   model.addAttribute("title", "공지사항 목록");
@@ -205,8 +206,11 @@ public class NoticeController {
 	public String noticeSearchList(
 	   @RequestParam(value="searchValue", required = false) String searchValue,
 	   Pageable pageable,
-	   Model model) {
-
+	   HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 	   PageInfo<Notice> pageInfo = noticeService.getSearchList(searchValue, pageable);
 
 	   model.addAttribute("title", "공지사항 목록");
@@ -290,7 +294,10 @@ public class NoticeController {
 	
 	
 	@GetMapping("/modify")
-	public String modifyNoticeView(@RequestParam(name="noticeNum") int noticeNum, Model model) {
+	public String modifyNoticeView(@RequestParam(name="noticeNum") int noticeNum, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		Notice noticeInfo = noticeService.getNoticeInfo(noticeNum);
 		
@@ -368,9 +375,10 @@ public class NoticeController {
 	    }
 	}
 	@GetMapping("/write")
-	public String addNoticeView(Model model) {
+	public String addNoticeView(HttpSession session, Model model) {
 		
-
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		model.addAttribute("title", "공지작성");
 	
@@ -380,7 +388,10 @@ public class NoticeController {
 	
 	
 	@GetMapping("/list")
-	public String getNoticeList(Pageable pageable, Model model) {
+	public String getNoticeList(Pageable pageable, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		var pageInfo = noticeService.getNoticeList(pageable);
 
