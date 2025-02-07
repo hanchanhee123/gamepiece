@@ -50,7 +50,7 @@
 		<result property="fileSize" 		column="file_size"/>
 		</association>
 		
-		
+	
 		
 		
 		</resultMap>
@@ -88,7 +88,8 @@
 					   </if>
 					</select>
 		
-		
+				
+				
 		
 	
 
@@ -138,6 +139,7 @@ SELECT
 		inquiry_id =#{inquiryNum};
 
 	</select>
+
 
 
 

@@ -148,6 +148,7 @@ public class UserController {
 		return "admin/user/userLoginlog";
 	}
 	
+	// 회원 탈퇴
 	@GetMapping("/removeUser")
 	public String removeUser(String id) {
 		

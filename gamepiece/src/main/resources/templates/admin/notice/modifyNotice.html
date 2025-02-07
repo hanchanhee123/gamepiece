@@ -40,49 +40,75 @@
 
 
 
-
-			           <div class="fileSpace">
-			   <div class="col">
-			    <div class="card">
-			        <div class="card-header">
-			            <h4>파일 업로드</h4>
-			        </div>
-			        <div class="card-body">
-			            <div class="input-group">
-			    <input type="file" id="files" name="files" 
-			           class="form-control bg-light border-0 small d-none" multiple>
-			    <div class="input-group border rounded bg-white p-2 w-100">
-			        <button onclick="document.getElementById('files').click()" 
-			                type="button" 
-			                class="btn btn-outline-primary">
-			            <i class="bi bi-folder-plus me-1"></i>파일선택
-			        </button>
-			        <span id="fileLabel" 
-			              class="d-flex align-items-center ms-3 text-secondary"
-			              th:text="${boardFile != null ? boardFile.fileOriginalName : '선택된 파일 없음'}">
-			        </span>
-			    </div>
-			</div>
-			        </div>
-			    </div>
-			</div>
-			    <div class="col">
-			        <div class="card">
-			            <div class="card-header">
-			                <h4>파일미리보기</h4>
-			            </div>
-			            <div class="card-body">
-			                <div id="preview">
-			                    <!-- 기존 파일이 있다면 미리보기에 표시 -->
-			                    <div th:if="${boardFile != null}" class="col-md-3 img-box" style="position:relative">
-			                        <img th:src="${boardFile.filePath}" th:id="${boardFile.fileIdx}">
-			                        <span class="delete-img" th:data-remove-key="${boardFile.fileIdx}">X</span>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-			</div>
+	
+			<input type="hidden" name="fileDelete" id="fileDelete" value="N">
+<div class="fileSpace">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h4>파일 업로드</h4>
+            </div>
+            <div class="card-body">
+                <div class="input-group">
+                    <input type="file" id="files" name="files" 
+                           class="form-control bg-light border-0 small d-none" multiple>
+                    <div class="input-group border rounded bg-white p-2 w-100">
+                        <button onclick="document.getElementById('files').click()" 
+                                type="button" 
+                                class="btn btn-outline-primary">
+                            <i class="bi bi-folder-plus me-1"></i>파일선택
+                        </button>
+                        <span id="fileLabel" class="d-flex align-items-center ms-3 text-secondary">
+                            선택된 파일 없음
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <div class="col mt-3">
+    <div class="card">
+        <div class="card-header">
+            <h4>현재 첨부파일</h4>
+        </div>
+        <div class="card-body">
+            <div id="currentFiles">
+                <div th:each="file : ${noticeFiles}" class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                     <div class="d-flex align-items-center" th:data-file-idx="${file.fileInfo.fileIdx}">
+                        <!-- 이미지 파일인 경우 미리보기 -->
+                       <th:block th:if="${file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpg') || 
+                   file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpeg') || 
+                   file.fileInfo.fileOriginalName.toLowerCase().endsWith('.png') || 
+                   file.fileInfo.fileOriginalName.toLowerCase().endsWith('.gif')}">
+    <img th:src="@{'/admin/notice/display?fileIdx=' + ${file.fileInfo.fileIdx}}"
+         class="img-thumbnail me-3"
+         style="width: 50px; height: 50px; object-fit: cover;">
+</th:block>
+                        <!-- 일반 파일인 경우 아이콘 -->
+                        <th:block th:unless="${file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpg') || 
+                                            file.fileInfo.fileOriginalName.toLowerCase().endsWith('.jpeg') || 
+                                            file.fileInfo.fileOriginalName.toLowerCase().endsWith('.png') || 
+                                            file.fileInfo.fileOriginalName.toLowerCase().endsWith('.gif')}">
+                            <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
+                        </th:block>
+                        <!-- 파일명 -->
+                        <div>
+                            <span th:text="${file.fileInfo.fileOriginalName}" class="me-2"></span>
+                            <small class="text-muted" th:text="${T(gamepiece.admin.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
+                        </div>
+                    </div>
+<button type="button" class="btn btn-outline-danger btn-sm rounded-2 shadow-sm" 
+        style="font-size: 0.8rem; padding: 0.25rem 0.75rem;"
+        th:onclick="deleteFile([[${file.fileInfo.fileIdx}]])" 
+        th:data-file-idx="${file.fileInfo.fileIdx}">
+    삭제
+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 
  <div class="row mt-4">
@@ -97,6 +123,12 @@
   <th:block layout:fragment="customJsResource"></th:block>
   <th:block layout:fragment="customJs">
     <script>
+    
+    function isImageFile(fileName) {
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
+        const extension = fileName.slice((fileName.lastIndexOf(".") - 1 >>> 0) + 2).toLowerCase();
+        return imageExtensions.includes(extension);
+    }
   
     $('#modifyBtn').click(function (event) {
         event.preventDefault();
@@ -143,69 +175,152 @@
       
       
       
-
-	   $('#files').change(function(){
-	$('#preview').empty();
-	const files = this.files;
-	 if(files.length > 0) {
-	        // 여러 파일인 경우 "첫번째파일.확장자 외 N개" 형식으로 표시
-	        $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
-	    } else {
-	        $('#fileLabel').text('"""');
-	    }
-	const fileList = [...files];
-	fileList.forEach(function(file, idx){
-        
-        //div에 이미지 추가
-        const imgDiv = $('<div class="col-md-3 img-box" style="position:relative"></div>');
-        const lastModified = files[idx].lastModified;
-        //이미지 파일 미리보기
-        if(file.type.match('image.*')){
-            //파일을 읽기 위한 FileReader객체 생성
-            const reader = new FileReader(); 
-            reader.onload = function (e) { 
-                //파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
-                const img = $('<img />', {src: e.target.result, id : lastModified });
-                const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
-                imgDiv.append(img,span);
-                imgDiv.appendTo('#preview');
-            } 
-            reader.readAsDataURL(file);
-        }else{
-            //이미지 파일 아닐 경우 대체 이미지
-            const noImage = $('<img />', { src : '/manage/assets/imgs/theme/upload.svg', id : lastModified });
-         	  const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
-            imgDiv.append(noImage, span);
-            imgDiv.appendTo('#preview');
-            
+    $('#files').change(function(){
+        const files = this.files;
+        if(files.length > 0) {
+            $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
+        } else {
+            $('#fileLabel').text('선택된 파일 없음');
         }
-    })
-});
-
-	  
-	    $(document).on('click', '.delete-img',function(){
-            const files = $("#files").prop('files');
+        
+        const fileList = [...files];
+        fileList.forEach(function(file){
+            // 새로운 파일 항목 생성
+            const fileDiv = $('<div class="d-flex justify-content-between align-items-center p-2 border-bottom">');
+            const fileInfoDiv = $('<div class="d-flex align-items-center">');
             
-            const dataTranster = new DataTransfer();
-            const removeTargetId = $(this).attr('data-remove-key');
-            
-            Array.from(files)
-                 .filter(file => file.lastModified != removeTargetId)
-                 .forEach(file => dataTranster.items.add(file));
-         
-            $('#files')[0].files = dataTranster.files;
-            
-            // 파일 삭제 후 남은 파일 수에 따라 라벨 텍스트 업데이트
-            const remainingFiles = dataTranster.files;
-            if(remainingFiles.length > 0) {
-                $('#fileLabel').text(remainingFiles[0].name + 
-                    (remainingFiles.length > 1 ? ` 외 ${remainingFiles.length - 1}개` : ''));
+            // 파일 타입에 따른 처리
+            if(file.type.match('image.*')){
+                // 이미지 파일인 경우
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = $('<img>', {
+                        src: e.target.result,
+                        class: 'img-thumbnail me-3',
+                        style: 'width: 50px; height: 50px; object-fit: cover'
+                    });
+                    fileInfoDiv.prepend(img);
+                };
+                reader.readAsDataURL(file);
             } else {
-                $('#fileLabel').text('선택된 파일 없음');
+                // 일반 파일인 경우
+                const icon = $('<i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>');
+                fileInfoDiv.prepend(icon);
             }
-         
-            $(this).closest('.img-box').remove();
+            
+            // 파일명과 크기 정보 추가
+            const fileDetails = $('<div>').append(
+                $('<span>', { text: file.name, class: 'me-2' }),
+                $('<small>', { 
+                    text: formatFileSize(file.size), 
+                    class: 'text-muted' 
+                })
+            );
+            fileInfoDiv.append(fileDetails);
+            
+            // 삭제 버튼 추가
+            const deleteBtn = $('<button>', {
+                type: 'button',
+                class: 'btn btn-outline-danger btn-sm rounded-2 shadow-sm',
+                style: 'font-size: 0.8rem; padding: 0.25rem 0.75rem;',
+                text: '삭제'
+            }).click(function() {
+                fileDiv.remove();
+                updateFileList(this);
+            });
+            
+            // 모든 요소 조합
+            fileDiv.append(fileInfoDiv, deleteBtn);
+            
+            // 현재 첨부파일 목록에 추가
+            $('#currentFiles').append(fileDiv);
         });
+    });
+    
+
+ // 파일 삭제 이벤트
+    $(document).on('click', '.delete-img', function(){
+        const files = $("#files").prop('files');
+        const dataTranster = new DataTransfer();
+        const removeTargetId = $(this).attr('data-remove-key');
+        
+        Array.from(files)
+             .filter(file => file.lastModified != removeTargetId)
+             .forEach(file => dataTranster.items.add(file));
+     
+        $('#files')[0].files = dataTranster.files;
+        updateFileLabel(dataTranster.files);
+        $(this).closest('.img-box').remove();
+    });
+
+    let deletedFiles = []; // 상단에 배열 선언 추가
+
+    function deleteFile(fileIdx) {
+        if(confirm('파일을 삭제하시겠습니까?')) {
+            const formData = new FormData($('#modifyNoticeForm')[0]);
+            formData.append('deletedFiles[]', fileIdx);  // 삭제할 파일 ID 추가
+            
+            $.ajax({
+                url: '/admin/notice/modify',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // UI에서 해당 파일 항목 제거
+                    const fileElement = $(`[data-file-idx="${fileIdx}"]`).closest('.d-flex');
+                    fileElement.fadeOut(300, function() {
+                        $(this).remove();
+                        
+                        // 파일이 모두 삭제되었을 경우 메시지 표시
+                        if ($('#currentFiles').children().length === 0) {
+                            $('#currentFiles').html('<div class="text-center text-muted p-3">첨부된 파일이 없습니다.</div>');
+                        }
+                    });
+                    alert('파일이 삭제되었습니다.');
+                },
+                error: function(xhr, status, error) {
+                    console.error("에러 발생:", error);
+                    alert('파일 삭제 중 오류가 발생했습니다.');
+                }
+            });
+        }
+    }
+
+    
+    
+
+ // 파일 크기 포맷팅 함수
+ function formatFileSize(bytes) {
+     if (bytes === 0) return '0 Bytes';
+     const k = 1024;
+     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+     const i = Math.floor(Math.log(bytes) / Math.log(k));
+     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+ }
+
+ // 파일 리스트 업데이트 함수
+ function updateFileList(deletedElement) {
+     const files = $("#files").prop('files');
+     const dataTransfer = new DataTransfer();
+     
+     Array.from(files)
+         .filter((file, index) => index !== $(deletedElement).parent().index())
+         .forEach(file => dataTransfer.items.add(file));
+     
+     $('#files')[0].files = dataTransfer.files;
+     updateFileLabel(dataTransfer.files);
+ }
+    
+    // 파일 라벨 업데이트 함수
+    function updateFileLabel(files) {
+        if(files.length > 0) {
+            $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
+        } else {
+            $('#fileLabel').text('선택된 파일 없음');
+        }
+    }
+
     	
 	
       

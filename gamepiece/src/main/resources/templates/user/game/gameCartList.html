@@ -18,8 +18,12 @@
 							<th:block th:unless="${#lists.isEmpty(cartList)}">							
 								<div class="cart-info" th:each="l : ${cartList}">
 									<div class="cart-price">
+										<input type="hidden" class="cartCode" name="cartCode" th:value="${l.cartCode}" />
 										<li th:text="${l.gameName}"></li>
 										<li th:text="${l.price}"></li>
+									</div>
+									<div>
+										<a href="#" class="deleteItem" style="text-decoration: none; color : gray;">제거</a>
 									</div>
 								</div>
 							</th:block>
@@ -77,6 +81,23 @@
 			$('body').append($form);
 			$form.submit();
 		})
+		
+		$('.deleteItem').click(function(event) {
+			event.preventDefault();
+			const cartCode = $(this).closest('.cart-info').find('.cartCode').val();
+			const id = /*[[${id}]]*/"id";
+			
+			const $form = $('<form />', {'action' : '/game/deleteGameCartItem', 'method' : 'get'});
+			const $cartCode = $('<input />', {'type' : 'hidden', 'name' : 'cartCode'}).val(cartCode);
+			const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
+			
+			$form.append($cartCode, $id);
+			$('body').append($form);
+			$form.submit();
+			
+		})
+		
+		
 	</script>
 </th:block>
 </html>
