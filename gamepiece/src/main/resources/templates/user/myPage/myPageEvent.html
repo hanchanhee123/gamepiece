@@ -71,8 +71,8 @@
 	<th:block layout:fragment="contents-body">
 		<div class="mypage-event">
 	        <span>참여한 이벤트 조회</span>
-	        <th:block th:if="${myPageEvent != null}" th:each="myPageEvent : ${myPageEvent}">
-		        <div class="common-card-section">
+	        <div class="common-card-section">
+		        <th:block th:if="${myPageEvent != null}" th:each="myPageEvent : ${myPageEvent}">
 		            <div class="card-section-md">
 		                <img th:src="@{|${myPageEvent.filePath}|}" alt="이미지" />
 		                <span class="mypage-event-name" th:text="${myPageEvent.evNm}"></span>
@@ -83,8 +83,8 @@
 							<span th:text="${myPageEvent.evEndYmd}"></span>
 						</div>
 		            </div>
-		        </div>
-	        </th:block>
+	        	</th:block>
+	        </div>
 	        <th:block th:unless="${myPageEvent != null and not #lists.isEmpty(myPageEvent)}">
         		<div class="main-contents" style = "margin-top : 100px; text-align : center; color : white;">
         			<h5>참여한 이벤트가 없습니다.</h5>

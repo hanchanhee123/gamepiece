@@ -71,8 +71,8 @@
 	<th:block layout:fragment="contents-body">
 		<div class="mypage-board">
 	        <span>내 게시글</span>
-	        <th:block th:if="${myPageBoard != null}" th:each="myPageBoard : ${myPageBoard}">
-	        	<div class="common-card-section">
+        	<div class="common-card-section">
+	        	<th:block th:if="${myPageBoard != null}" th:each="myPageBoard : ${myPageBoard}">
 		            <div class="card-section">
 		                <p class="mypage-board-cate" th:text="${myPageBoard.boardCategory}"></p>
 		                <p class="mypage-board-title" th:text="${myPageBoard.boardTitle}"></p>
@@ -93,8 +93,8 @@
 		                    </span>
 		                </div>
 		            </div>
-		        </div>
-	        </th:block>
+	        	</th:block>
+	        </div>
 	        <th:block th:unless="${myPageBoard != null and not #lists.isEmpty(myPageBoard)}">
         		<div class="main-contents" style = "margin-top : 100px; text-align : center; color : white;">
         			<h5>작성한 게시글이 없습니다.</h5>
