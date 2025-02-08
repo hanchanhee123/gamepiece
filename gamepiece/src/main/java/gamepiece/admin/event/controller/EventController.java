@@ -17,6 +17,7 @@ import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.event.service.EventService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,7 +32,10 @@ public class EventController {
 	}
 	
 	@GetMapping("/eventList")
-	public String getEventList(Pageable pageable, Model model) {
+	public String getEventList(Pageable pageable, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 			
 		var pageInfo = eventService.getEventList(pageable);
 		
@@ -57,7 +61,10 @@ public class EventController {
 	}
 	
 	@GetMapping("/eventWinnerList")
-	public String getEventWinnerList(Pageable pageable, Model model) {
+	public String getEventWinnerList(Pageable pageable, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		var pageInfo = eventService.getEventWinnerList(pageable);
 		
@@ -81,8 +88,11 @@ public class EventController {
 	@GetMapping("/searchWinnerList")
 	public String getSearchWinnerListView(@RequestParam(value="searchValue") String searchValue,
 								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
-								 Model model,
+								 HttpSession session, Model model,
 								 Pageable pageable) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		PageInfo<Event> pageInfo = eventService.searchWinnerList(searchValue, searchCate, pageable);
 		
@@ -133,7 +143,10 @@ public class EventController {
 	}
 	
 	@GetMapping("/addEvent")
-	public String AddEvent(Model model) {
+	public String AddEvent(HttpSession session, Model model	) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		model.addAttribute("title", "이벤트 추가");
 		
@@ -151,7 +164,10 @@ public class EventController {
 	}
 	
 	@GetMapping("/addEventWinnerList")
-	public String addEventWinnerList(Model model) {
+	public String addEventWinnerList(HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		List<Event> eventList = eventService.getEventsList();
 		
@@ -186,7 +202,10 @@ public class EventController {
 	}
 	
 	@GetMapping("/eventDetail")
-	public String EventDetail(@RequestParam String evCd, Model model) {
+	public String EventDetail(@RequestParam String evCd, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		List<Event> eventDetail = eventService.getEventDetail(evCd);
 		List<Event> eventParticipant = eventService.getEventParticipant(evCd);
@@ -198,7 +217,10 @@ public class EventController {
 	}
 	
 	@GetMapping("/eventWinnerListDetail")
-	public String EventWinnerListDetail(@RequestParam String evCd, Model model) {
+	public String EventWinnerListDetail(@RequestParam String evCd, HttpSession session, Model model	) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		List<Event> eventWinnerListDetail = eventService.EventWinnerListDetail(evCd);
 		List<Event> getEventWinner = eventService.getEventWinner(evCd);
@@ -213,7 +235,10 @@ public class EventController {
 	
 	
 	@GetMapping("/eventWinner")
-	public String EventWinner(@RequestParam String evCd, Model model) {
+	public String EventWinner(@RequestParam String evCd, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		List<Event> eventDetail = eventService.getEventDetail(evCd);
 		List<Event> getEventWinner = eventService.getEventWinner(evCd);
@@ -246,8 +271,11 @@ public class EventController {
 	}
 	
 	@GetMapping("/modify")
-	public String modifyEventView(@RequestParam(name="evCd") String evCd, Model model) {
-	
+	public String modifyEventView(@RequestParam(name="evCd") String evCd,HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 		Event eventInfo = eventService.getEventInfoById(evCd);
 		
 		model.addAttribute("title", "이벤트 수정");
@@ -257,7 +285,10 @@ public class EventController {
 	}
 	
 	@GetMapping("/modifyEventWinnerList")
-	public String modifyEventWinnerListView(@RequestParam(name="evCd") String evCd, Model model) {
+	public String modifyEventWinnerListView(@RequestParam(name="evCd") String evCd, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		Event eventWinnerListInfo = eventService.getEventWinnerListInfoInfoById(evCd);
 		
@@ -297,8 +328,11 @@ public class EventController {
 	@GetMapping("/searchList")
 	public String getSearchListView(@RequestParam(value="searchValue") String searchValue,
 			@RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
-			Model model,
+			HttpSession session, Model model,
 			Pageable pageable) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		log.info("searchValue {}",searchValue);
 		PageInfo<Event> pageInfo = eventService.searchList(searchValue, searchCate, pageable);

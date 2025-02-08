@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import gamepiece.admin.tournament.domain.Tournament;
 import gamepiece.admin.tournament.service.TournamentService;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -23,7 +24,10 @@ public class TournamentController {
 	}
 	
 	@GetMapping("/tournamentList")
-	public String getTournamentList(Pageable pageable, Model model) {
+	public String getTournamentList(Pageable pageable, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		var pageInfo = tournamentService.getTournamentList(pageable);
 		
@@ -40,7 +44,10 @@ public class TournamentController {
 	}
 	
 	@GetMapping("/addTournament")
-	public String addTournament(Model model) {
+	public String addTournament(HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		model.addAttribute("title", "대회 추가");
 		model.addAttribute("gameList", tournamentService.getGameList());
@@ -56,7 +63,10 @@ public class TournamentController {
 	
 	@GetMapping("/modifyTournament")
 	public String modifyTournament(@RequestParam(name="tournament") String tournamentCode,
-									Model model) {
+									HttpSession session, Model model) {
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 		model.addAttribute("title", "대회수정");
 		model.addAttribute("gameList", tournamentService.getGameList());
 		model.addAttribute("tournamentInfo", tournamentService.getTournament(tournamentCode));

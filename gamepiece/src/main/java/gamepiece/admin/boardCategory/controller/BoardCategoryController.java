@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gamepiece.admin.boardCategory.domain.BoardCategory;
 import gamepiece.admin.boardCategory.service.BoardCategoryService;
 import gamepiece.util.Pageable;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 
@@ -55,7 +56,10 @@ public class BoardCategoryController {
 	
 
 	@GetMapping("/modify")
-	public String modifyCategoryView(@RequestParam(name="categoryCode") String categoryCode, Model model) {
+	public String modifyCategoryView(@RequestParam(name="categoryCode") String categoryCode, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		BoardCategory categoryInfo = boardCategoryService.getCategoryInfo(categoryCode);
 		
@@ -79,8 +83,10 @@ public class BoardCategoryController {
 	
 	
 	@GetMapping("/write")
-	public String addCategoryView(Model model) {
+	public String addCategoryView(HttpSession session, Model model) {
 		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		model.addAttribute("title", "카테고리추가");
 		return "admin/boardCategory/addBoardCategory";
@@ -89,9 +95,10 @@ public class BoardCategoryController {
 	
 	
 	@GetMapping("/list")
-	public String getBoardCategoryList(Pageable pageable, Model model) {
+	public String getBoardCategoryList(Pageable pageable, HttpSession session, Model model) {
 		
-	
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 		
 		
 		var pageInfo = boardCategoryService.getBoardCategoryList(pageable);
