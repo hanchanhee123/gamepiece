@@ -130,6 +130,17 @@
     font-size: 18px;
 }
 
+.mypage-inquiry-title {
+	color: #007bff;
+    border-bottom: 1px solid #007bff;
+    height: 30px;
+}
+
+.mypage-inquiry-content {
+	padding-top: 5px;
+    height: 147px;
+}
+
 .mypage-inquiry-response {
     display: flex;
     justify-content: flex-end;
