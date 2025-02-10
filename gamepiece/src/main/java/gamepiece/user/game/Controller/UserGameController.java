@@ -121,140 +121,148 @@ public class UserGameController {
         model.addAttribute("avatar", avatar);
 		
 		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
-		List<UserReview> userReview = userGameService.getUserReview(gameCode);
-		String nextReviewNum = userGameService.getLastReviewNo();
-		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ; 
+		/*
+		 * List<UserReview> userReview = userGameService.getUserReview(gameCode); int
+		 * nextReviewNum = userGameService.getLastReviewNo();
+		 */
+		//String reviewNum = "rv_" + (nextReviewNum + 1);
+		 
 		
 		
 		
-		model.addAttribute("nextReviewNumInt", nextReviewNumInt);
+		//model.addAttribute("nextReviewNum", nextReviewNum);
+		//model.addAttribute("reviewNum", reviewNum);
 		model.addAttribute("gameDetail", gameDetail);
-		model.addAttribute("userReview", userReview);
+		//model.addAttribute("userReview", userReview);
 		return "user/game/steamDetail";
 	}
 	
-	// 리뷰 작성
-	@PostMapping("/writeReview")
-	public String writeGameReview(UserReview userReview,
-								  Model model) {
-		
-		userGameService.writeUserReview(userReview);
-		
-		
-		
-		return "user/game/steamDetail";
-	}
+	/*
+	 * // 리뷰 작성
+	 * 
+	 * @PostMapping("/writeReview") public String writeGameReview(UserReview
+	 * userReview, Model model) {
+	 * 
+	 * userGameService.writeUserReview(userReview);
+	 * 
+	 * 
+	 * 
+	 * return "user/game/steamDetail"; }
+	 */
 	
 	
 	
 	
-	// 장바구니에 게임 담기
-	@PostMapping("/gameCart")
-	public String putGameInCart(@RequestParam(value="gameCode") String gameCode,
-									  @RequestParam(value="title", required = false, defaultValue = "") String title,
-									  @RequestParam(value="finalPrice") String finalPrice,
-									  @RequestParam(value="isDetail") String isDetail,
-									  @RequestParam(value="id") String id,
-									  UserGame userGame,
-									  Model model,
-									  HttpSession session) {
-		
-		Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode, title);
-		List<UserReview> userReview = userGameService.getUserReview(gameCode);
-		String nextReviewNum = userGameService.getLastReviewNo();
-		int nextReviewNumInt =Integer.parseInt(nextReviewNum.substring(3)) + 1 ;
-		
-		id = (String) session.getAttribute("SID");
-
-        String avatar = userService.getUserAvatar(id);
-        model.addAttribute("avatar", avatar);
-		
-		
-		
-		userGameService.putGameInCart(userGame);
-		
-		model.addAttribute("id", id);
-		model.addAttribute("nextReviewNumInt", nextReviewNumInt);
-		model.addAttribute("gameDetail", gameDetail);
-		model.addAttribute("userReview", userReview);
-		return "user/game/steamDetail";
-	}
+	/*
+	 * // 장바구니에 게임 담기
+	 * 
+	 * @PostMapping("/gameCart") public String
+	 * putGameInCart(@RequestParam(value="gameCode") String gameCode,
+	 * 
+	 * @RequestParam(value="title", required = false, defaultValue = "") String
+	 * title,
+	 * 
+	 * @RequestParam(value="finalPrice") String finalPrice,
+	 * 
+	 * @RequestParam(value="isDetail") String isDetail,
+	 * 
+	 * @RequestParam(value="id") String id, UserGame userGame, Model model,
+	 * HttpSession session) {
+	 * 
+	 * Map<String, Object> gameDetail = userGameService.getGameDetailApi(gameCode,
+	 * title); List<UserReview> userReview =
+	 * userGameService.getUserReview(gameCode); String nextReviewNum =
+	 * userGameService.getLastReviewNo(); int nextReviewNumInt
+	 * =Integer.parseInt(nextReviewNum.substring(3)) + 1 ;
+	 * 
+	 * id = (String) session.getAttribute("SID");
+	 * 
+	 * String avatar = userService.getUserAvatar(id); model.addAttribute("avatar",
+	 * avatar);
+	 * 
+	 * 
+	 * 
+	 * userGameService.putGameInCart(userGame);
+	 * 
+	 * model.addAttribute("id", id); model.addAttribute("nextReviewNumInt",
+	 * nextReviewNumInt); model.addAttribute("gameDetail", gameDetail);
+	 * model.addAttribute("userReview", userReview); return "user/game/steamDetail";
+	 * }
+	 * 
+	 * // 장바구니 화면
+	 * 
+	 * @GetMapping("/gameCartView") public String
+	 * userGameCartList(@RequestParam(value="id") String id, Model model,
+	 * HttpSession session) {
+	 * 
+	 * List<UserGame> cartList = userGameService.getUserCartList(id);
+	 * 
+	 * int totalPrice = userGameService.cartTotalPrice(id); id = (String)
+	 * session.getAttribute("SID");
+	 * 
+	 * log.info("cartList : {}", cartList); model.addAttribute("id", id); String
+	 * avatar = userService.getUserAvatar(id); model.addAttribute("avatar", avatar);
+	 * 
+	 * 
+	 * model.addAttribute("cartList", cartList); model.addAttribute("totalPrice",
+	 * totalPrice);
+	 * 
+	 * return "user/game/gameCartList"; }
+	 * 
+	 * // 장바구니 목록 삭제
+	 * 
+	 * @GetMapping("/deleteGameCartList") public String
+	 * deleteGameCartList(@RequestParam(value="id") String id, Model model,
+	 * HttpSession session) {
+	 * 
+	 * userGameService.deleteGameCartList(id); return "user/game/gameCartList"; }
+	 * 
+	 * // 장바구니 선택 삭제
+	 * 
+	 * @GetMapping("/deleteGameCartItem") public String
+	 * deleteGameCartItem(@RequestParam(value="id") String id,
+	 * 
+	 * @RequestParam(value="cartCode") String cartCode, Model model, HttpSession
+	 * session) {
+	 * 
+	 * userGameService.deleteGameCartItem(id, cartCode);
+	 * 
+	 * List<UserGame> cartList = userGameService.getUserCartList(id);
+	 * 
+	 * model.addAttribute("cartList", cartList);
+	 * 
+	 * return "user/game/gameCartList"; }
+	 */
 	
-	// 장바구니 화면
-	@GetMapping("/gameCartView") 
-	public String userGameCartList(@RequestParam(value="id") String id,
-								   Model model, HttpSession session) {
-		
-		List<UserGame> cartList = userGameService.getUserCartList(id);
-		
-		int totalPrice = userGameService.cartTotalPrice(id);
-		id = (String) session.getAttribute("SID");
-		
-		log.info("cartList : {}", cartList);
-		model.addAttribute("id", id);
-        String avatar = userService.getUserAvatar(id);
-        model.addAttribute("avatar", avatar);
-		
-		
-		model.addAttribute("cartList", cartList);
-		model.addAttribute("totalPrice", totalPrice);
-		
-		return "user/game/gameCartList";
-	}
-	
-	// 장바구니 목록 삭제
-	@GetMapping("/deleteGameCartList")
-	public String deleteGameCartList(@RequestParam(value="id") String id,
-									 Model model, HttpSession session) {
-		
-		userGameService.deleteGameCartList(id);
-		return "user/game/gameCartList";
-	}
-	
-	// 장바구니 선택 삭제
-	@GetMapping("/deleteGameCartItem")
-	public String deleteGameCartItem(@RequestParam(value="id") String id,
-									 @RequestParam(value="cartCode") String cartCode,
-									 Model model, HttpSession session) {
-		
-		userGameService.deleteGameCartItem(id, cartCode);
-		
-		List<UserGame> cartList = userGameService.getUserCartList(id);
-		
-		model.addAttribute("cartList", cartList);
-		
-		return "user/game/gameCartList";
-	}
 	
 	
-	
-	// 결제 진행 화면
-	@GetMapping("/paymentView") 
-	public String paymentView(@RequestParam(value="id") String id,
-			Model model,
-			HttpSession session) {
-		
-		
-		id = (String) session.getAttribute("SID");
-
-        String avatar = userService.getUserAvatar(id);
-        model.addAttribute("avatar", avatar);
-		
-		List<UserGame> cartList = userGameService.getUserCartList(id);
-		
-		
-		int totalPrice = userGameService.cartTotalPrice(id);
-		
-		List<UserGame> paymentList = userGameService.getPaymentList();
-		
-		
-		
-		model.addAttribute("cartList", cartList);
-		model.addAttribute("totalPrice", totalPrice);
-		model.addAttribute("paymentList", paymentList);
-		
-		return "user/game/paymentView";
-	}
+	/*
+	 * // 결제 진행 화면
+	 * 
+	 * @GetMapping("/paymentView") public String
+	 * paymentView(@RequestParam(value="id") String id, Model model, HttpSession
+	 * session) {
+	 * 
+	 * 
+	 * id = (String) session.getAttribute("SID");
+	 * 
+	 * String avatar = userService.getUserAvatar(id); model.addAttribute("avatar",
+	 * avatar);
+	 * 
+	 * List<UserGame> cartList = userGameService.getUserCartList(id);
+	 * 
+	 * 
+	 * int totalPrice = userGameService.cartTotalPrice(id);
+	 * 
+	 * List<UserGame> paymentList = userGameService.getPaymentList();
+	 * 
+	 * 
+	 * 
+	 * model.addAttribute("cartList", cartList); model.addAttribute("totalPrice",
+	 * totalPrice); model.addAttribute("paymentList", paymentList);
+	 * 
+	 * return "user/game/paymentView"; }
+	 */
 	
 	
 	
