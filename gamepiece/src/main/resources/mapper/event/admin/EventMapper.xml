@@ -38,7 +38,7 @@
 		    </if>
 		</where>
 		ORDER BY ev_cd DESC
-		LIMIT #{pageable.rowPerPage}; OFFSET #{pageable.offset};
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
 	
 	<select id="getCntEventList" resultType="int">
