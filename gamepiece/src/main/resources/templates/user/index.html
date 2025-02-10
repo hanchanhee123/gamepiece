@@ -80,8 +80,35 @@
                 </div>
                 <div class="event-contents">
                     <div class="event-content">
-                        <img class="event1" src="https://cdn.discordapp.com/attachments/1304236608651923468/1312968092393144380/image.png?ex=674e6c52&is=674d1ad2&hm=d396c30fb84105e93f53943a335fa97f8a7a8e392555a8689493f428178741b1&" />
-                        <img class="event2" src="https://cdn.discordapp.com/attachments/1304236608651923468/1312968207979643043/image.png?ex=674e6c6e&is=674d1aee&hm=be326fc3e1d047fe4fcd89c68c76791624cb8971af2a0bfc75be07c3221aaa77&" />
+                        <ul>
+				<!-- 이벤트 목록이 null이 아닌 경우 반복 -->
+				<th:block th:if="${eventList != null}">
+					<th:block th:each="event : ${eventList}">
+						<!-- 진행 중인 이벤트만 표시 -->
+						<li class="event" th:if="${event.evStatus == '진행중'}">
+							<div class="list-thumb">
+							    <img th:onclick="|location.href='@{/event/eventDetail(evCd=${event.evCd},evStatus=${event.evStatus})}'|" th:src="${event.filePath}" alt="Event Thumbnail">
+							</div>
+							<div class="list-contents">
+							    <div class="list-con">
+							        <div class="list-subject" aria-label="제목">
+							            <span class="list-title" th:text="${event.evNm}"></span>
+							        </div>
+							        <div class="list-term">
+							            <strong>이벤트 기간</strong>
+								            <span th:text="${event.evStartYmd}"></span>
+								            <span>~</span>
+								            <span th:text="${event.evEndYmd}"></span>
+							        </div>
+							    </div>
+							    <div class="list-status">
+									<span class="list-status-ongoing" th:text="${event.evStatus}"></span>
+							    </div>
+							</div>
+						</li>
+					</th:block>
+				</th:block>
+				</ul>
                     </div>
                     <br>
                     <br>
