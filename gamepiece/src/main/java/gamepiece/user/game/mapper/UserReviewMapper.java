@@ -13,7 +13,7 @@ public interface UserReviewMapper {
 	List<UserReview> getUserReview(String gameCode);
 	
 	// 리뷰 마지막 번호 조회
-	String getLastReviewNum();
+	int getLastReviewNum();
 	
 	int writeUserReview(UserReview userReview);
 	

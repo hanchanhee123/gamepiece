@@ -14,6 +14,9 @@ public class UserReview {
 	private int reviewDisempathy;
 	private String reviewLogYmd;
 	
-	private String nextReviewNum;
+	private int nextReviewNum;
 	private String review;
+	private String reviewNum;
+	
+	private boolean isDetail;
 }
