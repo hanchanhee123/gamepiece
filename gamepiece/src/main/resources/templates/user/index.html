@@ -16,13 +16,19 @@
                     <div id="main-list" class="main-slider carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="main-games carousel-item active">
-                                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/466560/3f653067940e08ffa04b6867fd5d7787cf2e49ae/capsule_616x353.jpg?t=1732274847"/>
+                            	<a th:href="@{/game/steamDetail(gameCode=466560)}">
+                                	<img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/466560/3f653067940e08ffa04b6867fd5d7787cf2e49ae/capsule_616x353.jpg?t=1732274847"/>
+                                </a>
                             </div>
                             <div class="main-games carousel-item">
-                                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1943950/capsule_616x353.jpg?t=1721158394"/>
+                            	<a th:href="@{/game/steamDetail(gameCode=1943950)}">
+                                	<img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1943950/capsule_616x353.jpg?t=1721158394"/>
+                                </a>
                             </div>
                             <div class="main-games carousel-item">
-                                <img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1623730/c961ac047294838bfe382bf193ade5c64b19e573/capsule_616x353.jpg?t=1728458632"/>
+                            	<a th:href="@{/game/steamDetail(gameCode=1623730)}">
+                                	<img src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1623730/c961ac047294838bfe382bf193ade5c64b19e573/capsule_616x353.jpg?t=1728458632"/>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -36,39 +42,57 @@
                             <div class="sub-games carousel-item active">
                                 <div class="sub-game">
                                     <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/433340/capsule_616x353.jpg?t=1732647440"/>
+                                    	<a th:href="@{/game/steamDetail(gameCode=433340)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/433340/capsule_616x353.jpg?t=1732647440"/>
+                                        </a>
                                     </div>
                                     <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/391720/capsule_616x353.jpg?t=1732796809"/>
+                                    	<a th:href="@{/game/steamDetail(gameCode=391720)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/391720/capsule_616x353.jpg?t=1732796809"/>
+                                        </a>
                                     </div>
                                     <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1172380/capsule_616x353.jpg?t=1725901454"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sub-games carousel-item">
-                                <div class="sub-game">
-                                    <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1086940/hero_capsule.jpg?t=1725654125"/>
-                                    </div>
-                                    <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2679460/hero_capsule.jpg?t=1732700322"/>
-                                    </div>
-                                    <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/990080/hero_capsule.jpg?t=1717689083"/>
+                                    	<a th:href="@{/game/steamDetail(gameCode=1172380)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1172380/capsule_616x353.jpg?t=1725901454"/>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                             <div class="sub-games carousel-item">
                                 <div class="sub-game">
                                     <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2513280/hero_capsule_koreana.jpg?t=1732875699"/>
+                                    	<a th:href="@{/game/steamDetail(gameCode=1086940)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1086940/hero_capsule.jpg?t=1725654125"/>
+                                        </a>
                                     </div>
                                     <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/bundles/5699/qipqf90z2z7h4x3i/hero_capsule.jpg?t=1678931390"/>
+                                    	<a th:href="@{/game/steamDetail(gameCode=2679460)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2679460/hero_capsule.jpg?t=1732700322"/>
+                                        </a>
                                     </div>
                                     <div>
-                                        <img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1601580/27c9ed15b2bafd62a8037e229fb2e44a17441737/hero_capsule.jpg?t=1732797543"/>
+                                    	<a th:href="@{/game/steamDetail(gameCode=990080)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/990080/hero_capsule.jpg?t=1717689083"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sub-games carousel-item">
+                                <div class="sub-game">
+                                    <div>
+                                    	<a th:href="@{/game/steamDetail(gameCode=2513280)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2513280/hero_capsule_koreana.jpg?t=1732875699"/>
+                                        </a>
+                                    </div>
+                                    <div>
+                                    	<a th:href="@{/game/steamDetail(gameCode=271590)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/bundles/5699/qipqf90z2z7h4x3i/hero_capsule.jpg?t=1678931390"/>
+                                        </a>
+                                    </div>
+                                    <div>
+                                    	<a th:href="@{/game/steamDetail(gameCode=1601580)}">
+                                        	<img class="game" src="https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1601580/27c9ed15b2bafd62a8037e229fb2e44a17441737/hero_capsule.jpg?t=1732797543"/>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
