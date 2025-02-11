@@ -793,7 +793,8 @@ public class BoardController {
         String writerAvatar = userService.getUserAvatar(boardInfo.getBoardUserId());
         model.addAttribute("writerAvatar", writerAvatar); 
         
-	    
+
+        
 	    if (userId != null) {
 	        // 게시글 좋아요/싫어요 상태 확인
 	    	  Map<String, String> likeParams = new HashMap<>();
@@ -812,6 +813,12 @@ public class BoardController {
 	          model.addAttribute("boardDislikeStatus", dislikeStatus);
 	     // 댓글 좋아요/싫어요 상태 확인
 	        List<BoardComment> comments = pageInfo.getContents();
+	        
+	     // 여기에 아바타 정보 추가
+	        for (BoardComment comment : comments) {
+	            String commentAvatar = userService.getUserAvatar(comment.getCommentUserId());
+	            comment.setAvatarFilePath(commentAvatar);
+	        }
 	        Map<String, Map<String, BoardCommentLikes>> commentLikeStatuses = new HashMap<>(); 
 	        
 	        for (BoardComment comment : comments) {
@@ -849,7 +856,7 @@ public class BoardController {
 	    model.addAttribute("endPageNum", pageInfo.getEndPageNum());
 	    model.addAttribute("lastPage", pageInfo.getLastPage());
 	    model.addAttribute("boardNum", boardNum);
-
+	    log.info("댓글 목록: {}", pageInfo.getContents());
 	    return "user/board/boardDetail";
 	}
 
