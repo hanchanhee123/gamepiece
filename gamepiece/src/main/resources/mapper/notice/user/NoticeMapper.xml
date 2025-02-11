@@ -49,16 +49,17 @@
 								ntc_cn, 
 								ntc_img, 
 								ntc_view, 
-								admin_id, 
+								u.user_nn, 
 								reg_ymd
 							FROM 
-							       ntc_mttr 
+							        ntc_mttr nm INNER JOIN user u
+									 ON nm.admin_id = u.id
 							   WHERE 1=1
 							   <if test="searchValue != null and searchValue != ''">
-							       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
+							       AND nm.ntc_title LIKE CONCAT('%', #{searchValue}, '%')
 							   </if>
-									AND is_delete = 'active'
-							ORDER BY ntc_no DESC
+									AND nm.is_delete = 'active'
+							ORDER BY nm.ntc_no DESC
 							   LIMIT #{rowPerPage} OFFSET #{offset}
 							</select>
 							
@@ -95,13 +96,14 @@ SELECT
 	ntc_cn, 
 	ntc_img, 
 	ntc_view, 
-	admin_id, 
+	u.user_nn, 
 	reg_ymd
 FROM
-	 ntc_mttr
+	 ntc_mttr nm INNER JOIN user u
+	 ON nm.admin_id = u.id
 WHERE
-	is_delete = 'active'
-	ORDER BY ntc_no DESC
+	nm.is_delete = 'active'
+	ORDER BY nm.ntc_no DESC
  LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
 
