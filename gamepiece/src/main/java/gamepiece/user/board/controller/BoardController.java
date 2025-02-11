@@ -664,7 +664,8 @@ public class BoardController {
 		
 		  String writerAvatar = userService.getUserAvatar(inquiryInfo.getInquiryUserId());
 	        model.addAttribute("writerAvatar", writerAvatar); 
-		
+	        
+	   
 		
 		List<InquiryFiles> inquiryFiles = boardService.getInquiryFiles(inquiryNum);
 		

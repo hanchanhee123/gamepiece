@@ -97,12 +97,9 @@
                    <div class="card-body">
 				     <div class="mb-4">
 				    <label class="form-label">답변자</label>
-				    <select class="form-select" name="adminId" id="adminId">
-				        <option value="" disabled th:if="${responeInfo == null}" selected>답변자 선택</option>
-				        <option value="id01" th:text="'id01'" th:selected="${responeInfo != null and responeInfo.adminId == 'id01'}">관리자1</option>
-				        <option value="id02" th:text="'id02'" th:selected="${responeInfo != null and responeInfo.adminId == 'id02'}">관리자2</option>
-				        <option value="id03" th:text="'id03'" th:selected="${responeInfo != null and responeInfo.adminId == 'id03'}">관리자3</option>
-				    </select>
+				      <input type="text" class="form-control" 
+					           name="adminId" id="adminId"
+					           th:value="id01">
 				</div>
                        <div class="mb-4">
                            <label class="form-label">답변내용</label>
