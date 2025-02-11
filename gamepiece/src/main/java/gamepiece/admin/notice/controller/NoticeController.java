@@ -9,8 +9,10 @@ import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -60,6 +63,40 @@ public class NoticeController {
 	private final BoardFilesUtils boardFilesUtils;
 	private final NoticeFilesMapper noticeFilesMapper;
 	
+	
+	
+	
+	@PostMapping("/uploadImage")
+	@Transactional
+	public ResponseEntity<Map<String, Object>> uploadEditorImage(@RequestPart(name = "Filedata") MultipartFile file) {
+	    Map<String, Object> result = new HashMap<>();
+
+	    try {
+	        // 파일 저장 처리
+	        AdminBoardFiles fileInfo = boardFilesUtils.uploadFile(file);
+	        
+	        if(fileInfo != null) {
+	            // DB에 파일 정보 저장
+	            boardFileMapper.addfile(fileInfo);
+
+	            // 실제 저장된 파일의 경로 구성
+	            String savedFilePath = "/admin/notice/display?fileIdx=" + fileInfo.getFileIdx();
+
+	            result.put("url", savedFilePath);
+	            result.put("originalFileName", fileInfo.getFileOriginalName());
+	            result.put("success", true);
+	            return ResponseEntity.ok(result);
+	        } else {
+	            throw new RuntimeException("파일 저장 실패");
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        result.put("success", false);
+	        result.put("error", e.getMessage());
+	        return ResponseEntity.internalServerError().body(result);
+	    }
+	}
 	
 	
 	
