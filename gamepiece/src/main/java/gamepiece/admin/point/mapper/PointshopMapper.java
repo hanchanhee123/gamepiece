@@ -29,6 +29,8 @@ public interface PointshopMapper {
 	
 	int logCount(String ps_cd);
 	
+	int getSearchCntPointList(Map<String, Object> searchMap);
+	
 	List<Point> getSearchList(Map<String, Object> searchMap);
 	
 }

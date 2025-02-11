@@ -16,8 +16,8 @@
 			<div class="search">
 	            <input type="text" class="item-search" id="searchValue" 
 					   name="searchValue" th:value="${searchValue}" placeholder="Search">
-					<button class="btn btn-light bg" id="searchBtn" type="button" style = "height: 31px">
-					<i class="material-icons md-search"></i>
+					<button class="btn btn-light bg" id="searchBtn" type="button"  style = "height: 31px">
+					<i class="material-icons md-search"  style = "height: 31px"></i>
 					</button>
 	        </div>
 		</div>
@@ -94,8 +94,8 @@
 				</ul>
 			</nav>
 		</div>
-		<div class="pagination-area mt-30 mb-50" th:unless="${search == null}">
-			<nav>
+		<div class="pagination-area mt-30 mb-50" th:unless="${search == null} or ${search == ''}">
+			<nav th:if="${endPageNum > 0}">
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
 						<a class="page-link " 

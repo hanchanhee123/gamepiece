@@ -86,7 +86,7 @@ public class PointShopController {
 		return "user/points/pointHistory";
 	}
 	
-	@GetMapping("/imoticon")
+	@GetMapping("/emoticon")
 	public String getimoticonList(Pageable pageable,Model model,HttpSession session) {
 		
 		var imoticonInfo = pointshopService.findimoticon(pageable);
@@ -117,7 +117,7 @@ public class PointShopController {
 		}
 
 		
-		return "user/points/imoticonList";
+		return "user/points/emoticonList";
 	}
 	
 	@GetMapping("/avatar")

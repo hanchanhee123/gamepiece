@@ -1,5 +1,8 @@
 package gamepiece.admin.notice.service;
 
+
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,8 @@ import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.admin.board.mapper.BoardFileMapper;
 import gamepiece.admin.board.util.BoardFilesUtils;
 import gamepiece.admin.notice.domain.Notice;
+import gamepiece.admin.notice.domain.NoticeFiles;
+import gamepiece.admin.notice.mapper.NoticeFilesMapper;
 import gamepiece.admin.notice.mapper.NoticeMapper;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
@@ -40,7 +46,7 @@ public class NoticeServiceImpl implements NoticeService {
 	private final NoticeMapper noticeMapper;
 	private final BoardFileMapper boardFileMapper;
 	private final BoardFilesUtils boardFilesUtils;
-	
+	private final NoticeFilesMapper noticeFilesMapper;
 	
 	@Override
 	public PageInfo<Notice> getNoticeList(Pageable pageable) {
@@ -71,16 +77,14 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 
-	@Override
+	@Transactional
 	public int modifyNotice(Notice notice) {
-		
-		   if (notice.getFileIdx() != null) {
-		        return noticeMapper.modifyNotice(notice);
-		    }
-		    return 0;
-		}
-
-
+	    log.info("공지사항 수정 시작 - 번호: {}", notice.getNoticeNum());
+	    log.info("수정할 내용: {}", notice.getNoticeContent());
+	    int result = noticeMapper.modifyNotice(notice);
+	    log.info("수정 결과: {}", result);
+	    return result;
+	}
 
 	@Override
 	public int removeNotice(int noticeNum) {
@@ -185,4 +189,165 @@ public class NoticeServiceImpl implements NoticeService {
 		return boardFileMapper.findByNoticeNum(noticeNum);
 	}
 
+	@Override
+	@Transactional
+	public void addNoticeWithFiles(Notice notice, MultipartFile[] files) {
+	    try {
+	        if (files != null && files.length > 0 && !files[0].isEmpty()) {
+	            String rootPath = getOSFilePath(); // OS에 따른 루트 경로 가져오기
+	            
+	            // 파일 인덱스 시작값 한 번만 조회
+	            String lastFileIdx = boardFileMapper.getNextFileIdx();
+	            int startNum = 1;
+	            
+	            if (lastFileIdx != null) {
+	                String numStr = lastFileIdx.substring(lastFileIdx.lastIndexOf("_") + 1);
+	                startNum = Integer.parseInt(numStr) + 1;
+	            }
+	            
+	            // 각 파일 처리
+	            for (int i = 0; i < files.length; i++) {
+	                MultipartFile file = files[i];
+	                if (!file.isEmpty()) {
+	                    // 새로운 fileIdx 생성
+	                    String fileIdx = String.format("file_%03d", startNum + i);
+	                    
+	                    // 날짜 폴더명 생성
+	                    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+	                    String relativePath = "/attachment/" + today + 
+	                        (file.getContentType().contains("image") ? "/image" : "");
+	                    
+	                    // 전체 경로 생성 및 디렉토리 생성
+	                    String fullPath = rootPath + fileRealPath + relativePath;
+	                    File dir = new File(fullPath);
+	                    if (!dir.exists()) {
+	                        dir.mkdirs();
+	                    }
+	                    
+	                    // 새 파일명 생성
+	                    String newFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+	                    
+	                    // 파일 정보 생성
+	                    AdminBoardFiles boardFile = AdminBoardFiles.builder()
+	                            .fileIdx(fileIdx)
+	                            .fileOriginalName(file.getOriginalFilename())
+	                            .fileNewName(newFileName)
+	                            .filePath(relativePath)
+	                            .fileSize(file.getSize())
+	                            .build();
+	                    
+	                    // 실제 파일 저장
+	                    File saveFile = new File(dir, newFileName);
+	                    file.transferTo(saveFile);
+	                    
+	                    // DB에 파일 정보 저장
+	                    boardFileMapper.addfile(boardFile);
+	                    
+	                    // 게시글-파일 매핑 생성
+	                    NoticeFiles mapping = new NoticeFiles();
+	                    mapping.setNoticeNum(notice.getNoticeNum());
+	                    mapping.setFileIdx(fileIdx);
+	                    noticeFilesMapper.addNoticeMapping(mapping);
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        log.error("파일 처리 중 오류 발생: ", e);
+	        throw new RuntimeException("파일 처리 중 오류가 발생했습니다.", e);
+	    }
+	}
+
+	// OS에 따른 루트 경로 가져오기
+	private String getOSFilePath() {
+	    String rootPath = "/";
+	    String os = System.getProperty("os.name").toLowerCase();
+	    
+	    if(os.contains("win")) {
+	        rootPath = "C:";
+	    }
+	    return rootPath;
+	}
+	@Override
+	public List<NoticeFiles> getNoticeFiles(int noticeNum) {
+		// TODO Auto-generated method stub
+		return noticeFilesMapper.getNoticeFiles(noticeNum);
+	}
+
+
+	@Override
+	public void addNoticeFileMapping(int noticeNum, String fileIdx) {
+		// TODO Auto-generated method stub
+		NoticeFiles mapping = new NoticeFiles();
+		mapping.setNoticeNum(noticeNum);
+		mapping.setFileIdx(fileIdx);
+		noticeFilesMapper.addNoticeMapping(mapping);
+	}
+
+
+	@Override
+	public void deleteBoardFileMapping(int noticeNum, String fileIdx) {
+		
+		noticeFilesMapper.addFileMapping(noticeNum, fileIdx);
+		
+	}
+
+
+	@Override
+	public void deleteAllNoticeBoardFiles(int noticeNum) {
+
+			noticeFilesMapper.deleteAllFileMapping(noticeNum);
+		
+	}
+
+
+	@Override
+	public void updateNoticeFiles(int noticeNum, List<MultipartFile> newFiles) {
+	
+		deleteAllNoticeBoardFiles(noticeNum);
+		
+		 for(MultipartFile file : newFiles) {
+	            if(!file.isEmpty()) {
+	            	AdminBoardFiles fileInfo = saveFile(file); // 파일 저장 메서드 (기존 로직 사용)
+	                addNoticeFileMapping(noticeNum, fileInfo.getFileIdx());
+	            }
+	        }
+		
+	}
+	
+
+    @Transactional
+    public AdminBoardFiles saveFile(MultipartFile file) {
+        try {
+            String fileIdx = boardFileMapper.getNextFileIdx();
+            String originalFileName = file.getOriginalFilename();
+            String newFileName = UUID.randomUUID().toString() + "_" + originalFileName;
+            String filePath = "/attachment/" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            
+            AdminBoardFiles boardFile = AdminBoardFiles.builder()
+                    .fileIdx(fileIdx)
+                    .fileOriginalName(originalFileName)
+                    .fileNewName(newFileName)
+                    .filePath(filePath)
+                    .fileSize(file.getSize())
+                    .build();
+
+            // 파일 저장 로직
+            File saveFile = new File(filePath);
+            if (!saveFile.exists()) {
+                saveFile.mkdirs();
+            }
+            file.transferTo(new File(filePath + File.separator + newFileName));
+
+            return boardFile;
+        } catch (Exception e) {
+            throw new RuntimeException("파일 저장 중 오류가 발생했습니다.", e);
+        }
+    }
+	
+	
+	
+	
+	
+	
+	
 }

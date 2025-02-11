@@ -45,7 +45,7 @@ public class PointServiceImpl implements PointService {
 		}
 		
 		Map<String, Object> searchMap = new HashMap<String, Object>();
-		int rowCnt = pointshopMapper.getItemCount();
+		int rowCnt = pointshopMapper.getSearchCntPointList(searchMap);
 		searchMap.put("searchCate", cate);
 		searchMap.put("searchValue", searchValue);
 		searchMap.put("pageable", pageable);

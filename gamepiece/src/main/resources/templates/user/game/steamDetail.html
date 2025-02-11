@@ -34,9 +34,9 @@
 				                </div>
 				                <div class="wishlist">
 				                    <div class="button-area">
-				                        <button type="button" class="btn btn-primary" id="wishList">위시리스트에 넣기</button>
-				                        <button type="button" class="btn btn-primary" id="cart">장바구니에 넣기</button>
-				                        <button type="button" class="btn btn-primary" id="cartView" onclick="location.href='/game/gameCartList'">장바구니로 이동</button>
+				                        <!-- <button type="button" class="btn btn-primary" id="wishList">위시리스트에 넣기</button>
+				                        <button type="button" class="btn btn-primary" id="cart">장바구니에 넣기</button> -->
+				                        <button type="button" class="btn btn-primary" id="payment">결제</button>
 				                    </div>
 				                </div>
 				                <div class="game-script">
@@ -184,112 +184,50 @@
 <!--/* 사용자 추가 js file */-->
 <th:block layout:fragment="customJsResource">
 	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </th:block>
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
-		const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
-		if(isDetail) {
-			$('.writeButton').click(function() {
-				const review = $('.writeBox').val();
-				const grade = $('#reviewGrade').val();
-				console.log(grade);
-				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
+		$('#payment').click(function() {
+			const title = /*[[${gameDetail.title}]]*/"gameDetail";
+			const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
+			const price = /*[[${gameDetail.finalPrice}]]*/"gameDetail";
+			var IMP = window.IMP;
+			
+			IMP.init("imp35636024");
+			
+			IMP.request_pay({
+				pg : "kakaopay",
+				pay_method : "kakaopay",
+				gameCode : gameCode,
+				name : title,
+				amount : price
 				
-				const nextReviewNumInt = /*[[${nextReviewNumInt}]]*/"nextReviewNumInt";
-				const nextReviewNum = 'rv_' + nextReviewNumInt;
-				const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
-				console.log(nextReviewNum);
-				const id = /*[[${id}]]*/"id";
-				if(!review) {
-					alert("리뷰를 작성해주세요");
-					review.focus();
-					return false;
-				};
-				if(!grade) {
-					alert("별점을 선택해주세요");
-					grade.focus();
-					return false;
+			}, function(response) {
+				if(response.success) {
+					$.ajax({
+						type : 'POST',
+						url : '/game/payment',
+						data : {
+							imp_uid : response.imp_uid,
+							merchant_id : response.merchant_id,
+							amount : response.paid_amount,
+							
+							gameCode : gameCode
+						},
+						success : function(data) {
+							alert("결제가 완료되었습니다.");
+						},
+						error : function(jQXHR, textStatus, error) {
+							alert("결제 처리중 오류가 발생하였습니다.");
+						}
+					});
+				} else {
+					alert("결제 실패 :" + response.error_msg);
 				}
-				if(!id) {
-					alert("로그인 이후 작성해주세요");
-					return false;
-				}
-				console.log(grade);
-				
-				const $form = $('<form />', {'action' : '/game/writeReview', 'method' : 'post'});
-				const $review = $('<input />', {'type' : 'hidden', 'name' : 'review'}).val(review);
-				const $grade = $('<input />', {'type' : 'hidden', 'name' : 'grade'}).val(grade);
-				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
-				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
-				const $nextReviewNum = $('<input />', {'type' : 'hidden', 'name' : 'nextReviewNum'}).val(nextReviewNum);
-
-				const $isDetail = $('<input />', {'type' : 'hidden', 'name' : 'isDetail'});
-				
-				
-				
-				$form.append($review, $grade, $gameCode, $id, $nextReviewNum, $isDetail);
-				$('body').append($form);
-				$form.submit();
-				
-				
-			})	
-			
-			const reviewListArea = $('.reviewList');
-			const reviewArea = $('.review-area');
-			const reviewList = reviewArea.find('.review');
-			
-			reviewList.each((index, item) => {
-				if(index % 2 == 1) {
-					const $reviewArea = $('<div />', {'class' : 'review-area'})
-					$reviewArea.append(item);
-					reviewListArea.next().append($reviewArea);
-				} 
-			})
-			
-			
-			
-			$('#cart').click(function() {
-				alert("장바구니에 추가하시겠습니까?");
-				const title = /*[[${gameDetail.title}]]*/"gameDetail";
-				const finalPrice = /*[[${gameDetail.finalPrice}]]*/"gameDetail";
-				const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
-				const isDetail = /*[[${gameDetail.isDetail}]]*/"gameDetail";
-				const id = /*[[${id}]]*/"id";
-				
-				if(id == null) {
-					alert("로그인 이후 이용해주세요");
-					return false;
-				}
-				
-				const $form = $('<form />', {'action' : '/game/gameCart', 'method' : 'post'});
-				const $title = $('<input />', {'type' : 'hidden', 'name' : 'title'}).val(title);
-				const $finalPrice = $('<input />', {'type' : 'hidden', 'name' : 'finalPrice'}).val(finalPrice);
-				const $gameCode = $('<input />', {'type' : 'hidden', 'name' : 'gameCode'}).val(gameCode);
-				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
-				
-				const $isDetail = $('<input />', {'type' : 'hidden', 'name' : 'isDetail'}).val(isDetail);
-				$form.append($title, $finalPrice, $gameCode, $isDetail, $id);
-				$('body').append($form);
-				$form.submit();
-			})
-			$('#cartView').click(function() {
-				const id = /*[[${id}]]*/"id";
-				console.log(id);
-				
-				if(id == null) {
-					alert("로그인 이후 이용가능합니다.");
-					return false;
-				}
-				
-				const $form = $('<form />', {'action' : '/game/gameCartView', 'method' : 'get'});
-				const $id = $('<input />', {'type' : 'hidden', 'name' : 'id'}).val(id);
-				$form.append($id);
-				$('body').append($form);
-				$form.submit();
-			})
-			
-		}
+			});
+		});
 		
 			
 		

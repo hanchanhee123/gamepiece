@@ -4,6 +4,7 @@
 	<resultMap type="gamepiece.user.game.domain.UserGame" id="gameList">
 		<id 	column="gm_cd" property="gameCode"></id>
 		<id 	column="payment_method_cd" property="paymentMethodCode"></id>
+		<id 	column="gcl_cd" property="cartCode"></id>
 		<result column="gm_nm" property="gameName"></result>
 		<result column="p_cd" property="platformCode"></result>
 		<result column="p_nm" property="platformName"></result>
@@ -147,7 +148,11 @@
 	
 	<select id="getUserCartList" resultMap="gameList">
 		/* 게임 카트 테이블 데이터 목록 조회 */
-		SELECT gcl.id, gcl.gm_cd, gcl.gm_nm, 
+		SELECT 
+			gcl.gcl_cd,
+			gcl.id, 
+			gcl.gm_cd, 
+			gcl.gm_nm, 
            CASE 
                WHEN gcl.price = 'Free To Play' THEN 0 
                ELSE gcl.price 
@@ -167,6 +172,26 @@
 		WHERE
 			id = #{id};
 	</select>
+	
+	<delete id="deleteGameCartList" parameterType="String">
+		/* 장바구니 목록 제거 */
+		DELETE 
+		FROM 
+			game_cart_list 
+		WHERE 
+			id=#{id};
+	</delete>
+	
+	<delete id="deleteGameCartItem" parameterType="String">
+		/*장바구니 선택 제거*/
+		DELETE 
+		FROM 
+			game_cart_list 
+		WHERE 
+			id=#{id}
+			AND 
+			gcl_cd=#{cartCode};
+	</delete>
 	
 	<select id="getPaymentList" resultMap="gameList">
 		/* 결제 방법 리스트 조회 */

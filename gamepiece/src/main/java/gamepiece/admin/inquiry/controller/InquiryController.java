@@ -4,6 +4,8 @@ package gamepiece.admin.inquiry.controller;
 
 
 
+
+
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.file.Path;
@@ -33,6 +35,7 @@ import gamepiece.admin.inquiry.service.InquiryService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -127,7 +130,10 @@ public class InquiryController {
 	@GetMapping("/searchList")
 	public String inquirySearchList( @RequestParam(value="searchValue", required = false) String searchValue,
 	   Pageable pageable,
-	   Model model) {
+	   HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
 
 	   PageInfo<Inquiry> pageInfo = inquiryService.getSearchList(searchValue, pageable);
 
@@ -165,7 +171,11 @@ public class InquiryController {
 
 	
 	@GetMapping("/detail")
-	public String inquiryDetailView(@RequestParam(name="inquiryNum") String inquiryNum, Model model) {
+	public String inquiryDetailView(@RequestParam(name="inquiryNum") String inquiryNum, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);
+		
 		Inquiry inquiryInfo = inquiryService.getInquiryInfo(inquiryNum);
 		InquiryRespone responeInfo = inquiryService.getInquiryResponeInfo(inquiryNum);
 		
@@ -188,7 +198,10 @@ public class InquiryController {
 	
 	
 	@GetMapping("/list")
-	public String getInquiryList(Pageable pageable, Model model) {
+	public String getInquiryList(Pageable pageable, HttpSession session, Model model) {
+		
+		String id = (String) session.getAttribute("SID");
+        model.addAttribute("adminId", id);	
 		
 	    var pageInfo = inquiryService.getInquiryList(pageable);  
 	    

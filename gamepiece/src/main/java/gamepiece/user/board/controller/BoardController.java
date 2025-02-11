@@ -3,14 +3,14 @@ package gamepiece.user.board.controller;
 
 
 
-
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import gamepiece.admin.board.domain.AdminBoardFiles;
 import gamepiece.user.board.domain.Board;
 import gamepiece.user.board.domain.BoardComment;
@@ -46,17 +49,20 @@ import gamepiece.user.board.domain.BoardFiles;
 import gamepiece.user.board.domain.BoardLikes;
 import gamepiece.user.board.domain.BoardsFiles;
 import gamepiece.user.board.domain.Inquiry;
+import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.user.board.domain.InquiryRespone;
 import gamepiece.user.board.domain.Notice;
+import gamepiece.user.board.domain.NoticeFiles;
 import gamepiece.user.board.domain.Report;
-import gamepiece.user.board.domain.InquiryFiles;
 import gamepiece.user.board.mapper.BoardCommentLikeMapper;
 import gamepiece.user.board.mapper.BoardFileMapper;
 import gamepiece.user.board.mapper.BoardFilesMapper;
 import gamepiece.user.board.mapper.BoardLikeMapper;
 import gamepiece.user.board.mapper.InquiryFilesMapper;
+import gamepiece.user.board.mapper.NoticeFileMapper;
 import gamepiece.user.board.service.BoardService;
 import gamepiece.user.board.util.BoardFilesUtils;
+import gamepiece.user.user.service.UserService;
 import gamepiece.util.PageInfo;
 import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpServletRequest;
@@ -88,62 +94,65 @@ public class BoardController {
 	private final gamepiece.admin.board.mapper.BoardFileMapper adminBoardFileMapper;
 	private final BoardFilesMapper boardFilesMapper;
 	private final InquiryFilesMapper inquiryFilesMapper;
-	
-
+	private final NoticeFileMapper noticeFileMapper;
+	private final UserService userService;
 
 	@GetMapping("/download")
-	public ResponseEntity<Object> downloadFile(@RequestParam String fileIdx,
-	                                         HttpServletRequest request) {
+	public ResponseEntity<Resource> downloadFile(@RequestParam String fileIdx,
+	                                         HttpServletRequest request
+	                                         , HttpSession session, Model model) {
+		
+
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
+		
+		
 	    try {
 	        AdminBoardFiles fileDto = adminBoardFileMapper.getFileInfoByIdx(fileIdx);
 	        if(fileDto == null) {
-	            log.error("파일 정보를 찾을 수 없음: fileIdx={}", fileIdx);
 	            return ResponseEntity.notFound().build();
 	        }
 
 	        String fullPath;
-	        // 파일 경로에 이미 파일명이 포함되어 있는지 확인
-	        if (fileDto.getFilePath().contains(fileDto.getFileNewName())) {
-	            // 새로운 방식
-	            fullPath = fileRealPath + fileDto.getFilePath();
+	        String filePath = fileDto.getFilePath();
+	        
+	        // 공지사항과 일반게시판/문의 구분
+	        if (filePath.endsWith("/image") || filePath.endsWith("/file")) {
+	            // 공지사항: /attachment/20250205/image + 파일명
+	            fullPath = fileRealPath + filePath + "/" + fileDto.getFileNewName();
 	        } else {
-	            // 기존 방식
-	            fullPath = fileRealPath + fileDto.getFilePath() + 
-	                      (fileDto.getFileNewName().toLowerCase().matches(".*\\.(jpg|jpeg|png|gif|bmp)$") 
-	                      ? "/image/" : "/file/") + 
-	                      fileDto.getFileNewName();
+	            // 일반게시판/문의: /attachment/20250205/image/파일명.jpg
+	            fullPath = fileRealPath + filePath;  // 파일명이 이미 경로에 포함되어 있음
 	        }
 
 	        log.info("=== 파일 다운로드 디버깅 정보 ===");
 	        log.info("파일 ID: {}", fileIdx);
-	        log.info("원본 파일 경로: {}", fileDto.getFilePath());
+	        log.info("원본 파일 경로: {}", filePath);
 	        log.info("파일명: {}", fileDto.getFileNewName());
 	        log.info("최종 시도 경로: {}", fullPath);
 
-	        File file = new File(fullPath);
-	        if (!file.exists()) {
+	        Path path = Paths.get(fullPath);
+	        Resource resource = new UrlResource(path.toUri());
+
+	        if(!resource.exists()) {
 	            log.error("파일을 찾을 수 없음: {}", fullPath);
 	            return ResponseEntity.notFound().build();
 	        }
 
-	        Resource resource = new UrlResource(file.toURI());
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+	        headers.setContentDisposition(ContentDisposition.attachment()
+	                .filename(fileDto.getFileOriginalName(), StandardCharsets.UTF_8)
+	                .build());
 	        
-	        String contentType = request.getServletContext().getMimeType(file.getAbsolutePath());
-	        if(contentType == null) {
-	            contentType = "application/octet-stream";
-	        }
-
 	        return ResponseEntity.ok()
-	            .contentType(MediaType.parseMediaType(contentType))
-	            .header(HttpHeaders.CONTENT_DISPOSITION,
-	                    "attachment; filename=\"" + 
-	                    URLEncoder.encode(fileDto.getFileOriginalName(), "UTF-8") + 
-	                    "\";")
-	            .body(resource);
-
+	                .headers(headers)
+	                .body(resource);
+	                
 	    } catch (Exception e) {
-	        log.error("파일 다운로드 중 오류 발생", e);
-	        log.error("상세 오류: ", e);
+	        log.error("파일 다운로드 중 오류 발생: ", e);
 	        return ResponseEntity.internalServerError().build();
 	    }
 	}
@@ -185,7 +194,14 @@ public class BoardController {
 	
 	@GetMapping("/removecomment")
 	public String removeComment(@RequestParam String commentNum, 
-	                          @RequestParam String boardNum,RedirectAttributes rttr) {
+	                          @RequestParam String boardNum,RedirectAttributes rttr , HttpSession session,
+	                          Model model) {
+		
+
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 		
 		int result = boardService.removeComment(commentNum);
 		rttr.addFlashAttribute("commentDel","덧글이 삭제되었습니다");
@@ -250,9 +266,14 @@ public class BoardController {
 	
 	@GetMapping("/noticeList")
 	public String noticeSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
-			Pageable pageable, Model model) {
+			Pageable pageable, Model model, HttpSession session) {
 		
 		PageInfo<Notice> pageInfo = boardService.getNoticeSearchList(searchValue, pageable);
+		
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 		
 		model.addAttribute("noticeList", pageInfo.getContents());
 		model.addAttribute("currentPage", pageInfo.getCurrentPage());
@@ -293,7 +314,12 @@ public class BoardController {
 	
 	@GetMapping("/inquiryList")
 	public String inquirySearchList(@RequestParam(value="searchValue", required = false) String searchValue,
-			Pageable pageable, Model model) {
+			Pageable pageable, Model model, HttpSession session) {
+		
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 		
 		PageInfo<Inquiry> pageInfo = boardService.getInquirySearchList(searchValue, pageable);
 		
@@ -317,6 +343,8 @@ public class BoardController {
 			Pageable pageable,
 			Model model) {
 		
+		
+		
 		PageInfo<Board> pageInfo = boardService.getInfoSearchList(searchValue, pageable);
 		
 		
@@ -335,9 +363,14 @@ public class BoardController {
 	
 	@GetMapping("/infosearchList")
 	public String infoBoardSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
-			Pageable pageable, Model model) {
+			Pageable pageable, Model model, HttpSession session) {
 		
 		PageInfo<Board> pageInfo = boardService.getInfoSearchList(searchValue, pageable);
+		
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 		
 		model.addAttribute("infoBoardList", pageInfo.getContents());
 		model.addAttribute("currentPage", pageInfo.getCurrentPage());
@@ -381,7 +414,13 @@ public class BoardController {
 	
 	@GetMapping("/freesearchList")
 	public String freeBoardSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
-											Pageable pageable, Model model) {
+											Pageable pageable, Model model, HttpSession session) {
+		
+
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 		
 	    PageInfo<Board> pageInfo = boardService.getFreeSearchList(searchValue, pageable);
 
@@ -428,7 +467,12 @@ public class BoardController {
 	
 	@GetMapping("/attacksearchList")
 	public String attackBoardSearchList(@RequestParam(value="searchValue", required = false) String searchValue,
-											Pageable pageable, Model model) {
+											Pageable pageable, Model model,  HttpSession session) {
+		
+		 String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 		
 	    PageInfo<Board> pageInfo = boardService.getAttackSearchList(searchValue, pageable);
 	
@@ -478,7 +522,13 @@ public class BoardController {
 					
 							        @RequestParam(value="searchValue", required = false) String searchValue,
 							        Pageable pageable,
-							        Model model) {
+							        Model model,
+							        HttpSession session) {
+		
+		  String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 	        
 	    PageInfo<Board> pageInfo = boardService.getSearchList(searchValue, pageable);
 	
@@ -499,7 +549,12 @@ public class BoardController {
 	
 	
 	@GetMapping("/remove")  
-	public String removeBoard(@RequestParam(name="boardNum") String boardNum, RedirectAttributes rttr) {
+	public String removeBoard(@RequestParam(name="boardNum") String boardNum, RedirectAttributes rttr, HttpSession session, Model model ) {
+		
+		  String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 	    int result = boardService.removeBoard(boardNum);
 	    
 	    if(result > 0) {
@@ -561,7 +616,12 @@ public class BoardController {
 	}
 	
 	@GetMapping("/modify")
-	public String modifyBoardView(@RequestParam(name="boardNum") String boardNum, Model model) {
+	public String modifyBoardView(@RequestParam(name="boardNum") String boardNum, Model model, HttpSession session ) {
+		
+		  String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 	    Board boardInfo = boardService.getBoardInfo(boardNum);
 	    
 	    List<BoardsFiles> boardFiles = boardFilesMapper.getBoardFiles(boardNum);
@@ -592,10 +652,19 @@ public class BoardController {
 	
 	
 	@GetMapping("/inquiry/detail")
-	public String inquiryView(@RequestParam(name="inquiryNum") String inquiryNum, Model model) {
+	public String inquiryView(@RequestParam(name="inquiryNum") String inquiryNum, Model model , HttpSession session) {
+		
+		   String id = (String) session.getAttribute("SID");
+
+	        String avatar = userService.getUserAvatar(id);
+	        model.addAttribute("avatar", avatar);
 		
 		Inquiry inquiryInfo = boardService.getInquiryInfo(inquiryNum);
 		InquiryRespone responeInfo = boardService.getInquiryResponeInfo(inquiryNum);
+		
+		  String writerAvatar = userService.getUserAvatar(inquiryInfo.getInquiryUserId());
+	        model.addAttribute("writerAvatar", writerAvatar); 
+		
 		
 		List<InquiryFiles> inquiryFiles = boardService.getInquiryFiles(inquiryNum);
 		
@@ -610,20 +679,32 @@ public class BoardController {
 	
 	
 	@GetMapping("/notice/detail")
-	public String noticeView(@RequestParam(name="noticeNum") int noticeNum, Model model) {
+	public String noticeView(@RequestParam(name="noticeNum") int noticeNum, Model model , HttpSession session) {
 		
 		
+	    String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+        
+	
+        
+        
+
 		 int updateResult = boardService.addNoticeViewCount(noticeNum);
 		
 			Notice noticeInfo = boardService.getNoticeInfo(noticeNum);
 		
-			BoardFiles boardFile = boardService.getNoticeNum(noticeNum);
+		    List<NoticeFiles> noticeFiles = noticeFileMapper.getNoticeFiles(noticeNum);
 			
 			
+			  String writerAvatar = userService.getUserAvatar(noticeInfo.getAdminId());
+		        model.addAttribute("writerAvatar", writerAvatar); 
+	        
 			
 		
 		model.addAttribute("noticeInfo", noticeInfo);
-		model.addAttribute("boardFile", boardFile);
+		model.addAttribute("noticeFiles", noticeFiles);
 		
 		 return "user/board/noticeDetail";
 	}
@@ -702,6 +783,16 @@ public class BoardController {
 
 	    // 로그인한 사용자의 좋아요/싫어요 상태 확인
 	    String userId = (String) session.getAttribute("SID");
+	    String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+	    
+        
+        String writerAvatar = userService.getUserAvatar(boardInfo.getBoardUserId());
+        model.addAttribute("writerAvatar", writerAvatar); 
+        
+	    
 	    if (userId != null) {
 	        // 게시글 좋아요/싫어요 상태 확인
 	    	  Map<String, String> likeParams = new HashMap<>();
@@ -801,7 +892,11 @@ public class BoardController {
 	}
 	
 	@GetMapping("/inquiry/write")
-	public String addInquiryView(Model model) {
+	public String addInquiryView(Model model , HttpSession session) {
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
 
 		return "user/board/addInquiry";
 	}
@@ -856,16 +951,27 @@ public class BoardController {
 	}
 	
 	@GetMapping("/write")
-	public String addBoardView(Model model) {
+	public String addBoardView(Model model, HttpSession session) {
 
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
+		
 		return "user/board/addBoard";
 	}
 	
 	
 
 	@GetMapping("")
-	public String getAllBoardListView(Pageable pageable, Model model) {
+	public String getAllBoardListView(Pageable pageable, Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
 
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 		var pageInfo = boardService.getAllBoardsList(pageable);
 		List<Board> allBoardList = pageInfo.getContents();
 		int currentPage = pageInfo.getCurrentPage();
@@ -886,7 +992,13 @@ public class BoardController {
 	}
 
 	@GetMapping("/inquiry")
-	public String getInquiryListView(Pageable pageable, Model model) {
+	public String getInquiryListView(Pageable pageable, Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 
 		var pageInfo = boardService.getInquiryList(pageable);
 		List<Inquiry> inquiryList = pageInfo.getContents();
@@ -905,7 +1017,13 @@ public class BoardController {
 	}
 
 	@GetMapping("/notice")
-	public String NoticeListView(Pageable pageable, Model model) {
+	public String NoticeListView(Pageable pageable, Model model , HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 
 		var pageInfo = boardService.getNoticeList(pageable);
 		List<Notice> noticeList = pageInfo.getContents();
@@ -924,7 +1042,13 @@ public class BoardController {
 	}
 
 	@GetMapping("/free")
-	public String getFreeboardListView(Pageable pageable, Model model) {
+	public String getFreeboardListView(Pageable pageable, Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
+		
 
 		var pageInfo = boardService.getFreeBoardsList(pageable);
 		List<Board> freeBoardList = pageInfo.getContents();
@@ -944,7 +1068,12 @@ public class BoardController {
 	}
 
 	@GetMapping("/attack")
-	public String getAttackboardListView(Pageable pageable, Model model) {
+	public String getAttackboardListView(Pageable pageable, Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
 
 		var pageInfo = boardService.getAttackBoardsList(pageable);
 		List<Board> attackBoardList = pageInfo.getContents();
@@ -964,7 +1093,12 @@ public class BoardController {
 	}
 
 	@GetMapping("/info")
-	public String getInfoboardListView(Pageable pageable, Model model) {
+	public String getInfoboardListView(Pageable pageable, Model model, HttpSession session) {
+		
+		String id = (String) session.getAttribute("SID");
+
+        String avatar = userService.getUserAvatar(id);
+        model.addAttribute("avatar", avatar);
 
 		var pageInfo = boardService.getInfoBoardsList(pageable);
 		List<Board> infoBoardList = pageInfo.getContents();

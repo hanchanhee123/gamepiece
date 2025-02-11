@@ -169,9 +169,6 @@
 		  (ev_cd, ev_nm, ev_contents, ev_start_ymd, ev_end_ymd, ev_winners_num, admin_id, reg_ymd, file_idx)
 		VALUES 
 		  (
-		    <!-- <![CDATA[(SELECT CONCAT('ev_', LPAD(IFNULL(MAX(SUBSTRING(e.ev_cd, 4) + 1), 0), 
-		                          IF(LENGTH(MAX(SUBSTRING(e.ev_cd, 5) + 1)) <= 2, 2, LENGTH(MAX(SUBSTRING(e.ev_cd, 4) + 1))), '0')) ]]>
-		     FROM events e), -->		     
 		    #{evCd}, 
 		    #{evNm}, 
 		    #{evContents}, 

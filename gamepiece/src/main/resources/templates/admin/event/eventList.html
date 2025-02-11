@@ -27,7 +27,7 @@
 						<div class="input-group">
 							<input type="text" class="form-control" id="searchValue" 
 								   name="searchValue" th:value="${searchValue}" placeholder="Search">
-							<button class="btn btn-outline-primary" id="searchBtn" type="button">
+							<button class="btn btn-outline-primary" id="searchBtn" type="button" style="height : 41px">
 								<i class="material-icons md-search"></i>
 							</button>
 						</div>					
@@ -67,7 +67,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="pagination-area mt-30 mb-50" th:if="${search == null}">
+		<div class="pagination-area mt-30 mb-50" th:if="${search == null} or ${search == ''}">
 			<nav>
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
@@ -105,8 +105,8 @@
 				</ul>
 			</nav>
 		</div>
-		<div class="pagination-area mt-30 mb-50" th:unless="${search == null}">
-			<nav>
+		<div class="pagination-area mt-30 mb-50" th:unless="${search == null} or ${search == ''}">
+			<nav th:if="${endPageNum > 0}">
 				<ul class="pagination justify-content-center">
 					<li class="page-item">
 						<a class="page-link " 

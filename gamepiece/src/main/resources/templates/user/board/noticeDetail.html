@@ -29,7 +29,20 @@
 				        </div>
 				        <div class="user-info-row d-flex align-items-center">
 				            <div class="d-flex align-items-center flex-grow-1 gap-3">
-				              <img src="data:image/png;base64,..." class="rounded-circle" style="width: 30px; height: 30px;">
+				            	<!-- 게시물 작성자 아바타 -->
+<img th:if="${writerAvatar != null}" 
+     th:src="@{${writerAvatar}}"
+     class="rounded-circle"
+     style="width: 30px; height: 30px;">
+     
+<!-- 아바타 이미지가 없는 경우 UI Avatars 사용 -->
+<div th:unless="${writerAvatar != null and writerAvatar != ''}"
+     class="rounded-circle d-flex align-items-center justify-content-center"
+     style="width: 30px; height: 30px; background: linear-gradient(45deg, #6c757d, #495057);">
+     <i class="bi bi-person-fill text-white" style="font-size: 18px;"></i>
+</div>				             
+				             
+				           
 				                <span class="username fw-semibold" th:text="${noticeInfo.userInfo.userNn}">회원</span>
 				                <span class="text-muted small" th:text="${noticeInfo.noticeYmd}">2012-11-11</span>
 				            </div>
@@ -54,38 +67,44 @@
 			        <!-- mapper의 일반 텍스트 (기본 스타일 적용) -->
 			        <div th:unless="${noticeInfo.noticeContent.contains('<p>') or noticeInfo.noticeContent.contains('<div>')}" 
 			             class="plain-text"
-			             th:text="${noticeInfo.noticeContent}">
+			             th:utext="${noticeInfo.noticeContent}">
 			        </div>
 			    </div>
 			</div>
 			         
 			         
 			               
-          	 <div class="fileBorder" th:if="${boardFile != null}">             
-	      <div  class="attachment-container small-card">
-    <div class="card shadow-sm border-0 InfileBorder">
-        <div class="card-body d-flex justify-content-between align-items-center p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
-                <div>
-                    <a th:href="@{/board/download(fileIdx=${boardFile.fileIdx})}"
-                       class="text-decoration-none text-dark fw-semibold">
-                        <small th:text="|첨부파일: ${boardFile.fileOriginalName}|"></small>
+<div class="fileBorder" th:if="${noticeFiles != null and not #lists.isEmpty(noticeFiles)}">             
+    <div class="attachment-container small-card">
+        <div class="card shadow-sm border-0 InfileBorder">
+            <div class="card-header">
+                <h4>첨부파일</h4>
+            </div>
+            <div class="card-body">
+                <div th:each="file : ${noticeFiles}" class="d-flex justify-content-between align-items-center p-2 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-file-earmark-text fs-4 text-primary me-3"></i>
+                        <div>
+                            <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
+                               class="text-decoration-none text-dark fw-semibold">
+                                <small th:text="|첨부파일: ${file.fileInfo.fileOriginalName}|"></small>
+                            </a>
+                            <p class="text-muted mb-0">
+                                <small th:text="${T(gamepiece.user.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
+                            </p>
+                        </div>
+                    </div>
+                    <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
+                       class="btn btn-outline-primary btn-sm d-flex align-items-center">
+                        <i class="bi bi-download me-2"></i>
+                        <span>다운로드</span>
                     </a>
-			                   <p class="text-muted mb-0">
-			    <small th:text="${T(gamepiece.user.board.util.BoardFilesUtils).formatFileSize(boardFile.fileSize)}"></small>
-			</p>
                 </div>
             </div>
-            <a th:href="@{/board/download(fileIdx=${boardFile.fileIdx})}"
-               class="btn btn-outline-primary btn-sm d-flex align-items-center">
-                <i class="bi bi-download me-2"></i>
-                <span>다운로드</span>
-            </a>
         </div>
     </div>
 </div>
-</div> 
+> 
 	        
 	        
              

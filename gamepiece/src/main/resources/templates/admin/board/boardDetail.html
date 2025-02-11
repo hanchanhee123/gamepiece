@@ -104,7 +104,7 @@
                         <div>
                             <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
                                class="text-decoration-none text-dark fw-semibold">
-                                <small th:text="|첨부파일: ${file.fileInfo.fileOriginalName}|"></small>
+                                <small th:text="${file.fileInfo.fileOriginalName}"></small>
                             </a>
                             <p class="text-muted mb-0">
                                 <small th:text="${T(gamepiece.admin.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
@@ -172,7 +172,7 @@
                             </table>
                      
                         <!-- table-responsive //end -->
-                    <div class="pagination-area mt-15">
+                    <div class="pagination-area mt-15" th:if="${not #lists.isEmpty(commentList)}">
 				    <nav>
     <ul class="pagination justify-content-center">
         <li class="page-item">
