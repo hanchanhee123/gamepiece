@@ -31,8 +31,9 @@
 	
 	<select id="getLastReviewNum">
 		/* 리뷰 테이블의 마지막 번호 조회 */
+		
 		SELECT
-			MAX(rv_no)
+			MAX(CAST(SUBSTRING_INDEX(rv_no, '_', -1) AS UNSIGNED)) 
 		FROM
 			reviews;
 	</select>
@@ -42,7 +43,7 @@
 		INSERT INTO reviews
 		(rv_no, gm_cd, id, rv_grade, rv_contents, rv_empathy, rv_disempathy, rv_log_ymd)
 		VALUES 
-		(#{nextReviewNum}, #{gameCode}, #{id}, #{grade}, #{review}, 0, 0, NOW());
+		(#{reviewNum}, #{gameCode}, #{id}, #{grade}, #{review}, 0, 0, NOW());
 	</insert>
 	
 	

@@ -290,75 +290,56 @@ public class UserGameServiceImpl implements UserGameService {
 		}
 		return game;
 	}
-	// 해당 게임의 리뷰 목록 조회
-	@Override
-	public List<UserReview> getUserReview(String gameCode) {
-		
-		List<UserReview> userReview = userReviewMapper.getUserReview(gameCode);
-		
-		return userReview;
-	}
-
-	@Override
-	public String getLastReviewNo() {
-		String lastReviewNo = userReviewMapper.getLastReviewNum();
-		return lastReviewNo;
-	}
-	
-	@Override
-	public void writeUserReview(UserReview userReview) {
-		int result = userReviewMapper.writeUserReview(userReview);
-		
-	}
-	
-	
-	
-	@Override
-	public void putGameInCart(UserGame userGame) {
-		int result = userGameMapper.putGameInCart(userGame);
-		
-	}
-	
-	@Override
-	public List<UserGame> getUserCartList(String id) {
-		
-		boolean isCart = false;
-		
-		List<UserGame> cartList = userGameMapper.getUserCartList(id);
-		if(!cartList.isEmpty()) {
-			isCart = true;
-			for(UserGame userGame : cartList) {
-				userGame.setCart(isCart);
-			}
-		}
-		
-		return cartList;
-	}
-	@Override
-	public Integer cartTotalPrice(String id) {
-		Integer totalPrice = userGameMapper.cartTotalPrice(id);
-		if(totalPrice == null) {
-			totalPrice = 0;
-		}
-		
-		return totalPrice;
-	}
-	
-	@Override
-	public void deleteGameCartList(String id) {
-		int result = userGameMapper.deleteGameCartList(id);
-		
-	}
-	
-	@Override
-	public void deleteGameCartItem(String id, String gameCode) {
-		int result = userGameMapper.deleteGameCartItem(id, gameCode);
-		
-	}
-	
-	@Override
-	public List<UserGame> getPaymentList() {
-		List<UserGame> paymentList = userGameMapper.getPaymentList();
-		return paymentList;
-	}
+	/*
+	 * // 해당 게임의 리뷰 목록 조회
+	 * 
+	 * @Override public List<UserReview> getUserReview(String gameCode) {
+	 * 
+	 * List<UserReview> userReview = userReviewMapper.getUserReview(gameCode);
+	 * 
+	 * return userReview; }
+	 * 
+	 * @Override public int getLastReviewNo() { int lastReviewNo =
+	 * userReviewMapper.getLastReviewNum(); return lastReviewNo; }
+	 * 
+	 * @Override public void writeUserReview(UserReview userReview) { int result =
+	 * userReviewMapper.writeUserReview(userReview);
+	 * 
+	 * }
+	 * 
+	 * 
+	 * 
+	 * @Override public void putGameInCart(UserGame userGame) { int result =
+	 * userGameMapper.putGameInCart(userGame);
+	 * 
+	 * }
+	 * 
+	 * @Override public List<UserGame> getUserCartList(String id) {
+	 * 
+	 * boolean isCart = false;
+	 * 
+	 * List<UserGame> cartList = userGameMapper.getUserCartList(id);
+	 * if(!cartList.isEmpty()) { isCart = true; for(UserGame userGame : cartList) {
+	 * userGame.setCart(isCart); } }
+	 * 
+	 * return cartList; }
+	 * 
+	 * @Override public Integer cartTotalPrice(String id) { Integer totalPrice =
+	 * userGameMapper.cartTotalPrice(id); if(totalPrice == null) { totalPrice = 0; }
+	 * 
+	 * return totalPrice; }
+	 * 
+	 * @Override public void deleteGameCartList(String id) { int result =
+	 * userGameMapper.deleteGameCartList(id);
+	 * 
+	 * }
+	 * 
+	 * @Override public void deleteGameCartItem(String id, String cartCode) { int
+	 * result = userGameMapper.deleteGameCartItem(id, cartCode);
+	 * 
+	 * }
+	 * 
+	 * @Override public List<UserGame> getPaymentList() { List<UserGame> paymentList
+	 * = userGameMapper.getPaymentList(); return paymentList; }
+	 */
 }

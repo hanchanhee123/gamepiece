@@ -72,17 +72,22 @@
 		<div class="mypage-inquiry">
 		    <span>내 문의글</span>
 		    <div class="common-card-section">
-			    <th:block th:if="${myPageInquiry != null}" th:each="myPageInquiry : ${myPageInquiry}">
+		    	<th:block th:if="${myPageInquiry != null}" th:each="myPageInquiry : ${myPageInquiry}">
 			        <div class="card-section">
 			            <p class="mypage-inquiry-title" th:text="${myPageInquiry.inquiryTitle}"></p>
-			            <p class="mypage-inquiry-content" th:utext="${myPageInquiry.inquiryContent}"></p>
+			            <div class="mypage-inquiry-content" th:utext="${myPageInquiry.inquiryContent}"></div>
 			            <p class="mypage-inquiry-ymd" th:text="${myPageInquiry.inquiryYmd}"></p>
 			            <div class="mypage-inquiry-response">
 			                <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPvhewLhkqo6HK323pZkSMhCHHqvQ4r8fumw&s" />1</span>
 			            </div>
 			        </div>
-			    </th:block>
+		    	</th:block>
 		    </div>
+		    <th:block th:unless="${myPageInquiry != null and not #lists.isEmpty(myPageInquiry)}">
+        		<div class="main-contents" style = "margin-top : 100px; text-align : center; color : white;">
+        			<h5>작성한 문의글이 없습니다.</h5>
+        		</div>
+        	</th:block>
 		</div>
 	</th:block>
 

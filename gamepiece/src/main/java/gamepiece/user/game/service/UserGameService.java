@@ -29,24 +29,26 @@ public interface UserGameService {
 	
 	Map<String, Object> getGameDetailApi(String gameCode, String title);
 	
-	List<UserReview> getUserReview(String gameCode);
-	
-	String getLastReviewNo();
-	
-	void writeUserReview(UserReview userReview);
-	
-	
-	void putGameInCart(UserGame userGame);
-	
-	List<UserGame> getUserCartList(String id);
-	
-	Integer cartTotalPrice(String id);
-	
-	void deleteGameCartList(String id);
-	
-	void deleteGameCartItem(String id, String gameCode);
-	
-	List<UserGame> getPaymentList();
+	/*
+	 * List<UserReview> getUserReview(String gameCode);
+	 * 
+	 * int getLastReviewNo();
+	 * 
+	 * void writeUserReview(UserReview userReview);
+	 * 
+	 * 
+	 * void putGameInCart(UserGame userGame);
+	 * 
+	 * List<UserGame> getUserCartList(String id);
+	 * 
+	 * Integer cartTotalPrice(String id);
+	 * 
+	 * void deleteGameCartList(String id);
+	 * 
+	 * void deleteGameCartItem(String id, String cartCode);
+	 * 
+	 * List<UserGame> getPaymentList();
+	 */
 	
 	
 }

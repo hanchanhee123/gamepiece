@@ -7,13 +7,13 @@
     justify-items: center;
 }
 
-.GamePeace_logo {
+.GamePiece_logo {
     display: flex;
     justify-content: center;
     margin-top: 50px;
 }
 
-.GamePeace_logo img{
+.GamePiece_logo img{
     width: 500px;
     height: auto;
 }

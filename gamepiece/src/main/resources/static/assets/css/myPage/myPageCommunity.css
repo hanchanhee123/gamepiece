@@ -1,9 +1,8 @@
 @charset "UTF-8";
 
 .main-div {
-    height: 100%;
+    min-height: 663px;
     display: flex;
-    background-color: rgba(0,0,0,0.4);
 }
 
 .content-main {
@@ -129,6 +128,17 @@
     color: white;
     margin: 0px 10px;
     font-size: 18px;
+}
+
+.mypage-inquiry-title {
+	color: #007bff;
+    border-bottom: 1px solid #007bff;
+    height: 30px;
+}
+
+.mypage-inquiry-content {
+	padding-top: 5px;
+    height: 147px;
 }
 
 .mypage-inquiry-response {
