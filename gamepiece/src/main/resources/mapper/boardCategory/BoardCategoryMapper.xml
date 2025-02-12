@@ -13,6 +13,7 @@
       <result column="admin_id" property="adminId" />
       <result column="reg_ymd" property="categoryYmd" />
       <result column="board_count" property="boardCount" />
+        <result property="isDelete" column="is_delete"/>
 
 
 
@@ -63,6 +64,7 @@
 				bc.bbs_cate_cd,
 				bc.bbs_cate_nm,
 				COUNT(b.bbs_no) AS board_count,
+				bc.is_delete,
 				bc.reg_ymd
 		FROM 
 					boards_categories bc LEFT JOIN boards b 
