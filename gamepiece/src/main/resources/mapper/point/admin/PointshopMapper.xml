@@ -78,10 +78,10 @@
 			point_shop
 		<where>
 		    <if test="searchCate != null and searchCate != ''">
-				ps.ps_cate_cd=#{searchCate}
+				ps_cate_cd=#{searchCate}
 			</if>
 			<if test="searchValue != null and searchValue != ''">
-				AND ps.ps_nm LIKE CONCAT('%', #{searchValue},'%')
+				AND ps_nm LIKE CONCAT('%', #{searchValue},'%')
 			</if>
 		</where>
 	</select>
