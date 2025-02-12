@@ -16,7 +16,7 @@ public class Notice {
 	private String filePath; 
 	private String fileIdx;
 	private AdminBoardFiles fileInfo;
-	
+	private String isDelete; //삭제여부
 	
 	
 

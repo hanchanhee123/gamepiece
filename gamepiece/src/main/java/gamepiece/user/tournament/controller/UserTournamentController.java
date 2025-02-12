@@ -125,8 +125,12 @@ public class UserTournamentController {
 	}
 	
 	@GetMapping("/matchPrediction")
-	public String getTournamentMatchpredictionView() {
+	public String getTournamentMatchpredictionView(Model model, 
+												   HttpSession session) {
+		String userId = (String) session.getAttribute("SID");
+		String avatar = userService.getUserAvatar(userId);
 		
+		model.addAttribute("avatar", avatar);
 		
 		return "user/tournament/tournament_bet";
 	}

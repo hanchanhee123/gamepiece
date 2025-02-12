@@ -34,6 +34,16 @@
 		<result column="inactive_days" property="inactiveDays"/>
     </association>
     
+    
+    <association property="avatarInfo" javaType="gamepiece.user.user.domain.Avatar">
+			<id column="avatar_no" property="avatarNo" />
+		<result column="id" property="id"/>
+		<result column="ps_cd" property="psCd"/>
+		<result column="avatar_yn" property="avatarYn"/>
+		<result column="reg_ymd" property="regYmd"/>
+		<result column="ps_nm" property="psNm"/>
+		</association>
+    
 
 	</resultMap>
 
@@ -81,17 +91,17 @@
  
  
 <select id="getBoardCommentInfo" parameterType="map" resultMap="BoardCommentResultMap">
-    SELECT
-        bco.bc_no,
-        bco.bc_cn,
-        bco.bc_id,
-        bco.bc_like,
-        bco.bc_dislike,
-        u.user_nn,
-        bco.bc_ymd
-    FROM
-        board_comments bco INNER JOIN user u
-        ON bco.bc_id = u.id
+SELECT
+    bco.*,
+    u.*,
+    a.*,
+    f.file_path as "avatarFilePath"    -- avatarInfo.psNm 대신 avatarFilePath 사용
+FROM
+    board_comments bco 
+    INNER JOIN user u ON bco.bc_id = u.id
+    LEFT JOIN avatar a ON u.id = a.id AND a.avatar_yn = '선택'
+    LEFT JOIN point_shop ps ON a.ps_cd = ps.ps_cd AND ps.ps_cate_cd = 'cate_02'
+    LEFT JOIN files f ON ps.file_idx = f.file_idx
     WHERE  
     	bco.is_delete = 'active'
 		AND 
@@ -104,24 +114,7 @@
 
 
 
-<select id="getCommentInfo" parameterType="string" resultMap="BoardCommentResultMap">
-	SELECT
-		bc.bc_no,
-		bc.bbs_no,
-		bc.bc_cn,
-		bc.bc_like,
-		bc.bc_dislike,
-		u.user_nn,
-		u.id,
-		bc.bc_ymd
-	FROM
-		board_comments bc INNER JOIN user u
-		ON bc.bc_id = u.id
-WHERE
-   bc.bc_no = #{commentNum}
 
-
-</select>
 
  <update id="modifyComment" parameterType="BoardComment">
 

@@ -1,5 +1,6 @@
 package gamepiece.user.board.domain;
 
+import gamepiece.user.user.domain.Avatar;
 import gamepiece.user.user.domain.User;
 import lombok.Data;
 
@@ -16,7 +17,8 @@ public class BoardComment {
 	private String commentYmd; //덧글작성일자	
 	private Board boardInfo; //게시물정보
 	private User userInfo; //유저정보
-	
+	private Avatar avatarInfo; //아바타정보
+	 private String avatarFilePath;
 
 
 }
