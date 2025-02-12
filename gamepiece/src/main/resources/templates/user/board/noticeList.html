@@ -18,7 +18,7 @@
         </div>
     </div>
         <div class="content">
-            <div class = searchAndWrite>
+            <div class =searchAndWrite>
                 <div class="search">
                     <input type="text" class="item-search" id="searchValue" 
                     	name="searchValue" th:value="${searchValue}"/>
@@ -49,7 +49,7 @@
 									    </a>
 									</td>
                                        <td th:text="${l.viewCount}"></td>
-                                       <td th:text="${l.adminId}"></td>
+                                       <td th:text="${l.userInfo.userNn}"></td>
                                        <td th:text="${l.noticeYmd}"></td>                                   
                                    
                                     </tr>

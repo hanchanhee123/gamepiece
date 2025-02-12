@@ -46,9 +46,20 @@
 				AND ps.ps_nm LIKE CONCAT('%', #{searchValue},'%')
 			</if>
 		</where>
-		ORDER BY CAST(SUBSTRING_INDEX(ps.ps_cd, 'ps_', -1) AS UNSIGNED);
+		ORDER BY CAST(SUBSTRING_INDEX(ps.ps_cd, 'ps_', -1) AS UNSIGNED)
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
-	
+	<select id="getSearchCntPointList" parameterType="map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			events e
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
+	</select>
 	
 	
 	<select id="findAll" resultMap="pointshopResultMap" parameterType="Pageable">

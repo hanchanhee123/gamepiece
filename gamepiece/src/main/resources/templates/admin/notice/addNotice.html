@@ -4,7 +4,7 @@
 	  layout:decorate="~{admin/layout/default}">
 
 	<th:block layout:fragment="contents-header"> 	
-	<div class="col-6">
+	<div class="col-7">
       <div class="content-header">
           <div>
               <h2 class="content-title card-title" th:text="${title}"></h2>
@@ -24,7 +24,7 @@
  <form id="addNoticeForm" method="post" enctype="multipart/form-data" onsubmit="return false;">
  
    		    <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-7">
                     <div class="card mb-4">
                         <div class="card-body">
                        
@@ -35,12 +35,18 @@
                                     id="noticeTitle" name="noticeTitle" placeholder="제목을 입력하세요">
                             </div>
                            
-                            <div class="mb-4">
-                                <label for="boardContent" class="form-label">공지내용</label>
-                                <textarea placeholder="내용을 입력하세요" class="form-control" rows="7" 
-                                style="height: 300px; resize: none;" 
-                                id="noticeContent" name="noticeContent"></textarea>
-                            </div>
+          <div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <label for="editorTxt" class="form-label mb-0">공지내용</label>
+    </div>
+    <div id="smarteditor" style="width:100%;">
+        <textarea name="noticeContent" id="editorTxt" 
+                  rows="20" cols="50" 
+                  style="width:100%; height:500px; display:none; resize:none;" >
+        </textarea>
+    </div>
+</div>
+
                           
                          
                         	
@@ -96,128 +102,205 @@
             </form>
    	</th:block>
    	<!--/* 사용자 추가 js file */-->
-    <th:block layout:fragment="customJsResource"></th:block>
+    <th:block layout:fragment="customJsResource">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+    </th:block>
     <!--/* 사용자 추가 js script */-->
     <th:block layout:fragment="customJs">
     	<script>
-		// 게시글 등록
-	$('#submitBtn').click(function(e){
-    e.preventDefault();
-    
-    const $submitBtn = $(this);
-    if ($submitBtn.prop('disabled')) {
-        return;
-    }
-    $submitBtn.prop('disabled', true);
-    
-    let isSubmit = true;
-    const $formControl = $('#addNoticeForm').find('#noticeTitle, textarea');
-    $formControl.each((idx, elem) => {
-        const value = $(elem).val();
-        if(!value){
-            isSubmit = false;
-            alert('필수 입력 항목입니다.');
-            $(elem).focus();
-            $submitBtn.prop('disabled', false);
-            return false;
-        }
+    	// 네이버 에디터 초기화
+    	let oEditors = [];
+
+$(document).ready(function() {
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "editorTxt",  // textarea ID
+        sSkinURI: "/smarteditor/SmartEditor2Skin.html",  // 스킨 경로
+        htParams: {
+            bUseToolbar: true,        // 툴바 사용 여부
+            bUseVerticalResizer: true, // 입력창 크기 조절바 사용 여부
+            bUseModeChanger: true,     // 모드 탭(Editor | HTML | TEXT) 사용 여부
+            fOnBeforeUnload: function() {},
+            I18N_LOCALE: "ko_KR",
+            fOnAppLoad: function() {
+                // 기존 저장된 내용의 text 내용을 에디터상에 뿌려주고자 할 때 사용
+                oEditors.getById["editorTxt"].exec("PASTE_HTML", ['']);
+            },
+            aAdditionalFontList: [
+                ['나눔고딕', '나눔고딕'],
+                ['나눔명조', '나눔명조']
+            ]
+        },
+        fCreator: "createSEditor2"
     });
     
-    if(isSubmit) {
-        // FormData 새로 생성
-        const formData = new FormData();
-        
-        // 제목과 내용 추가
-        formData.append('noticeTitle', $('#noticeTitle').val());
-        formData.append('noticeContent', $('#noticeContent').val());
-        
-        // 파일 추가 (한 번만)
-        const fileInput = document.getElementById('files');
-        if (fileInput.files.length > 0) {
-            Array.from(fileInput.files).forEach(file => {
-                formData.append('files', file);
-            });
-        }
-        
-        $.ajax({
-            url: '/admin/notice/write',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                location.href = '/admin/notice/list';
-            },
-            error: function(xhr, status, error) {
-                console.error("에러 발생:", error);
-                alert('게시글 등록 중 오류가 발생했습니다.');
-                $submitBtn.prop('disabled', false);
-            }
-        });
-    }
+    initFileUpload();
 });
-		
-		  
-	    $('#files').change(function(){
-	    	   $('#preview').empty();
-	    	   const files = this.files;
-	    	   if(files.length > 0) {
-	    	       // 여러 파일 표시
-	    	       $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
-	    	   } else {
-	    	       $('#fileLabel').text('선택된 파일 없음');
-	    	   }
 
-	    	   const fileList = [...files];
-	    	   fileList.forEach(function(file, idx){
-	    	       const imgDiv = $('<div class="col-md-3 img-box" style="position:relative"></div>');
-	    	       const lastModified = files[idx].lastModified;
-	    	       
-	    	       if(file.type.match('image.*')){
-	    	           const reader = new FileReader(); 
-	    	           reader.onload = function (e) { 
-	    	               const img = $('<img />', {src: e.target.result, id : lastModified });
-	    	               const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
-	    	               imgDiv.append(img,span);
-	    	               imgDiv.appendTo('#preview');
-	    	           } 
-	    	           reader.readAsDataURL(file);
-	    	       } else {
-	    	           const fileIcon = $('<i />', { class: 'bi bi-file-earmark-text fs-1 text-primary' });
-	    	           const fileName = $('<p />', { class: 'mb-0 mt-2 small' }).text(file.name);
-	    	           const span = $('<span />', {'class': 'delete-img', 'data-remove-key' : lastModified}).text('X');
-	    	           imgDiv.append(fileIcon, fileName, span);
-	    	           imgDiv.appendTo('#preview');
-	    	       }
-	    	   });
-	    	});
 
-	    	// 파일 삭제 이벤트
-	    	$(document).on('click', '.delete-img', function(){
-	    	   const files = $("#files").prop('files');
-	    	   const dataTransfer = new DataTransfer();
-	    	   const removeTargetId = $(this).attr('data-remove-key');
-	    	   
-	    	   Array.from(files)
-	    	        .filter(file => file.lastModified != removeTargetId)
-	    	        .forEach(file => dataTransfer.items.add(file));
+    	// 파일 업로드 관련 초기화
+    	function initFileUpload() {
+    	    // 파일 선택 시 이벤트
+    	    $('#files').change(function() {
+    	        $('#preview').empty();
+    	        const files = this.files;
+    	        updateFileLabel(files);
+    	        previewFiles(files);
+    	    });
 
-	    	   $('#files')[0].files = dataTransfer.files;
-	    	   
-	    	   updateFileLabel(dataTransfer.files);
-	    	   $(this).closest('.img-box').remove();
-	    	});
+    	    // 파일 삭제 이벤트
+    	    $(document).on('click', '.delete-img', function() {
+    	        const removeTargetId = $(this).attr('data-remove-key');
+    	        removeFile(removeTargetId);
+    	    });
+    	}
 
-	    	function updateFileLabel(files) {
-	    	   if(files.length > 0) {
-	    	       $('#fileLabel').text(files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : ''));
-	    	   } else {
-	    	       $('#fileLabel').text('선택된 파일 없음');
-	    	   }
-	    	}
-		
-		
-    		
+    	// 파일 미리보기 처리
+    	function previewFiles(files) {
+    	    [...files].forEach((file, idx) => {
+    	        const imgDiv = $('<div class="col-md-3 img-box" style="position:relative"></div>');
+    	        const lastModified = file.lastModified;
+    	        
+    	        if(file.type.match('image.*')) {
+    	            previewImage(file, lastModified, imgDiv);
+    	        } else {
+    	            previewFile(file, lastModified, imgDiv);
+    	        }
+    	    });
+    	}
+
+    	// 이미지 미리보기
+    	function previewImage(file, lastModified, imgDiv) {
+    	    const reader = new FileReader();
+    	    reader.onload = function(e) {
+    	        const img = $('<img />', {src: e.target.result, id: lastModified});
+    	        const span = $('<span />', {
+    	            'class': 'delete-img',
+    	            'data-remove-key': lastModified
+    	        }).text('X');
+    	        imgDiv.append(img, span);
+    	        imgDiv.appendTo('#preview');
+    	    }
+    	    reader.readAsDataURL(file);
+    	}
+
+    	// 일반 파일 미리보기
+    	function previewFile(file, lastModified, imgDiv) {
+    	    const fileIcon = $('<i />', { class: 'bi bi-file-earmark-text fs-1 text-primary' });
+    	    const fileName = $('<p />', { class: 'mb-0 mt-2 small' }).text(file.name);
+    	    const span = $('<span />', {
+    	        'class': 'delete-img',
+    	        'data-remove-key': lastModified
+    	    }).text('X');
+    	    imgDiv.append(fileIcon, fileName, span);
+    	    imgDiv.appendTo('#preview');
+    	}
+
+    	// 파일 라벨 업데이트
+    	function updateFileLabel(files) {
+    	    const label = files.length > 0 
+    	        ? files[0].name + (files.length > 1 ? ` 외 ${files.length - 1}개` : '')
+    	        : '선택된 파일 없음';
+    	    $('#fileLabel').text(label);
+    	}
+
+    	// 파일 삭제 처리
+    	function removeFile(removeTargetId) {
+    	    const files = $("#files").prop('files');
+    	    const dataTransfer = new DataTransfer();
+    	    
+    	    Array.from(files)
+    	        .filter(file => file.lastModified != removeTargetId)
+    	        .forEach(file => dataTransfer.items.add(file));
+
+    	    $('#files')[0].files = dataTransfer.files;
+    	    updateFileLabel(dataTransfer.files);
+    	    $(`[data-remove-key="${removeTargetId}"]`).closest('.img-box').remove();
+    	}
+
+    	// 폼 제출 처리
+    	$('#submitBtn').click(function(e) {
+    	    e.preventDefault();
+    	    
+    	    const $submitBtn = $(this);
+    	    if ($submitBtn.prop('disabled')) return;
+    	    $submitBtn.prop('disabled', true);
+    	    
+    	    // 에디터 내용 업데이트
+    	    oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+    	    
+    	    // 유효성 검사
+    	    if (!validateForm()) {
+    	        $submitBtn.prop('disabled', false);
+    	        return;
+    	    }
+    	    
+    	    // 폼 데이터 전송
+    	    submitFormData($submitBtn);
+    	});
+
+    	// 폼 유효성 검사
+    	function validateForm() {
+    	    // 제목 검사
+    	    const title = $('#noticeTitle').val();
+    	    if (!title) {
+    	        alert('제목을 입력해주세요.');
+    	        $('#noticeTitle').focus();
+    	        return false;
+    	    }
+    	    
+    	    // 내용 검사
+    	    const content = $('#editorTxt').val();
+    	    if (!content || content === '<p>&nbsp;</p>' || content === '') {
+    	        alert('내용을 입력해주세요.');
+    	        oEditors.getById["editorTxt"].exec("FOCUS");
+    	        return false;
+    	    }
+    	    
+    	    return true;
+    	}
+
+    	// 폼 데이터 전송
+    	function submitFormData($submitBtn) {
+    	    const formData = new FormData();
+    	    
+    	    // 기본 데이터 추가
+    	    formData.append('noticeTitle', $('#noticeTitle').val());
+    	    formData.append('noticeContent', $('#editorTxt').val());
+    	    
+    	    // 파일 추가
+    	    const fileInput = document.getElementById('files');
+    	    if (fileInput.files.length > 0) {
+    	        Array.from(fileInput.files).forEach(file => {
+    	            formData.append('files', file);
+    	        });
+    	    }
+    	    
+    	    // AJAX 전송
+    	    $.ajax({
+    	        url: '/admin/notice/write',
+    	        type: 'POST',
+    	        data: formData,
+    	        processData: false,
+    	        contentType: false,
+    	        success: function(response) {
+    	            location.href = '/admin/notice/list';
+    	        },
+    	        error: function(xhr, status, error) {
+    	            console.error("에러 발생:", error);
+    	            alert('공지사항 등록 중 오류가 발생했습니다.');
+    	            $submitBtn.prop('disabled', false);
+    	        }
+    	    });
+    	}
+
+    	// 이미지 업로드 관련 설정
+    	window.insertImageCallback = function(sFileUrl, sFileName) {
+    	    var sHTML = '<img src="' + sFileUrl + '" alt="' + sFileName + '">';
+    	    oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
+    	};
     	</script>
     </th:block>
 </html>

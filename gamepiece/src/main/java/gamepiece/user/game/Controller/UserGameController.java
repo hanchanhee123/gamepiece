@@ -1,7 +1,7 @@
 package gamepiece.user.game.Controller;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import gamepiece.user.game.domain.UserGame;
-import gamepiece.user.game.domain.UserReview;
 import gamepiece.user.game.service.UserGameService;
 import gamepiece.user.user.service.UserService;
-import gamepiece.util.Pageable;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -137,6 +134,16 @@ public class UserGameController {
 		return "user/game/steamDetail";
 	}
 	
+	
+	//구매
+	@PostMapping("/payment")
+	@ResponseBody
+	public Map<String, Object> paymentTest(String gameCode, HttpSession session) {
+		log.info("gameCode {}",gameCode);
+		String id = (String) session.getAttribute("SID");
+		Map<String, Object> payment = new HashMap<String, Object>();
+		return payment;
+	}
 	/*
 	 * // 리뷰 작성
 	 * 

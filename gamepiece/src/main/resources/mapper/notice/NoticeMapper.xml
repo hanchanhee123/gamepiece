@@ -14,6 +14,7 @@
     <result column="admin_id" property="adminId" />
     <result column="reg_ymd" property="noticeYmd" />
 	<result property="fileIdx" 			column="file_idx"/>
+	  <result property="isDelete" column="is_delete"/>
 
 
  <association property="fileInfo" javaType="gamepiece.admin.board.domain.AdminBoardFiles">
@@ -36,7 +37,8 @@
 					ntc_cn, 
 					ntc_img, 
 					ntc_view, 
-					admin_id, 
+					admin_id,
+					is_delete, 
 					reg_ymd
 				FROM 
 				       ntc_mttr 
@@ -77,6 +79,7 @@ SELECT
 	ntc_img, 
 	ntc_view, 
 	admin_id, 
+	is_delete,
 	reg_ymd
 FROM
 	 ntc_mttr
@@ -120,20 +123,17 @@ ORDER BY ntc_no DESC
 
 
 	<update id="modifyNotice" parameterType="Notice">
-		UPDATE
-			 ntc_mttr
-		<set>
-			<if test="noticeTitle != null and noticeTitle != ''">
-				ntc_title = #{noticeTitle},
-			</if>
-			<if test="noticeContent != null and noticeContent != ''">
-				ntc_cn = #{noticeContent}
-			</if>
-	
-		</set>
-	WHERE
-		ntc_no=#{noticeNum};
-	</update>
+    UPDATE ntc_mttr
+    <set>
+        <if test="noticeTitle != null and noticeTitle != ''">
+            ntc_title = #{noticeTitle},
+        </if>
+        <if test="noticeContent != null and noticeContent != ''">
+            ntc_cn = #{noticeContent}  <!-- 마지막 콤마 제거 -->
+        </if>
+    </set>
+    WHERE ntc_no = #{noticeNum};
+</update>
 
  <update id="removeNotice" parameterType="Notice">
  		UPDATE 

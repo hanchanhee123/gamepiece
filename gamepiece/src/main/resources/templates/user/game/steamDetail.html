@@ -34,9 +34,9 @@
 				                </div>
 				                <div class="wishlist">
 				                    <div class="button-area">
-				                        <button type="button" class="btn btn-primary" id="wishList">위시리스트에 넣기</button>
-				                        <button type="button" class="btn btn-primary" id="cart">장바구니에 넣기</button>
-				                        <button type="button" class="btn btn-primary" id="cartView" onclick="location.href='/game/gameCartList'">장바구니로 이동</button>
+				                        <!-- <button type="button" class="btn btn-primary" id="wishList">위시리스트에 넣기</button>
+				                        <button type="button" class="btn btn-primary" id="cart">장바구니에 넣기</button> -->
+				                        <button type="button" class="btn btn-primary" id="payment">결제</button>
 				                    </div>
 				                </div>
 				                <div class="game-script">
@@ -109,13 +109,13 @@
 				            </div> 
 				            <div class="review-info">
 				                <li>전체 리뷰</li>
-				                <li>리뷰 개수 : 3000개</li>
+				                <li>리뷰 개수 : 0개</li>
 				            </div>
-				            <div class="review-cate">
+				            <!-- <div class="review-cate">
 				                <li><a href="#">최근작성</a></li>
 				                <li style="margin-left: 15px;"><a href="#">추천</a></li>
 				                <li style="margin-left: 15px;"><a href="#">비추천</a></li>
-				            </div>
+				            </div> -->
 				            <div class="reviewList">
 				                <div class="review-area">
 				                	<th:block th:if="${!#lists.isEmpty(userReview)}">
@@ -168,9 +168,9 @@
 				                		</div>
 				                	</th:block>
 				                </div>	                
-				                <div class="more-look" >
+				                <!-- <div class="more-look" >
 	                    			<button type="button" class="btn btn-primary" id="put-game-in-cart">더보기</button>
-				                </div>
+				                </div> -->
 				            </div>
 				        </div>
 	    			</div>	
@@ -184,11 +184,50 @@
 <!--/* 사용자 추가 js file */-->
 <th:block layout:fragment="customJsResource">
 	<script th:src="@{/assets/js/home/homeJs.js}"></script>
+	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 </th:block>
 <!--/* 사용자 추가 js script */-->
 <th:block layout:fragment="customJs">
 	<script th:inline="javascript">
-		
+		$('#payment').click(function() {
+			const title = /*[[${gameDetail.title}]]*/"gameDetail";
+			const gameCode = /*[[${gameDetail.gameCode}]]*/"gameDetail";
+			const price = /*[[${gameDetail.finalPrice}]]*/"gameDetail";
+			var IMP = window.IMP;
+			
+			IMP.init("imp35636024");
+			
+			IMP.request_pay({
+				pg : "kakaopay",
+				pay_method : "kakaopay",
+				gameCode : gameCode,
+				name : title,
+				amount : price
+				
+			}, function(response) {
+				if(response.success) {
+					$.ajax({
+						type : 'POST',
+						url : '/game/payment',
+						data : {
+							imp_uid : response.imp_uid,
+							merchant_id : response.merchant_id,
+							amount : response.paid_amount,
+							
+							gameCode : gameCode
+						},
+						success : function(data) {
+							alert("결제가 완료되었습니다.");
+						},
+						error : function(jQXHR, textStatus, error) {
+							alert("결제 처리중 오류가 발생하였습니다.");
+						}
+					});
+				} else {
+					alert("결제 실패 :" + response.error_msg);
+				}
+			});
+		});
 		
 			
 		

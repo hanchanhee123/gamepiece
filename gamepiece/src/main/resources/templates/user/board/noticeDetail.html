@@ -67,7 +67,7 @@
 			        <!-- mapper의 일반 텍스트 (기본 스타일 적용) -->
 			        <div th:unless="${noticeInfo.noticeContent.contains('<p>') or noticeInfo.noticeContent.contains('<div>')}" 
 			             class="plain-text"
-			             th:text="${noticeInfo.noticeContent}">
+			             th:utext="${noticeInfo.noticeContent}">
 			        </div>
 			    </div>
 			</div>

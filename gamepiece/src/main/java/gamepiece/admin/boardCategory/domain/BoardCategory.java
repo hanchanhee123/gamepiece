@@ -12,5 +12,5 @@ public class BoardCategory {
 	private String adminId;
 	private String categoryYmd;
 	private Integer boardCount;
-
+	private String isDelete; //삭제여부
 }
