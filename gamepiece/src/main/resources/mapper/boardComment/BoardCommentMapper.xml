@@ -13,6 +13,7 @@
     <result column="bc_like" property="commnetLikeCnt" />
     <result column="bc_dislike" property="commentDisLikeCnt" />
     <result column="bc_ymd" property="commentYmd" />
+    	    <result property="isDelete" column="is_delete"/>
     
     
 
@@ -60,7 +61,10 @@
         board_comments bco INNER JOIN user u
         ON bco.bc_id = u.id
     WHERE
-        bbs_no = #{boardNum}
+        bco.bbs_no = #{boardNum}
+        AND
+        bco.is_delete = 'active'
+        
 </select>
 
 
@@ -78,6 +82,8 @@
 		USING (bbs_no)
 		INNER JOIN user u
 		ON bco.bc_id = u.id
+ where
+		bco.is_delete = 'active'
 	
 	  ORDER BY
         CAST(SUBSTRING_INDEX(bc_no,'bc_',-1) AS UNSIGNED)
@@ -90,43 +96,12 @@
 			COUNT(*)
 		FROM
 			board_comments 
+		 where
+		bco.is_delete = 'active'
 
 </select>
 
-<insert id="addComment" parameterType="BoardComment">
-	INSERT INTO board_comments(
-	bc_no, 
-	bbs_no, 
-	bc_id, 
-	bc_cn, 
-	bc_like, 
-	bc_dislike, 
-	bc_ymd)
-	VALUES
-	(CONCAT('bc_', LPAD((
-            SELECT next_num FROM (
-                SELECT MAX(CAST(SUBSTRING_INDEX(bc_no,'bc_',-1) AS UNSIGNED)) + 1 AS next_num 
-                FROM board_comments
-            ) AS temp
-        ), 2, '0')),
-	CONCAT('bbs_', LPAD((
-            SELECT next_num FROM (
-                SELECT MAX(CAST(SUBSTRING_INDEX(bbs_no, 'bbs_', -1) AS UNSIGNED)) + 1 AS next_num 
-                FROM board_comments
-            ) AS temp
-        ), 2, '0')), 
-		CONCAT('id', LPAD((
-	SELECT next_num FROM (
-	SELECT MAX(CAST(SUBSTRING_INDEX(bc_id, 'id', -1) AS UNSIGNED)) + 1 AS next_num
-	FROM board_comments
-	) AS temp
-	), 2, '0')),
-	#{commentDetail}, 
-	0, 
-	0, 
-	CURDATE()
-	)
-</insert>
+
 
 <select id="getBoardCommentInfo" parameterType="map" resultMap="BoardCommentResultMap">
     SELECT
@@ -135,12 +110,15 @@
         bco.bc_like,
         bco.bc_dislike,
         u.user_nn,
+        bco.is_delete,
         bco.bc_ymd
     FROM
         board_comments bco INNER JOIN user u
         ON bco.bc_id = u.id
     WHERE
         bbs_no = #{boardNum}
+        and
+		bco.is_delete = 'active'
     LIMIT #{rowPerPage} OFFSET #{offset}
 </select>
 
@@ -152,6 +130,7 @@
 		bco.bc_like,
 		bco.bc_dislike,
 		u.user_nn,
+		bco.is_delete,
 		bco.bc_ymd
 	FROM
 		board_comments bco INNER JOIN boards b
@@ -160,6 +139,8 @@
 		ON bco.bc_id = u.id
 WHERE
    bc_no = #{commentNum}
+    and
+		bco.is_delete = 'active'
 
 
 </select>

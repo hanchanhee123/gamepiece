@@ -28,6 +28,8 @@
 			COUNT(*)
 		FROM
 			 boards_categories bc
+		where
+			bc.is_delete = 'active'	
 
 </select>
 
@@ -42,6 +44,9 @@
 		FROM 
 					boards_categories bc LEFT JOIN boards b 
 					ON bc.bbs_cate_cd = b.bbs_cate_cd
+			
+		where
+			bc.is_delete = 'active'	
 			
 		GROUP BY 
 				bc.bbs_cate_cd, bc.bbs_cate_nm
@@ -69,6 +74,8 @@
 		FROM 
 					boards_categories bc LEFT JOIN boards b 
 					ON bc.bbs_cate_cd = b.bbs_cate_cd
+			where
+			bc.is_delete = 'active'	
 			
 		GROUP BY 
 				bc.bbs_cate_cd, bc.bbs_cate_nm

@@ -14,7 +14,7 @@
     <result column="admin_id" property="adminId" />
     <result column="reg_ymd" property="noticeYmd" />
 	<result property="fileIdx" 			column="file_idx"/>
-	  <result property="isDelete" column="is_delete"/>
+
 
 
  <association property="fileInfo" javaType="gamepiece.admin.board.domain.AdminBoardFiles">
@@ -38,7 +38,6 @@
 					ntc_img, 
 					ntc_view, 
 					admin_id,
-					is_delete, 
 					reg_ymd
 				FROM 
 				       ntc_mttr 
@@ -46,6 +45,7 @@
 				   <if test="searchValue != null and searchValue != ''">
 				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
 				   </if>
+				   		AND is_delete = 'active'
 			ORDER BY ntc_no DESC 
 				   LIMIT #{rowPerPage} OFFSET #{offset}
 				</select>
@@ -57,6 +57,7 @@
 				   <if test="searchValue != null and searchValue != ''">
 				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
 				   </if>
+				   	AND is_delete = 'active'
 				</select>
 
 
@@ -65,7 +66,8 @@
 			COUNT(*)
 		FROM
 			 ntc_mttr
-	
+		WHERE
+			is_delete = 'active'
 </select>
 
 
@@ -79,11 +81,11 @@ SELECT
 	ntc_img, 
 	ntc_view, 
 	admin_id, 
-	is_delete,
 	reg_ymd
 FROM
 	 ntc_mttr
-
+WHERE
+		is_delete = 'active'
 ORDER BY ntc_no DESC 
  LIMIT #{rowPerPage} OFFSET #{offset};
 </select>

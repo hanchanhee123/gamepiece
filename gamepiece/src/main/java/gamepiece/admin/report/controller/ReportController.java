@@ -37,8 +37,11 @@ public class ReportController {
 	
 		
 		@PostMapping("/disposal/write")
-		public String addDisposal(Disposal disposal, RedirectAttributes rttr) {
+		public String addDisposal(Disposal disposal, RedirectAttributes rttr, HttpSession session) {
 		
+			String adminId = (String) session.getAttribute("SID");
+			disposal.setAdminId(adminId);
+			
 		    
 		    // 1. 처분 정보 추가
 		    int result = reportService.addDisposal(disposal);
