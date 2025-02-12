@@ -18,8 +18,8 @@
             	<button type="button" data-bs-toggle="dropdown" id="dropdownAccount" aria-expanded="false">
             		<span th:if="${session.SID == null}" class="material-symbols-outlined" id="person-img">person</span>
 					<th:block th:unless="${session.SID == null}">
-						<img  th:if="${avatar} != null or ${avatar} != ''" id="profile-img" th:src="@{|${avatar}|}" alt="이미지" />
-						<span th:unless="${avatar} != null or ${avatar} != ''" class="material-symbols-outlined" id="person-img">person</span>
+						<span th:if="${avatar} == null or ${avatar} == ''" class="material-symbols-outlined" id="person-img">person</span>
+						<img  th:unless="${avatar} == null or ${avatar} == ''" id="profile-img" th:src="@{|${avatar}|}" alt="이미지" />
 					</th:block>
 				</button>
 					<ul class="dropdown-menu"  aria-labelledby="dropdownAccount">
