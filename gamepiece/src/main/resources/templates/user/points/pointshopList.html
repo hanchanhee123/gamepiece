@@ -13,8 +13,6 @@
                 <li class="pointshop-cate"><a th:href="@{/point/emoticon}">이모티콘</a></li>
                 <li class="pointshop-cate"><a th:href="@{/point/avatar}">프로필이미지</a></li>
                 <li class="pointshop-cate"><a th:href="@{/point/background}">배경프로필</a></li>
-                <li class="pointshop-cate"><a th:href="@{/point/frame}">아바타액자</a></li>
-                <li class="pointshop-cate"><a th:href="@{/point/etc}">기타</a></li>
                 <li class="pointshop-cate"><a th:href="@{/point/history}" th:if="${userId != null}">구매내역</a></li>
             </ul>
         <div class="pointshop-Hd" th:if="${userId != null}">
@@ -86,51 +84,6 @@
 		                <div class="swiper w-100 h-100">
 		                    <div class="swiper-wrapper" style="height: 300px;">
 		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${backList}">
-		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-		                                <img th:src="${l.filePath}">
-		                                <div th:text="${l.itemName}" class="itemName"></div>
-		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
-		                            </div> 
-		                        </div>
-		                    </div>                 
-					        <div class="swiper-button-next"></div>
-					        <div class="swiper-button-prev"></div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-        </div>
-
-        <div class="pointshop-cate-name">아바타액자</div>
-        <div class="pointShopImg">
-            <div class="container-fluid mt-5">
-		        <div class="row justify-content-center">
-		            <div class="col-11">
-		                <div class="swiper w-100 h-100">
-		                    <div class="swiper-wrapper" style="height: 300px;">
-		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${frameList}">
-		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-		                                <img th:src="${l.filePath}">
-		                                <div th:text="${l.itemName}" class="itemName"></div>
-		                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
-		                            </div> 
-		                        </div>
-		                    </div>                 
-					        <div class="swiper-button-next"></div>
-					        <div class="swiper-button-prev"></div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-        </div>
-        <div class="pointshop-cate-name">기타</div>
-        <div class="pointShopImg">
-            <div class="container-fluid mt-5">
-		        <div class="row justify-content-center">
-		            <div class="col-11">
-		                <div class="swiper w-100 h-100">
-		                    <div class="swiper-wrapper" style="height: 300px;">
-		                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${etcList}">
 		                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
 		                                <img th:src="${l.filePath}">
 		                                <div th:text="${l.itemName}" class="itemName"></div>
