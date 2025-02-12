@@ -355,8 +355,8 @@ public class NoticeController {
 	                       HttpSession session, 
 	                       RedirectAttributes rttr) {
 	    
-	    String adminId = "id01";
-	    notice.setAdminId(adminId);
+		String adminId = (String) session.getAttribute("SID");
+		notice.setAdminId(adminId);
 	    
 	    try {
 	        // 1. 게시글 저장

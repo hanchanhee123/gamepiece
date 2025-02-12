@@ -350,7 +350,7 @@ body {
 }
 .review-area {
 	display : flex;
-    justify-content: space-between;
+    justify-content: center;
 }
 .review {
     width : 603px;

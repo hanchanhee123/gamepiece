@@ -152,18 +152,32 @@ public class InquiryController {
 
 	
 	@PostMapping("/respone/add")
-	public String addInquiryResponse(InquiryRespone inquiryRespone, RedirectAttributes rttr) {
+	public String addInquiryResponse(InquiryRespone inquiryRespone, RedirectAttributes rttr,  HttpSession session) {
+		
+		String adminId = (String) session.getAttribute("SID");
+    	inquiryRespone.setAdminId(adminId);
+		
 	    inquiryService.addInquiryRespone(inquiryRespone);
 	    rttr.addFlashAttribute("message", "답변이 입력되었습니다.");
+	    
+    
+        
 	    
 	    return "redirect:/admin/inquiry/detail?inquiryNum=" + inquiryRespone.getInquiryNum();
 	}
 
 	@PostMapping("/respone/modify") 
-	public String modifyInquiryResponse(InquiryRespone inquiryRespone, RedirectAttributes rttr) {
+	public String modifyInquiryResponse(InquiryRespone inquiryRespone, RedirectAttributes rttr, HttpSession session) {
+		
+		String adminId = (String) session.getAttribute("SID");
+    	inquiryRespone.setAdminId(adminId);
+	    
+	
 	    inquiryService.modifyInquiryRespone(inquiryRespone);
 	    rttr.addFlashAttribute("message", "답변이 수정되었습니다.");
 	    
+	    
+    
 	    return "redirect:/admin/inquiry/detail?inquiryNum=" + inquiryRespone.getInquiryNum();
 	}
 	
@@ -175,6 +189,8 @@ public class InquiryController {
 		
 		String id = (String) session.getAttribute("SID");
         model.addAttribute("adminId", id);
+        
+
 		
 		Inquiry inquiryInfo = inquiryService.getInquiryInfo(inquiryNum);
 		InquiryRespone responeInfo = inquiryService.getInquiryResponeInfo(inquiryNum);

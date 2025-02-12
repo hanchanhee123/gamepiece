@@ -38,6 +38,17 @@ img, svg {
 
 }
 
+.contents {
+	border: 1px black solid;
+    width: 90%;
+    min-height: 100px;
+    box-sizing: content-box;
+    align-content: space-around;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+}
+
 .form-control{
     background-color: #f4f5f9;
     border: 2px solid #f4f5f9;
@@ -144,3 +155,5 @@ button {
     background-size: 400% 400%;
     animation: gradient1 5s ease infinite;
 }
+
+

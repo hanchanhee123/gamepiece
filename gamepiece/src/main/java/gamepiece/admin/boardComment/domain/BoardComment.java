@@ -17,5 +17,5 @@ public class BoardComment {
 	private String commentYmd; //덧글작성일자	
 	private Board boardInfo; //게시물정보
 	private User userInfo; //유저정보
-	
+	private String isDelete; //삭제여부
 }

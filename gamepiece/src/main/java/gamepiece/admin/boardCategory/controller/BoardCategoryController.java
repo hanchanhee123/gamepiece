@@ -73,7 +73,10 @@ public class BoardCategoryController {
 	
 
 	@PostMapping("/write")
-	public String addCategory(BoardCategory boardCategory) {
+	public String addCategory(BoardCategory boardCategory,  HttpSession session) {
+		
+		String adminId = (String) session.getAttribute("SID");
+		boardCategory.setAdminId(adminId);
 			
 		boardCategoryService.addBoardCategory(boardCategory);
 		

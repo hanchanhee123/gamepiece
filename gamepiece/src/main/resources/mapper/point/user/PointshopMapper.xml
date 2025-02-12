@@ -110,44 +110,7 @@
 			ps.is_delete='active'
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
-	<select id="findavatarframe" resultMap="pointshopResultMap" parameterType="Pageable">
-		SELECT
-			ps.ps_cd,
-			ps.ps_cate_cd,
-			ps.ps_nm,
-			ps.ps_price,
-			f.file_path,
-			pc.cate_nm
-		FROM
-			point_shop ps INNER JOIN files f
-			ON ps.file_idx = f.file_idx
-			INNER JOIN pointshop_categories pc
-			ON pc.cate_cd = ps.ps_cate_cd
-		WHERE
-			pc.cate_nm='아바타 액자'
-			AND
-			ps.is_delete='active'
-		LIMIT #{rowPerPage} OFFSET #{offset};
-	</select>
-	<select id="findetc" resultMap="pointshopResultMap" parameterType="Pageable">
-		SELECT
-			ps.ps_cd,
-			ps.ps_cate_cd,
-			ps.ps_nm,
-			ps.ps_price,
-			f.file_path,
-			pc.cate_nm
-		FROM
-			point_shop ps INNER JOIN files f
-			ON ps.file_idx = f.file_idx
-			INNER JOIN pointshop_categories pc
-			ON pc.cate_cd = ps.ps_cate_cd
-		WHERE
-			pc.cate_nm='기타'
-			AND
-			ps.is_delete='active'
-		LIMIT #{rowPerPage} OFFSET #{offset};
-	</select>
+	
 	<select id="findbackground" resultMap="pointshopResultMap" parameterType="Pageable">
 		SELECT
 			ps.ps_cd,
@@ -223,30 +186,6 @@
 			ON ps.ps_cate_cd = pc.cate_cd
 		WHERE
 			pc.cate_nm='배경프로필'
-			AND
-			ps.is_delete='active';
-	</select>
-	<select id="getetcCount" resultType="int">
-		/* 아이템 갯수 총 행의 갯수*/
-		SELECT
-			COUNT(*)
-		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
-		WHERE
-			pc.cate_nm='기타'
-			AND
-			ps.is_delete='active';
-	</select>
-	<select id="getframeCount" resultType="int">
-		/* 아이템 갯수 총 행의 갯수*/
-		SELECT
-			COUNT(*)
-		FROM
-			point_shop ps INNER JOIN pointshop_categories pc
-			ON ps.ps_cate_cd = pc.cate_cd
-		WHERE
-			pc.cate_nm='아바타 액자'
 			AND
 			ps.is_delete='active';
 	</select>

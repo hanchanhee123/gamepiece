@@ -87,7 +87,7 @@
                         <div>
                             <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
                                class="text-decoration-none text-dark fw-semibold">
-                                <small th:text="|첨부파일: ${file.fileInfo.fileOriginalName}|"></small>
+                                <small th:text="${file.fileInfo.fileOriginalName}"></small>
                             </a>
                             <p class="text-muted mb-0">
                                 <small th:text="${T(gamepiece.user.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
