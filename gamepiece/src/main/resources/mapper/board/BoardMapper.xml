@@ -98,6 +98,8 @@
 						    <if test="searchValue != null and searchValue != ''">
 						        AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%')
 						    </if>
+						    	AND 
+									b.is_delete = 'active'
 						    ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
 						    LIMIT #{rowPerPage} OFFSET #{offset}
 						</select>
@@ -132,6 +134,8 @@
 							   <if test="searchValue != null and searchValue != ''">
 							       AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%')
 							   </if>
+							   AND 
+									b.is_delete = 'active'
 							</select>
 
 
@@ -142,6 +146,8 @@
 			FROM
 				 boards b
 	
+			WHERE
+				b.is_delete = 'active'
 	</select>
 
 
@@ -164,7 +170,10 @@
         ON b.bbs_cate_cd = bc.bbs_cate_cd
         INNER JOIN user u
         ON b.id = u.id
-  
+ 
+ where
+		b.is_delete = 'active' 
+ 
     ORDER BY
         CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
     LIMIT #{rowPerPage} OFFSET #{offset};
