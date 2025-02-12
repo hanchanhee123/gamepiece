@@ -22,12 +22,15 @@
 					<div class="img">
 						<img th:src="${ed.filePath}">
 					</div>
+					<br>
 					<div class="name">
 						<span th:text="${ed.evNm}"></span>
 					</div>
+					<br>
 					<div class="contents">
 						<span th:text="${ed.evContents}"></span>
 					</div>
+					<br>
 					<div class="date">
 						<strong>이벤트기간</strong>
 							<div>
@@ -36,10 +39,12 @@
 								<span th:text="${ed.evEndYmd}"></span>
 							</div>
 					</div>
+					<br>
 					<div class="winnersNum">
 						<strong>당첨 인원 : </strong>
 							<span th:text="${ed.evWinnersNum}+명"></span>
 					</div>
+					<br>
 					<div class="button"  th:if="${status == '진행중'}">
 						<button class="w-btn w-btn-indigo" id="participate-btn" type="button" th:data-event-cd="${ed.evCd}">이벤트 참여</button>
 					</div>
