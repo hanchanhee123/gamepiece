@@ -77,16 +77,14 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 
-	@Override
+	@Transactional
 	public int modifyNotice(Notice notice) {
-		
-		   if (notice.getFileIdx() != null) {
-		        return noticeMapper.modifyNotice(notice);
-		    }
-		    return 0;
-		}
-
-
+	    log.info("공지사항 수정 시작 - 번호: {}", notice.getNoticeNum());
+	    log.info("수정할 내용: {}", notice.getNoticeContent());
+	    int result = noticeMapper.modifyNotice(notice);
+	    log.info("수정 결과: {}", result);
+	    return result;
+	}
 
 	@Override
 	public int removeNotice(int noticeNum) {

@@ -46,7 +46,8 @@
 				AND ps.ps_nm LIKE CONCAT('%', #{searchValue},'%')
 			</if>
 		</where>
-		ORDER BY CAST(SUBSTRING_INDEX(ps.ps_cd, 'ps_', -1) AS UNSIGNED);
+		ORDER BY CAST(SUBSTRING_INDEX(ps.ps_cd, 'ps_', -1) AS UNSIGNED)
+		LIMIT #{pageable.rowPerPage} OFFSET #{pageable.offset};
 	</select>
 	
 	
@@ -69,12 +70,32 @@
 		LIMIT #{rowPerPage} OFFSET #{offset};
 	</select>
 	
-	<select id="getItemCount" resultType="int">
+	<select id="getSearchCntPointList" parameterType="map" resultType="int">
 		/* 아이템 갯수 총 행의 갯수 */
 		SELECT
 			COUNT(*)
 		FROM
-			point_shop;
+			point_shop
+		<where>
+		    <if test="searchCate != null and searchCate != ''">
+				ps_cate_cd=#{searchCate}
+			</if>
+			<if test="searchValue != null and searchValue != ''">
+				AND ps_nm LIKE CONCAT('%', #{searchValue},'%')
+			</if>
+		</where>
+	</select>
+	<select id="getItemCount" parameterType="map" resultType="int">
+		/* 아이템 갯수 총 행의 갯수 */
+		SELECT
+			COUNT(*)
+		FROM
+			point_shop
+		<where>
+		    <if test="searchValue != null and searchValue != ''">
+		        ${searchCate} LIKE CONCAT('%', #{searchValue}, '%')
+		    </if>
+		</where>
 	</select>
 	
 	<select id="findCate" resultMap="pointshopCateResult">

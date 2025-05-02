@@ -104,7 +104,7 @@
                         <div>
                             <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
                                class="text-decoration-none text-dark fw-semibold">
-                                <small th:text="|첨부파일: ${file.fileInfo.fileOriginalName}|"></small>
+                                <small th:text="${file.fileInfo.fileOriginalName}"></small>
                             </a>
                             <p class="text-muted mb-0">
                                 <small th:text="${T(gamepiece.admin.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>
@@ -133,6 +133,7 @@
                                         <th>댓글내용</th>
                                         <th>댓글좋아요</th>
                                         <th>댓글싫어요</th>
+                                
                                         <th>댓글작성일</th>
                                      
                                      
@@ -156,6 +157,9 @@
 										    th:onclick="showCommentLikeUsers(this, 'DISLIKE')" 
 										    style="cursor: pointer;">
 										</td>
+										
+						 	
+                                      
                                        <td th:text="${l.commentYmd}"></td>                                   
                                       
                                
@@ -164,7 +168,7 @@
                                        <th:block th:if="${#lists.isEmpty(commentList)}">
                            
 								<tr>
-									<td colspan="7">등록된 덧글이 없습니다.</td>
+									<td colspan="7">등록된 댓글이 없습니다.</td>
 								</tr>
 							</th:block>
                                  

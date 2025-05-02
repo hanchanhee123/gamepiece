@@ -73,6 +73,7 @@
 					   <if test="searchValue != null and searchValue != ''">
 					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
 					   </if>
+					   	 	AND i.is_delete = 'active'
 					   ORDER BY CAST(SUBSTRING_INDEX(i.inquiry_id,'inq_',-1) AS UNSIGNED) DESC
 					   LIMIT #{rowPerPage} OFFSET #{offset}
 					</select>
@@ -86,6 +87,7 @@
 					   <if test="searchValue != null and searchValue != ''">
 					       AND i.inquiry_title LIKE CONCAT('%', #{searchValue}, '%')
 					   </if>
+					   AND i.is_delete = 'active'
 					</select>
 		
 				
@@ -98,7 +100,8 @@
 		COUNT(*)
 	FROM
 		inquiry
-	
+	WHERE
+		is_delete = 'active'
 	</select>
 
 
@@ -116,6 +119,8 @@ SELECT
 		ON i.id = u.id
 		LEFT JOIN inquiry_response ir
 	   USING (inquiry_id)
+   WHERE
+		i.is_delete = 'active'
 	ORDER BY
 		CAST(SUBSTRING_INDEX(inquiry_id,'inq_',-1) AS UNSIGNED) DESC
 	LIMIT #{rowPerPage} OFFSET #{offset}

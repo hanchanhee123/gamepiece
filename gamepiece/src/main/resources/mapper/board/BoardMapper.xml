@@ -17,7 +17,7 @@
     <result column="bbs_dislike" property="boardDisLikeCnt" />
     <result column="bbs_view" property="boardViewCnt" />
     <result column="bbs_ymd" property="boardYmd" />
-
+	    <result property="isDelete" column="is_delete"/>
 
 
     <association property="userInfo" javaType="gamepiece.admin.user.domain.User">
@@ -72,6 +72,7 @@
 						        b.bbs_like, 
 						        b.bbs_dislike, 
 						        u.user_nn, 
+						           b.is_delete,
 						        b.bbs_ymd
 						    FROM 
 						    	boards b 
@@ -97,6 +98,8 @@
 						    <if test="searchValue != null and searchValue != ''">
 						        AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%')
 						    </if>
+						    	AND 
+									b.is_delete = 'active'
 						    ORDER BY CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
 						    LIMIT #{rowPerPage} OFFSET #{offset}
 						</select>
@@ -131,6 +134,8 @@
 							   <if test="searchValue != null and searchValue != ''">
 							       AND b.bbs_title LIKE CONCAT('%', #{searchValue}, '%')
 							   </if>
+							   AND 
+									b.is_delete = 'active'
 							</select>
 
 
@@ -141,6 +146,8 @@
 			FROM
 				 boards b
 	
+			WHERE
+				b.is_delete = 'active'
 	</select>
 
 
@@ -156,13 +163,17 @@
         b.bbs_like,
         b.bbs_dislike,
         u.user_nn,
+        b.is_delete,
         b.bbs_ymd
     FROM
         boards b INNER JOIN boards_categories bc
         ON b.bbs_cate_cd = bc.bbs_cate_cd
         INNER JOIN user u
         ON b.id = u.id
-  
+ 
+ where
+		b.is_delete = 'active' 
+ 
     ORDER BY
         CAST(SUBSTRING_INDEX(b.bbs_no,'bbs_',-1) AS UNSIGNED) DESC
     LIMIT #{rowPerPage} OFFSET #{offset};

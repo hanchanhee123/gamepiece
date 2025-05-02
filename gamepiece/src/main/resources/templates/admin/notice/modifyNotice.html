@@ -4,14 +4,16 @@
       layout:decorate="~{admin/layout/default}">
 
   <th:block layout:fragment="contents-header">
-    <div class="col-6">
+  
+ 
+    <div class="col-7">
       <div class="content-header">
         <div>
           <h2 class="content-title card-title" th:text="${title}">문의글 수정</h2>
         </div>
         <div>
           <a th:href="@{/admin/notice/list}" id="cancelBtn" class="btn btn-light rounded font-sm mr-5 text-body hover-up">취소</a>
-          <button type="submit" id="modifyBtn" class="btn btn-md rounded font-sm hover-up">수정</button>
+         <button type="button" id="modifyBtn" class="btn btn-md rounded font-sm hover-up" onclick="modifyForm()">수정</button>
         </div>
       </div>
     </div>
@@ -21,7 +23,7 @@
   <form id="modifyNoticeForm" th:action="@{/admin/notice/modify}"   method="post" th:object="${noticeInfo}" enctype="multipart/form-data">
       <input type="hidden" name="noticeNum" th:value="*{noticeNum}">
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-7">
           <div class="card mb-4">
             <div class="card-body">
 
@@ -31,13 +33,21 @@
                  name="noticeTitle" th:value="*{noticeTitle}">
               </div>
 
-              <div class="mb-4">
-                <label for="noticeContent" class="form-label">게시내용</label>
-                <textarea class="form-control" rows="7" style="height: 300px; 
-                resize: none;" id="noticeContent" 
-                name="noticeContent" th:text="*{noticeContent}"></textarea>
-              </div>
 
+    <div class="mb-3">
+        <label for="editorTxt" class="form-label">게시내용</label>
+            <div id="smarteditor" class="editor-box">
+                <textarea name="noticeContent" id="editorTxt"
+                    rows="20" cols="50"
+                    style="width:100%; height:500px; display:none; resize:none;"
+                    th:text="*{noticeContent}">
+                </textarea>
+            </div>
+   
+    </div>
+
+    
+    
 
 
 	
@@ -109,7 +119,7 @@
     </div>
 </div>
 </div>
-
+</div>
 
  <div class="row mt-4">
                 </div>
@@ -120,9 +130,52 @@
     </form>
   </th:block>
 
-  <th:block layout:fragment="customJsResource"></th:block>
+  <th:block layout:fragment="customJsResource">
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+  </th:block>
   <th:block layout:fragment="customJs">
     <script>
+    
+    
+    let oEditors = [];
+
+    $(document).ready(function() {
+        nhn.husky.EZCreator.createInIFrame({
+            oAppRef: oEditors,
+            elPlaceHolder: "editorTxt",
+            sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+            fCreator: "createSEditor2",
+            htParams: {
+                bUseToolbar: true,
+                bUseVerticalResizer: true,
+                bUseModeChanger: true,
+                I18N_LOCALE: 'ko_KR',
+                fOnBeforeUnload: function() {},
+                bSkipXssFilter: true,
+                
+                // 이미지 업로드 설정
+                SE2M_AttachPhoto: {
+                    sUploadURL: '/admin/notice/uploadImage',
+                    sPopupURL: '/smarteditor/sample/photo_uploader/photo_uploader.html'
+                },
+                
+                // 이미지 기본 경로 설정 추가
+                SE2BasicButton: {
+                    icon: '/smarteditor/img/'  // 에디터 기본 이미지 경로
+                },
+                
+                SE2M_Configuration: {
+                    imageBaseURL: '/smarteditor/img/',
+                    eventBaseURL: '/smarteditor/js/',
+                    cssBaseURL: '/smarteditor/css/',
+                    // 다른 설정들...
+                }
+            }
+        });
+    });
+    
     
     function isImageFile(fileName) {
         const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp'];
@@ -130,30 +183,51 @@
         return imageExtensions.includes(extension);
     }
   
-    $('#modifyBtn').click(function (event) {
-        event.preventDefault();
+    function modifyForm() {
+        // 에디터 내용을 textarea에 적용
+        oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
 
         let isSubmit = true;
-        const $formControl = $('#modifyNoticeForm').find('#noticeTitle, textarea');
-        $formControl.each((idx, elem) => {
-            const value = $(elem).val();
-            if (!value) {
-                isSubmit = false;
-                alert('필수 입력 항목입니다.');
-                $(elem).focus();
-                return false;
-            }
-        });
+        
+        // 제목 입력 확인
+        const title = $("#noticeTitle").val();
+        if(!title) {
+            alert("제목을 입력해주세요.");
+            $("#noticeTitle").focus();
+            return;
+        }
 
-        if (isSubmit) {
-            const formData = new FormData($('#modifyNoticeForm')[0]);
-            
-            // 파일 추가
-            const fileInput = document.getElementById('files');
-            if (fileInput.files.length > 0) {
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    formData.append('files', fileInput.files[i]);
-                }
+        // 내용 입력 확인
+        const content = $("#editorTxt").val();
+        if(!content || content === '<p>&nbsp;</p>' || content === '') {
+            alert("내용을 입력해주세요.");
+            oEditors.getById["editorTxt"].exec("FOCUS");
+            return;
+        }
+
+        // noticeNum 가져오기를 명확하게 수정
+        const noticeNum = $('input[name="noticeNum"]').val();
+        console.log("noticeNum:", noticeNum); // 값 확인용 로그
+
+        if(isSubmit) {
+            const formData = new FormData(document.getElementById('modifyNoticeForm')); // form 전체를 FormData로 변환
+
+            // 에디터 내용 업데이트
+            formData.set('noticeContent', content);
+
+            // 새로운 파일 추가
+            const filesInput = document.getElementById('files');
+            if (filesInput.files.length > 0) {
+                Array.from(filesInput.files).forEach(file => {
+                    formData.append('files', file);
+                });
+            }
+
+            // 삭제할 파일 목록 추가
+            if (deletedFiles && deletedFiles.length > 0) {
+                deletedFiles.forEach(fileIdx => {
+                    formData.append('deletedFiles[]', fileIdx);
+                });
             }
 
             $.ajax({
@@ -163,17 +237,18 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    alert('수정이 완료되었습니다.');
                     location.href = '/admin/notice/list';
                 },
                 error: function(xhr, status, error) {
-                    console.error("에러 발생:", error);
+                    console.error("에러 상태:", status);
+                    console.error("에러 내용:", error);
+                    console.error("서버 응답:", xhr.responseText);
                     alert('수정 중 오류가 발생했습니다.');
                 }
             });
         }
-    });
-      
-      
+    }
       
     $('#files').change(function(){
         const files = this.files;
@@ -322,7 +397,21 @@
     }
 
     	
-	
+	// 이미지 업로드 관련 설정
+	window.insertImageCallback = function(sFileUrl, sFileName) {
+    console.log("Image Upload URL:", sFileUrl);  // 업로드된 파일 URL 로깅
+    console.log("File Name:", sFileName);        // 파일명 로깅
+    
+    var sHTML = '<img src="' + sFileUrl + '" alt="' + sFileName + '">';
+    
+    // 에디터에 이미지 삽입 시도
+    try {
+        oEditors.getById["editorTxt"].exec("PASTE_HTML", [sHTML]);
+        console.log("Image inserted successfully");  // 삽입 성공 로깅
+    } catch (error) {
+        console.error("Error inserting image:", error);  // 에러 발생 시 로깅
+    }
+};
       
     </script>
   </th:block>

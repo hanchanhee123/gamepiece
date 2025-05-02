@@ -256,8 +256,6 @@ public class PointShopController {
 	public String getItemList(Pageable pageable, Model model, HttpSession session) {
 		var imoticonInfo = pointshopService.findimoticon(pageable);
 		var avatarInfo = pointshopService.findavatar(pageable);
-		var frameInfo = pointshopService.findavatarframe(pageable);
-		var etcInfo = pointshopService.findetc(pageable);
 		var backInfo = pointshopService.findbackground(pageable);
 		String userId = (String) session.getAttribute("SID");
 
@@ -271,9 +269,6 @@ public class PointShopController {
 		
 		List<Point> avatarList = avatarInfo.getContents();
 		
-		List<Point> frameList = frameInfo.getContents();
-		
-		List<Point> etcList = etcInfo.getContents();
 		
 		List<Point> backList = backInfo.getContents();
 		
@@ -286,11 +281,7 @@ public class PointShopController {
 		model.addAttribute("imoticonList", imoticonList);
 		
 		model.addAttribute("avatarList", avatarList );
-		
-		model.addAttribute("frameList", frameList);
-		
-		model.addAttribute("etcList", etcList);
-		
+			
 		model.addAttribute("backList", backList);
 		
 		

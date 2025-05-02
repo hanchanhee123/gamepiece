@@ -234,6 +234,18 @@ public class BoardController {
 	    var pageInfo = boardService.getBoardsList(pageable);   
 	    
 	    List<Board> boardList = pageInfo.getContents();
+	    
+	    
+	    // 데이터 확인을 위한 로그 추가
+	    System.out.println("=== 게시글 데이터 확인 ===");
+	    for(Board board : boardList) {
+	        System.out.println("게시글 번호: " + board.getBoardNum() 
+	                       + ", 제목: " + board.getBoardTitle()
+	                       + ", 삭제여부: " + board.getIsDelete());
+	    }
+	    System.out.println("=====================");
+	    
+	    
 	    int currentPage = pageInfo.getCurrentPage();
 	    int startPageNum = pageInfo.getStartPageNum();
 	    int endPageNum = pageInfo.getEndPageNum();

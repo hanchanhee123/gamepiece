@@ -16,6 +16,7 @@
 	<result property="fileIdx" 			column="file_idx"/>
 
 
+
  <association property="fileInfo" javaType="gamepiece.admin.board.domain.AdminBoardFiles">
 		<result property="fileIdx" 			column="file_idx"/>
 		<result property="fileNewName" 		column="file_new_name"/>
@@ -36,7 +37,7 @@
 					ntc_cn, 
 					ntc_img, 
 					ntc_view, 
-					admin_id, 
+					admin_id,
 					reg_ymd
 				FROM 
 				       ntc_mttr 
@@ -44,6 +45,7 @@
 				   <if test="searchValue != null and searchValue != ''">
 				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
 				   </if>
+				   		AND is_delete = 'active'
 			ORDER BY ntc_no DESC 
 				   LIMIT #{rowPerPage} OFFSET #{offset}
 				</select>
@@ -55,6 +57,7 @@
 				   <if test="searchValue != null and searchValue != ''">
 				       AND ntc_title LIKE CONCAT('%', #{searchValue}, '%')
 				   </if>
+				   	AND is_delete = 'active'
 				</select>
 
 
@@ -63,7 +66,8 @@
 			COUNT(*)
 		FROM
 			 ntc_mttr
-	
+		WHERE
+			is_delete = 'active'
 </select>
 
 
@@ -80,7 +84,8 @@ SELECT
 	reg_ymd
 FROM
 	 ntc_mttr
-
+WHERE
+		is_delete = 'active'
 ORDER BY ntc_no DESC 
  LIMIT #{rowPerPage} OFFSET #{offset};
 </select>
@@ -120,20 +125,17 @@ ORDER BY ntc_no DESC
 
 
 	<update id="modifyNotice" parameterType="Notice">
-		UPDATE
-			 ntc_mttr
-		<set>
-			<if test="noticeTitle != null and noticeTitle != ''">
-				ntc_title = #{noticeTitle},
-			</if>
-			<if test="noticeContent != null and noticeContent != ''">
-				ntc_cn = #{noticeContent}
-			</if>
-	
-		</set>
-	WHERE
-		ntc_no=#{noticeNum};
-	</update>
+    UPDATE ntc_mttr
+    <set>
+        <if test="noticeTitle != null and noticeTitle != ''">
+            ntc_title = #{noticeTitle},
+        </if>
+        <if test="noticeContent != null and noticeContent != ''">
+            ntc_cn = #{noticeContent}  <!-- 마지막 콤마 제거 -->
+        </if>
+    </set>
+    WHERE ntc_no = #{noticeNum};
+</update>
 
  <update id="removeNotice" parameterType="Notice">
  		UPDATE 

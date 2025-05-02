@@ -67,7 +67,7 @@
 			        <!-- mapper의 일반 텍스트 (기본 스타일 적용) -->
 			        <div th:unless="${noticeInfo.noticeContent.contains('<p>') or noticeInfo.noticeContent.contains('<div>')}" 
 			             class="plain-text"
-			             th:text="${noticeInfo.noticeContent}">
+			             th:utext="${noticeInfo.noticeContent}">
 			        </div>
 			    </div>
 			</div>
@@ -87,7 +87,7 @@
                         <div>
                             <a th:href="@{/board/download(fileIdx=${file.fileInfo.fileIdx})}"
                                class="text-decoration-none text-dark fw-semibold">
-                                <small th:text="|첨부파일: ${file.fileInfo.fileOriginalName}|"></small>
+                                <small th:text="${file.fileInfo.fileOriginalName}"></small>
                             </a>
                             <p class="text-muted mb-0">
                                 <small th:text="${T(gamepiece.user.board.util.BoardFilesUtils).formatFileSize(file.fileInfo.fileSize)}"></small>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gamepiece.admin.event.domain.Event;
 import gamepiece.admin.point.domain.Point;
 import gamepiece.admin.point.domain.PointCategories;
 import gamepiece.admin.point.service.PointService;
@@ -56,12 +57,41 @@ public class PointController {
 		model.addAttribute("searchCate", searchCate);
 		model.addAttribute("searchValue", searchValue);
 		model.addAttribute("ItemList", ItemInfo);
+		model.addAttribute("search", "searching");
 		model.addAttribute("pointList", searchList);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("startPageNum", startPageNum);
 		model.addAttribute("endPageNum", endPageNum);
 		model.addAttribute("lastPage", lastPage);
 
+		return "admin/points/pointshopList";
+	}
+	@PostMapping("/searchList")
+	public String searchListView(@RequestParam(value="searchValue") String searchValue,
+								 @RequestParam(value="searchCate", required=false, defaultValue="name") String searchCate,
+								 Model model,
+								 Pageable pageable) {
+		
+		log.info("searchValue {}",searchValue);
+		PageInfo<Point> searchList = pointService.searchList(searchValue, searchCate, pageable);
+		
+		List<Point> ItemInfo = searchList.getContents();
+		
+		int currentPage = searchList.getCurrentPage();
+		int startPageNum = searchList.getStartPageNum();
+		int endPageNum = searchList.getEndPageNum();
+		int lastPage = searchList.getLastPage();
+		
+		model.addAttribute("searchCate", searchCate);
+		model.addAttribute("searchValue", searchValue);
+		model.addAttribute("ItemList", ItemInfo);
+		model.addAttribute("search", "searching");
+		model.addAttribute("pointList", searchList);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("startPageNum", startPageNum);
+		model.addAttribute("endPageNum", endPageNum);
+		model.addAttribute("lastPage", lastPage);
+		
 		return "admin/points/pointshopList";
 	}
 

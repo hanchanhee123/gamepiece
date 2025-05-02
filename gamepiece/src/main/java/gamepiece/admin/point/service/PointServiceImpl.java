@@ -45,12 +45,12 @@ public class PointServiceImpl implements PointService {
 		}
 		
 		Map<String, Object> searchMap = new HashMap<String, Object>();
-		int rowCnt = pointshopMapper.getItemCount();
 		searchMap.put("searchCate", cate);
 		searchMap.put("searchValue", searchValue);
 		searchMap.put("pageable", pageable);
 		
 	
+		int rowCnt = pointshopMapper.getSearchCntPointList(searchMap);
 		List<Point> loginList = pointshopMapper.getSearchList(searchMap);
 		log.info("searchMap: {}", searchMap);
 		return new PageInfo<>(loginList, pageable, rowCnt);
@@ -105,8 +105,8 @@ public class PointServiceImpl implements PointService {
 	@Override
 	public PageInfo<Point> findAll(Pageable pageable) {
 		int rowCnt = pointshopMapper.getItemCount();
-		List<Point> loginList = pointshopMapper.findAll(pageable);
-		return new PageInfo<>(loginList, pageable, rowCnt);
+		List<Point> pointList = pointshopMapper.findAll(pageable);
+		return new PageInfo<>(pointList, pageable, rowCnt);
 	}
 
 	@Override
