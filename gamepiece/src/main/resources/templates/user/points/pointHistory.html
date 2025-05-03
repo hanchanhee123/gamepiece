@@ -31,7 +31,7 @@
             <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:each="l : ${historyList}" th:data-ps-cd="${l.itemCd}">
                 <img th:src="${l.filePath}">
                 <div th:text="${l.itemName}">아이템 1</div>
-                <div class="itemName" th:text="${l.itemPrice}">200Point</div>
+                <div class="itemName"></div>
             </div>      
         </div>	
     </div>
