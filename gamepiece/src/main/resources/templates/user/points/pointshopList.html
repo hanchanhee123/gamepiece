@@ -161,6 +161,14 @@
 			$('.swiper-slide').click(function(){
 				const itemCd= $(this).find('.box').data('psCd');
 				if(!itemCd) return ;
+				
+				 $('#modal-name').text('');
+				    $('#item-img').attr('src', '');
+				    $('#modal-cate').text('');
+				    $('#modal-requiredpoint').text('');
+				    $('.point-order-Btn').removeAttr('data-ps-cd data-item-price');
+				    
+				    
 				const request = $.ajax({
 					url : '/point/modal',
 					method : 'get',
