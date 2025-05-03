@@ -3,8 +3,8 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{user/layout/default}">
 	<head>
+ 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 		<link rel="stylesheet" th:href="@{/assets/css/point/point.css}" type="text/css"/>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	</head>
 	<th:block layout:fragment="contents-header">
          <div class="">
@@ -29,7 +29,13 @@
    	<th:block layout:fragment="contents-body">
    	<div class="main_div">
    		<!-- 이모티콘  -->
-   	 	<div class="pointshop-cate-name">이모티콘</div>
+   	 	<div class="pointshop-cate-name">이모티콘
+   	 		<div class="content-line"></div>
+			<div class="button-position">
+				<div class="swiper-button-prev" style="display: contents;"></div>
+   	 			<div class="swiper-button-next" style="display: contents;"></div>
+   	 		</div>
+   	 	</div>
         <div class="pointShopImg">
            	<div class="container-fluid mt-5">
 		        <div class="row justify-content-center">
@@ -44,8 +50,7 @@
 		                            </div> 
 		                        </div>
 		                    </div>                 
-					        <div class="swiper-button-next"></div>
-					        <div class="swiper-button-prev"></div>
+					        
 		                </div>
 		            </div>
 		        </div>
@@ -53,7 +58,13 @@
 	    </div>
         
 		<!-- 프로필이미지 -->
-        <div class="pointshop-cate-name">프로필이미지</div>
+        <div class="pointshop-cate-name">프로필이미지
+        	<div class="content-line"></div>
+			<div class="button-position">
+				<div class="swiper-button-prev" style="display: contents;"></div>
+   	 			<div class="swiper-button-next" style="display: contents;"></div>
+   	 		</div>
+        </div>
        <div class="pointShopImg">
             <div class="container-fluid mt-5">
 		        <div class="row justify-content-center">
@@ -68,15 +79,19 @@
 		                            </div> 
 		                        </div>
 		                    </div>                 
-					        <div class="swiper-button-next"></div>
-					        <div class="swiper-button-prev"></div>
 		                </div>
 		            </div>
 		        </div>
 		    </div>
         </div>
        
-        <div class="pointshop-cate-name">배경프로필</div>
+        <div class="pointshop-cate-name">배경프로필
+        	<div class="content-line"></div>
+			<div class="button-position">
+				<div class="swiper-button-prev" style="display: contents;"></div>
+   	 			<div class="swiper-button-next" style="display: contents;"></div>
+   	 		</div>
+        </div>
         <div class="pointShopImg">
             <div class="container-fluid mt-5">
 		        <div class="row justify-content-center">
@@ -91,8 +106,6 @@
 		                            </div> 
 		                        </div>
 		                    </div>                 
-					        <div class="swiper-button-next"></div>
-					        <div class="swiper-button-prev"></div>
 		                </div>
 		            </div>
 		        </div>
@@ -217,7 +230,7 @@
                 });
             });
 			const swiper = new Swiper('.swiper', {
-	            slidesPerView: 4,
+	            slidesPerView: 6,
 	            direction: getDirection(),
 	            navigation: {
 	                nextEl: '.swiper-button-next',
