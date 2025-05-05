@@ -123,9 +123,9 @@
             <div class="modal-header">
             	<div class="modal-top">
 	                <h1 class="modal-title fs-5" id="modal-name">아이템 이름</h1>
-	                <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span> Point</p>
+	                <p id="modal-cate"></p>
                 </div>
-                <p id="modal-cate"></p>
+	            <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span> Point</p>
             </div>
             <div class="modal-body">
                 <div class="modal-img d-flex justify-content">
@@ -161,6 +161,14 @@
 			$('.swiper-slide').click(function(){
 				const itemCd= $(this).find('.box').data('psCd');
 				if(!itemCd) return ;
+				
+				 $('#modal-name').text('');
+				    $('#item-img').attr('src', '');
+				    $('#modal-cate').text('');
+				    $('#modal-requiredpoint').text('');
+				    $('.point-order-Btn').removeAttr('data-ps-cd data-item-price');
+				    
+				    
 				const request = $.ajax({
 					url : '/point/modal',
 					method : 'get',
@@ -202,7 +210,7 @@
 						return;
 					}
 					const myPointValue = /*[[${userPoint}]]*/"userPoint";
-			    	if(Number(itemPrice) >= Number(myPointValue)){
+			    	if(Number(itemPrice) > Number(myPointValue)){
 			    		alert('포인트가 부족합니다.');
 			    		$('.modal-close-btn').click();
 			    		return ;

@@ -176,6 +176,66 @@ hr {
   background-color: rgba(13, 110, 253, 0.25);
   cursor: pointer;
 }
+#exampleModalToggle .modal-content {
+  background-color: var(--bg-card);      
+  border-radius: 12px;                  
+  padding: 1.5rem;                      
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2); 
+}
+
+#exampleModalToggle .modal-header {
+  border-bottom: none;              
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+}
+
+#exampleModalToggle #modal-name {
+  font-size: 1.75rem;                   
+  color: var(--accent);                  
+  margin: 0;
+}
+
+#exampleModalToggle .modal-body {
+  color: var(--text-light);              
+  padding-top: 1rem;
+}
+
+#exampleModalToggle .modal-footer {
+  border-top: none;                      
+  padding-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+#exampleModalToggle .point-order-Btn {
+  background-color: var(--accent);
+  color: var(--bg-dark);
+  font-weight: bold;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+#exampleModalToggle .point-order-Btn:hover {
+  background-color: #58a4d2;
+}
+
+#exampleModalToggle .modal-img img {
+  max-width: 50%;
+  max-height: 50%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  justify-content: center;
+}
+#exampleModalToggle .modal-body .modal-img {
+  display: flex;              
+  justify-content: center;     
+  align-items: center;         
+  padding: 1rem 0;             
+}
 
 /* Responsive */
 @media (max-width: 768px) {
