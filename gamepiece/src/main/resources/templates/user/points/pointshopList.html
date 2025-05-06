@@ -194,7 +194,7 @@
 	    		if(confirm("구매하시겠습니까?")){
 	    			const itemCd= this.dataset.psCd;
 		    		const itemPrice= this.dataset.itemPrice;
-		    		const purchaseitem = /*[[${purchaseList}]]*/"${purchaseList.psCd}"
+		    		const purchaseitem = /*[[${purchaseList}]]*/ [];
 		    		const psCd = [];
 		    		var stop = false;
 					console.log(purchaseitem)
@@ -229,8 +229,6 @@
 					$('body').append($form)
 					$form.submit();		
 				alert("구매가 완료되었습니다")
-	    		}else {
-	    			
 	    		}
 	    	});
 			$('#exampleModalToggle').on('hide.bs.modal', function () {
