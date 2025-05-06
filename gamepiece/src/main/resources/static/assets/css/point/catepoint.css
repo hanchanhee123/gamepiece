@@ -176,7 +176,6 @@ hr {
   background-color: rgba(13, 110, 253, 0.25);
   cursor: pointer;
 }
-
 #exampleModalToggle .modal-content {
   background-color: var(--bg-card);      
   border-radius: 12px;                  
@@ -187,6 +186,7 @@ hr {
 #exampleModalToggle .modal-header {
   border-bottom: none;              
   align-items: center;
+  justify-content: space-between;
   padding-bottom: 0.75rem;
 }
 
@@ -219,7 +219,22 @@ hr {
   transition: background 0.2s ease;
 }
 #exampleModalToggle .point-order-Btn:hover {
-  background-color: #58a4d2; 
+  background-color: #58a4d2;
+}
+
+#exampleModalToggle .modal-img img {
+  max-width: 50%;
+  max-height: 50%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  justify-content: center;
+}
+#exampleModalToggle .modal-body .modal-img {
+  display: flex;              
+  justify-content: center;     
+  align-items: center;         
+  padding: 1rem 0;             
 }
 
 /* Responsive */
