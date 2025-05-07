@@ -24,7 +24,7 @@ ul {
   margin: 0;
 }
 .pointshop-cate {
-  margin: 0 20px;
+  margin: 0 40px;
 }
 .pointshop-cate a {
   text-decoration: none;
@@ -106,28 +106,28 @@ div.button-position{
     width: 60px;
 }
 
-/* 개별 아이템 카드 - 고정 크기 */
+
 .box {
   background: var(--bg-card);
   border-radius: 4px;
-  padding: 12px;
-  text-align: center;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  padding: 0;
+  overflow: hidden;
   width: 170px;
   height: 260px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  cursor: pointer;  
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .box:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-.box img {
-  width: 100%;
-  height: 150px;
-  object-fit: contain;
-  margin-bottom: 8px;
 }
 
 .itemName {
@@ -137,13 +137,19 @@ div.button-position{
   line-height: 1.2;
 }
 .itemPrice {
+  height: 30px;
   font-size: 14px;
   font-weight: bold;
   color: var(--accent);
   margin: 0;
 }
+.itemP {
+	display: flex;
+    align-items: center;
+    justify-content: end;
+}
 
-/* 페이지 하단 및 기타 레이아웃 */
+
 div.pointShopBottom {
   display: flex;
   justify-content: space-evenly;
@@ -237,6 +243,24 @@ hr {
   padding: 1rem 0;             
 }
 
+.swiper-wrapper {
+  height: 260px !important;
+}
+
+#imoticonSection,
+#avatarSection,
+#backgroundSection {
+	margin-bottom: 40px;
+}
+
+
+
+#imoticonSection .swiper-wrapper,
+#avatarSection .swiper-wrapper,
+#backgroundSection .swiper-wrapper {
+  height: 260px !important;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   div.pointShopImg {
@@ -250,4 +274,12 @@ hr {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+.swiper-button-disabled {
+  opacity: 0.5;            
+  filter: grayscale(100%);  
+  cursor: not-allowed;
+}
+.swiper-button-disabled::after {
+  color: #5b6266 !important;  
 }

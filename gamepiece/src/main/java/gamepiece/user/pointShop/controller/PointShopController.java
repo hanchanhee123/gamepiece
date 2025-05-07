@@ -290,7 +290,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 		
 		

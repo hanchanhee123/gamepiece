@@ -21,9 +21,9 @@
                     
                 </div>
                 <div class="myPoint">보유 포인트
-                	<div>
+                	<div style="display: flex; align-items: center;">
                 		<span class="point" id="myPointValue" th:text="${userPoint}"></span>
-                		<img th:src="@{assets/imgs/logo/GP_point_logo.png}"/>
+                		<img style="width: 40px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
                 	</div>
                 </div>
             </div>
@@ -42,25 +42,26 @@
 	   	 			<div class="swiper-button-next" style="display: contents;"></div>
 	   	 		</div>
 	   	 	</div>
-	        <div class="pointShopImg">
-	           	<div class="container-fluid mt-5">
-			        <div class="row justify-content-center">
-			            <div class="col-11">
-			                <div class="swiper w-100 h-100">
-			                    <div class="swiper-wrapper" style="height: 300px;">
-			                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${imoticonList}">
-			                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-			                                <img th:src="${l.filePath}">
-			                                <div th:text="${l.itemName}" class="itemName"></div>
-			                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
-			                            </div> 
-			                        </div>
-			                    </div>                 
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-		    </div>
+	        <div class="row justify-content-center">
+	            <div class="col-11">
+	                <div class="swiper w-100 h-100">
+	                    <div class="swiper-wrapper" style="height: 300px;">
+	                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${imoticonList}">
+	                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
+	                                <img th:src="${l.filePath}">
+	                                <div class="itemInfo">
+	                                	<div th:text="${l.itemName}" class="itemName"></div>
+	                                	<div class= "itemP">
+		                                	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+		                                	<div th:text="${l.itemPrice}" class="itemPrice"></div>
+	                                	</div>
+	                                </div>
+	                            </div> 
+	                        </div>
+	                    </div>                 
+	                </div>
+	            </div>
+	        </div>
         </div>
 		<!-- 프로필이미지 -->
 		<div id="avatarSection">
@@ -71,25 +72,26 @@
 	   	 			<div class="swiper-button-next" style="display: contents;"></div>
 	   	 		</div>
 	        </div>
-	       <div class="pointShopImg">
-	            <div class="container-fluid mt-5">
-			        <div class="row justify-content-center">
-			            <div class="col-11">
-			                <div class="swiper w-100 h-100">
-			                    <div class="swiper-wrapper" style="height: 300px;">
-			                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${avatarList}">
-			                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-			                                <img th:src="${l.filePath}">
-			                                <div th:text="${l.itemName}" class="itemName"></div>
-			                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
-			                            </div> 
-			                        </div>
-			                    </div>                 
-			                </div>
-			            </div>
-			        </div>
-			    </div>
-	        </div>
+	        <div class="row justify-content-center">
+	            <div class="col-11">
+	                <div class="swiper w-100 h-100">
+	                    <div class="swiper-wrapper">
+	                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${avatarList}">
+	                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
+	                                <img th:src="${l.filePath}">
+	                                <div class="itemInfo">
+	                                	<div th:text="${l.itemName}" class="itemName"></div>
+	                                	<div class= "itemP">
+		                                	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+		                                	<div th:text="${l.itemPriceFormatted}" class="itemPrice"></div>
+	                                	</div>
+	                                </div>
+	                            </div> 
+	                        </div>
+	                    </div>                 
+	                </div>
+	            </div>
+	        </div>		   	   
        </div>
        <div id="backgroundSection">
 	       <div class="pointshop-cate-name">배경프로필
@@ -104,12 +106,17 @@
 			        <div class="row justify-content-center">
 			            <div class="col-11">
 			                <div class="swiper w-100 h-100">
-			                    <div class="swiper-wrapper" style="height: 300px;">
+			                    <div class="swiper-wrapper">
 			                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${backList}">
 			                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
 			                                <img th:src="${l.filePath}">
-			                                <div th:text="${l.itemName}" class="itemName"></div>
-			                                <div th:text="${l.itemPrice}" class="itemPrice"></div>
+			                                <div class="itemInfo">
+			                                	<div th:text="${l.itemName}" class="itemName"></div>
+			                                	<div class= "itemP">
+				                                	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+				                                	<div th:text="${l.itemPrice}" class="itemPrice"></div>
+			                                	</div>
+			                                </div>
 			                            </div> 
 			                        </div>
 			                    </div>                 
@@ -248,6 +255,7 @@
 	        	    prevEl: '#imoticonSection .swiper-button-prev',
 	        	    nextEl: '#imoticonSection .swiper-button-next',
 	        	  },
+	        	  watchOverflow: true,
 	        	  direction: getDirection(),
 	        	  on: { resize() { swiper.changeDirection(getDirection()); } }
 	        	});
@@ -257,6 +265,7 @@
 	        	    prevEl: '#avatarSection .swiper-button-prev',
 	        	    nextEl: '#avatarSection .swiper-button-next',
 	        	  },
+	        	  watchOverflow: true,
 	        	  direction: getDirection(),
 	        	  on: { resize() { swiper.changeDirection(getDirection()); } }
 	        	});
@@ -266,6 +275,7 @@
 	        	    prevEl: '#backgroundSection .swiper-button-prev',
 	        	    nextEl: '#backgroundSection .swiper-button-next',
 	        	  },
+	        	  watchOverflow: true,
 	        	  direction: getDirection(),
 	        	  on: { resize() { swiper.changeDirection(getDirection()); } }
 	        	});
