@@ -35,7 +35,7 @@
            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:each="l : ${avatarList}" th:data-ps-cd="${l.itemCd}">
 
 	            <div class="item_image_container">
-	              <img th:src="${l.filePath}" alt="이모티콘 이미지" />
+	              <img th:src="${l.filePath}"/>
 	            </div>
 
 	            <div class="item_text">
@@ -112,9 +112,11 @@
 		            <div class="modal-header">
 		            	<div class="modal-top">
 			                <h1 class="modal-title fs-5" id="modal-name">아이템 이름</h1>
-			                <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span> Point</p>
+			                <p id="modal-cate"></p>
 		                </div>
-		                <p id="modal-cate"></p>
+		                <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span>
+		                	<img style="width: 40px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+		                </p>
 		            </div>
 		            <div class="modal-body">
 		                <div class="modal-img d-flex justify-content">

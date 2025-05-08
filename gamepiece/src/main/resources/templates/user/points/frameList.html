@@ -91,7 +91,9 @@
 		            <div class="modal-header">
 		            	<div class="modal-top">
 			                <h1 class="modal-title fs-5" id="modal-name">아이템 이름</h1>
-			                <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span> Point</p>
+			                <p th:if="${userId != null}">보유 포인트: <span class="point" th:text="${userPoint}"></span>
+			                	<img style="width: 40px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+			                </p>
 		                </div>
 		                <p id="modal-cate"></p>
 		            </div>
