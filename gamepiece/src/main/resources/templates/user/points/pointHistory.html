@@ -19,7 +19,11 @@
 		                <div>
 		                   
 		                </div>
-		                	<div class = "myPoint">보유 포인트<div><span class="point" th:text="${userPoint}"></span> Point</div></div>
+		                <div class = "myPoint">보유 포인트
+		                	<div style="display: flex; align-items: center;">
+                				<span class="point" id="myPointValue" th:text="${userPoint}"></span>
+                				<img style="width: 40px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+                			</div>
 		            </div>
 		        </div>
           	</div>
@@ -29,9 +33,21 @@
    	<div class="main_div">
    		<div class="pointShopImg">
             <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:each="l : ${historyList}" th:data-ps-cd="${l.itemCd}">
-                <img th:src="${l.filePath}">
-                <div th:text="${l.itemName}">아이템 1</div>
-                <div class="itemName"></div>
+                <div class="item_image_container">
+                	<img th:src="${l.filePath}">
+                </div>
+                
+                <div class="item_text">
+                 	<div th:text="${l.itemName}" class="itemName"></div>
+                 	<div th:text="${l.cateName}" class="itemCate"></div>
+                </div>
+               	
+               	<div class= "item_cost">
+	               	<div class= "item_price">
+	                 	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+	                 	<div th:text="${l.itemPriceFormatted}" class="itemPrice"></div>
+	               	</div>
+              	</div>
             </div>      
         </div>	
     </div>

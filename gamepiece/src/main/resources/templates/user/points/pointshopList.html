@@ -35,63 +35,91 @@
    	<div class="main_div">
    		<!-- 이모티콘  -->
    		<div id="imoticonSection">
-	   	 	<div class="pointshop-cate-name">이모티콘
-	   	 		<div class="content-line"></div>
-				<div class="button-position">
-					<div class="swiper-button-prev" style="display: contents;"></div>
-	   	 			<div class="swiper-button-next" style="display: contents;"></div>
-	   	 		</div>
-	   	 	</div>
-	        <div class="row justify-content-center">
-	            <div class="col-11">
-	                <div class="swiper w-100 h-100">
-	                    <div class="swiper-wrapper" style="height: 300px;">
-	                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${imoticonList}">
-	                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-	                                <img th:src="${l.filePath}">
-	                                <div class="itemInfo">
-	                                	<div th:text="${l.itemName}" class="itemName"></div>
-	                                	<div class= "itemP">
-		                                	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
-		                                	<div th:text="${l.itemPrice}" class="itemPrice"></div>
-	                                	</div>
-	                                </div>
-	                            </div> 
-	                        </div>
-	                    </div>                 
-	                </div>
-	            </div>
-	        </div>
-        </div>
+		  <div class="pointshop-cate-name">이모티콘
+		    <div class="content-line"></div>
+		    <div class="button-position">
+		      <div class="swiper-button-prev" style="display: contents;"></div>
+		      <div class="swiper-button-next" style="display: contents;"></div>
+		    </div>
+		  </div>
+		
+		  <div class="row justify-content-center">
+			  <div class="col-11">
+			    <div class="swiper w-100 h-100">
+			      <div class="swiper-wrapper">
+			        <div class="swiper-slide text-center d-flex justify-content-center" th:each="l : ${imoticonList}">
+			
+			          <div class="box" th:data-ps-cd="${l.itemCd}" data-item-type="emoticon">
+			
+			            <!-- 이미지 영역 -->
+			            <div class="item_image_container">
+			              <img th:src="${l.filePath}" alt="이모티콘 이미지" />
+			            </div>
+			
+			            <!-- 이름 및 카테고리 -->
+			            <div class="item_text">
+			              <div class="itemName" th:text="${l.itemName}"></div>
+			              <div class="itemCate" th:text="${l.cateName}"></div>
+			            </div>
+			
+			            <!-- 포인트 가격 -->
+			            <div class="item_cost">
+			              <span class="item_price">
+			                <img src="/assets/imgs/logo/GP_point_logo.png" />
+			                <span class="itemPrice" th:text="${l.itemPriceFormatted}"></span>
+			              </span>
+			            </div>
+			
+			          </div> <!-- /.box -->
+			
+			        </div> <!-- /.swiper-slide -->
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
 		<!-- 프로필이미지 -->
 		<div id="avatarSection">
 	        <div class="pointshop-cate-name">프로필이미지
-	        	<div class="content-line"></div>
-				<div class="button-position">
-					<div class="swiper-button-prev" style="display: contents;"></div>
-	   	 			<div class="swiper-button-next" style="display: contents;"></div>
-	   	 		</div>
-	        </div>
-	        <div class="row justify-content-center">
-	            <div class="col-11">
-	                <div class="swiper w-100 h-100">
-	                    <div class="swiper-wrapper">
-	                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${avatarList}">
-	                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-	                                <img th:src="${l.filePath}">
-	                                <div class="itemInfo">
-	                                	<div th:text="${l.itemName}" class="itemName"></div>
-	                                	<div class= "itemP">
-		                                	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
-		                                	<div th:text="${l.itemPriceFormatted}" class="itemPrice"></div>
-	                                	</div>
-	                                </div>
-	                            </div> 
-	                        </div>
-	                    </div>                 
-	                </div>
-	            </div>
-	        </div>		   	   
+		    <div class="content-line"></div>
+		    <div class="button-position">
+		      <div class="swiper-button-prev" style="display: contents;"></div>
+		      <div class="swiper-button-next" style="display: contents;"></div>
+		    </div>
+		  </div>
+		
+		  <div class="row justify-content-center">
+			  <div class="col-11">
+			    <div class="swiper w-100 h-100">
+			      <div class="swiper-wrapper">
+			        <div class="swiper-slide text-center d-flex justify-content-center" th:each="l : ${avatarList}">
+			
+			          <div class="box" th:data-ps-cd="${l.itemCd}" data-item-type="avatar">
+			
+			            <!-- 이미지 영역 -->
+			            <div class="item_image_container">
+			              <img th:src="${l.filePath}" alt="이모티콘 이미지" />
+			            </div>
+			
+			            <!-- 이름 및 카테고리 -->
+			            <div class="item_text">
+			              <div class="itemName" th:text="${l.itemName}"></div>
+			              <div class="itemCate" th:text="${l.cateName}"></div>
+			            </div>
+			
+			            <!-- 포인트 가격 -->
+			            <div class="item_cost">
+			              <span class="item_price">
+			                <img src="/assets/imgs/logo/GP_point_logo.png" />
+			                <span class="itemPrice" th:text="${l.itemPriceFormatted}"></span>
+			              </span>
+			            </div>
+			          </div> 	
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+			</div>		   	   
        </div>
        <div id="backgroundSection">
 	       <div class="pointshop-cate-name">배경프로필
@@ -107,16 +135,25 @@
 			            <div class="col-11">
 			                <div class="swiper w-100 h-100">
 			                    <div class="swiper-wrapper">
+		                            <div class="item_image_container no-image">
+										 <div class="placeholder-text">상품 준비중입니다</div>
+									</div>
 			                        <div class="swiper-slide text-center fs-1 d-flex justify-content-center" th:each="l : ${backList}">
+			                            
 			                            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:data-ps-cd="${l.itemCd}">
-			                                <img th:src="${l.filePath}">
-			                                <div class="itemInfo">
-			                                	<div th:text="${l.itemName}" class="itemName"></div>
-			                                	<div class= "itemP">
-				                                	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
-				                                	<div th:text="${l.itemPrice}" class="itemPrice"></div>
-			                                	</div>
-			                                </div>
+			                                
+							                
+							                <div class="item_text">
+							                 	<div th:text="${l.itemName}" class="itemName"></div>
+							                 	<div th:text="${l.cateName}" class="itemCate"></div>
+							                </div>
+							               	
+							               	<div class= "item_cost">
+								               	<div class= "item_price">
+								                 	<img style="width: 35px; height: 35px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+								                 	<div th:text="${l.itemPriceFormatted}" class="itemPrice"></div>
+								               	</div>
+							              	</div>
 			                            </div> 
 			                        </div>
 			                    </div>                 

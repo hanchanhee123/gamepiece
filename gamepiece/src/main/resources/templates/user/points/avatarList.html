@@ -19,7 +19,11 @@
 		                <div>
 		                   
 		                </div>
-		                	<div class = "myPoint">보유 포인트<div><span class="point" th:text="${userPoint}"></span> Point</div></div>
+		                	<div class = "myPoint">보유 포인트
+		                	<div style="display: flex; align-items: center;">
+		                		<span class="point" id="myPointValue" th:text="${userPoint}"></span>
+		                		<img style="width: 40px;" th:src="@{/assets/imgs/logo/GP_point_logo.png}"/>
+		                	</div>
 		            </div>
 		        </div>
           	</div>
@@ -28,42 +32,78 @@
    	<th:block layout:fragment="contents-body">
    	<div class="main_div">
    		<div class="pointShopImg">
-            <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:each="l : ${avatarList}" th:data-ps-cd="${l.itemCd}">
-                <img th:src="${l.filePath}">
-                <div th:text="${l.itemName}">아이템 1</div>
-                <div class="itemName" th:text="${l.itemPrice}">200Point</div>
-            </div>      
+           <div class = "box" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" th:each="l : ${avatarList}" th:data-ps-cd="${l.itemCd}">
+
+	            <div class="item_image_container">
+	              <img th:src="${l.filePath}" alt="이모티콘 이미지" />
+	            </div>
+
+	            <div class="item_text">
+	              <div class="itemName" th:text="${l.itemName}"></div>
+	              <div class="itemCate" th:text="${l.cateName}"></div>
+	            </div>
+
+	            <div class="item_cost">
+	              <span class="item_price">
+	                <img src="/assets/imgs/logo/GP_point_logo.png" />
+	                <span class="itemPrice" th:text="${l.itemPriceFormatted}"></span>
+	              </span>
+	            </div>
+        	</div>      
         </div>	
     </div>
     <div class="pagination-area mt-30 mb-50" th:if="${not #lists.isEmpty(avatarList)}">
 	        <nav>
 	            <ul class="pagination justify-content-center">
-	            	<li class="page-item">
-	                    <a class="page-link" th:href="@{/point/avatar}">
-	                    	<i class="material-icons md-first_page"></i>
-                    	</a>
-	                </li>
-	            	<li class="page-item" th:classappend="${currentPage < 2} ? disabled">
-	                    <a class="page-link" th:href="@{/point/avatar(currentPage=${currentPage - 1})}">
-	                    	<i class="material-icons md-chevron_left"></i>
-                    	</a>
-	                </li>
-	                <th:block th:each="num : ${#numbers.sequence(startPageNum,endPageNum)}">
-		                <li class="page-item" th:classappend="${num == currentPage} ? 'active'">
-		                	<a class="page-link" th:href="@{/point/avatar(currentPage=${num})}" th:text="${num}"></a>
-		                </li>
-	                </th:block>
-	                <li class="page-item" th:classappend="${currentPage eq lastPage} ? disabled">
-	                    <a class="page-link" th:href="@{/point/avatar(currentPage=${currentPage + 1})}">
-	                    	<i class="material-icons md-chevron_right"></i>
-	                    </a>
-	                </li>
-	                <li class="page-item">
-	                    <a class="page-link" th:href="@{/point/avatar(currentPage=${lastPage})}">
-	                    	<i class="material-icons md-last_page"></i>
-	                    </a>
-	                </li>
-	            </ul>
+				  <li class="page-item"
+				      th:classappend="${currentPage < 2} ? 'disabled'">
+				    <a class="page-link"
+				       th:href="${currentPage < 2} 
+				                ? '#' 
+				                : @{/point/avatar(currentPage=1)}">
+				      <i class="material-icons md-first_page"></i>
+				    </a>
+				  </li>
+				
+				  <li class="page-item"
+				      th:classappend="${currentPage < 2} ? 'disabled'">
+				    <a class="page-link"
+				       th:href="${currentPage < 2} 
+				                ? '#' 
+				                : @{/point/avatar(currentPage=${currentPage - 1})}">
+				      <i class="material-icons md-chevron_left"></i>
+				    </a>
+				  </li>
+				
+				  <th:block th:each="num : ${#numbers.sequence(startPageNum, endPageNum)}">
+				    <li class="page-item"
+				        th:classappend="${num == currentPage} ? 'active'">
+				      <a class="page-link"
+				         th:href="@{/point/avatar(currentPage=${num})}"
+				         th:text="${num}"></a>
+				    </li>
+				  </th:block>
+				
+				  <li class="page-item"
+				      th:classappend="${currentPage == lastPage} ? 'disabled'">
+				    <a class="page-link"
+				       th:href="${currentPage == lastPage} 
+				                ? '#' 
+				                : @{/point/avatar(currentPage=${currentPage + 1})}">
+				      <i class="material-icons md-chevron_right"></i>
+				    </a>
+				  </li>
+				
+				  <li class="page-item"
+				      th:classappend="${currentPage == lastPage} ? 'disabled'">
+				    <a class="page-link"
+				       th:href="${currentPage == lastPage} 
+				                ? '#' 
+				                : @{/point/avatar(currentPage=${lastPage})}">
+				      <i class="material-icons md-last_page"></i>
+				    </a>
+				  </li>
+				</ul>
 	        </nav>
 	    </div>
 	    <div class="modal fade" id="exampleModalToggle" tabindex="-1" role="dialog" aria-labelledby="exampleModalToggleLabel" aria-modal="true">
