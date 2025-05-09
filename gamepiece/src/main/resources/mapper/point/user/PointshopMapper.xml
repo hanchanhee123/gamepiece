@@ -152,6 +152,7 @@
 	<select id="findhistory" resultMap="pointshopResultMap" parameterType="Map">
 		SELECT
 			ps.ps_cd,
+			ps.ps_price,
 			pl.psl_used_point,
 			ps.ps_nm,
 			pc.cate_nm,

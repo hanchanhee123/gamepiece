@@ -3,13 +3,13 @@ package gamepiece.user.pointShop.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.text.DecimalFormat;
 
 
 @Data
@@ -32,6 +32,10 @@ public class Point {
 	private String regYmd;
 	private String isDelete;
 	
+	public String getItemPriceFormatted() {
+	        DecimalFormat fmt = new DecimalFormat("#,###");
+	        return fmt.format(itemPrice);
+	    }
 	
 	
 }
