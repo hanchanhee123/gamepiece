@@ -80,7 +80,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 		
 		return "user/points/pointHistory";
@@ -113,7 +113,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 
 		
@@ -146,7 +146,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 		
 		
@@ -179,7 +179,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 		
 		
@@ -211,7 +211,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 		
 		
@@ -244,7 +244,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 		
 		return "user/points/backgroundList";
@@ -290,7 +290,7 @@ public class PointShopController {
 		var userPoint = pointshopService.getPointsHeld(userId);
 		
 		if(userId != null) {
-			model.addAttribute("userPoint", userPoint.getTotalPoint());
+			model.addAttribute("userPoint", userPoint.getTotalPointFormatted());
 		}
 		
 		
